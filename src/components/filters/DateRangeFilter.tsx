@@ -3,17 +3,12 @@ import {useCallback} from "react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 interface Props {
-    dateRangeFilterController: DateFilterController;
+    controller: DateFilterController;
 }
 
-export const DateRangeFilter = (props: Props) => {
-
-    const togglePreset = useCallback((preset: DateFilterPreset) => {
-        props.dateRangeFilterController.setSelectedPreset(preset);
-    },[props.dateRangeFilterController]);
-
+export const DateRangeFilter = ({controller}: Props) => {
     return (
-        <Select onValueChange={togglePreset}>
+        <Select onValueChange={preset => controller.setValue(preset)}>
             <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Datum" />
             </SelectTrigger>

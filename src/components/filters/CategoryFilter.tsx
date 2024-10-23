@@ -1,4 +1,3 @@
-import {DateFilterController, DateFilterPreset} from "@/hooks/useDateFilter";
 import {useCallback} from "react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {CategoryFilterController} from "@/hooks/useCategoryFilter";
@@ -19,8 +18,6 @@ export const CategoryFilter = (props: Props) => {
 
     const {
         data,
-        error,
-        isLoading
     } = useGetCategories({queryParams: {}});
 
     return (
@@ -31,7 +28,7 @@ export const CategoryFilter = (props: Props) => {
             <SelectContent>
                 <SelectItem value={"<keine/lehr>"}>(keine)</SelectItem>
                 {data && data.data && data.data.map((category) => {
-                    var value = category.attributes?.Name;
+                    const value = category.attributes?.Name;
                     return (
                         <SelectItem key={category.id} value={value ?? ""}>{value}</SelectItem>
                     );
