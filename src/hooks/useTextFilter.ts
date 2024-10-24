@@ -1,35 +1,25 @@
-import {useEffect, useState} from "react";
-import {Filters} from "@/routes/events";
-import {FilterController} from "@/hooks/useDateFilter";
+import {useCallback, useState} from "react";
+import {FilterController, UseFilterHook} from "@/types/filtering.types";
 
 export interface TextFilterController extends FilterController {
     setSearchText: (searchText: string) => void;
     searchText: string;
 }
 
-/**
- *
- * @param {string} paramName the name of the search parameter that will be used to filter the data.
- *      This value will be appended to the query url.
- * @returns DateFilterController
- */
-export const useTextFilter = (paramName: string, filters: [string,string][], setFilters: (filters: [string,string][]) => void) => {
-    const [searchText, setSearchText] = useState<string>('');
+const queryDefinition = "filters[$and][0][title][$contains]";
 
-    useEffect(() => {
-        const newFilters = filters.filter(([key, value]) => key !== paramName);
-        setFilters([
-            ...newFilters,
-            [paramName, searchText]
-        ])
-    }, [searchText]);
+export const useTextFilter: UseFilterHook<TextFilterController> = (filters, setFilters) => {
+    const [searchText, _setSearchText] = useState<string>('');
 
-    useEffect(() => {
-        console.log("searchText updated", searchText)
-    }, [searchText]);
+    const setSearchText = useCallback((value: string) => {
+        _setSearchText(value);
+        const newFilters = filters.filter(([k, _]) => k !== queryDefinition);
+        if(value != "") newFilters.push([queryDefinition, value]);
+        setFilters([...newFilters]);
+    }, []);
 
     return {
         searchText,
         setSearchText
-    } as TextFilterController;
+    };
 }

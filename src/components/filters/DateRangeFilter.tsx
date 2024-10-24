@@ -1,5 +1,4 @@
 import {DateFilterController, DateFilterPreset} from "@/hooks/useDateFilter";
-import {useCallback} from "react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
 
 export const DateRangeFilter = ({controller}: Props) => {
     return (
-        <Select onValueChange={preset => controller.setValue(preset)}>
+        <Select onValueChange={preset => controller.setFromPreset(preset)}>
             <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Datum" />
             </SelectTrigger>

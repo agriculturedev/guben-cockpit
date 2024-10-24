@@ -4,7 +4,7 @@ import {CategoryFilterController} from "@/hooks/useCategoryFilter";
 import {useGetCategories} from "@/endpoints/gubenProdComponents";
 
 interface Props {
-    categoryFilterController: CategoryFilterController;
+    controller: CategoryFilterController;
 }
 
 export const CategoryFilter = (props: Props) => {
@@ -13,8 +13,8 @@ export const CategoryFilter = (props: Props) => {
         if (category === "<keine/lehr>") {
             category = "";
         }
-        props.categoryFilterController.setCategory(category);
-    },[props.categoryFilterController]);
+        props.controller.setCategory(category);
+    },[props.controller]);
 
     const {
         data,

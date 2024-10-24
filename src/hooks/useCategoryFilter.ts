@@ -1,24 +1,22 @@
-import {useEffect, useState} from "react";
-import {Filters} from "@/routes/events";
-import {FilterController} from "@/hooks/useDateFilter";
+import {useCallback, useState} from "react";
+import {FilterController, UseFilterHook} from "@/types/filtering.types";
 
 export interface CategoryFilterController extends FilterController {
     setCategory: (searchText: string) => void;
     category: string;
 }
 
-export const useCategoryFilter = (paramName: string, filters: [string,string][], setFilters: (filters: [string,string][]) => void) => {
-    const [category, setCategory] = useState<string>('');
+const queryDefinition = "filters[categories][Name][$eq]";
 
-    useEffect(() => {
-        const newFilters = filters.filter(([key, value]) => key !== paramName);
-        if (category !== '') {
-            setFilters([
-                ...newFilters,
-                [paramName, category]
-            ])
-        }
-    }, [category]);
+export const useCategoryFilter: UseFilterHook<CategoryFilterController> = (filters, setFilters) => {
+    const [category, _setCategory] = useState<string>('');
+
+    const setCategory = useCallback((value: string) => {
+        _setCategory(value);
+        const newFilters = filters.filter(([k, _]) => k !== queryDefinition);
+        if (value !== '') newFilters.push([queryDefinition, value]);
+        setFilters([...newFilters]);
+    }, []);
 
     return {
         category,

@@ -1,8 +1,10 @@
 import {useTextFilter} from "@/hooks/useTextFilter";
+import {Dispatch, SetStateAction} from "react";
+import {QueryFilter} from "@/types/filtering.types";
 
 
-export const useProjectFilters = (filters: [string, string][], setFilters: (filters: [string, string][]) => void) => {
-    const textController = useTextFilter("filters[$and][0][title][$contains]", filters, setFilters);
+export const useProjectFilters = (filters: QueryFilter[], setFilters: Dispatch<SetStateAction<QueryFilter[]>>) => {
+    const textController = useTextFilter(filters, setFilters);
 
     return {
         textController

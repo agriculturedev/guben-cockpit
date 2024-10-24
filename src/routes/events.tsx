@@ -7,7 +7,7 @@ import {PaginationContainer} from "@/components/DataDisplay/PaginationContainer"
 import {defaultPaginationProps, usePagination} from "@/hooks/usePagination";
 import {EventsList} from "@/components/events/EventsList";
 import {EventFilterContainer} from "@/components/events/EventFilterContainer";
-import {EventFiltersProvider, useEventFilters} from "@/context/events/EventFiltersContext";
+import {EventFiltersProvider, useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 
 export const Route = createFileRoute('/events')({
   component: WrappedComponent,
@@ -53,14 +53,11 @@ function EventComponent() {
   }, [filters, page, pageSize]);
 
   const {
-    data: eventsData,
-    error: eventsError,
-    isLoading: eventsIsloading
+    data: eventsData
   } = useGetEvents({queryParams: queryParams}, {});
 
   const {
     data: eventViewData,
-    error: eventViewErrors,
     isLoading: eventViewIsLoading
   } = useGetEventView({queryParams: {}});
 

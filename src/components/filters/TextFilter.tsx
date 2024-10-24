@@ -1,8 +1,8 @@
 import {Input} from "@/components/ui/input"
-import {EventFilterController} from "@/context/events/EventFiltersContext";
+import {TextFilterController} from "@/hooks/useTextFilter";
 
 interface Props {
-  controller: EventFilterController<string>;
+  controller: TextFilterController;
 }
 
 export function TextFilter({controller}: Props) {
@@ -10,8 +10,8 @@ export function TextFilter({controller}: Props) {
     <Input
       type="text"
       placeholder="Search"
-      value={controller.value}
-      onChange={(e) => controller.setValue(e.target.value)}
+      value={controller.searchText}
+      onChange={(e) => controller.setSearchText(e.target.value)}
     />
   )
 }
