@@ -65,7 +65,7 @@ export const useDateFilter: UseFilterHook<DateFilterController> = (filters, setF
     const newFilters: QueryFilter[] = [...unchangedFilters];
 
     if(startDate && endDate) newFilters.push(...queryDefinitions.rangeQueries.map(def => [def[0], {"min": startDate, "max": endDate}[def[1]].toISOString()] as QueryFilter));
-    else if(startDate) newFilters.push(...queryDefinitions.singleDateQueries.map(def => [def[0], minDate?.toISOString()] as QueryFilter));
+    else if(startDate) newFilters.push(...queryDefinitions.singleDateQueries.map(def => [def[0], startDate.toISOString()] as QueryFilter));
 
     setFilters(newFilters);
   }, [filters, selectedPreset]);

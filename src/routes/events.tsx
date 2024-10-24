@@ -52,6 +52,8 @@ function EventComponent() {
     return query;
   }, [filters, page, pageSize]);
 
+  console.log(queryParams);
+
   const {
     data: eventsData
   } = useGetEvents({queryParams: queryParams}, {});

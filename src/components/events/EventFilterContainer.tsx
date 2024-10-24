@@ -7,8 +7,6 @@ import {useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
 
-  console.log("rerender");
-
   return (
     <div className={"flex py-2 gap-2"}>
       <div>
