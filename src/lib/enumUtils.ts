@@ -1,9 +1,11 @@
+import {HashMap, Option} from "@/types/common.types";
+
 export function getEnumKeyByEnumValue<T extends { [index: string]: string }>(myEnum: T, enumValue: string): keyof T | null {
   let keys = Object.keys(myEnum).filter((x) => myEnum[x] === enumValue);
   return keys.length > 0 ? keys[0] : null;
 }
 
-export function getValidEnumValue<T extends { [s: string]: unknown; }>(value: string | null, enumObject: T, defaultValue?: string): T[keyof T] {
+export function tryGetEnumValue<T extends HashMap<unknown>>(value: Option<string>, enumObject: T, defaultValue?: Option<string>): T[keyof T] {
   if (value !== null) { // if a value has been passed, check whether it is a valid enum value as either string or number
     if (isNaN(+value)) {
       if (Object.values(enumObject).includes(value)) {
@@ -34,6 +36,6 @@ export function getValidEnumValue<T extends { [s: string]: unknown; }>(value: st
     }
   }
 
-  // if no valid value could be found, return 0
+  //if no valid value found return the first item of the enum
   return 0 as T[keyof T];
 }

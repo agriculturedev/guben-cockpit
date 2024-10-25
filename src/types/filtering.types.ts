@@ -1,8 +1,8 @@
-import {Dispatch, SetStateAction} from "react";
-
 export type QueryFilter = [string, string];
 
-export interface FilterController {}
+export interface FilterController {
+  clearFilter: () => void;
+}
 
 /**
  *
@@ -12,5 +12,5 @@ export interface FilterController {}
  */
 export type UseFilterHook<T> = (
   filters: QueryFilter[],
-  setFilters: Dispatch<SetStateAction<QueryFilter[]>>
+  setFilters: (value: QueryFilter[]) => void
 ) => T;

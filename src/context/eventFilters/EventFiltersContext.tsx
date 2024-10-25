@@ -1,4 +1,9 @@
-import {createContext, PropsWithChildren, useContext, useState} from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext, useMemo,
+  useState
+} from "react";
 import {QueryFilter} from "@/types/filtering.types";
 import {TextFilterController, useTextFilter} from "@/hooks/useTextFilter";
 import {DateFilterController, useDateFilter} from "@/hooks/useDateFilter";
@@ -7,7 +12,6 @@ import {CategoryFilterController, useCategoryFilter} from "@/hooks/useCategoryFi
 interface EventFiltersContext {
   filters: QueryFilter[];
   controllers: EventFiltersControllers;
-
 }
 
 interface EventFiltersControllers {
@@ -22,15 +26,27 @@ interface EventFiltersProviderProps extends PropsWithChildren {
 }
 
 export function EventFiltersProvider({children}: EventFiltersProviderProps) {
-  const [filters, setFilters] = useState<QueryFilter[]>([]);
+  const [textFilters, setTextFilters] = useState<QueryFilter[]>([]);
+  const [dateFilters, setDateFilters] = useState<QueryFilter[]>([]);
+  const [categoryFilters, setCategoryFilters] = useState<QueryFilter[]>([]);
+
+  const filters = useMemo(() => [
+    ...textFilters,
+    ...dateFilters,
+    ...categoryFilters
+  ], [
+    textFilters,
+    dateFilters,
+    categoryFilters
+  ]);
 
   const controllers: EventFiltersControllers = {
-    textController: useTextFilter(filters, setFilters),
-    dateController: useDateFilter(filters, setFilters),
-    categoryController: useCategoryFilter(filters, setFilters),
+    textController: useTextFilter(textFilters, setTextFilters),
+    dateController: useDateFilter(dateFilters, setDateFilters),
+    categoryController: useCategoryFilter(categoryFilters, setCategoryFilters),
   };
 
-  const ctx: EventFiltersContext = {filters,controllers};
+  const ctx: EventFiltersContext = {filters, controllers};
   return (
     <EventFiltersContext.Provider value={ctx}>
       {children}

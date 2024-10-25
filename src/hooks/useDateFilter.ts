@@ -1,7 +1,7 @@
 import {useCallback, useState} from "react";
 import {FilterController, QueryFilter, UseFilterHook} from "@/types/filtering.types";
 import {HashMap, Option} from "@/types/common.types";
-import {getValidEnumValue} from "@/lib/enumUtils";
+import {tryGetEnumValue} from "@/lib/enumUtils";
 
 export enum DateFilterPreset {
   TODAY = 'today',
@@ -61,28 +61,28 @@ export const useDateFilter: UseFilterHook<DateFilterController> = (filters, setF
     setMinDate(startDate);
     setMaxDate(endDate);
 
-    const unchangedFilters = filters.filter(([k, _]) => !!queryDefinitionsMap[k]);
-    const newFilters: QueryFilter[] = [...unchangedFilters];
-
+    const newFilters = filters.filter(([k, _]) => queryDefinitionsMap[k] !== undefined);
     if(startDate && endDate) newFilters.push(...queryDefinitions.rangeQueries.map(def => [def[0], {"min": startDate, "max": endDate}[def[1]].toISOString()] as QueryFilter));
     else if(startDate) newFilters.push(...queryDefinitions.singleDateQueries.map(def => [def[0], startDate.toISOString()] as QueryFilter));
 
-    setFilters(newFilters);
+    setFilters([...newFilters]);
   }, [filters, selectedPreset]);
 
   const setFromPreset: SetFromPresetFn = useCallback((preset) => {
-    const enumCast = getValidEnumValue(preset, DateFilterPreset);
+    const enumCast = tryGetEnumValue(preset, DateFilterPreset, null);
     const [start, end] = getDatesFromPreset(enumCast);
-
     setSelectedPreset(enumCast);
     setSelectedDateRange(start, end);
   }, []);
+
+  const clearFilter = useCallback(() => setFromPreset(null), []);
 
   return {
     selectedPreset,
     selectedDateRange: [minDate, maxDate],
     setFromPreset,
-    setSelectedDateRange
+    setSelectedDateRange,
+    clearFilter
   };
 }
 

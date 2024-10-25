@@ -7,6 +7,7 @@ import {Tag} from "@/components/general/Tag";
 import {useMemo} from "react";
 import {ReactNode} from "@tanstack/react-router";
 import {getContrast, getHexColorFromText, hexToRgb} from "@/lib/colorUtils";
+import {CircleX} from "lucide-react";
 
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
@@ -18,14 +19,19 @@ export const EventFilterContainer = () => {
       const color = getHexColorFromText(controllers.categoryController.category);
       const contrast = getContrast(hexToRgb(color)!, [255,255,255]);
 
-      console.log(contrast);
-
       elements.push(<Tag
         key={"category"}
         bgColor={color}
         textColor={contrast < 4.5 ? "#000000" : "#ffffff"}
       >
-        Kategorie: {controllers.categoryController.category}
+        <div className={"flex gap-2 items-center"}>
+          <p>Kategorie: {controllers.categoryController.category}</p>
+          <CircleX
+            className={"hover:cursor-pointer"}
+            size={16}
+            onClick={() => controllers.categoryController.clearFilter()}
+          />
+        </div>
       </Tag>);
     }
 
@@ -33,7 +39,18 @@ export const EventFilterContainer = () => {
       const [startDate, endDate] = controllers.dateController.selectedDateRange;
       let filterString = startDate?.formatDate();
       if(endDate) filterString += " - " + endDate.formatDate();
-      elements.push(<Tag key={"date"}>{(startDate && endDate) ? "Datumsbereich" : "Datum"}: {filterString}</Tag>)
+      elements.push(
+        <Tag key={"date"}>
+          <div className={"flex gap-2 items-center"}>
+            <p>{(startDate && endDate) ? "Datumsbereich" : "Datum"}: {filterString}</p>
+            <CircleX
+              className={"hover:cursor-pointer"}
+              size={16}
+              onClick={() => controllers.dateController.clearFilter()}
+            />
+          </div>
+        </Tag>
+      )
     }
 
     return elements;
