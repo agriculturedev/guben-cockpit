@@ -6,7 +6,8 @@ import {CategoryFilterController, useCategoryFilter} from "@/hooks/useCategoryFi
 
 interface EventFiltersContext {
   filters: QueryFilter[];
-  controllers: EventFiltersControllers
+  controllers: EventFiltersControllers;
+
 }
 
 interface EventFiltersControllers {
@@ -29,7 +30,7 @@ export function EventFiltersProvider({children}: EventFiltersProviderProps) {
     categoryController: useCategoryFilter(filters, setFilters),
   };
 
-  const ctx: EventFiltersContext = {filters, controllers};
+  const ctx: EventFiltersContext = {filters,controllers};
   return (
     <EventFiltersContext.Provider value={ctx}>
       {children}

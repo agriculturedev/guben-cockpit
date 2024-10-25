@@ -8,6 +8,7 @@ import {defaultPaginationProps, usePagination} from "@/hooks/usePagination";
 import {EventsList} from "@/components/events/EventsList";
 import {EventFilterContainer} from "@/components/events/EventFilterContainer";
 import {EventFiltersProvider, useEventFilters} from "@/context/eventFilters/EventFiltersContext";
+import {HashMap} from "@/types/common.types";
 
 export const Route = createFileRoute('/events')({
   component: WrappedComponent,
@@ -40,19 +41,16 @@ function EventComponent() {
 
   const {filters} = useEventFilters();
 
-  const queryParams = useMemo(() => {
-    const query: {
-      [key: string]: string | number;
-    } = {"pagination[pageSize]": pageSize, "pagination[page]": page, populate: "categories"};
-
-    filters.forEach(filter => {
-      query[filter[0]] = filter[1];
-    });
-
-    return query;
-  }, [filters, page, pageSize]);
-
-  console.log(queryParams);
+  const queryParams = useMemo(() =>
+    filters.reduce((acc: HashMap<string | number>, val) => {
+      acc[val[0]] = val[1];
+      return acc;
+    }, {
+      "pagination[pageSize]": pageSize,
+      "pagination[page]": page,
+      populate: "categories",
+    }
+  ), [filters, page, pageSize]);
 
   const {
     data: eventsData
@@ -81,7 +79,7 @@ function EventComponent() {
         setPageSize={setPageSize} total={total} pageCount={pageCount} pageSize={pageSize}
         page={page}
       >
-        <EventFilterContainer />
+        <EventFilterContainer/>
         <EventsList events={eventsData?.data}/>
       </PaginationContainer>
     </View>
