@@ -6,19 +6,36 @@ import {useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 import {Tag} from "@/components/general/Tag";
 import {useMemo} from "react";
 import {ReactNode} from "@tanstack/react-router";
+import {getContrast, getHexColorFromText, hexToRgb} from "@/lib/colorUtils";
 
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
 
   const tagElements = useMemo(() => {
     const elements: ReactNode[] = [];
-    if(controllers.categoryController.category) elements.push(<Tag key={"category"}>{controllers.categoryController.category}</Tag>);
+
+    if(controllers.categoryController.category) {
+      const color = getHexColorFromText(controllers.categoryController.category);
+      const contrast = getContrast(hexToRgb(color)!, [255,255,255]);
+
+      console.log(contrast);
+
+      elements.push(<Tag
+        key={"category"}
+        bgColor={color}
+        textColor={contrast < 4.5 ? "#000000" : "#ffffff"}
+      >
+        Kategorie: {controllers.categoryController.category}
+      </Tag>);
+    }
+
     if(controllers.dateController.selectedDateRange.filter(i => !!i).length > 0) {
       const [startDate, endDate] = controllers.dateController.selectedDateRange;
       let filterString = startDate?.formatDate();
       if(endDate) filterString += " - " + endDate.formatDate();
-      elements.push(<Tag key={"date"}>{filterString}</Tag>)
+      elements.push(<Tag key={"date"}>Datum: {filterString}</Tag>)
     }
+
     return elements;
   }, [controllers]);
 
