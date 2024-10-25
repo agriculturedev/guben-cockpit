@@ -33,7 +33,7 @@ export const EventFilterContainer = () => {
       const [startDate, endDate] = controllers.dateController.selectedDateRange;
       let filterString = startDate?.formatDate();
       if(endDate) filterString += " - " + endDate.formatDate();
-      elements.push(<Tag key={"date"}>Datum: {filterString}</Tag>)
+      elements.push(<Tag key={"date"}>{(startDate && endDate) ? "Datumsbereich" : "Datum"}: {filterString}</Tag>)
     }
 
     return elements;
