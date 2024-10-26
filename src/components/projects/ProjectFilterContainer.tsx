@@ -1,10 +1,11 @@
 import {TextFilter} from "@/components/filters/TextFilter";
 import * as React from "react";
 import {useProjectFilters} from "@/hooks/useProjectFilters";
+import {SetFiltersCallback} from "@/types/filtering.types";
 
 interface Props {
     filters: [string, string][];
-    setFilters: (filters: [string, string][]) => void;
+    setFilters: SetFiltersCallback;
 }
 
 export const ProjectFilterContainer = ({filters, setFilters}: Props) => {
@@ -15,7 +16,7 @@ export const ProjectFilterContainer = ({filters, setFilters}: Props) => {
     return (
         <div className={"flex py-2"}>
             <div>
-                <TextFilter textFilterController={textController}/>
+                <TextFilter controller={textController}/>
             </div>
         </div>
     );

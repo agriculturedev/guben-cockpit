@@ -1,10 +1,17 @@
-import { Input } from "@/components/ui/input"
+import {Input} from "@/components/ui/input"
 import {TextFilterController} from "@/hooks/useTextFilter";
 
 interface Props {
-    textFilterController: TextFilterController;
+  controller: TextFilterController;
 }
 
-export function TextFilter({textFilterController}: Props) {
-    return <Input type="text" placeholder="Search" value={textFilterController.searchText} onChange={(e) => textFilterController.setSearchText(e.target.value)} />
+export function TextFilter({controller}: Props) {
+  return (
+    <Input
+      type="text"
+      placeholder="Search"
+      value={controller.searchText}
+      onChange={(e) => controller.setSearchText(e.target.value)}
+    />
+  )
 }
