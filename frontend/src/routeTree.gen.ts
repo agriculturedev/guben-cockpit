@@ -14,7 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as ProjectsImport } from './routes/projects'
 import { Route as MapImport } from './routes/map'
 import { Route as EventsImport } from './routes/events'
-import { Route as IndexImport } from './routes/index'
+import { Route as IndexImport } from './routes'
 
 // Create/Update Routes
 
