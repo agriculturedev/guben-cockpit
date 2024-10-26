@@ -5,7 +5,7 @@ import {ClearFilterCallback} from "@/types/filtering.types";
 
 interface FilterTagProps extends TagProps {
   title: string;
-  value:string;
+  value: string;
   onClear: ClearFilterCallback
 }
 
