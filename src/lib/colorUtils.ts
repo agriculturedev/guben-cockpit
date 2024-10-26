@@ -2,6 +2,7 @@ import {ColorRgb, Option} from "@/types/common.types";
 
 // RED, GREEN, BLUE represent the percentual share of each
 // color's luminance in the luminance scale of the color spectrum
+// https://stackoverflow.com/questions/9733288/how-to-programmatically-calculate-the-contrast-ratio-between-two-colors
 const RED = 0.2126;
 const GREEN = 0.7152
 const BLUE = 0.0722;
