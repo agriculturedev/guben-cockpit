@@ -11,8 +11,8 @@ interface Props {
 
 export const View  = ({children, title, description, isLoading}: Props) => {
     return (
-        <main className={"w-full h-full flex flex-1 flex-col items-center"}>
-            <article className={"w-full max-w-[1200px] pt-5 pb-5"}>
+      <main className={"w-full h-full flex flex-1 pl-20 pr-20 flex-col items-center"}>
+        <article className={"max-w-[1600px] pt-5 pb-5"}>
                 {!isLoading && (
                     <div className={"flex gap-3 flex-col"}>
                       <h1 className={"text-gubenAccent text-h1 font-bold"}>{title}</h1>
@@ -28,7 +28,7 @@ export const View  = ({children, title, description, isLoading}: Props) => {
                     </div>
                 )}
             </article>
-            <section className={"w-full max-w-[1200px]"}>
+        <section className={"max-w-[1600px] w-full"}>
                 {children}
             </section>
         </main>
