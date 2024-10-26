@@ -1682,6 +1682,7 @@ export type ProjectViewLocalizationRequest = {
   InfoFromAdmin?: GenericButtonComponent[];
   Description?: string;
   projects?: (number | string)[];
+  allProjects?: (number | string)[];
   locale: string;
 };
 
@@ -1691,6 +1692,7 @@ export type ProjectViewRequest = {
     InfoFromAdmin?: GenericButtonComponent[];
     Description?: string;
     projects?: (number | string)[];
+    allProjects?: (number | string)[];
     locale?: string;
   };
 };
@@ -1898,6 +1900,12 @@ export type ProjectView = {
           };
         };
       };
+    }[];
+  };
+  allProjects?: {
+    data?: {
+      id?: number;
+      attributes?: {};
     }[];
   };
   /**
