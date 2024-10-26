@@ -6,7 +6,7 @@ export const Route = createFileRoute('/map')({
 })
 
 function MapComponent() {
-  return <div className="p-0 relative w-screen h-screen">
+  return <div className="p-0 relative h-screen">
     <iframe
         className="map-iframe overflow-hidden border-none"
         style={{
