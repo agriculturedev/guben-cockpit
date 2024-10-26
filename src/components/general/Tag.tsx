@@ -1,7 +1,7 @@
 import {PropsWithChildren} from "react";
 import {cn} from "@/lib/utils";
 
-interface TagProps extends PropsWithChildren {
+export interface TagProps extends PropsWithChildren {
   bgColor?: string;
   textColor?: string;
 }

@@ -13,7 +13,7 @@ export const useTextFilter: UseFilterHook<TextFilterController> = (filters, setF
 
   const setSearchText = useCallback((value: string) => {
     _setSearchText(value);
-    const newFilters = filters.filter(([k, _]) => k !== queryDefinition);
+    const newFilters = filters.filter(([definition, _]) => definition !== queryDefinition);
     if (value != "") newFilters.push([queryDefinition, value]);
     setFilters([...newFilters]);
   }, []);

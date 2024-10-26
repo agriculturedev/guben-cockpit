@@ -1,8 +1,9 @@
 export type QueryFilter = [string, string];
-type SetFiltersCallback = (value: QueryFilter[]) => void;
+export type SetFiltersCallback = (value: QueryFilter[]) => void;
+export type ClearFilterCallback = () => void;
 
 export interface FilterController {
-  clearFilter: () => void;
+  clearFilter: ClearFilterCallback;
 }
 
 /**

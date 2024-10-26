@@ -3,11 +3,10 @@ import {TextFilter} from "@/components/filters/TextFilter";
 import * as React from "react";
 import {CategoryFilter} from "@/components/filters/CategoryFilter";
 import {useEventFilters} from "@/context/eventFilters/EventFiltersContext";
-import {Tag} from "@/components/general/Tag";
 import {useMemo} from "react";
 import {ReactNode} from "@tanstack/react-router";
 import {getContrast, getHexColorFromText, hexToRgb} from "@/lib/colorUtils";
-import {CircleX} from "lucide-react";
+import {FilterTag} from "@/components/general/FitlerTag";
 
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
@@ -15,42 +14,30 @@ export const EventFilterContainer = () => {
   const tagElements = useMemo(() => {
     const elements: ReactNode[] = [];
 
-    if(controllers.categoryController.category) {
+    if (controllers.categoryController.category) {
       const color = getHexColorFromText(controllers.categoryController.category);
-      const contrast = getContrast(hexToRgb(color)!, [255,255,255]);
+      const contrast = getContrast(hexToRgb(color)!, [255, 255, 255]);
 
-      elements.push(<Tag
+      elements.push(<FilterTag
         key={"category"}
         bgColor={color}
         textColor={contrast < 4.5 ? "#000000" : "#ffffff"}
-      >
-        <div className={"flex gap-2 items-center"}>
-          <p>Kategorie: {controllers.categoryController.category}</p>
-          <CircleX
-            className={"hover:cursor-pointer"}
-            size={16}
-            onClick={() => controllers.categoryController.clearFilter()}
-          />
-        </div>
-      </Tag>);
+        title={"Kategorie"}
+        value={controllers.categoryController.category}
+        onClear={controllers.categoryController.clearFilter}
+      />)
     }
 
-    if(controllers.dateController.selectedDateRange.filter(i => !!i).length > 0) {
+    if (controllers.dateController.selectedDateRange.filter(i => !!i).length > 0) {
       const [startDate, endDate] = controllers.dateController.selectedDateRange;
       let filterString = startDate?.formatDate();
-      if(endDate) filterString += " - " + endDate.formatDate();
-      elements.push(
-        <Tag key={"date"}>
-          <div className={"flex gap-2 items-center"}>
-            <p>{(startDate && endDate) ? "Datumsbereich" : "Datum"}: {filterString}</p>
-            <CircleX
-              className={"hover:cursor-pointer"}
-              size={16}
-              onClick={() => controllers.dateController.clearFilter()}
-            />
-          </div>
-        </Tag>
-      )
+      if (endDate) filterString += " - " + endDate.formatDate();
+      elements.push(<FilterTag
+        key={"date"}
+        title={(startDate && endDate) ? "Datumsbereich" : "Datum"}
+        value={filterString ?? ""}
+        onClear={controllers.dateController.clearFilter}
+      />)
     }
 
     return elements;
