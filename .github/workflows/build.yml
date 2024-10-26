@@ -28,9 +28,6 @@ jobs:
       - name: Install strapi dependencies
         run: npm ci --prefix strapi
 
-      - name: Install strapi/plugins dependencies
-        run: npm ci --prefix strapi/src/guben-cockpit-plugins
-
       - name: Run prebuild Strapi
         run: npm run prebuild --prefix strapi
 
