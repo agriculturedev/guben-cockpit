@@ -1,31 +1,29 @@
 import {DateFilterController, DateFilterPreset} from "@/hooks/useDateFilter";
-import {useCallback} from "react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 interface Props {
-    dateRangeFilterController: DateFilterController;
+  controller: DateFilterController;
 }
 
-export const DateRangeFilter = (props: Props) => {
-
-    const togglePreset = useCallback((preset: DateFilterPreset) => {
-        props.dateRangeFilterController.setSelectedPreset(preset);
-    },[props.dateRangeFilterController]);
-
-    return (
-        <Select onValueChange={togglePreset}>
-            <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Datum" />
-            </SelectTrigger>
-            <SelectContent>
-                <SelectItem value={DateFilterPreset.TODAY}>{DateFilterPreset.TODAY}</SelectItem>
-                <SelectItem value={DateFilterPreset.TOMORROW}>{DateFilterPreset.TOMORROW}</SelectItem>
-                <SelectItem value={DateFilterPreset.THIS_WEEK}>{DateFilterPreset.THIS_WEEK}</SelectItem>
-                <SelectItem value={DateFilterPreset.NEXT_WEEK}>{DateFilterPreset.NEXT_WEEK}</SelectItem>
-                <SelectItem value={DateFilterPreset.THIS_MONTH}>{DateFilterPreset.THIS_MONTH}</SelectItem>
-                <SelectItem value={DateFilterPreset.NEXT_MONTH}>{DateFilterPreset.NEXT_MONTH}</SelectItem>
-                <SelectItem value={DateFilterPreset.THIS_YEAR}>{DateFilterPreset.THIS_YEAR}</SelectItem>
-            </SelectContent>
-        </Select>
-    );
+export const DateRangeFilter = ({controller}: Props) => {
+  return (
+    <Select
+      value={controller.selectedPreset ?? "none"}
+      onValueChange={preset => controller.setFromPreset(preset === "none" ? null : preset)}
+    >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Datum"/>
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value={"none"}>(Datum)</SelectItem>
+        <SelectItem value={DateFilterPreset.TODAY}>{"heute"}</SelectItem>
+        <SelectItem value={DateFilterPreset.TOMORROW}>{"morgen"}</SelectItem>
+        <SelectItem value={DateFilterPreset.THIS_WEEK}>{"diese woche"}</SelectItem>
+        <SelectItem value={DateFilterPreset.NEXT_WEEK}>{"nächste woche"}</SelectItem>
+        <SelectItem value={DateFilterPreset.THIS_MONTH}>{"diesen monat"}</SelectItem>
+        <SelectItem value={DateFilterPreset.NEXT_MONTH}>{"nächsten monat"}</SelectItem>
+        <SelectItem value={DateFilterPreset.THIS_YEAR}>{"dieses jahr"}</SelectItem>
+      </SelectContent>
+    </Select>
+  );
 }

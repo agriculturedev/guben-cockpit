@@ -7,71 +7,81 @@ import {PaginationContainer} from "@/components/DataDisplay/PaginationContainer"
 import {defaultPaginationProps, usePagination} from "@/hooks/usePagination";
 import {EventsList} from "@/components/events/EventsList";
 import {EventFilterContainer} from "@/components/events/EventFilterContainer";
+import {EventFiltersProvider, useEventFilters} from "@/context/eventFilters/EventFiltersContext";
+import {HashMap} from "@/types/common.types";
 
 export const Route = createFileRoute('/events')({
-    component: EventComponent,
+  component: WrappedComponent,
 })
 
 export interface Filters {
 }
 
+function WrappedComponent() {
+  return (
+    <EventFiltersProvider>
+      <EventComponent/>
+    </EventFiltersProvider>
+  )
+}
+
 function EventComponent() {
-    const {
-        page,
-        pageCount,
-        total,
-        pageSize,
-        nextPage,
-        previousPage,
-        setPageIndex,
-        setPageSize,
-        setTotal,
-        setPageCount
-    } = usePagination();
+  const {
+    page,
+    pageCount,
+    total,
+    pageSize,
+    nextPage,
+    previousPage,
+    setPageIndex,
+    setPageSize,
+    setTotal,
+    setPageCount
+  } = usePagination();
 
-    const [filters, setFilters] = React.useState<[string, string][]>([]);
+  const {filters} = useEventFilters();
 
-    const queryParams = useMemo(() => {
-        const query: {
-            [key: string]: string | number;
-        } = {"pagination[pageSize]": pageSize, "pagination[page]": page, populate: "categories"};
+  const queryParams = useMemo(() =>
+    filters.reduce((acc: HashMap<string | number>, val) => {
+      acc[val[0]] = val[1];
+      return acc;
+    }, {
+      "pagination[pageSize]": pageSize,
+      "pagination[page]": page,
+      populate: "categories",
+    }
+  ), [filters, page, pageSize]);
 
-        filters.forEach(filter => {
-            query[filter[0]] = filter[1];
-        });
+  const {
+    data: eventsData
+  } = useGetEvents({queryParams: queryParams}, {});
 
-        return query;
-    }, [filters, page, pageSize]);
+  const {
+    data: eventViewData,
+    isLoading: eventViewIsLoading
+  } = useGetEventView({queryParams: {}});
 
-    const {
-        data: eventsData,
-        error: eventsError,
-        isLoading: eventsIsloading
-    } = useGetEvents({queryParams: queryParams}, {});
-    const {
-        data: eventViewData,
-        error: eventViewErrors,
-        isLoading: eventViewIsLoading
-    } = useGetEventView({queryParams: {}});
+  useEffect(() => {
+    // setPageSize(eventsData?.meta?.pagination?.pageSize ?? defaultPaginationProps.pageSize);
+    // setPageIndex(eventsData?.meta?.pagination?.page ?? defaultPaginationProps.page);
+    setTotal(eventsData?.meta?.pagination?.total ?? defaultPaginationProps.total);
+    setPageCount(eventsData?.meta?.pagination?.pageCount ?? defaultPaginationProps.pageCount);
+  }, [eventsData]);
 
-    useEffect(() => {
-        // setPageSize(eventsData?.meta?.pagination?.pageSize ?? defaultPaginationProps.pageSize);
-        // setPageIndex(eventsData?.meta?.pagination?.page ?? defaultPaginationProps.page);
-        setTotal(eventsData?.meta?.pagination?.total ?? defaultPaginationProps.total);
-        setPageCount(eventsData?.meta?.pagination?.pageCount ?? defaultPaginationProps.pageCount);
-    }, [eventsData]);
-
-    return (
-        <>
-            <View title={eventViewData?.data?.attributes?.Title}
-                  description={eventViewData?.data?.attributes?.Description} isLoading={eventViewIsLoading}>
-                <PaginationContainer nextPage={nextPage} previousPage={previousPage} setPageIndex={setPageIndex}
-                                     setPageSize={setPageSize} total={total} pageCount={pageCount} pageSize={pageSize}
-                                     page={page}>
-                    <EventFilterContainer filters={filters} setFilters={setFilters}/>
-                    <EventsList events={eventsData?.data}/>
-                </PaginationContainer>
-            </View>
-        </>
-    );
+  return (
+    <View
+      title={eventViewData?.data?.attributes?.Title}
+      description={eventViewData?.data?.attributes?.Description}
+      isLoading={eventViewIsLoading}
+    >
+      <PaginationContainer
+        nextPage={nextPage} previousPage={previousPage} setPageIndex={setPageIndex}
+        setPageSize={setPageSize} total={total} pageCount={pageCount} pageSize={pageSize}
+        page={page}
+      >
+        <EventFilterContainer/>
+        <EventsList events={eventsData?.data}/>
+      </PaginationContainer>
+    </View>
+  );
 }

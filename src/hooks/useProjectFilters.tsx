@@ -1,8 +1,9 @@
 import {useTextFilter} from "@/hooks/useTextFilter";
+import {QueryFilter, SetFiltersCallback} from "@/types/filtering.types";
 
 
-export const useProjectFilters = (filters: [string, string][], setFilters: (filters: [string, string][]) => void) => {
-    const textController = useTextFilter("filters[$and][0][title][$contains]", filters, setFilters);
+export const useProjectFilters = (filters: QueryFilter[], setFilters: SetFiltersCallback) => {
+    const textController = useTextFilter(filters, setFilters);
 
     return {
         textController

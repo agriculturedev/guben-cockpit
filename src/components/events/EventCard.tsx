@@ -68,4 +68,3 @@ export const EventCard = ({event}: EventCardProps) => {
     </>
   )
 }
-

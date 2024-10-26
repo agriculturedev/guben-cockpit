@@ -1,42 +1,33 @@
-import {DateFilterController, DateFilterPreset} from "@/hooks/useDateFilter";
-import {useCallback} from "react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {CategoryFilterController} from "@/hooks/useCategoryFilter";
 import {useGetCategories} from "@/endpoints/gubenProdComponents";
 
 interface Props {
-    categoryFilterController: CategoryFilterController;
+  controller: CategoryFilterController;
 }
 
 export const CategoryFilter = (props: Props) => {
+  const {data} = useGetCategories({queryParams: {}});
 
-    const setCategoryFilter = useCallback((category: string) => {
-        if (category === "<keine/lehr>") {
-            category = "";
-        }
-        props.categoryFilterController.setCategory(category);
-    },[props.categoryFilterController]);
-
-    const {
-        data,
-        error,
-        isLoading
-    } = useGetCategories({queryParams: {}});
-
-    return (
-        <Select onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Kategorie" />
-            </SelectTrigger>
-            <SelectContent>
-                <SelectItem value={"<keine/lehr>"}>(keine)</SelectItem>
-                {data && data.data && data.data.map((category) => {
-                    var value = category.attributes?.Name;
-                    return (
-                        <SelectItem key={category.id} value={value ?? ""}>{value}</SelectItem>
-                    );
-                })}
-            </SelectContent>
-        </Select>
-    );
+  return (
+    <Select
+      value={props.controller.category ?? "none"}
+      onValueChange={cat => props.controller.setCategory(cat === "none" ? null : cat)}
+    >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Kategorie"/>
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value={"none"}>(Kategorie)</SelectItem>
+        {data?.data?.map(category => (category.attributes?.Name &&
+          <SelectItem
+            key={category.id}
+            value={category.attributes.Name}
+          >
+            {category.attributes.Name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
 }
