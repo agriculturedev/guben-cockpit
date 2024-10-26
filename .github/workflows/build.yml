@@ -16,11 +16,17 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: npm ci --prefix frontend
 
       - name: Build Vite app
         run: npm run build --prefix frontend
 
-      - name: Test build output exists
+      - name: Test frontend build output exists
         run: test -d dist && echo "Build successful" || echo "Build failed"
+
+      - name: Install strapi dependencies
+        run: npm ci --prefix strapi
+
+      - name: Build Strapi
+        run: npm run build --prefix strapi
