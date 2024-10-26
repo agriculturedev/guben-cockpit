@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "events",
+  "info": {
+    "singularName": "event",
+    "pluralName": "events",
+    "displayName": "events",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "E_ID": {
+      "type": "biginteger"
+    },
+    "eventId": {
+      "type": "biginteger",
+      "unique": false
+    },
+    "terminId": {
+      "type": "biginteger"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "coords": {
+      "type": "customField",
+      "customField": "plugin::location-plugin.location"
+    },
+    "startDate": {
+      "type": "datetime"
+    },
+    "endDate": {
+      "type": "datetime"
+    },
+    "urls": {
+      "type": "json"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "events"
+    },
+    "locationCity": {
+      "type": "string"
+    }
+  }
+}

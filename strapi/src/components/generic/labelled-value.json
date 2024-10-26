@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_generic_labelled_values",
+  "info": {
+    "displayName": "LabelledValue"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
+  }
+}
