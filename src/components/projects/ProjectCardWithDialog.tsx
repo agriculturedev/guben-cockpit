@@ -16,6 +16,7 @@ interface Props {
 
 export const ProjectCardWithDialog = ({ project }: Props) => {
   const hasDescription = !isNullOrUndefinedOrWhiteSpace(project.attributes?.description);
+  const hasFullText = !isNullOrUndefinedOrWhiteSpace(project.attributes?.fullText);
 
   return (
     <Dialog>
@@ -25,19 +26,18 @@ export const ProjectCardWithDialog = ({ project }: Props) => {
       <DialogContent className="w-2/3 max-w-full max-h-min h-3/4 overflow-auto">
         <DialogHeader className={"flex gap-1"}>
           <DialogTitle>{project.attributes?.title}</DialogTitle>
-          <div className={"rounded drop-shadow-lg relative self-center bg-transparent w-4/5"}>
-            <img className={"rounded"} alt={project.attributes?.imageCaption} src={project.attributes?.imageUrl}/>
-            <p className={"absolute rounded-tr rounded-bl p-1 left-0 bottom-0 backdrop-blur-sm backdrop-brightness-75 text-white"}>{project.attributes?.imageCredits}</p>
-          </div>
+          {!isNullOrUndefinedOrWhiteSpace(project.attributes?.imageUrl) &&
+		        <div className={"rounded shadow-md relative self-center w-4/5"}>
+			        <img className={"rounded"} alt={project.attributes?.imageCaption} src={project.attributes!.imageUrl}/>
+			        <p className={"absolute rounded-tr rounded-bl p-1 left-0 bottom-0 shadow-md backdrop-blur-sm backdrop-brightness-110 text-black"}>{project.attributes?.imageCredits}</p>
+		        </div>}
           {hasDescription &&
 						<DialogDescription>
-							<div dangerouslySetInnerHTML={{ __html: project.attributes?.description! }}>
-							</div>
+							<div dangerouslySetInnerHTML={{ __html: project.attributes!.description! }}></div>
 						</DialogDescription>
           }
         </DialogHeader>
-        <div dangerouslySetInnerHTML={{ __html: project.attributes?.fullText ?? "" }}>
-        </div>
+        {hasFullText && <div dangerouslySetInnerHTML={{ __html: project.attributes!.fullText! }}></div>}
       </DialogContent>
     </Dialog>
   )

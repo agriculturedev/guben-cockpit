@@ -16,7 +16,7 @@ export const View  = ({children, title, description, isLoading}: Props) => {
                 {!isLoading && (
                     <div className={"flex gap-3 flex-col"}>
                       <h1 className={"text-gubenAccent text-h1 font-bold"}>{title}</h1>
-                        <Markdown>{description}</Markdown>
+                      <Markdown>{description}</Markdown>
                     </div>
                 )}
                 {isLoading && (
