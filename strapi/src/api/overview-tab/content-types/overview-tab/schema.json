@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "overview_tabs",
+  "info": {
+    "singularName": "overview-tab",
+    "pluralName": "overview-tabs",
+    "displayName": "OverviewTabs",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "cards": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "dynamiczone",
+      "components": [
+        "cards.information-card-variant1"
+      ]
+    }
+  }
+}

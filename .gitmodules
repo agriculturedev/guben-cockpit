@@ -1,0 +1,3 @@
+[submodule "strapi/src/guben-cockpit-plugins"]
+	path = strapi/src/guben-cockpit-plugins
+	url = git@github.com:agriculturedev/guben-cockpit-strapi-plugins.git

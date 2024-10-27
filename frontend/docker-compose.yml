@@ -2,7 +2,7 @@ version: "3.9"
 services:
   web:
     container_name: guben-cockpit_frontend
-    build: .
+    build: ..
 
     ports:
       - 3002:3000
