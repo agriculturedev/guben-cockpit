@@ -13,6 +13,7 @@ ENV PATH /opt/node_modules/.bin:$PATH
 WORKDIR /opt/
 COPY . .
 
+RUN chmod +x src/guben-cockpit-plugins/tools/build.sh
 RUN ["npm", "run", "build"]
 EXPOSE 1337
 CMD ["npm", "run", "start"]
