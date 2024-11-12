@@ -49,6 +49,12 @@
     },
     "locationCity": {
       "type": "string"
+    },
+    "location": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::location.location",
+      "inversedBy": "events"
     }
   }
 }

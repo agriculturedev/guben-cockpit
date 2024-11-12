@@ -6,7 +6,8 @@ import {useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 import {useMemo} from "react";
 import {ReactNode} from "@tanstack/react-router";
 import {getContrast, getHexColorFromText, hexToRgb} from "@/lib/colorUtils";
-import {FilterTag} from "@/components/general/FitlerTag";
+import {FilterTag} from "@/components/general/FilterTag";
+import { LocationFilter } from "../filters/LocationFilter";
 
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
@@ -49,6 +50,7 @@ export const EventFilterContainer = () => {
         <TextFilter controller={controllers.textController}/>
         <DateRangeFilter controller={controllers.dateController}/>
         <CategoryFilter controller={controllers.categoryController}/>
+        <LocationFilter controller={controllers.locationController}/>
       </div>
 
       <div className={"flex gap-2"}>{tagElements}</div>

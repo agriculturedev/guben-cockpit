@@ -218,6 +218,47 @@ export type Category = {
           }[];
         };
         locationCity?: string;
+        location?: {
+          data?: {
+            id?: number;
+            attributes?: {
+              Name?: string;
+              City?: string;
+              Street?: string;
+              events?: {
+                data?: {
+                  id?: number;
+                  attributes?: {};
+                }[];
+              };
+              Tel?: string;
+              Fax?: string;
+              Email?: string;
+              Web?: string;
+              Zip?: string;
+              /**
+               * @format date-time
+               */
+              createdAt?: string;
+              /**
+               * @format date-time
+               */
+              updatedAt?: string;
+              createdBy?: {
+                data?: {
+                  id?: number;
+                  attributes?: {};
+                };
+              };
+              updatedBy?: {
+                data?: {
+                  id?: number;
+                  attributes?: {};
+                };
+              };
+            };
+          };
+        };
         /**
          * @format date-time
          */
@@ -478,6 +519,10 @@ export type EventRequest = {
     urls?: void;
     categories?: (number | string)[];
     locationCity?: string;
+    /**
+     * @example string or id
+     */
+    location?: number | string;
   };
 };
 
@@ -575,55 +620,96 @@ export type Event = {
                 }[];
               };
               locationCity?: string;
-              /**
-               * @format date-time
-               */
-              createdAt?: string;
-              /**
-               * @format date-time
-               */
-              updatedAt?: string;
-              createdBy?: {
+              location?: {
                 data?: {
                   id?: number;
                   attributes?: {
-                    firstname?: string;
-                    lastname?: string;
-                    username?: string;
+                    Name?: string;
+                    City?: string;
+                    Street?: string;
+                    events?: {
+                      data?: {
+                        id?: number;
+                        attributes?: {};
+                      }[];
+                    };
+                    Tel?: string;
+                    Fax?: string;
+                    Email?: string;
+                    Web?: string;
+                    Zip?: string;
                     /**
-                     * @format email
+                     * @format date-time
                      */
-                    email?: string;
-                    resetPasswordToken?: string;
-                    registrationToken?: string;
-                    isActive?: boolean;
-                    roles?: {
+                    createdAt?: string;
+                    /**
+                     * @format date-time
+                     */
+                    updatedAt?: string;
+                    createdBy?: {
                       data?: {
                         id?: number;
                         attributes?: {
-                          name?: string;
-                          code?: string;
-                          description?: string;
-                          users?: {
-                            data?: {
-                              id?: number;
-                              attributes?: {};
-                            }[];
-                          };
-                          permissions?: {
+                          firstname?: string;
+                          lastname?: string;
+                          username?: string;
+                          /**
+                           * @format email
+                           */
+                          email?: string;
+                          resetPasswordToken?: string;
+                          registrationToken?: string;
+                          isActive?: boolean;
+                          roles?: {
                             data?: {
                               id?: number;
                               attributes?: {
-                                action?: string;
-                                actionParameters?: void;
-                                subject?: string;
-                                properties?: void;
-                                conditions?: void;
-                                role?: {
+                                name?: string;
+                                code?: string;
+                                description?: string;
+                                users?: {
                                   data?: {
                                     id?: number;
                                     attributes?: {};
-                                  };
+                                  }[];
+                                };
+                                permissions?: {
+                                  data?: {
+                                    id?: number;
+                                    attributes?: {
+                                      action?: string;
+                                      actionParameters?: void;
+                                      subject?: string;
+                                      properties?: void;
+                                      conditions?: void;
+                                      role?: {
+                                        data?: {
+                                          id?: number;
+                                          attributes?: {};
+                                        };
+                                      };
+                                      /**
+                                       * @format date-time
+                                       */
+                                      createdAt?: string;
+                                      /**
+                                       * @format date-time
+                                       */
+                                      updatedAt?: string;
+                                      createdBy?: {
+                                        data?: {
+                                          id?: number;
+                                          attributes?: {};
+                                        };
+                                      };
+                                      updatedBy?: {
+                                        data?: {
+                                          id?: number;
+                                          attributes?: {};
+                                        };
+                                      };
+                                    };
+                                  }[];
                                 };
                                 /**
                                  * @format date-time
@@ -648,6 +734,8 @@ export type Event = {
                               };
                             }[];
                           };
+                          blocked?: boolean;
+                          preferedLanguage?: string;
                           /**
                            * @format date-time
                            */
@@ -669,22 +757,6 @@ export type Event = {
                             };
                           };
                         };
-                      }[];
-                    };
-                    blocked?: boolean;
-                    preferedLanguage?: string;
-                    /**
-                     * @format date-time
-                     */
-                    createdAt?: string;
-                    /**
-                     * @format date-time
-                     */
-                    updatedAt?: string;
-                    createdBy?: {
-                      data?: {
-                        id?: number;
-                        attributes?: {};
                       };
                     };
                     updatedBy?: {
@@ -694,6 +766,20 @@ export type Event = {
                       };
                     };
                   };
+                };
+              };
+              /**
+               * @format date-time
+               */
+              createdAt?: string;
+              /**
+               * @format date-time
+               */
+              updatedAt?: string;
+              createdBy?: {
+                data?: {
+                  id?: number;
+                  attributes?: {};
                 };
               };
               updatedBy?: {
@@ -729,6 +815,12 @@ export type Event = {
     }[];
   };
   locationCity?: string;
+  location?: {
+    data?: {
+      id?: number;
+      attributes?: {};
+    };
+  };
   /**
    * @format date-time
    */
@@ -1250,6 +1342,321 @@ export type HomeViewResponseDataObject = {
 
 export type HomeViewResponse = {
   data?: HomeViewResponseDataObject;
+  meta?: Record<string, any>;
+};
+
+export type LocationRequest = {
+  data: {
+    Name?: string;
+    City?: string;
+    Street?: string;
+    events?: (number | string)[];
+    Tel?: string;
+    Fax?: string;
+    Email?: string;
+    Web?: string;
+    Zip?: string;
+  };
+};
+
+export type LocationListResponseDataItem = {
+  id?: number;
+  attributes?: Location;
+};
+
+export type LocationListResponse = {
+  data?: LocationListResponseDataItem[];
+  meta?: {
+    pagination?: {
+      page?: number;
+      /**
+       * @minimum 25
+       */
+      pageSize?: number;
+      /**
+       * @maximum 1
+       */
+      pageCount?: number;
+      total?: number;
+    };
+  };
+};
+
+export type Location = {
+  Name?: string;
+  City?: string;
+  Street?: string;
+  events?: {
+    data?: {
+      id?: number;
+      attributes?: {
+        /**
+         * @pattern ^\d*$
+         * @example 123456789
+         */
+        E_ID?: string;
+        /**
+         * @pattern ^\d*$
+         * @example 123456789
+         */
+        eventId?: string;
+        /**
+         * @pattern ^\d*$
+         * @example 123456789
+         */
+        terminId?: string;
+        title?: string;
+        description?: string;
+        coords?: void;
+        /**
+         * @format date-time
+         */
+        startDate?: string;
+        /**
+         * @format date-time
+         */
+        endDate?: string;
+        urls?: void;
+        categories?: {
+          data?: {
+            id?: number;
+            attributes?: {
+              Name?: string;
+              events?: {
+                data?: {
+                  id?: number;
+                  attributes?: {};
+                }[];
+              };
+              /**
+               * @format date-time
+               */
+              createdAt?: string;
+              /**
+               * @format date-time
+               */
+              updatedAt?: string;
+              createdBy?: {
+                data?: {
+                  id?: number;
+                  attributes?: {
+                    firstname?: string;
+                    lastname?: string;
+                    username?: string;
+                    /**
+                     * @format email
+                     */
+                    email?: string;
+                    resetPasswordToken?: string;
+                    registrationToken?: string;
+                    isActive?: boolean;
+                    roles?: {
+                      data?: {
+                        id?: number;
+                        attributes?: {
+                          name?: string;
+                          code?: string;
+                          description?: string;
+                          users?: {
+                            data?: {
+                              id?: number;
+                              attributes?: {};
+                            }[];
+                          };
+                          permissions?: {
+                            data?: {
+                              id?: number;
+                              attributes?: {
+                                action?: string;
+                                actionParameters?: void;
+                                subject?: string;
+                                properties?: void;
+                                conditions?: void;
+                                role?: {
+                                  data?: {
+                                    id?: number;
+                                    attributes?: {};
+                                  };
+                                };
+                                /**
+                                 * @format date-time
+                                 */
+                                createdAt?: string;
+                                /**
+                                 * @format date-time
+                                 */
+                                updatedAt?: string;
+                                createdBy?: {
+                                  data?: {
+                                    id?: number;
+                                    attributes?: {};
+                                  };
+                                };
+                                updatedBy?: {
+                                  data?: {
+                                    id?: number;
+                                    attributes?: {};
+                                  };
+                                };
+                              };
+                            }[];
+                          };
+                          /**
+                           * @format date-time
+                           */
+                          createdAt?: string;
+                          /**
+                           * @format date-time
+                           */
+                          updatedAt?: string;
+                          createdBy?: {
+                            data?: {
+                              id?: number;
+                              attributes?: {};
+                            };
+                          };
+                          updatedBy?: {
+                            data?: {
+                              id?: number;
+                              attributes?: {};
+                            };
+                          };
+                        };
+                      }[];
+                    };
+                    blocked?: boolean;
+                    preferedLanguage?: string;
+                    /**
+                     * @format date-time
+                     */
+                    createdAt?: string;
+                    /**
+                     * @format date-time
+                     */
+                    updatedAt?: string;
+                    createdBy?: {
+                      data?: {
+                        id?: number;
+                        attributes?: {};
+                      };
+                    };
+                    updatedBy?: {
+                      data?: {
+                        id?: number;
+                        attributes?: {};
+                      };
+                    };
+                  };
+                };
+              };
+              updatedBy?: {
+                data?: {
+                  id?: number;
+                  attributes?: {};
+                };
+              };
+            };
+          }[];
+        };
+        locationCity?: string;
+        location?: {
+          data?: {
+            id?: number;
+            attributes?: {
+              Name?: string;
+              City?: string;
+              Street?: string;
+              events?: {
+                data?: {
+                  id?: number;
+                  attributes?: {};
+                }[];
+              };
+              Tel?: string;
+              Fax?: string;
+              Email?: string;
+              Web?: string;
+              Zip?: string;
+              /**
+               * @format date-time
+               */
+              createdAt?: string;
+              /**
+               * @format date-time
+               */
+              updatedAt?: string;
+              createdBy?: {
+                data?: {
+                  id?: number;
+                  attributes?: {};
+                };
+              };
+              updatedBy?: {
+                data?: {
+                  id?: number;
+                  attributes?: {};
+                };
+              };
+            };
+          };
+        };
+        /**
+         * @format date-time
+         */
+        createdAt?: string;
+        /**
+         * @format date-time
+         */
+        updatedAt?: string;
+        createdBy?: {
+          data?: {
+            id?: number;
+            attributes?: {};
+          };
+        };
+        updatedBy?: {
+          data?: {
+            id?: number;
+            attributes?: {};
+          };
+        };
+      };
+    }[];
+  };
+  Tel?: string;
+  Fax?: string;
+  Email?: string;
+  Web?: string;
+  Zip?: string;
+  /**
+   * @format date-time
+   */
+  createdAt?: string;
+  /**
+   * @format date-time
+   */
+  updatedAt?: string;
+  createdBy?: {
+    data?: {
+      id?: number;
+      attributes?: {};
+    };
+  };
+  updatedBy?: {
+    data?: {
+      id?: number;
+      attributes?: {};
+    };
+  };
+};
+
+export type LocationResponseDataObject = {
+  id?: number;
+  attributes?: Location;
+};
+
+export type LocationResponse = {
+  data?: LocationResponseDataObject;
   meta?: Record<string, any>;
 };
 
