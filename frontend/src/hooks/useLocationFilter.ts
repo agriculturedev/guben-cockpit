@@ -7,10 +7,10 @@ export interface LocationFilterController extends FilterController {
 }
 
 const queryDefinitions = [
-  "filters[$or][0][location][Name][$contains]",
-  "filters[$or][0][location][City][$contains]",
-  "filters[$or][0][location][Street][$contains]",
-  "filters[$or][0][location][Zip][$contains]"
+  "filters[$and][0][location][$or][0][City][$containsi]",
+  "filters[$and][0][location][$or][1][Name][$containsi]",
+  "filters[$and][0][location][$or][2][Street][$containsi]",
+  "filters[$and][0][location][$or][3][Zip][$containsi]"
 ];
 
 export const useLocationFilter: UseFilterHook<LocationFilterController> = (filters, setFilters) => {
@@ -18,8 +18,9 @@ export const useLocationFilter: UseFilterHook<LocationFilterController> = (filte
 
   const setSearchText = useCallback((value: string) => {
     _setSearchText(value);
-    const newFilters = filters.filter(([definition, _]) => !queryDefinitions.includes(definition));
-    if (value != "") newFilters.concat(queryDefinitions.map(def => [def, value]));
+    let newFilters = filters.filter(([definition, _]) => !queryDefinitions.includes(definition));
+    if (value != "") newFilters = newFilters.concat(queryDefinitions.map(def => [def, value]));
+    console.log(newFilters);
     setFilters([...newFilters]);
   }, []);
 

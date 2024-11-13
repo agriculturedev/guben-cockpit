@@ -6,7 +6,7 @@ export interface TextFilterController extends FilterController {
   searchText: string;
 }
 
-const queryDefinition = "filters[$and][0][title][$contains]";
+const queryDefinition = "filters[$and][0][title][$containsi]";
 
 export const useTextFilter: UseFilterHook<TextFilterController> = (filters, setFilters) => {
   const [searchText, _setSearchText] = useState<string>('');

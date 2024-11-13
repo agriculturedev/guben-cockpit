@@ -48,7 +48,8 @@ function EventComponent() {
     }, {
       "pagination[pageSize]": pageSize,
       "pagination[page]": page,
-      populate: "categories",
+      "populate[0]": "categories",
+      "populate[1]": "location"
     }
   ), [filters, page, pageSize]);
 
