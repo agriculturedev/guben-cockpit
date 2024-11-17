@@ -1,4 +1,4 @@
-import { BrandenburgEvents, RawEvent } from "./types/events";
+import { BrandenburgEvents, RawEvent, translatedString } from "./types/events";
 import { Event } from "./classes/Event";
 const { XMLParser } = require("fast-xml-parser");
 
@@ -67,7 +67,7 @@ export class EventImporter {
     const locationData = {
       Street: event.location.street,
       City: event.location.city,
-      Name: (event.location.name as any).DE ?? event.location.name,
+      Name: (event.location.name as translatedString).DE ?? event.location.name,
       Zip: event.location.zip.toString(),
       Tel: event.location.tel.toString(),
       Fax: event.location.fax.toString(),

@@ -20,7 +20,6 @@ export const useLocationFilter: UseFilterHook<LocationFilterController> = (filte
     _setSearchText(value);
     let newFilters = filters.filter(([definition, _]) => !queryDefinitions.includes(definition));
     if (value != "") newFilters = newFilters.concat(queryDefinitions.map(def => [def, value]));
-    console.log(newFilters);
     setFilters([...newFilters]);
   }, []);
 
@@ -30,5 +29,5 @@ export const useLocationFilter: UseFilterHook<LocationFilterController> = (filte
     searchText,
     setSearchText,
     clearFilter
-  };
+  } as LocationFilterController;
 }
