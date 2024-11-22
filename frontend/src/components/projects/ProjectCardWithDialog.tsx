@@ -23,11 +23,11 @@ export const ProjectCardWithDialog = ({ project }: Props) => {
       <DialogTrigger>
         <ProjectCard project={project}/>
       </DialogTrigger>
-      <DialogContent className="w-2/3 max-w-full max-h-min h-3/4 overflow-auto">
+      <DialogContent className="w-2/3 max-w-full max-h-[90dvh] overflow-auto">
         <DialogHeader className={"flex gap-1"}>
           <DialogTitle>{project.attributes?.title}</DialogTitle>
           {!isNullOrUndefinedOrWhiteSpace(project.attributes?.imageUrl) &&
-		        <div className={"rounded shadow-md relative self-center w-4/5"}>
+		        <div className={"rounded shadow-md relative self-center max-w-[70dvh] w-auto"}>
 			        <img className={"rounded"} alt={project.attributes?.imageCaption} src={project.attributes!.imageUrl}/>
 			        <p className={"absolute rounded-tr rounded-bl p-1 left-0 bottom-0 shadow-md backdrop-blur-sm backdrop-brightness-110 text-black"}>{project.attributes?.imageCredits}</p>
 		        </div>}
