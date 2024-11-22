@@ -880,6 +880,12 @@ export interface ApiEventEvent extends Schema.CollectionType {
       'manyToMany',
       'api::category.category'
     >;
+    locationCity: Attribute.String;
+    location: Attribute.Relation<
+      'api::event.event',
+      'manyToOne',
+      'api::location.location'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1006,6 +1012,48 @@ export interface ApiHomeViewHomeView extends Schema.SingleType {
       'api::home-view.home-view'
     >;
     locale: Attribute.String;
+  };
+}
+
+export interface ApiLocationLocation extends Schema.CollectionType {
+  collectionName: 'locations';
+  info: {
+    singularName: 'location';
+    pluralName: 'locations';
+    displayName: 'location';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    Name: Attribute.String;
+    City: Attribute.String;
+    Street: Attribute.String;
+    events: Attribute.Relation<
+      'api::location.location',
+      'oneToMany',
+      'api::event.event'
+    >;
+    Tel: Attribute.String;
+    Fax: Attribute.String;
+    Email: Attribute.String;
+    Web: Attribute.String;
+    Zip: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::location.location',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::location.location',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
   };
 }
 
@@ -1136,6 +1184,16 @@ export interface ApiProjectViewProjectView extends Schema.SingleType {
           localized: true;
         };
       }>;
+    projects: Attribute.Relation<
+      'api::project-view.project-view',
+      'oneToMany',
+      'api::project.project'
+    >;
+    allProjects: Attribute.Relation<
+      'api::project-view.project-view',
+      'oneToMany',
+      'api::project.project'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1213,6 +1271,7 @@ declare module '@strapi/types' {
       'api::event.event': ApiEventEvent;
       'api::event-view.event-view': ApiEventViewEventView;
       'api::home-view.home-view': ApiHomeViewHomeView;
+      'api::location.location': ApiLocationLocation;
       'api::overview-tab.overview-tab': ApiOverviewTabOverviewTab;
       'api::project.project': ApiProjectProject;
       'api::project-view.project-view': ApiProjectViewProjectView;

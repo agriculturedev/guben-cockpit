@@ -8,6 +8,7 @@ import {QueryFilter} from "@/types/filtering.types";
 import {TextFilterController, useTextFilter} from "@/hooks/useTextFilter";
 import {DateFilterController, useDateFilter} from "@/hooks/useDateFilter";
 import {CategoryFilterController, useCategoryFilter} from "@/hooks/useCategoryFilter";
+import { LocationFilterController, useLocationFilter } from "@/hooks/useLocationFilter";
 
 interface EventFiltersContext {
   filters: QueryFilter[];
@@ -17,7 +18,8 @@ interface EventFiltersContext {
 interface EventFiltersControllers {
   textController: TextFilterController,
   dateController: DateFilterController,
-  categoryController: CategoryFilterController
+  categoryController: CategoryFilterController,
+  locationController: LocationFilterController
 }
 
 const EventFiltersContext = createContext<EventFiltersContext | undefined>(undefined);
@@ -29,21 +31,25 @@ export function EventFiltersProvider({children}: EventFiltersProviderProps) {
   const [textFilters, setTextFilters] = useState<QueryFilter[]>([]);
   const [dateFilters, setDateFilters] = useState<QueryFilter[]>([]);
   const [categoryFilters, setCategoryFilters] = useState<QueryFilter[]>([]);
+  const [locationFilters, setLocationFilters] = useState<QueryFilter[]>([]);
 
   const filters = useMemo(() => [
     ...textFilters,
     ...dateFilters,
-    ...categoryFilters
+    ...categoryFilters,
+    ...locationFilters
   ], [
     textFilters,
     dateFilters,
-    categoryFilters
+    categoryFilters,
+    locationFilters
   ]);
 
   const controllers: EventFiltersControllers = {
     textController: useTextFilter(textFilters, setTextFilters),
     dateController: useDateFilter(dateFilters, setDateFilters),
     categoryController: useCategoryFilter(categoryFilters, setCategoryFilters),
+    locationController: useLocationFilter(locationFilters, setLocationFilters),
   };
 
   const ctx: EventFiltersContext = {filters, controllers};
