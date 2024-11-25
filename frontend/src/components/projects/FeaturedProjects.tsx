@@ -13,7 +13,7 @@ export const FeaturedProjectsList = ({ projects }: FeaturedProjectsListProps) =>
       opts={{
         align: "start",
       }}
-      className="w-full"
+      className="w-full pb-2"
     >
       <CarouselContent>
         {projects && projects && projects.data && projects.data.map((project, index) => (
