@@ -1,3 +1,5 @@
+import cronJobs from "./guben-cockpit-plugins/cron-jobs";
+
 export default {
   /**
    * An asynchronous register function that runs before
@@ -14,5 +16,8 @@ export default {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/*{ strapi }*/) {},
+  bootstrap({ strapi }) {
+    // Manually trigger the cron jobs on startup
+    cronJobs.myJob.task({ strapi });
+  },
 };
