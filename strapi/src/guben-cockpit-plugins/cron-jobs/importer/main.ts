@@ -1,4 +1,4 @@
-import { BrandenburgEvents, RawEvent } from "./types/events";
+import { BrandenburgEvents, RawEvent, translatedString } from "./types/events";
 import { Event } from "./classes/Event";
 import { ca } from 'date-fns/locale';
 const { XMLParser } = require("fast-xml-parser");
@@ -64,6 +64,26 @@ export class EventImporter {
     return categoriesIds;
   }
 
+
+  async getOrInsertLocationId (event: Event): Promise<string> {
+    const locationData = {
+      Street: event.location.street,
+      City: event.location.city,
+      Name: (event.location.name as translatedString).DE ?? event.location.name,
+      Zip: event.location.zip.toString(),
+      Tel: event.location.tel.toString(),
+      Fax: event.location.fax.toString(),
+      Email: event.location.email.toString(),
+      Web: event.location.web.toString()
+    };
+
+    const queriedLocation = await this.strapi.db.query("api::location.location").findOne({where: locationData});
+    if(queriedLocation) return queriedLocation.id;
+
+    await this.strapi.entityService.create("api::location.location", {data: locationData});
+    return (await this.strapi.db.query("api::location.location").findOne({where: locationData})).id;
+  }
+
   async saveEvent(data: RawEvent) {
     const event = new Event(data);
     const eventExists = await this.strapi.db.query('api::event.event').findOne({
@@ -96,19 +116,13 @@ export class EventImporter {
       // })
     };
 
-
-
     try {
-      let savedEvent;
+      const categories = await this.getCategoryIds(event);
+      const location = await this.getOrInsertLocationId(event);
+      const queryData = {...eventData, categories, location};
 
-      if (!eventExists) {
-        const categoriesIds = await this.getCategoryIds(event);
-        savedEvent = await this.strapi.entityService.create('api::event.event', { data: {...eventData, categories: categoriesIds }});
-      } else {
-        const categoriesIds = await this.getCategoryIds(event);
-        savedEvent = await this.strapi.entityService.update('api::event.event', eventExists.id, { data: {...eventData, categories: categoriesIds }});
-      }
-
+      if (eventExists) await this.strapi.entityService.update('api::event.event', eventExists.id, {data: queryData});
+      else await this.strapi.entityService.create('api::event.event', {data: queryData});
     } catch (e) {
       console.error(e);
     }

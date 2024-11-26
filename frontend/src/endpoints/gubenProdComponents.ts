@@ -56,25 +56,25 @@ export type GetCategoriesQueryParams = {
 
 export type GetCategoriesError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetCategoriesVariables = {
@@ -94,7 +94,7 @@ export const fetchGetCategories = (
     {}
   >({ url: "/categories", method: "get", ...variables, signal });
 
-export const useGetCategories = <TData = Schemas.CategoryListResponse, >(
+export const useGetCategories = <TData = Schemas.CategoryListResponse,>(
   variables: GetCategoriesVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -126,25 +126,25 @@ export const useGetCategories = <TData = Schemas.CategoryListResponse, >(
 
 export type PostCategoriesError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PostCategoriesVariables = {
@@ -192,25 +192,25 @@ export type GetCategoriesIdPathParams = {
 
 export type GetCategoriesIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetCategoriesIdVariables = {
@@ -230,7 +230,7 @@ export const fetchGetCategoriesId = (
     GetCategoriesIdPathParams
   >({ url: "/categories/{id}", method: "get", ...variables, signal });
 
-export const useGetCategoriesId = <TData = Schemas.CategoryResponse, >(
+export const useGetCategoriesId = <TData = Schemas.CategoryResponse,>(
   variables: GetCategoriesIdVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -266,25 +266,25 @@ export type PutCategoriesIdPathParams = {
 
 export type PutCategoriesIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PutCategoriesIdVariables = {
@@ -333,25 +333,25 @@ export type DeleteCategoriesIdPathParams = {
 
 export type DeleteCategoriesIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type DeleteCategoriesIdVariables = {
@@ -440,25 +440,25 @@ export type GetConfigQueryParams = {
 
 export type GetConfigError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetConfigVariables = {
@@ -478,7 +478,7 @@ export const fetchGetConfig = (
     {}
   >({ url: "/config", method: "get", ...variables, signal });
 
-export const useGetConfig = <TData = Schemas.ConfigResponse, >(
+export const useGetConfig = <TData = Schemas.ConfigResponse,>(
   variables: GetConfigVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<Schemas.ConfigResponse, GetConfigError, TData>,
@@ -502,25 +502,25 @@ export const useGetConfig = <TData = Schemas.ConfigResponse, >(
 
 export type PutConfigError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PutConfigVariables = {
@@ -564,25 +564,25 @@ export const usePutConfig = (
 
 export type DeleteConfigError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type DeleteConfigVariables = GubenProdContext["fetcherOptions"];
@@ -667,25 +667,25 @@ export type GetEventsQueryParams = {
 
 export type GetEventsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetEventsVariables = {
@@ -705,7 +705,7 @@ export const fetchGetEvents = (
     {}
   >({ url: "/events", method: "get", ...variables, signal });
 
-export const useGetEvents = <TData = Schemas.EventListResponse, >(
+export const useGetEvents = <TData = Schemas.EventListResponse,>(
   variables: GetEventsVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -733,25 +733,25 @@ export const useGetEvents = <TData = Schemas.EventListResponse, >(
 
 export type PostEventsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PostEventsVariables = {
@@ -799,25 +799,25 @@ export type GetEventsIdPathParams = {
 
 export type GetEventsIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetEventsIdVariables = {
@@ -837,7 +837,7 @@ export const fetchGetEventsId = (
     GetEventsIdPathParams
   >({ url: "/events/{id}", method: "get", ...variables, signal });
 
-export const useGetEventsId = <TData = Schemas.EventResponse, >(
+export const useGetEventsId = <TData = Schemas.EventResponse,>(
   variables: GetEventsIdVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<Schemas.EventResponse, GetEventsIdError, TData>,
@@ -865,25 +865,25 @@ export type PutEventsIdPathParams = {
 
 export type PutEventsIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PutEventsIdVariables = {
@@ -932,25 +932,25 @@ export type DeleteEventsIdPathParams = {
 
 export type DeleteEventsIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type DeleteEventsIdVariables = {
@@ -1039,25 +1039,25 @@ export type GetEventViewQueryParams = {
 
 export type GetEventViewError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetEventViewVariables = {
@@ -1077,7 +1077,7 @@ export const fetchGetEventView = (
     {}
   >({ url: "/event-view", method: "get", ...variables, signal });
 
-export const useGetEventView = <TData = Schemas.EventViewResponse, >(
+export const useGetEventView = <TData = Schemas.EventViewResponse,>(
   variables: GetEventViewVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -1109,25 +1109,25 @@ export const useGetEventView = <TData = Schemas.EventViewResponse, >(
 
 export type PutEventViewError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PutEventViewVariables = {
@@ -1171,25 +1171,25 @@ export const usePutEventView = (
 
 export type DeleteEventViewError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type DeleteEventViewVariables = GubenProdContext["fetcherOptions"];
@@ -1229,25 +1229,25 @@ export const useDeleteEventView = (
 
 export type PostEventViewLocalizationsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PostEventViewLocalizationsVariables = {
@@ -1336,25 +1336,25 @@ export type GetHomeViewQueryParams = {
 
 export type GetHomeViewError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetHomeViewVariables = {
@@ -1374,7 +1374,7 @@ export const fetchGetHomeView = (
     {}
   >({ url: "/home-view", method: "get", ...variables, signal });
 
-export const useGetHomeView = <TData = Schemas.HomeViewResponse, >(
+export const useGetHomeView = <TData = Schemas.HomeViewResponse,>(
   variables: GetHomeViewVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -1404,25 +1404,25 @@ export const useGetHomeView = <TData = Schemas.HomeViewResponse, >(
 
 export type PutHomeViewError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PutHomeViewVariables = {
@@ -1466,25 +1466,25 @@ export const usePutHomeView = (
 
 export type DeleteHomeViewError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type DeleteHomeViewVariables = GubenProdContext["fetcherOptions"];
@@ -1524,25 +1524,25 @@ export const useDeleteHomeView = (
 
 export type PostHomeViewLocalizationsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PostHomeViewLocalizationsVariables = {
@@ -1580,6 +1580,390 @@ export const usePostHomeViewLocalizations = (
   >({
     mutationFn: (variables: PostHomeViewLocalizationsVariables) =>
       fetchPostHomeViewLocalizations({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type GetLocationsQueryParams = {
+  /**
+   * Sort by attributes ascending (asc) or descending (desc)
+   */
+  sort?: string;
+  /**
+   * Return page/pageSize (default: true)
+   */
+  ["pagination[withCount]"]?: boolean;
+  /**
+   * Page number (default: 0)
+   */
+  ["pagination[page]"]?: number;
+  /**
+   * Page size (default: 25)
+   */
+  ["pagination[pageSize]"]?: number;
+  /**
+   * Offset value (default: 0)
+   */
+  ["pagination[start]"]?: number;
+  /**
+   * Number of entities to return (default: 25)
+   */
+  ["pagination[limit]"]?: number;
+  /**
+   * Fields to return (ex: title,author)
+   */
+  fields?: string;
+  /**
+   * Relations to return
+   */
+  populate?: string;
+  /**
+   * Filters to apply
+   */
+  filters?: {
+    [key: string]: any;
+  };
+  /**
+   * Locale to apply
+   */
+  locale?: string;
+};
+
+export type GetLocationsError = Fetcher.ErrorWrapper<
+  | {
+      status: 400;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 401;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 403;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 404;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 500;
+      payload: Schemas.Error;
+    }
+>;
+
+export type GetLocationsVariables = {
+  queryParams?: GetLocationsQueryParams;
+} & GubenProdContext["fetcherOptions"];
+
+export const fetchGetLocations = (
+  variables: GetLocationsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenProdFetch<
+    Schemas.LocationListResponse,
+    GetLocationsError,
+    undefined,
+    {},
+    GetLocationsQueryParams,
+    {}
+  >({ url: "/locations", method: "get", ...variables, signal });
+
+export const useGetLocations = <TData = Schemas.LocationListResponse,>(
+  variables: GetLocationsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.LocationListResponse,
+      GetLocationsError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useGubenProdContext(options);
+  return reactQuery.useQuery<
+    Schemas.LocationListResponse,
+    GetLocationsError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/locations",
+      operationId: "getLocations",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchGetLocations({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type PostLocationsError = Fetcher.ErrorWrapper<
+  | {
+      status: 400;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 401;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 403;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 404;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 500;
+      payload: Schemas.Error;
+    }
+>;
+
+export type PostLocationsVariables = {
+  body: Schemas.LocationRequest;
+} & GubenProdContext["fetcherOptions"];
+
+export const fetchPostLocations = (
+  variables: PostLocationsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenProdFetch<
+    Schemas.LocationResponse,
+    PostLocationsError,
+    Schemas.LocationRequest,
+    {},
+    {},
+    {}
+  >({ url: "/locations", method: "post", ...variables, signal });
+
+export const usePostLocations = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.LocationResponse,
+      PostLocationsError,
+      PostLocationsVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenProdContext();
+  return reactQuery.useMutation<
+    Schemas.LocationResponse,
+    PostLocationsError,
+    PostLocationsVariables
+  >({
+    mutationFn: (variables: PostLocationsVariables) =>
+      fetchPostLocations({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type GetLocationsIdPathParams = {
+  id: number;
+};
+
+export type GetLocationsIdError = Fetcher.ErrorWrapper<
+  | {
+      status: 400;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 401;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 403;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 404;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 500;
+      payload: Schemas.Error;
+    }
+>;
+
+export type GetLocationsIdVariables = {
+  pathParams: GetLocationsIdPathParams;
+} & GubenProdContext["fetcherOptions"];
+
+export const fetchGetLocationsId = (
+  variables: GetLocationsIdVariables,
+  signal?: AbortSignal,
+) =>
+  gubenProdFetch<
+    Schemas.LocationResponse,
+    GetLocationsIdError,
+    undefined,
+    {},
+    {},
+    GetLocationsIdPathParams
+  >({ url: "/locations/{id}", method: "get", ...variables, signal });
+
+export const useGetLocationsId = <TData = Schemas.LocationResponse,>(
+  variables: GetLocationsIdVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.LocationResponse,
+      GetLocationsIdError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useGubenProdContext(options);
+  return reactQuery.useQuery<
+    Schemas.LocationResponse,
+    GetLocationsIdError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/locations/{id}",
+      operationId: "getLocationsId",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchGetLocationsId({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type PutLocationsIdPathParams = {
+  id: number;
+};
+
+export type PutLocationsIdError = Fetcher.ErrorWrapper<
+  | {
+      status: 400;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 401;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 403;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 404;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 500;
+      payload: Schemas.Error;
+    }
+>;
+
+export type PutLocationsIdVariables = {
+  body: Schemas.LocationRequest;
+  pathParams: PutLocationsIdPathParams;
+} & GubenProdContext["fetcherOptions"];
+
+export const fetchPutLocationsId = (
+  variables: PutLocationsIdVariables,
+  signal?: AbortSignal,
+) =>
+  gubenProdFetch<
+    Schemas.LocationResponse,
+    PutLocationsIdError,
+    Schemas.LocationRequest,
+    {},
+    {},
+    PutLocationsIdPathParams
+  >({ url: "/locations/{id}", method: "put", ...variables, signal });
+
+export const usePutLocationsId = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.LocationResponse,
+      PutLocationsIdError,
+      PutLocationsIdVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenProdContext();
+  return reactQuery.useMutation<
+    Schemas.LocationResponse,
+    PutLocationsIdError,
+    PutLocationsIdVariables
+  >({
+    mutationFn: (variables: PutLocationsIdVariables) =>
+      fetchPutLocationsId({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DeleteLocationsIdPathParams = {
+  id: number;
+};
+
+export type DeleteLocationsIdError = Fetcher.ErrorWrapper<
+  | {
+      status: 400;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 401;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 403;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 404;
+      payload: Schemas.Error;
+    }
+  | {
+      status: 500;
+      payload: Schemas.Error;
+    }
+>;
+
+export type DeleteLocationsIdVariables = {
+  pathParams: DeleteLocationsIdPathParams;
+} & GubenProdContext["fetcherOptions"];
+
+export const fetchDeleteLocationsId = (
+  variables: DeleteLocationsIdVariables,
+  signal?: AbortSignal,
+) =>
+  gubenProdFetch<
+    number,
+    DeleteLocationsIdError,
+    undefined,
+    {},
+    {},
+    DeleteLocationsIdPathParams
+  >({ url: "/locations/{id}", method: "delete", ...variables, signal });
+
+export const useDeleteLocationsId = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      number,
+      DeleteLocationsIdError,
+      DeleteLocationsIdVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenProdContext();
+  return reactQuery.useMutation<
+    number,
+    DeleteLocationsIdError,
+    DeleteLocationsIdVariables
+  >({
+    mutationFn: (variables: DeleteLocationsIdVariables) =>
+      fetchDeleteLocationsId({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -1631,25 +2015,25 @@ export type GetOverviewTabsQueryParams = {
 
 export type GetOverviewTabsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetOverviewTabsVariables = {
@@ -1669,7 +2053,7 @@ export const fetchGetOverviewTabs = (
     {}
   >({ url: "/overview-tabs", method: "get", ...variables, signal });
 
-export const useGetOverviewTabs = <TData = Schemas.OverviewTabListResponse, >(
+export const useGetOverviewTabs = <TData = Schemas.OverviewTabListResponse,>(
   variables: GetOverviewTabsVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -1701,25 +2085,25 @@ export const useGetOverviewTabs = <TData = Schemas.OverviewTabListResponse, >(
 
 export type PostOverviewTabsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PostOverviewTabsVariables = {
@@ -1767,25 +2151,25 @@ export type GetOverviewTabsIdPathParams = {
 
 export type GetOverviewTabsIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetOverviewTabsIdVariables = {
@@ -1805,7 +2189,7 @@ export const fetchGetOverviewTabsId = (
     GetOverviewTabsIdPathParams
   >({ url: "/overview-tabs/{id}", method: "get", ...variables, signal });
 
-export const useGetOverviewTabsId = <TData = Schemas.OverviewTabResponse, >(
+export const useGetOverviewTabsId = <TData = Schemas.OverviewTabResponse,>(
   variables: GetOverviewTabsIdVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -1841,25 +2225,25 @@ export type PutOverviewTabsIdPathParams = {
 
 export type PutOverviewTabsIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PutOverviewTabsIdVariables = {
@@ -1908,25 +2292,25 @@ export type DeleteOverviewTabsIdPathParams = {
 
 export type DeleteOverviewTabsIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type DeleteOverviewTabsIdVariables = {
@@ -1974,25 +2358,25 @@ export type PostOverviewTabsIdLocalizationsPathParams = {
 
 export type PostOverviewTabsIdLocalizationsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PostOverviewTabsIdLocalizationsVariables = {
@@ -2087,25 +2471,25 @@ export type GetProjectsQueryParams = {
 
 export type GetProjectsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetProjectsVariables = {
@@ -2125,7 +2509,7 @@ export const fetchGetProjects = (
     {}
   >({ url: "/projects", method: "get", ...variables, signal });
 
-export const useGetProjects = <TData = Schemas.ProjectListResponse, >(
+export const useGetProjects = <TData = Schemas.ProjectListResponse,>(
   variables: GetProjectsVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -2157,25 +2541,25 @@ export const useGetProjects = <TData = Schemas.ProjectListResponse, >(
 
 export type PostProjectsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PostProjectsVariables = {
@@ -2223,25 +2607,25 @@ export type GetProjectsIdPathParams = {
 
 export type GetProjectsIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetProjectsIdVariables = {
@@ -2261,7 +2645,7 @@ export const fetchGetProjectsId = (
     GetProjectsIdPathParams
   >({ url: "/projects/{id}", method: "get", ...variables, signal });
 
-export const useGetProjectsId = <TData = Schemas.ProjectResponse, >(
+export const useGetProjectsId = <TData = Schemas.ProjectResponse,>(
   variables: GetProjectsIdVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -2297,25 +2681,25 @@ export type PutProjectsIdPathParams = {
 
 export type PutProjectsIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PutProjectsIdVariables = {
@@ -2364,25 +2748,25 @@ export type DeleteProjectsIdPathParams = {
 
 export type DeleteProjectsIdError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type DeleteProjectsIdVariables = {
@@ -2471,25 +2855,25 @@ export type GetProjectViewQueryParams = {
 
 export type GetProjectViewError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetProjectViewVariables = {
@@ -2509,7 +2893,7 @@ export const fetchGetProjectView = (
     {}
   >({ url: "/project-view", method: "get", ...variables, signal });
 
-export const useGetProjectView = <TData = Schemas.ProjectViewResponse, >(
+export const useGetProjectView = <TData = Schemas.ProjectViewResponse,>(
   variables: GetProjectViewVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
@@ -2541,25 +2925,25 @@ export const useGetProjectView = <TData = Schemas.ProjectViewResponse, >(
 
 export type PutProjectViewError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PutProjectViewVariables = {
@@ -2603,25 +2987,25 @@ export const usePutProjectView = (
 
 export type DeleteProjectViewError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type DeleteProjectViewVariables = GubenProdContext["fetcherOptions"];
@@ -2661,25 +3045,25 @@ export const useDeleteProjectView = (
 
 export type PostProjectViewLocalizationsError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PostProjectViewLocalizationsVariables = {
@@ -2773,25 +3157,25 @@ export type GetServiceQueryParams = {
 
 export type GetServiceError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type GetServiceVariables = {
@@ -2811,7 +3195,7 @@ export const fetchGetService = (
     {}
   >({ url: "/service", method: "get", ...variables, signal });
 
-export const useGetService = <TData = Schemas.ServiceResponse, >(
+export const useGetService = <TData = Schemas.ServiceResponse,>(
   variables: GetServiceVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<Schemas.ServiceResponse, GetServiceError, TData>,
@@ -2835,25 +3219,25 @@ export const useGetService = <TData = Schemas.ServiceResponse, >(
 
 export type PutServiceError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type PutServiceVariables = {
@@ -2897,25 +3281,25 @@ export const usePutService = (
 
 export type DeleteServiceError = Fetcher.ErrorWrapper<
   | {
-  status: 400;
-  payload: Schemas.Error;
-}
+      status: 400;
+      payload: Schemas.Error;
+    }
   | {
-  status: 401;
-  payload: Schemas.Error;
-}
+      status: 401;
+      payload: Schemas.Error;
+    }
   | {
-  status: 403;
-  payload: Schemas.Error;
-}
+      status: 403;
+      payload: Schemas.Error;
+    }
   | {
-  status: 404;
-  payload: Schemas.Error;
-}
+      status: 404;
+      payload: Schemas.Error;
+    }
   | {
-  status: 500;
-  payload: Schemas.Error;
-}
+      status: 500;
+      payload: Schemas.Error;
+    }
 >;
 
 export type DeleteServiceVariables = GubenProdContext["fetcherOptions"];
@@ -2955,67 +3339,77 @@ export const useDeleteService = (
 
 export type QueryOperation =
   | {
-  path: "/categories";
-  operationId: "getCategories";
-  variables: GetCategoriesVariables;
-}
+      path: "/categories";
+      operationId: "getCategories";
+      variables: GetCategoriesVariables;
+    }
   | {
-  path: "/categories/{id}";
-  operationId: "getCategoriesId";
-  variables: GetCategoriesIdVariables;
-}
+      path: "/categories/{id}";
+      operationId: "getCategoriesId";
+      variables: GetCategoriesIdVariables;
+    }
   | {
-  path: "/config";
-  operationId: "getConfig";
-  variables: GetConfigVariables;
-}
+      path: "/config";
+      operationId: "getConfig";
+      variables: GetConfigVariables;
+    }
   | {
-  path: "/events";
-  operationId: "getEvents";
-  variables: GetEventsVariables;
-}
+      path: "/events";
+      operationId: "getEvents";
+      variables: GetEventsVariables;
+    }
   | {
-  path: "/events/{id}";
-  operationId: "getEventsId";
-  variables: GetEventsIdVariables;
-}
+      path: "/events/{id}";
+      operationId: "getEventsId";
+      variables: GetEventsIdVariables;
+    }
   | {
-  path: "/event-view";
-  operationId: "getEventView";
-  variables: GetEventViewVariables;
-}
+      path: "/event-view";
+      operationId: "getEventView";
+      variables: GetEventViewVariables;
+    }
   | {
-  path: "/home-view";
-  operationId: "getHomeView";
-  variables: GetHomeViewVariables;
-}
+      path: "/home-view";
+      operationId: "getHomeView";
+      variables: GetHomeViewVariables;
+    }
   | {
-  path: "/overview-tabs";
-  operationId: "getOverviewTabs";
-  variables: GetOverviewTabsVariables;
-}
+      path: "/locations";
+      operationId: "getLocations";
+      variables: GetLocationsVariables;
+    }
   | {
-  path: "/overview-tabs/{id}";
-  operationId: "getOverviewTabsId";
-  variables: GetOverviewTabsIdVariables;
-}
+      path: "/locations/{id}";
+      operationId: "getLocationsId";
+      variables: GetLocationsIdVariables;
+    }
   | {
-  path: "/projects";
-  operationId: "getProjects";
-  variables: GetProjectsVariables;
-}
+      path: "/overview-tabs";
+      operationId: "getOverviewTabs";
+      variables: GetOverviewTabsVariables;
+    }
   | {
-  path: "/projects/{id}";
-  operationId: "getProjectsId";
-  variables: GetProjectsIdVariables;
-}
+      path: "/overview-tabs/{id}";
+      operationId: "getOverviewTabsId";
+      variables: GetOverviewTabsIdVariables;
+    }
   | {
-  path: "/project-view";
-  operationId: "getProjectView";
-  variables: GetProjectViewVariables;
-}
+      path: "/projects";
+      operationId: "getProjects";
+      variables: GetProjectsVariables;
+    }
   | {
-  path: "/service";
-  operationId: "getService";
-  variables: GetServiceVariables;
-};
+      path: "/projects/{id}";
+      operationId: "getProjectsId";
+      variables: GetProjectsIdVariables;
+    }
+  | {
+      path: "/project-view";
+      operationId: "getProjectView";
+      variables: GetProjectViewVariables;
+    }
+  | {
+      path: "/service";
+      operationId: "getService";
+      variables: GetServiceVariables;
+    };
