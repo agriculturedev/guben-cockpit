@@ -1,5 +1,6 @@
 import { BrandenburgEvents, RawEvent, translatedString } from "./types/events";
 import { Event } from "./classes/Event";
+import { ca } from 'date-fns/locale';
 const { XMLParser } = require("fast-xml-parser");
 
 export class EventImporter {
