@@ -64,6 +64,7 @@ export class EventImporter {
     return categoriesIds;
   }
 
+
   async getOrInsertLocationId (event: Event): Promise<string> {
     const locationData = {
       Street: event.location.street,
@@ -114,8 +115,6 @@ export class EventImporter {
       //   return { id: c.id, newId: c.newId, name: c.name.DE }
       // })
     };
-
-
 
     try {
       const categories = await this.getCategoryIds(event);
