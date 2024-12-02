@@ -8,6 +8,7 @@ import {ReactNode} from "@tanstack/react-router";
 import {getContrast, getHexColorFromText, hexToRgb} from "@/lib/colorUtils";
 import {FilterTag} from "@/components/general/FilterTag";
 import { LocationFilter } from "../filters/LocationFilter";
+import { SortFilter } from "@/components/filters/SortFilter";
 
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
@@ -51,6 +52,7 @@ export const EventFilterContainer = () => {
         <LocationFilter controller={controllers.locationController}/>
         <DateRangeFilter controller={controllers.dateController}/>
         <CategoryFilter controller={controllers.categoryController}/>
+        <SortFilter controller={controllers.sortController}/>
       </div>
 
       <div className={"flex gap-2"}>{tagElements}</div>
