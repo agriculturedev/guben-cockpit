@@ -11,6 +11,7 @@ export enum DateFilterPreset {
   THIS_MONTH = 'this_month',
   NEXT_MONTH = 'next_month',
   THIS_YEAR = 'this_year',
+  CUSTOM = 'custom',
 }
 
 type SetFromPresetFn = (preset: Option<string>) => void;
@@ -61,9 +62,12 @@ export const useDateFilter: UseFilterHook<DateFilterController> = (filters, setF
     setMinDate(startDate);
     setMaxDate(endDate);
 
-    const newFilters = filters.filter(([k, _]) => queryDefinitionsMap[k] !== undefined);
-    if(startDate && endDate) newFilters.push(...queryDefinitions.rangeQueries.map(def => [def[0], {"min": startDate, "max": endDate}[def[1]].toISOString()] as QueryFilter));
-    else if(startDate) newFilters.push(...queryDefinitions.singleDateQueries.map(def => [def[0], startDate.toISOString()] as QueryFilter));
+    // only needed if for some reason you would have multiple date pickers in one filter section
+    // const newFilters = filters.filter(([k, _]) => queryDefinitionsMap[k] !== undefined);
+    const newFilters: QueryFilter[] = [];
+
+    if(startDate && endDate) newFilters.push(...queryDefinitions.rangeQueries.map(def => [def[0], {"min": startDate, "max": endDate}[def[1]].toIsoDate()] as QueryFilter));
+    else if(startDate) newFilters.push(...queryDefinitions.singleDateQueries.map(def => [def[0], startDate.toIsoDate()] as QueryFilter));
 
     setFilters([...newFilters]);
   }, [filters, selectedPreset]);
