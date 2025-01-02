@@ -7,8 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((_, configuration) =>
 {
-    configuration
-        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}");
+  configuration
+    .WriteTo.Console(
+      outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}");
 });
 
 var startup = new Startup(builder.Configuration.AddUserSecrets("76f9201a-484c-461f-b95d-6f81bb7c28f3").Build());

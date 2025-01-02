@@ -6,14 +6,13 @@ namespace Database.EntityConfigurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
-    {
-        builder.ToTable("User");
+  public void Configure(EntityTypeBuilder<User> builder)
+  {
+    builder.ToTable("User");
 
-        builder.HasKey(e => e.Id);
-        builder.Property(e => e.Id).ValueGeneratedNever();
-        
-        builder.Property(e => e.KeycloakId).HasMaxLength(50);
+    builder.HasKey(e => e.Id);
+    builder.Property(e => e.Id).ValueGeneratedNever();
 
-    }
+    builder.Property(e => e.KeycloakId).HasMaxLength(50);
+  }
 }

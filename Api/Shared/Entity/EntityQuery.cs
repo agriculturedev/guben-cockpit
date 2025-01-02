@@ -2,5 +2,5 @@
 
 public abstract class EntityQuery
 {
-    public required Guid Id { get; set; }
+  public required Guid Id { get; set; }
 }

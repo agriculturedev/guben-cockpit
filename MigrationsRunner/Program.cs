@@ -7,47 +7,48 @@ namespace MigrationsRunner;
 
 class Program
 {
-    private const int SuccessExitCode = 0;
-    private const int FailedExitCode = 1;
+  private const int SuccessExitCode = 0;
+  private const int FailedExitCode = 1;
 
-    static async Task<int> Main(string[] args)
+  static async Task<int> Main(string[] args)
+  {
+    MigrationResult result;
+    using (var host = CreateHostBuilder(args).Build())
     {
-        MigrationResult result;
-        using (var host = CreateHostBuilder(args).Build())
-        {
-            var lifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
-            var configuration = host.Services.GetRequiredService<IConfiguration>();
+      var lifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
+      var configuration = host.Services.GetRequiredService<IConfiguration>();
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var migrationDeployer = scope.ServiceProvider.GetRequiredService<MigrationDeployer>();
+      using (var scope = host.Services.CreateScope())
+      {
+        var migrationDeployer = scope.ServiceProvider.GetRequiredService<MigrationDeployer>();
 
-                result = await migrationDeployer.ExecuteAsync();
-            }
+        result = await migrationDeployer.ExecuteAsync();
+      }
 
-            if (configuration["wait"] != "true")
-                lifetime.StopApplication();
+      if (configuration["wait"] != "true")
+        lifetime.StopApplication();
 
-            await host.WaitForShutdownAsync();
-        }
-
-        return result.Failed ? FailedExitCode : SuccessExitCode;
+      await host.WaitForShutdownAsync();
     }
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((context, config) =>
-            {
-                config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables();
+    return result.Failed ? FailedExitCode : SuccessExitCode;
+  }
 
-                config.AddUserSecrets<Program>();
-            })
-            .ConfigureServices((_, services) =>
-            {
-                services.AddMigrations();
+  public static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+      .ConfigureAppConfiguration((context, config) =>
+      {
+        config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+          .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true,
+            reloadOnChange: true)
+          .AddEnvironmentVariables();
 
-                services.AddSingleton<MigrationDeployer>();
-            });
+        config.AddUserSecrets<Program>();
+      })
+      .ConfigureServices((_, services) =>
+      {
+        services.AddMigrations();
+
+        services.AddSingleton<MigrationDeployer>();
+      });
 }

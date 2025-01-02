@@ -8,16 +8,16 @@ namespace Api;
 /// </summary>
 public static class ApiInstaller
 {
-    /// <summary>
-    /// Register all API services
-    /// </summary>
-    /// <param name="services"></param>
-    /// <returns></returns>
-    public static IServiceCollection AddApi(this IServiceCollection services)
-    {
-        // register translator, permission service, envelope factory?, mappers, ....
-        services.AddSingleton<ITranslator, Translator>();
+  /// <summary>
+  /// Register all API services
+  /// </summary>
+  /// <param name="services"></param>
+  /// <returns></returns>
+  public static IServiceCollection AddApi(this IServiceCollection services)
+  {
+    // register translator, permission service, envelope factory?, mappers, ....
+    services.AddSingleton<ITranslator, Translator>();
 
-        return services;
-    }
+    return services;
+  }
 }

@@ -2,5 +2,5 @@
 
 public class CreateUserResponse
 {
-    public required Guid UserId { get; set; }
+  public required Guid UserId { get; set; }
 }
