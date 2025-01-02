@@ -9,13 +9,11 @@ import {EventsList} from "@/components/events/EventsList";
 import {EventFilterContainer} from "@/components/events/EventFilterContainer";
 import {EventFiltersProvider, useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 import {HashMap} from "@/types/common.types";
+import {useEventsGetAll} from "@/endpoints/gubenComponents";
 
 export const Route = createFileRoute('/events')({
   component: WrappedComponent,
 })
-
-export interface Filters {
-}
 
 function WrappedComponent() {
   return (
@@ -62,6 +60,8 @@ function EventComponent() {
     isLoading: eventViewIsLoading
   } = useGetEventView({queryParams: {}});
 
+  const { data: eventsData2 } = useEventsGetAll({});
+
   useEffect(() => {
     // setPageSize(eventsData?.meta?.pagination?.pageSize ?? defaultPaginationProps.pageSize);
     // setPageIndex(eventsData?.meta?.pagination?.page ?? defaultPaginationProps.page);
@@ -81,7 +81,7 @@ function EventComponent() {
         page={page}
       >
         <EventFilterContainer/>
-        <EventsList events={eventsData?.data}/>
+        <EventsList events={eventsData2?.events}/>
       </PaginationContainer>
     </View>
   );

@@ -3,6 +3,7 @@ import {
   generateReactQueryComponents,
 } from "@openapi-codegen/typescript";
 import { defineConfig } from "@openapi-codegen/cli";
+
 export default defineConfig({
   gubenProd: {
     from: {
@@ -16,6 +17,27 @@ export default defineConfig({
       const { schemasFiles } = await generateSchemaTypes(context, {
         filenamePrefix,
       });
+      await generateReactQueryComponents(context, {
+        filenamePrefix,
+        schemasFiles,
+      });
+    },
+  },
+  guben: {
+    from: {
+      url:
+        "http://localhost:5000/openapi/v1.json",
+      source: "url",
+    },
+    outputDir: "src/endpoints",
+    to: async (context) => {
+      const filenamePrefix = "guben";
+
+      const {schemasFiles} = await generateSchemaTypes(context, {
+        useEnums: true,
+        filenamePrefix,
+      });
+
       await generateReactQueryComponents(context, {
         filenamePrefix,
         schemasFiles,

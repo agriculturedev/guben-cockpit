@@ -1,13 +1,14 @@
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {CategoryFilterController} from "@/hooks/useCategoryFilter";
 import {useGetCategories} from "@/endpoints/gubenProdComponents";
+import {useCategoriesGetAll} from "@/endpoints/gubenComponents";
 
 interface Props {
   controller: CategoryFilterController;
 }
 
 export const CategoryFilter = (props: Props) => {
-  const {data} = useGetCategories({queryParams: {}});
+  const {data: categoriesData} = useCategoriesGetAll({});
 
   return (
     <Select
@@ -19,12 +20,12 @@ export const CategoryFilter = (props: Props) => {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={"none"}>(Kategorie)</SelectItem>
-        {data?.data?.map(category => (category.attributes?.Name &&
+        {categoriesData?.categories?.map(category => (category.name &&
           <SelectItem
             key={category.id}
-            value={category.attributes.Name}
+            value={category.name}
           >
-            {category.attributes.Name}
+            {category.name}
           </SelectItem>
         ))}
       </SelectContent>

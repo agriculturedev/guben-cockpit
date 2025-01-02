@@ -8,7 +8,7 @@ namespace Database;
 /// <param name="options"></param>
 public class GubenDbContext(DbContextOptions options) : DbContext(options)
 {
-  public const string DefaultSchema = "Aurora";
+  public const string DefaultSchema = "Guben";
 
   // add dbsets here
 

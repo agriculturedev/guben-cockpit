@@ -180,4 +180,7 @@
     <data name="CreatingUserFailed" xml:space="preserve">
         <value>Gebruiker aanmaken gefaald</value>
     </data>
+    <data name="LocationNotFound" xml:space="preserve">
+      <value>locatie niet gevonden</value>
+    </data>
 </root>

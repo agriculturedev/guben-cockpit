@@ -13,7 +13,7 @@ namespace Api.Controllers.Users;
 /// Controller for managing users
 /// </summary>
 [ApiController]
-[Route("api/users")]
+[Route("users")]
 [Authorize]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]

@@ -4,7 +4,7 @@ using Domain.Users;
 
 namespace Api.Controllers.Users.Shared;
 
-public class UserResponse : EntityResponse
+public class UserResponse : EntityResponse<Guid>
 {
   public required string KeycloakId { get; set; }
 

@@ -9,7 +9,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "start": "vite",
-    "codegen": "npx openapi-codegen gen gubenProd"
+    "codegen": "npx openapi-codegen gen gubenProd",
+    "codegen2": "npx openapi-codegen gen guben"
   },
   "devDependencies": {
     "@openapi-codegen/cli": "^2.0.2",

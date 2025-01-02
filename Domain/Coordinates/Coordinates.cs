@@ -7,7 +7,7 @@ public sealed class Coordinates
   public double Latitude { get; private set; }
   public double Longitude { get; private set; }
 
-  private Coordinates(double latitude, double longitude)
+  public Coordinates(double latitude, double longitude)
   {
     Latitude = latitude;
     Longitude = longitude;

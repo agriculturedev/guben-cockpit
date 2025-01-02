@@ -12,7 +12,7 @@ builder.Host.UseSerilog((_, configuration) =>
       outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}");
 });
 
-var startup = new Startup(builder.Configuration.AddUserSecrets("76f9201a-484c-461f-b95d-6f81bb7c28f3").Build());
+var startup = new Startup(builder.Configuration.AddUserSecrets("862e5031-ca08-41e1-ab0b-9c9ccb900ad0").Build());
 startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();

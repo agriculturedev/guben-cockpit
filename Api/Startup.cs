@@ -59,7 +59,7 @@ public class Startup(IConfiguration configuration)
         {
           var converterType = typeof(EnumMemberConverter<>).MakeGenericType(enumType);
           var converter = Activator.CreateInstance(converterType);
-          if (converter is null) throw new NullReferenceException("JsonConverter is null")
+          if (converter is null) throw new NullReferenceException("JsonConverter is null");
           options.JsonSerializerOptions.Converters.Add((JsonConverter)converter);
         }
       });

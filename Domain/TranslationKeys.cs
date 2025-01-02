@@ -9,7 +9,7 @@ public class TranslationKeys
   public const string LengthCannotBeMoreThan = "LengthCannotBeMoreThan";
   public const string LengthCannotBeLessThan = "LengthCannotBeLessThan";
   public const string NameAlreadyExists = "NameAlreadyExists";
-  public const string ConfigNotFound = "ConfigNotFound";
+  public const string LocationNotFound = "LocationNotFound";
   public const string NameCannotBeEmpty = "NameCannotBeEmpty";
   public const string UserNotFound = "UserNotFound";
   public const string CreatingUserFailed = "CreatingUserFailed";

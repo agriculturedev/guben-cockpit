@@ -1,10 +1,11 @@
 using System.Collections.ObjectModel;
 using Domain.Events;
+using Shared.Domain;
 using Shared.Domain.Validation;
 
 namespace Domain.Locations;
 
-public sealed class Location
+public sealed class Location : Entity<Guid>
 {
   public string Name { get; private set; }
   public string? City { get; private set; }
@@ -21,6 +22,7 @@ public sealed class Location
   private Location(string name, string? city, string? street, string? telephoneNumber, string? fax, string? email,
     string? website, string? zip)
   {
+    Id = Guid.CreateVersion7();
     Name = name;
     City = city;
     Street = street;
