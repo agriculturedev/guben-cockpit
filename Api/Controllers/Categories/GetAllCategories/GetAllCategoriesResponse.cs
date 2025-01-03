@@ -4,6 +4,5 @@ namespace Api.Controllers.Categories.GetAllCategories;
 
 public class GetAllCategoriesResponse
 {
-  public IEnumerable<CategoryResponse> Categories { get; set; }
-
+  public required IEnumerable<CategoryResponse> Categories { get; set; }
 }

@@ -4,5 +4,5 @@ namespace Api.Controllers.Locations.GetAllLocations;
 
 public class GetAllLocationsResponse
 {
-  public IEnumerable<LocationResponse> Locations { get; set; }
+  public required IEnumerable<LocationResponse> Locations { get; set; }
 }
