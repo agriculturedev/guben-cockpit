@@ -149,6 +149,146 @@ export const useUsersGet = <TData = Schemas.GetUserResponse,>(
   });
 };
 
+export type ProjectsGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchProjectsGetAll = (
+  variables: ProjectsGetAllVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllProjectsResponse,
+    ProjectsGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/projects", method: "get", ...variables, signal });
+
+export const useProjectsGetAll = <TData = Schemas.GetAllProjectsResponse,>(
+  variables: ProjectsGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllProjectsResponse,
+      ProjectsGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllProjectsResponse,
+    ProjectsGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/projects",
+      operationId: "projectsGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchProjectsGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type LocationsGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type LocationsGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchLocationsGetAll = (
+  variables: LocationsGetAllVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllLocationsResponse,
+    LocationsGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/locations", method: "get", ...variables, signal });
+
+export const useLocationsGetAll = <TData = Schemas.GetAllLocationsResponse,>(
+  variables: LocationsGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllLocationsResponse,
+      LocationsGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllLocationsResponse,
+    LocationsGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/locations",
+      operationId: "locationsGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchLocationsGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type LocationsGetOrCreateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type LocationsGetOrCreateVariables = GubenContext["fetcherOptions"];
+
+export const fetchLocationsGetOrCreate = (
+  variables: LocationsGetOrCreateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllLocationsResponse,
+    LocationsGetOrCreateError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/locations", method: "post", ...variables, signal });
+
+export const useLocationsGetOrCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.GetAllLocationsResponse,
+      LocationsGetOrCreateError,
+      LocationsGetOrCreateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.GetAllLocationsResponse,
+    LocationsGetOrCreateError,
+    LocationsGetOrCreateVariables
+  >({
+    mutationFn: (variables: LocationsGetOrCreateVariables) =>
+      fetchLocationsGetOrCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type EventsGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -257,6 +397,16 @@ export type QueryOperation =
       path: "/users/{keycloakId}";
       operationId: "usersGet";
       variables: UsersGetVariables;
+    }
+  | {
+      path: "/projects";
+      operationId: "projectsGetAll";
+      variables: ProjectsGetAllVariables;
+    }
+  | {
+      path: "/locations";
+      operationId: "locationsGetAll";
+      variables: LocationsGetAllVariables;
     }
   | {
       path: "/events";

@@ -55,11 +55,19 @@ export type EventResponse = {
 };
 
 export type GetAllCategoriesResponse = {
-  categories?: CategoryResponse[];
+  categories: CategoryResponse[];
 };
 
 export type GetAllEventsResponse = {
   events: EventResponse[];
+};
+
+export type GetAllLocationsResponse = {
+  locations: LocationResponse[];
+};
+
+export type GetAllProjectsResponse = {
+  projects: ProjectResponse[];
 };
 
 export type GetAllUsersResponse = {
@@ -88,6 +96,15 @@ export type ProblemDetails = {
   status?: number | null;
   detail?: string | null;
   instance?: string | null;
+};
+
+export type ProjectResponse = {
+  title?: string;
+  description?: string | null;
+  fullText?: string | null;
+  imageCaption?: string | null;
+  imageUrl?: string | null;
+  imageCredits?: string | null;
 };
 
 export type UrlResponse = {
