@@ -183,4 +183,7 @@
     <data name="LocationNotFound" xml:space="preserve">
       <value>locatie niet gevonden</value>
     </data>
+    <data name="GetOrCreateLocationFailed" xml:space="preserve">
+      <value>Ophalen of aanmaken van locatie is mislukt</value>
+    </data>
 </root>

@@ -17,4 +17,5 @@ public class TranslationKeys
   public const string LongitudeOutOfBounds = "LongitudeOutOfBounds";
   public const string LinkCannotBeEmpty = "LinkCannotBeEmpty";
   public const string DescriptionCannotBeEmpty = "DescriptionCannotBeEmpty";
+  public const string GetOrCreateLocationFailed = "GetOrCreateLocationFailed";
 }

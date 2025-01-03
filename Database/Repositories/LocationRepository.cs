@@ -14,4 +14,20 @@ public class LocationRepository
     : base(dbContextFactory)
   {
   }
+
+  public Guid? Find(Location location)
+  {
+    return Set
+      .AsNoTracking()
+      .FirstOrDefault(l =>
+        l.Name == location.Name &&
+        l.City == location.City &&
+        l.Street == location.Street &&
+        l.TelephoneNumber == location.TelephoneNumber &&
+        l.Fax == location.Fax &&
+        l.Email == location.Email &&
+        l.Website == location.Website &&
+        l.Zip == location.Zip)
+      ?.Id;
+  }
 }

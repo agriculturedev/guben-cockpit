@@ -1,4 +1,5 @@
 using Api.Controllers.Categories.Shared;
+using Api.Controllers.Locations.Shared;
 using Domain.Category;
 using Domain.Coordinates;
 using Domain.Events;
@@ -66,16 +67,3 @@ public class UrlResponse
   }
 }
 
-public class LocationResponse
-{
-  public required string Name { get; set; }
-  public string? City { get; set; }
-  public static LocationResponse Map(Location location)
-  {
-    return new LocationResponse()
-    {
-      Name = location.Name,
-      City = location.City
-    };
-  }
-}
