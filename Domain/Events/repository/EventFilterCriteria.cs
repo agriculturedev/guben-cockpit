@@ -1,0 +1,8 @@
+namespace Domain.Events.repository;
+
+public class EventFilterCriteria
+{
+  public string? TitleQuery { get; set; }
+  public string? LocationQuery { get; set; }
+
+}

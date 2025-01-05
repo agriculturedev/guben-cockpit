@@ -2,6 +2,7 @@
 using Domain.Events.repository;
 using Microsoft.EntityFrameworkCore;
 using Shared.Database;
+using Shared.Domain;
 
 namespace Database.Repositories;
 
@@ -23,5 +24,35 @@ public class EventRepository
       .Include(e => e.Urls)
       .Include(e => e.Categories)
       .AsEnumerable();
+  }
+
+  public Task<PagedResult<Event>> GetAllEventsPaged(PagedCriteria pagination, EventFilterCriteria filter)
+  {
+    return Set
+      .AsNoTracking()
+      .AsSplitQuery()
+      .TagWith(nameof(EventRepository) + "." + nameof(GetAllEvents))
+      .Include(e => e.Location)
+      .Include(e => e.Urls)
+      .Include(e => e.Categories)
+      .ApplyGetAllFilters(filter)
+      .ToPagedResult(pagination);
+  }
+}
+
+internal static class EventRepositoryExtensions
+{
+  internal static IQueryable<Event> ApplyGetAllFilters(this IQueryable<Event> query, EventFilterCriteria filter)
+  {
+
+    if (!string.IsNullOrWhiteSpace(filter.TitleQuery))
+      query = query.Where(w => EF.Functions.Like(w.Title.ToLower(), "%" + filter.TitleQuery.ToLower() + "%"));
+
+    if (!string.IsNullOrWhiteSpace(filter.LocationQuery))
+      query = query.Where(w => EF.Functions.Like(w.Location.Name.ToLower(), "%" + filter.LocationQuery.ToLower() + "%")
+                               || (w.Location.City != null && EF.Functions.Like(w.Location.City.ToLower(), "%" + filter
+                               .LocationQuery.ToLower() + "%")));
+
+    return query;
   }
 }

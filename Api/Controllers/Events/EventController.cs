@@ -5,6 +5,7 @@ using Domain.Events;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api.Pagination;
 
 namespace Api.Controllers.Events;
 
@@ -28,9 +29,16 @@ public class EventController : ControllerBase
   [EndpointName("EventsGetAll")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllEventsResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> GetAll()
+  public async Task<IResult> GetAll([FromQuery] string? title, [FromQuery] string? location, [FromQuery] int
+    pageNumber = PagedQuery.DefaultPageNumber, [FromQuery] int pageSize = PagedQuery.DefaultPageSize)
   {
-    var result = await _mediator.Send(new GetAllEventsQuery());
+    var result = await _mediator.Send(new GetAllEventsQuery()
+    {
+      TitleSearch = title,
+      LocationSearch = location,
+      PageNumber = pageNumber,
+      PageSize = pageSize
+    });
     return Results.Ok(result);
   }
 

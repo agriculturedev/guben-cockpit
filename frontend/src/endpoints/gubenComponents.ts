@@ -289,12 +289,29 @@ export const useLocationsGetOrCreate = (
   });
 };
 
+export type EventsGetAllQueryParams = {
+  title?: string;
+  location?: string;
+  /**
+   * @format int32
+   * @default 1
+   */
+  pageNumber?: number;
+  /**
+   * @format int32
+   * @default 2
+   */
+  pageSize?: number;
+};
+
 export type EventsGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type EventsGetAllVariables = GubenContext["fetcherOptions"];
+export type EventsGetAllVariables = {
+  queryParams?: EventsGetAllQueryParams;
+} & GubenContext["fetcherOptions"];
 
 export const fetchEventsGetAll = (
   variables: EventsGetAllVariables,
@@ -305,7 +322,7 @@ export const fetchEventsGetAll = (
     EventsGetAllError,
     undefined,
     {},
-    {},
+    EventsGetAllQueryParams,
     {}
   >({ url: "/events", method: "get", ...variables, signal });
 

@@ -3,13 +3,14 @@ import {TextFilterController} from "@/hooks/useTextFilter";
 
 interface Props {
   controller: TextFilterController;
+  placeHolder: string;
 }
 
-export function TextFilter({controller}: Props) {
+export function TextFilter({controller, placeHolder}: Props) {
   return (
     <Input
       type="text"
-      placeholder="Search"
+      placeholder={placeHolder}
       value={controller.searchText}
       onChange={(e) => controller.setSearchText(e.target.value)}
     />

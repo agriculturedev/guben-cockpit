@@ -1,8 +1,9 @@
 using Shared.Api;
+using Shared.Api.Pagination;
 
 namespace Api.Controllers.Events.GetAllEvents;
 
-public class GetAllEventsQuery : IApiRequest<GetAllEventsResponse>
+public class GetAllEventsQuery : PagedQuery, IApiRequest<GetAllEventsResponse>
 {
   public string? TitleSearch { get; set; }
   public string? LocationSearch { get; set; }

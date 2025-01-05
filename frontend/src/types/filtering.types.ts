@@ -14,5 +14,6 @@ export interface FilterController {
  */
 export type UseFilterHook<T extends FilterController> = (
   filters: QueryFilter[],
-  setFilters: SetFiltersCallback
+  setFilters: SetFiltersCallback,
+  queryDefinition: string
 ) => T;

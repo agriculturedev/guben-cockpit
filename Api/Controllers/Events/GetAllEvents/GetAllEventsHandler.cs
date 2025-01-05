@@ -13,23 +13,24 @@ public class GetAllEventsHandler : ApiRequestHandler<GetAllEventsQuery, GetAllEv
     _eventRepository = eventRepository;
   }
 
-  public override  Task<GetAllEventsResponse> Handle(GetAllEventsQuery request, CancellationToken
+  public override async Task<GetAllEventsResponse> Handle(GetAllEventsQuery request, CancellationToken
       cancellationToken)
   {
-    var events = _eventRepository.GetAllEvents();
-
-    if (request.TitleSearch is not null)
-      events = events
-        .Where(e => e.Title.Contains(request.TitleSearch));
-
-    if (request.LocationSearch is not null)
-      events = events
-        .Where(e => e.Location.Name.Contains(request.LocationSearch)
-                    || (e.Location.City != null && e.Location.City.Contains(request.LocationSearch)));
-
-    return Task.FromResult(new GetAllEventsResponse
+    var filter = new EventFilterCriteria()
     {
-      Events = events.Select(EventResponse.Map).ToList()
-    });
+      TitleQuery = request.TitleSearch,
+      LocationQuery = request.LocationSearch,
+    };
+
+    var pagedResult = await _eventRepository.GetAllEventsPaged(request, filter);
+
+    return new GetAllEventsResponse
+    {
+      PageNumber = pagedResult.PageNumber,
+      PageSize = pagedResult.PageSize,
+      TotalCount = pagedResult.TotalCount,
+      PageCount = pagedResult.PageCount,
+      Results = pagedResult.Results.Select(EventResponse.Map)
+    };
   }
 }

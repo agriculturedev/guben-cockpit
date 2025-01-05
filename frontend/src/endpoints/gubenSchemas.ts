@@ -59,7 +59,23 @@ export type GetAllCategoriesResponse = {
 };
 
 export type GetAllEventsResponse = {
-  events: EventResponse[];
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
+  results: EventResponse[];
 };
 
 export type GetAllLocationsResponse = {
