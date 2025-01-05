@@ -48,6 +48,16 @@ internal static class EventRepositoryExtensions
     if (!string.IsNullOrWhiteSpace(filter.TitleQuery))
       query = query.Where(w => EF.Functions.Like(w.Title.ToLower(), "%" + filter.TitleQuery.ToLower() + "%"));
 
+    if (filter.StartDateQuery.HasValue && filter.EndDateQuery.HasValue)
+    {
+      var startDate = filter.StartDateQuery.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+      var endDate = filter.EndDateQuery.Value.ToDateTime(TimeOnly.MaxValue, DateTimeKind.Utc);
+      query = query.Where(w => w.StartDate <= endDate && w.EndDate >= startDate); // any overlap will result in the item being returned
+    }
+
+    if (filter.CategoryIdQuery.HasValue)
+      query = query.Where(w => w.Categories.Any(cat => cat.Id == filter.CategoryIdQuery.Value));
+
     if (!string.IsNullOrWhiteSpace(filter.LocationQuery))
       query = query.Where(w => EF.Functions.Like(w.Location.Name.ToLower(), "%" + filter.LocationQuery.ToLower() + "%")
                                || (w.Location.City != null && EF.Functions.Like(w.Location.City.ToLower(), "%" + filter

@@ -12,8 +12,10 @@ export const CategoryFilter = (props: Props) => {
 
   return (
     <Select
-      value={props.controller.category ?? "none"}
-      onValueChange={cat => props.controller.setCategory(cat === "none" ? null : cat)}
+      value={props.controller.category?.id ?? "none"}
+      onValueChange={cat => props.controller.setCategory(cat === "none"
+        ? null
+        : categoriesData?.categories.find(c => c.id === cat) ?? null)}
     >
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Kategorie"/>
@@ -23,7 +25,7 @@ export const CategoryFilter = (props: Props) => {
         {categoriesData?.categories?.map(category => (category.name &&
           <SelectItem
             key={category.id}
-            value={category.name}
+            value={category.id}
           >
             {category.name}
           </SelectItem>

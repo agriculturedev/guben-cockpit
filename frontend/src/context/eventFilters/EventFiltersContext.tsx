@@ -54,7 +54,7 @@ export function EventFiltersProvider({children}: EventFiltersProviderProps) {
     titleController: useTextFilter(textFilters, setTextFilters, "title"),
     locationController: useTextFilter(locationFilters, setLocationFilters, "location"),
     dateController: useDateFilter(dateFilters, setDateFilters, ""),
-    categoryController: useCategoryFilter(categoryFilters, setCategoryFilters, ""),
+    categoryController: useCategoryFilter(categoryFilters, setCategoryFilters, "categoryId"),
   };
 
   const ctx: EventFiltersContext = {filters, controllers};

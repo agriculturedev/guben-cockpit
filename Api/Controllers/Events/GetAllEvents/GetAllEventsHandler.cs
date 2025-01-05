@@ -20,6 +20,9 @@ public class GetAllEventsHandler : ApiRequestHandler<GetAllEventsQuery, GetAllEv
     {
       TitleQuery = request.TitleSearch,
       LocationQuery = request.LocationSearch,
+      CategoryIdQuery = request.CategoryId,
+      StartDateQuery = request.StartDate,
+      EndDateQuery = request.EndDate,
     };
 
     var pagedResult = await _eventRepository.GetAllEventsPaged(request, filter);

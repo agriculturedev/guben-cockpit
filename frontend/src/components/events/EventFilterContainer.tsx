@@ -16,7 +16,7 @@ export const EventFilterContainer = () => {
     const elements: ReactNode[] = [];
 
     if (controllers.categoryController.category) {
-      const color = getHexColorFromText(controllers.categoryController.category);
+      const color = getHexColorFromText(controllers.categoryController.category?.name ?? "");
       const contrast = getContrast(hexToRgb(color)!, [255, 255, 255]);
 
       elements.push(<FilterTag
@@ -24,7 +24,7 @@ export const EventFilterContainer = () => {
         bgColor={color}
         textColor={contrast < 4.5 ? "#000000" : "#ffffff"}
         title={"Kategorie"}
-        value={controllers.categoryController.category}
+        value={controllers.categoryController.category.name ?? ""}
         onClear={controllers.categoryController.clearFilter}
       />)
     }
