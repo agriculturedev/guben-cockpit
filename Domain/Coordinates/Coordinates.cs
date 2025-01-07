@@ -2,7 +2,7 @@ using Shared.Domain.Validation;
 
 namespace Domain.Coordinates;
 
-public sealed class Coordinates
+public sealed class Coordinates : IEquatable<Coordinates>
 {
   public double Latitude { get; private set; }
   public double Longitude { get; private set; }
@@ -22,5 +22,22 @@ public sealed class Coordinates
       return Result.Error(TranslationKeys.LongitudeOutOfBounds);
 
     return new Coordinates(latitude, longitude);
+  }
+
+  public bool Equals(Coordinates? other)
+  {
+    if (other is null) return false;
+    if (ReferenceEquals(this, other)) return true;
+    return Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
+  }
+
+  public override bool Equals(object? obj)
+  {
+    return ReferenceEquals(this, obj) || obj is Coordinates other && Equals(other);
+  }
+
+  public override int GetHashCode()
+  {
+    return HashCode.Combine(Latitude, Longitude);
   }
 }

@@ -22,15 +22,15 @@ public class GetOrCreateLocationHandler : ApiRequestHandler<GetOrCreateLocationQ
       .Fax, request.Email, request.Website, request.Zip);
     locationResult.ThrowIfFailure();
 
-    var foundLocationId = _locationRepository.Find(tempLocation);
-    if (foundLocationId is null)
+    var foundLocation = _locationRepository.Find(tempLocation);
+    if (foundLocation is null)
     {
       _locationRepository.Save(tempLocation);
       locationId = tempLocation.Id;
     }
     else
     {
-      locationId = foundLocationId.Value;
+      locationId = foundLocation.Id;
     }
 
     return Task.FromResult(new GetOrCreateLocationResponse()

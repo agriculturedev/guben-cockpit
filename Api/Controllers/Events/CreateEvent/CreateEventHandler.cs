@@ -38,7 +38,7 @@ public class CreateEventHandler : ApiRequestHandler<CreateEventQuery, CreateEven
       throw new ProblemDetailsException(TranslationKeys.LocationNotFound);
     var categories = _categoryRepository.GetByIds(request.CategoryIds).ToList();
 
-    var (eventResult, @event) = Event.Create(request.Id, request.Title, request.Description, request.StartDate, request.EndDate,
+    var (eventResult, @event) = Event.Create(request.EventId, request.TerminId, request.Title, request.Description, request.StartDate, request.EndDate,
       location, coords, urls, categories);
     eventResult.ThrowIfFailure();
 

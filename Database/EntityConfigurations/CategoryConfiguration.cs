@@ -15,6 +15,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     builder.HasKey(e => e.Id);
     builder.Property(e => e.Id).ValueGeneratedNever();
 
+    builder.Property(e => e.CategoryId);
     builder.Property(e => e.Name);
   }
 }

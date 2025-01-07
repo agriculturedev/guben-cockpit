@@ -18,4 +18,5 @@ public class TranslationKeys
   public const string LinkCannotBeEmpty = "LinkCannotBeEmpty";
   public const string DescriptionCannotBeEmpty = "DescriptionCannotBeEmpty";
   public const string GetOrCreateLocationFailed = "GetOrCreateLocationFailed";
+  public const string TitleCannotBeEmpty = "TitleCannotBeEmpty";
 }

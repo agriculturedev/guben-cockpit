@@ -4,7 +4,8 @@ namespace Api.Controllers.Events.CreateEvent;
 
 public class CreateEventQuery : IApiRequest<CreateEventResponse>
 {
-  public int Id { get; set; }
+  public string EventId { get; set; }
+  public string TerminId { get; set; }
   public required string Title { get; set; }
   public required string Description { get; set; }
   public DateTime StartDate { get; set; }

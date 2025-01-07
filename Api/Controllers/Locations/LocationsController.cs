@@ -31,13 +31,13 @@ public class LocationsController : ControllerBase
     return Results.Ok(result);
   }
 
-  [HttpPost]
-  [EndpointName("LocationsGetOrCreate")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllLocationsResponse))]
-  [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> GetOrCreate()
-  {
-    var result = await _mediator.Send(new GetAllLocationsQuery());
-    return Results.Ok(result);
-  }
+  // [HttpPost]
+  // [EndpointName("LocationsGetOrCreate")]
+  // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllLocationsResponse))]
+  // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  // public async Task<IResult> GetOrCreate()
+  // {
+  //   var result = await _mediator.Send(new GetAllLocationsQuery());
+  //   return Results.Ok(result);
+  // }
 }

@@ -8,6 +8,9 @@ using Api.Infrastructure.JsonConverters;
 using Api.Infrastructure.OpenApi;
 using Database;
 using Domain;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using Jobs.EventImporter;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
@@ -89,7 +92,23 @@ public class Startup(IConfiguration configuration)
             .AllowAnyHeader()
             .AllowAnyMethod();
         });
+      options.AddPolicy("AllowSelf",
+        builder =>
+        {
+          builder.WithOrigins("http://localhost:5000")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
     });
+
+    services.AddHangfire(configuration => configuration
+      .UseSerilogLogProvider()
+      .UseSimpleAssemblyNameTypeSerializer()
+      .UseRecommendedSerializerSettings()
+      .UseMemoryStorage());
+
+    // Add the processing server as IHostedService
+    services.AddHangfireServer();
 
     services.AddMediatR(new MediatRServiceConfiguration()
       .RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
@@ -116,6 +135,13 @@ public class Startup(IConfiguration configuration)
     services.AddOpenApi(options => { options.AddSchemaTransformer<DescribeEnumMemberValues>(); });
   }
 
+  private void AddJobs()
+  {
+    Console.WriteLine("adding jobs to hangfire...");
+
+    RecurringJob.AddOrUpdate<EventImporter>("EventImporterJob", (importer) => importer.Import(), Cron.Daily);
+  }
+
   /// <summary>
   /// Configures the API, such as adding the swagger, exception middleware, request localization, etc
   /// </summary>
@@ -124,6 +150,7 @@ public class Startup(IConfiguration configuration)
   public void Configure(WebApplication app, IHostEnvironment environment)
   {
     app.UseCors("AllowReactApp");
+    app.UseCors("AllowSelf");
     app.UseHttpsRedirection();
     app.UseAntiforgery();
     app.UseExceptionHandler();
@@ -133,6 +160,9 @@ public class Startup(IConfiguration configuration)
     app.UseAuthorization();
 
     app.MapControllers();
+    app.UseHangfireDashboard();
+
+    AddJobs();
 
     app.MapOpenApi()
       .CacheOutput();

@@ -15,6 +15,10 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
     builder.HasKey(e => e.Id);
     builder.Property(e => e.Id).ValueGeneratedNever();
 
+    builder.Property(e => e.EventId);
+    builder.Property(e => e.TerminId);
+    builder.HasIndex(e => new { e.EventId, e.TerminId });
+
     builder.Property(e => e.Title);
     builder.Property(e => e.Description);
     builder.Property(e => e.StartDate);

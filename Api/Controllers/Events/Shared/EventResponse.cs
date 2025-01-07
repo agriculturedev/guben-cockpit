@@ -10,7 +10,8 @@ namespace Api.Controllers.Events.Shared;
 
 public class EventResponse
 {
-  public required int Id { get; set; }
+  public required Guid Id { get; set; }
+  public required string EventId { get; set; }
   public required string Title { get; set; }
   public required string Description { get; set; }
   public required DateTime StartDate { get; set; }
@@ -25,6 +26,7 @@ public class EventResponse
     return new EventResponse()
     {
       Id = @event.Id,
+      EventId = @event.EventId,
       Title = @event.Title,
       Description = @event.Description,
       StartDate = @event.StartDate,

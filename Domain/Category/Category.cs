@@ -7,22 +7,24 @@ namespace Domain.Category;
 
 public sealed class Category : Entity<Guid>
 {
+  public int CategoryId { get; private set; }
   public string Name { get; private set; }
   private readonly List<Event> _events;
   public IReadOnlyCollection<Event> Events => new ReadOnlyCollection<Event>(_events);
 
-  private Category(string name)
+  private Category(int categoryId, string name)
   {
     Id = Guid.CreateVersion7();
+    CategoryId = categoryId;
     Name = name;
     _events = new List<Event>();
   }
 
-  public static Result<Category> Create(string name)
+  public static Result<Category> Create(int categoryId, string name)
   {
     if (string.IsNullOrWhiteSpace(name))
       return Result.Error(TranslationKeys.NameCannotBeEmpty);
 
-    return new Category(name);
+    return new Category(categoryId, name);
   }
 }

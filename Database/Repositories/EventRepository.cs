@@ -7,11 +7,17 @@ using Shared.Domain;
 namespace Database.Repositories;
 
 public class EventRepository
-  : EntityFrameworkRepository<Event, int, GubenDbContext>, IEventRepository
+  : EntityFrameworkRepository<Event, Guid, GubenDbContext>, IEventRepository
 {
   public EventRepository(ICustomDbContextFactory<GubenDbContext> dbContextFactory)
     : base(dbContextFactory)
   {
+  }
+
+  public Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId)
+  {
+    return Set
+      .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
   }
 
   public IEnumerable<Event> GetAllEvents()

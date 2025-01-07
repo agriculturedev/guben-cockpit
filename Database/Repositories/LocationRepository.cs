@@ -15,7 +15,7 @@ public class LocationRepository
   {
   }
 
-  public Guid? Find(Location location)
+  public Location? Find(Location location)
   {
     return Set
       .AsNoTracking()
@@ -27,7 +27,13 @@ public class LocationRepository
         l.Fax == location.Fax &&
         l.Email == location.Email &&
         l.Website == location.Website &&
-        l.Zip == location.Zip)
-      ?.Id;
+        l.Zip == location.Zip);
+  }
+
+  public Task<Location?> FindByName(string name)
+  {
+    return Set
+      .FirstOrDefaultAsync(l =>
+        l.Name == name);
   }
 }

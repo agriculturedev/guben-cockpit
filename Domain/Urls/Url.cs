@@ -2,7 +2,7 @@ using Shared.Domain.Validation;
 
 namespace Domain.Urls;
 
-public sealed class Url
+public sealed class Url : IEquatable<Url>
 {
   public string Link { get; private set; }
   public string Description { get; private set; }
@@ -22,5 +22,22 @@ public sealed class Url
       return Result.Error(TranslationKeys.DescriptionCannotBeEmpty);
 
     return new Url(link, description);
+  }
+
+  public bool Equals(Url? other)
+  {
+    if (other is null) return false;
+    if (ReferenceEquals(this, other)) return true;
+    return Link == other.Link && Description == other.Description;
+  }
+
+  public override bool Equals(object? obj)
+  {
+    return ReferenceEquals(this, obj) || obj is Url other && Equals(other);
+  }
+
+  public override int GetHashCode()
+  {
+    return HashCode.Combine(Link, Description);
   }
 }
