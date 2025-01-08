@@ -11,6 +11,7 @@ using Domain;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Jobs.EventImporter;
+using Jobs.ProjectImporter;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
@@ -139,7 +140,8 @@ public class Startup(IConfiguration configuration)
   {
     Console.WriteLine("adding jobs to hangfire...");
 
-    RecurringJob.AddOrUpdate<EventImporter>("EventImporterJob", (importer) => importer.Import(), Cron.Daily);
+    RecurringJob.AddOrUpdate<EventImporter>("EventImporter", (importer) => importer.Import(), Cron.Daily);
+    RecurringJob.AddOrUpdate<ProjectImporter>("ProjectImporter", (importer) => importer.Import(), Cron.Daily);
   }
 
   /// <summary>

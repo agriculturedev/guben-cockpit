@@ -34,6 +34,7 @@ public class GubenDbContextFactory : ICustomDbContextFactory<GubenDbContext>
       .EnableSensitiveDataLogging()
       .LogTo(Console.WriteLine, (eventId, logLevel) => logLevel >= LogLevel.Information
                                                        || eventId == RelationalEventId.DataReaderDisposing);
+
     _dbContext = new GubenDbContext(dbOptions.Options);
 
     return _dbContext;
