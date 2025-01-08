@@ -38,7 +38,8 @@ public class ProjectImporter
       {
         try
         {
-          await ProcessProjectAsync(project).UseTransaction(_dbContextFactory);
+          await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory,
+            async dbContext => { await ProcessProjectAsync(project); });
         }
         catch
         {
@@ -77,13 +78,13 @@ public class ProjectImporter
 
     if (result.IsSuccessful)
     {
-      // var existingProject = await _projectRepository.Get(project.Id);
-      //
-      // if (existingProject is not null)
-      // {
-      //   // update logic
-      //   return;
-      // }
+      var existingProject = await _projectRepository.Get(project.Id);
+
+      if (existingProject is not null)
+      {
+        // update logic
+        return;
+      }
 
       await _projectRepository.SaveAsync(project);
       Console.WriteLine("Project saved.");

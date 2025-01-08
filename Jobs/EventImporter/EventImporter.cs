@@ -79,7 +79,7 @@ public class EventImporter
 
   private async Task SaveEventAsync(XElement e)
   {
-    await ExecuteTransactionAsync(async dbContext =>
+    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async dbContext =>
     {
       var coords = ParseCoordinates(e);
       var location = await GetLocationAsync(e);
@@ -125,7 +125,7 @@ public class EventImporter
       return;
     }
 
-    await ExecuteTransactionAsync(async dbContext =>
+    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async dbContext =>
     {
       var (locationResult, location) = Location.Create(
         locationDetails.Name,
@@ -156,7 +156,7 @@ public class EventImporter
       .Where(result => result.IsSuccessful)
       .Select(result => result.Value);
 
-    await ExecuteTransactionAsync(async dbContext => { await UpsertCategoriesAsync(categories.ToList()); });
+    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async dbContext => { await UpsertCategoriesAsync(categories.ToList()); });
   }
 
   private Coordinates? ParseCoordinates(XElement xml)
@@ -201,23 +201,6 @@ public class EventImporter
     }
 
     return categories;
-  }
-
-  private async Task ExecuteTransactionAsync(Func<DbContext, Task> action)
-  {
-    await using var dbContext = _dbContextFactory.CreateNew();
-    await using var transaction = await dbContext.Database.BeginTransactionAsync();
-    try
-    {
-      await action(dbContext);
-      await dbContext.SaveChangesAsync();
-      await transaction.CommitAsync();
-    }
-    catch
-    {
-      await transaction.RollbackAsync();
-      throw;
-    }
   }
 
   private async Task UpsertEventAsync(Event @event)
@@ -289,8 +272,8 @@ public class EventImporter
     var zeitVon = (string?)e.Element("E_ZEIT_VON");
     var zeitBis = (string?)e.Element("E_ZEIT_BIS");
 
-    var parsedZeitVon = !string.IsNullOrWhiteSpace(zeitVon) ? $"T{zeitVon}" : string.Empty ;
-    var parsedZeitBis = !string.IsNullOrWhiteSpace(zeitBis) ? $"T{zeitBis}" : string.Empty ;
+    var parsedZeitVon = !string.IsNullOrWhiteSpace(zeitVon) ? $"T{zeitVon}" : string.Empty;
+    var parsedZeitBis = !string.IsNullOrWhiteSpace(zeitBis) ? $"T{zeitBis}" : string.Empty;
 
     return (
       EventId: (string?)e.Element("EVENT_ID") ?? "",
