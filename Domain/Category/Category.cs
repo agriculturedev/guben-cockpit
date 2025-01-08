@@ -5,7 +5,7 @@ using Shared.Domain.Validation;
 
 namespace Domain.Category;
 
-public sealed class Category : Entity<Guid>
+public sealed class Category : Entity<Guid>, IEquatable<Category>
 {
   public int CategoryId { get; private set; }
   public string Name { get; private set; }
@@ -26,5 +26,22 @@ public sealed class Category : Entity<Guid>
       return Result.Error(TranslationKeys.NameCannotBeEmpty);
 
     return new Category(categoryId, name);
+  }
+
+  public bool Equals(Category? other)
+  {
+    if (other is null) return false;
+    if (ReferenceEquals(this, other)) return true;
+    return CategoryId == other.CategoryId && Name == other.Name;
+  }
+
+  public override bool Equals(object? obj)
+  {
+    return ReferenceEquals(this, obj) || obj is Category other && Equals(other);
+  }
+
+  public override int GetHashCode()
+  {
+    return HashCode.Combine(CategoryId, Name);
   }
 }
