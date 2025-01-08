@@ -12,21 +12,21 @@ public sealed class Project : Entity<string>
   public string? ImageUrl { get; private set; }
   public string? ImageCredits { get; private set; }
 
-  private Project(string projectId, string title, string? description, string? imageCaption, string? imageUrl, string?
+  private Project(string id, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
     imageCredits)
   {
-    Id = projectId;
+    Id = id;
     Title = title;
     Description = description;
-    FullText = description;
+    FullText = fullText;
     ImageCaption = imageCaption;
     ImageUrl = imageUrl;
     ImageCredits = imageCredits;
   }
 
-  public static Result<Project> Create(string projectId, string title, string? description, string? imageCaption,
+  public static Result<Project> Create(string id, string title, string? description, string? fullText, string? imageCaption,
     string? imageUrl, string? imageCredits)
   {
-    return new Project(projectId, title, description, imageCaption, imageUrl, imageCredits);
+    return new Project(id, title, description, fullText, imageCaption, imageUrl, imageCredits);
   }
 }
