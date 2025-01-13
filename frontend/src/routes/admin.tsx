@@ -12,7 +12,7 @@ function AdminComponent() {
 
   useEffect(() => {
     if (!auth.isAuthenticated && !auth.error && !auth.isLoading) {
-      void auth.signinRedirect();
+      void auth.signinRedirect( {redirect_uri: `${window.location}`} );
     }
   }, [auth]);
 
