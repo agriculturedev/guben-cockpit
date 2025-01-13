@@ -25,9 +25,9 @@ function RootComponent() {
       <div className={"min-h-dvh bg-background flex flex-col"}>
         <Navigation/>
         <Outlet/>
-        <ReactQueryDevtools initialIsOpen={false} position={"bottom"}/>
+        {/*<ReactQueryDevtools initialIsOpen={false} position={"bottom"}/>*/}
         <Footer/>
-        <TanStackRouterDevtools position="bottom-left"/>
+        {/*<TanStackRouterDevtools position="bottom-left"/>*/}
       </div>
     )
   // }
