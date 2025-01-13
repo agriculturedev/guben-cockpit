@@ -18,8 +18,6 @@ public class CreateEventQuery : IApiRequest<CreateEventResponse>
 
   public List<Guid> CategoryIds { get; set; } = [];
   public Guid LocationId { get; set; }
-
-
 }
 
 public class CreateUrlQuery

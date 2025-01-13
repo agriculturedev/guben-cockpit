@@ -1,4 +1,5 @@
-﻿using Domain.Events;
+﻿using Domain;
+using Domain.Events;
 using Domain.Events.repository;
 using Microsoft.EntityFrameworkCore;
 using Shared.Database;
@@ -42,6 +43,7 @@ public class EventRepository
       .Include(e => e.Urls)
       .Include(e => e.Categories)
       .ApplyGetAllFilters(filter)
+      .ApplySorting(filter)
       .ToPagedResult(pagination);
   }
 }
@@ -68,6 +70,41 @@ internal static class EventRepositoryExtensions
       query = query.Where(w => EF.Functions.Like(w.Location.Name.ToLower(), "%" + filter.LocationQuery.ToLower() + "%")
                                || (w.Location.City != null && EF.Functions.Like(w.Location.City.ToLower(), "%" + filter
                                .LocationQuery.ToLower() + "%")));
+
+    return query;
+  }
+
+  internal static IQueryable<Event> ApplySorting(this IQueryable<Event> query, EventFilterCriteria filter)
+  {
+    if (!filter.SortBy.HasValue || !filter.SortDirection.HasValue)
+      return query;
+
+    switch (filter.SortBy)
+    {
+      case EventSortOption.Title:
+        switch (filter.SortDirection)
+        {
+          case SortDirection.Ascending:
+            query = query.OrderBy(w => w.Title);
+            break;
+          case SortDirection.Descending:
+            query = query.OrderByDescending(w => w.Title);
+            break;
+        }
+        break;
+
+      case EventSortOption.StartDate:
+        switch (filter.SortDirection)
+        {
+          case SortDirection.Ascending:
+            query = query.OrderBy(w => w.StartDate);
+            break;
+          case SortDirection.Descending:
+            query = query.OrderByDescending(w => w.StartDate);
+            break;
+        }
+        break;
+    }
 
     return query;
   }

@@ -13,10 +13,6 @@ public abstract class PagedQuery
   [DefaultValue(DefaultPageSize)]
   public int PageSize { get; init; } = DefaultPageSize;
 
-  // TODO: do we want to move this?
-  public string? SortKey { get; set; }
-  public string? SortDirection { get; set; }
-
   public static implicit operator PagedCriteria(PagedQuery query)
   {
     return new PagedCriteria(query.PageNumber, query.PageSize);

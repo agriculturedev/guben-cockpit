@@ -22,6 +22,42 @@ export type CoordinatesResponse = {
   longitude?: number;
 } | null;
 
+export type CreateEventQuery = {
+  eventId?: string;
+  terminId?: string;
+  title: string;
+  description: string;
+  /**
+   * @format date-time
+   */
+  startDate?: string;
+  /**
+   * @format date-time
+   */
+  endDate?: string;
+  /**
+   * @format double
+   */
+  latitude?: number;
+  /**
+   * @format double
+   */
+  longitude?: number;
+  urls?: CreateUrlQuery[];
+  categoryIds?: string[];
+  /**
+   * @format uuid
+   */
+  locationId?: string;
+};
+
+export type CreateEventResponse = Record<string, any>;
+
+export type CreateUrlQuery = {
+  link?: string;
+  description?: string;
+};
+
 export type CreateUserQuery = {
   keycloakId: string;
 };
@@ -35,9 +71,10 @@ export type CreateUserResponse = {
 
 export type EventResponse = {
   /**
-   * @format int32
+   * @format uuid
    */
-  id: number;
+  id: string;
+  eventId: string;
   title: string;
   description: string;
   /**

@@ -1,3 +1,5 @@
+using Api.Controllers.Events.Shared;
+using Api.Shared;
 using Shared.Api;
 using Shared.Api.Pagination;
 
@@ -11,4 +13,6 @@ public class GetAllEventsQuery : PagedQuery, IApiRequest<GetAllEventsResponse>
   public DateOnly? StartDate { get; set; }
   public DateOnly? EndDate { get; set; }
 
+  public EventSortOption? SortBy { get; set; }
+  public SortDirection? SortDirection { get; set; }
 }

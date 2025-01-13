@@ -9,4 +9,6 @@ public class EventFilterCriteria
   public DateOnly? StartDateQuery { get; set; }
   public DateOnly? EndDateQuery { get; set; }
 
+  public EventSortOption? SortBy { get; set; }
+  public SortDirection? SortDirection { get; set; }
 }

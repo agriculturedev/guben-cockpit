@@ -247,51 +247,23 @@ export const useLocationsGetAll = <TData = Schemas.GetAllLocationsResponse,>(
   });
 };
 
-export type LocationsGetOrCreateError = Fetcher.ErrorWrapper<{
-  status: 400;
-  payload: Schemas.ProblemDetails;
-}>;
-
-export type LocationsGetOrCreateVariables = GubenContext["fetcherOptions"];
-
-export const fetchLocationsGetOrCreate = (
-  variables: LocationsGetOrCreateVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<
-    Schemas.GetAllLocationsResponse,
-    LocationsGetOrCreateError,
-    undefined,
-    {},
-    {},
-    {}
-  >({ url: "/locations", method: "post", ...variables, signal });
-
-export const useLocationsGetOrCreate = (
-  options?: Omit<
-    reactQuery.UseMutationOptions<
-      Schemas.GetAllLocationsResponse,
-      LocationsGetOrCreateError,
-      LocationsGetOrCreateVariables
-    >,
-    "mutationFn"
-  >,
-) => {
-  const { fetcherOptions } = useGubenContext();
-  return reactQuery.useMutation<
-    Schemas.GetAllLocationsResponse,
-    LocationsGetOrCreateError,
-    LocationsGetOrCreateVariables
-  >({
-    mutationFn: (variables: LocationsGetOrCreateVariables) =>
-      fetchLocationsGetOrCreate({ ...fetcherOptions, ...variables }),
-    ...options,
-  });
-};
-
 export type EventsGetAllQueryParams = {
   title?: string;
   location?: string;
+  /**
+   * @format uuid
+   */
+  categoryId?: string;
+  /**
+   * @format date
+   */
+  startDate?: string;
+  /**
+   * @format date
+   */
+  endDate?: string;
+  sortBy?: "Title" | "StartDate";
+  sortDirection?: "Ascending" | "Descending";
   /**
    * @format int32
    * @default 1
@@ -352,6 +324,50 @@ export const useEventsGetAll = <TData = Schemas.GetAllEventsResponse,>(
       fetchEventsGetAll({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
+  });
+};
+
+export type EventsCreateEventError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsCreateEventVariables = {
+  body: Schemas.CreateEventQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsCreateEvent = (
+  variables: EventsCreateEventVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateEventResponse,
+    EventsCreateEventError,
+    Schemas.CreateEventQuery,
+    {},
+    {},
+    {}
+  >({ url: "/events", method: "post", ...variables, signal });
+
+export const useEventsCreateEvent = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateEventResponse,
+      EventsCreateEventError,
+      EventsCreateEventVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateEventResponse,
+    EventsCreateEventError,
+    EventsCreateEventVariables
+  >({
+    mutationFn: (variables: EventsCreateEventVariables) =>
+      fetchEventsCreateEvent({ ...fetcherOptions, ...variables }),
+    ...options,
   });
 };
 

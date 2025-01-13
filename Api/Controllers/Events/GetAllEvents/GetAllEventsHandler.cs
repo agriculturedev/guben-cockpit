@@ -1,6 +1,7 @@
 using Api.Controllers.Events.Shared;
 using Domain.Events.repository;
 using Shared.Api;
+using Api.Shared;
 
 namespace Api.Controllers.Events.GetAllEvents;
 
@@ -23,6 +24,8 @@ public class GetAllEventsHandler : ApiRequestHandler<GetAllEventsQuery, GetAllEv
       CategoryIdQuery = request.CategoryId,
       StartDateQuery = request.StartDate,
       EndDateQuery = request.EndDate,
+      SortBy = request.SortBy?.MapToDomain(),
+      SortDirection = request.SortDirection?.MapToDomain(),
     };
 
     var pagedResult = await _eventRepository.GetAllEventsPaged(request, filter);
