@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import {HomeIcon, ListBulletIcon, MapIcon, Squares2X2Icon} from "@heroicons/react/24/outline";
 import {CustomTooltip} from "@/components/general/Tooltip";
+import { IceCreamConeIcon } from "lucide-react";
 
 export const Navigation = () => {
     const linkStyle = "h-full p-3 flex items-center justify-center w-auto rounded-xl group hover:bg-[#cd1421]";
@@ -13,37 +14,44 @@ export const Navigation = () => {
                 </Link>
                 <img src="/smart-city-guben-logo.svg" alt="logo" className={"h-[70%]"}/>
             </div>
-            <ul className="flex-1 flex flex-row h-full items-center justify-center self-center">
-                <li>
-                    <CustomTooltip text="Dashboard">
-                        <Link to="/" className={linkStyle}>
-                            <HomeIcon className="icon h-[20px] w-[20px] text-[#cd1421] group-hover:text-white"/>
-                        </Link>
-                    </CustomTooltip>
-                </li>
-                <li>
-                    <CustomTooltip text="Projekte">
-                        <Link to="/projects" className={linkStyle}>
-                            <Squares2X2Icon className="icon h-[20px] w-[20px] text-[#cd1421] group-hover:text-white"/>
-                        </Link>
-                    </CustomTooltip>
-                </li>
-                <li>
-                    <CustomTooltip text="Karte">
-                        <Link to="/map" className={linkStyle}>
-                            <MapIcon className="icon h-[20px] w-[20px] text-[#cd1421] group-hover:text-white"/>
-                        </Link>
-                    </CustomTooltip>
-                </li>
-                <li>
-                    <CustomTooltip text="Veranstaltungen">
-                        <Link to="/events" className={linkStyle}>
-                            <ListBulletIcon className="icon h-[20px] w-[20px] text-[#cd1421] group-hover:text-white"/>
-                        </Link>
-                    </CustomTooltip>
-                </li>
-            </ul>
-            <div className="flex-1"></div>
+          <ul className="flex-1 flex flex-row h-full items-center justify-center self-center">
+            <li>
+              <CustomTooltip text="Dashboard">
+                <Link to="/" className={linkStyle}>
+                  <HomeIcon className="icon h-[20px] w-[20px] text-[#cd1421] group-hover:text-white"/>
+                </Link>
+              </CustomTooltip>
+            </li>
+            <li>
+              <CustomTooltip text="Projekte">
+                <Link to="/projects" className={linkStyle}>
+                  <Squares2X2Icon className="icon h-[20px] w-[20px] text-[#cd1421] group-hover:text-white"/>
+                </Link>
+              </CustomTooltip>
+            </li>
+            <li>
+              <CustomTooltip text="Karte">
+                <Link to="/map" className={linkStyle}>
+                  <MapIcon className="icon h-[20px] w-[20px] text-[#cd1421] group-hover:text-white"/>
+                </Link>
+              </CustomTooltip>
+            </li>
+            <li>
+              <CustomTooltip text="Veranstaltungen">
+                <Link to="/events" className={linkStyle}>
+                  <ListBulletIcon className="icon h-[20px] w-[20px] text-[#cd1421] group-hover:text-white"/>
+                </Link>
+              </CustomTooltip>
+            </li>
+            <li>
+              <CustomTooltip text="Admin">
+                <Link to="/admin" className={linkStyle}>
+                  <IceCreamConeIcon className="icon h-[20px] w-[20px] text-[#cd1421] group-hover:text-white"/>
+                </Link>
+              </CustomTooltip>
+            </li>
+          </ul>
+          <div className="flex-1"></div>
         </div>
     )
 }

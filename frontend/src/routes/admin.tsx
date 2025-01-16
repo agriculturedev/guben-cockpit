@@ -2,12 +2,15 @@ import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useAuth } from "react-oidc-context";
 import { useEffect } from "react";
+import {useTranslation} from "react-i18next";
+import { UserList } from "@/components/admin/AllUsers";
 
 export const Route = createFileRoute('/admin')({
   component: AdminComponent,
 })
 
 function AdminComponent() {
+  const {t} = useTranslation();
   const auth = useAuth();
 
   useEffect(() => {
@@ -18,9 +21,11 @@ function AdminComponent() {
 
   if (auth.isAuthenticated) {
     return (
-      <div>
-        admin test dashboard, keycloak login required
-        welcome {auth.user?.profile.name}
+      <div className={"flex flex-col"}>
+        <p>admin test dashboard, keycloak login required</p>
+        <p>welcome {auth.user?.profile.name}</p>
+        <p>{t("Test")}</p>
+        <UserList/>
       </div>
     )
   }

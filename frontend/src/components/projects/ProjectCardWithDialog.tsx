@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog"
 import { ProjectListResponseDataItem } from "@/endpoints/gubenProdSchemas";
 import { ProjectCard, ProjectCard2 } from "@/components/projects/ProjectCard";
-import { isNullOrUndefinedOrWhiteSpace } from "@/lib/stringUtils";
+import { isNullOrUndefinedOrWhiteSpace } from "@/utilities/stringUtils";
 import { ProjectResponse } from "@/endpoints/gubenSchemas";
 
 interface Props {

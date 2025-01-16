@@ -3,8 +3,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useGetProjectView } from '@/endpoints/gubenProdComponents'
 import { View } from "@/components/layout/View";
 import { FeaturedProjectsList, FeaturedProjectsList2 } from "@/components/projects/FeaturedProjects";
-import { isNullOrUndefinedOrEmpty } from "@/lib/nullabilityUtils";
-import { useEventsGetAll, useProjectsGetAll } from "@/endpoints/gubenComponents";
+import { isNullOrUndefinedOrEmpty } from "@/utilities/nullabilityUtils";
+import { useProjectsGetAll } from "@/endpoints/gubenComponents";
 
 export const Route = createFileRoute('/projects')({
   component: ProjectsComponent,

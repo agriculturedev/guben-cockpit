@@ -1,7 +1,7 @@
 import {useCallback, useState} from "react";
 import {FilterController, QueryFilter, UseFilterHook} from "@/types/filtering.types";
 import {HashMap, Option} from "@/types/common.types";
-import {tryGetEnumValue} from "@/lib/enumUtils";
+import {tryGetEnumValue} from "@/utilities/enumUtils";
 
 export enum DateFilterPreset {
   TODAY = 'today',

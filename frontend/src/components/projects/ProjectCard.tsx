@@ -1,7 +1,7 @@
 import { ProjectListResponseDataItem } from "@/endpoints/gubenProdSchemas";
 import { Card, CardDescription, CardHeader, CardHeaderImage, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { isNullOrUndefinedOrWhiteSpace } from "@/lib/stringUtils";
+import { isNullOrUndefinedOrWhiteSpace } from "@/utilities/stringUtils";
 import { ProjectResponse } from "@/endpoints/gubenSchemas";
 
 interface ProjectCardProps {

@@ -28,6 +28,11 @@ public class EnsureUserExistsBehavior<TRequest, TResponse> : IPipelineBehavior<T
   public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
     CancellationToken cancellationToken)
   {
+    if (request is not IAuthenticatedApiRequest)
+    {
+      return await next();
+    }
+
     var keycloakId = _httpContextAccessor.HttpContext?.User.GetKeycloakId();
 
     if (!string.IsNullOrEmpty(keycloakId))

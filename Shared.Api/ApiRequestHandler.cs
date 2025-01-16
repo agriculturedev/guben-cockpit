@@ -18,3 +18,11 @@ public interface IApiRequest<TResponse> : IRequest<TResponse>
 public interface IApiRequestWithCustomTransactions
 {
 }
+
+/// <summary>
+/// Marker/Tagging interface to indicate that the handler for the request will require a logged in user
+/// </summary>
+public interface IAuthenticatedApiRequest
+{
+}
+

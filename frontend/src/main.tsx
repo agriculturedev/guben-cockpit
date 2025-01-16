@@ -2,11 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
-import "./lib"
+import "./utilities"
 import "./index.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "react-oidc-context";
 import { User } from "oidc-client-ts";
+
+import "./utilities/i18n/initializeTranslations.ts";
+import "./utilities/dateExtensions"
 
 const queryClient = new QueryClient();
 

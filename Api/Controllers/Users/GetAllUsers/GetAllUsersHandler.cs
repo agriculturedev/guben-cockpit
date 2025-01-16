@@ -5,7 +5,7 @@ using Shared.Api;
 namespace Api.Controllers.Users.GetAllUsers;
 
 public class GetAllUsersHandler : ApiRequestHandler<GetAllUsersQuery, GetAllUsersResponse>,
-  IApiRequestWithCustomTransactions
+  IApiRequestWithCustomTransactions, IAuthenticatedApiRequest
 {
   private readonly IUserRepository _userRepository;
 

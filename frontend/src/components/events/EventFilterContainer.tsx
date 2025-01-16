@@ -5,7 +5,7 @@ import {CategoryFilter} from "@/components/filters/CategoryFilter";
 import {useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 import {useMemo} from "react";
 import {ReactNode} from "@tanstack/react-router";
-import {getContrast, getHexColorFromText, hexToRgb} from "@/lib/colorUtils";
+import {getContrast, getHexColorFromText, hexToRgb} from "@/utilities/colorUtils";
 import {FilterTag} from "@/components/general/FilterTag";
 import { SortFilter } from "@/components/filters/SortFilter";
 
