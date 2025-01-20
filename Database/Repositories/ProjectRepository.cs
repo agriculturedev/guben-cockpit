@@ -23,4 +23,12 @@ public class ProjectRepository
       .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllProjects))
       .AsEnumerable();
   }
+
+  public Task<List<Project>> GetAllByIds(IList<string> ids)
+  {
+    return Set
+      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllByIds))
+      .Where(p => ids.Contains(p.Id))
+      .ToListAsync();
+  }
 }

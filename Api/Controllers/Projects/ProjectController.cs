@@ -1,6 +1,8 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.Events.GetAllEvents;
 using Api.Controllers.Projects.GetAllProjects;
+using Api.Controllers.Projects.PublishProjects;
+using Api.Controllers.Projects.UnpublishProjects;
 using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -34,14 +36,31 @@ public class ProjectController : ControllerBase
     return Results.Ok(result);
   }
 
-  [HttpPost]
-  [EndpointName("ProjectsPublish")]
+  [HttpPut("Publish")]
+  [EndpointName("ProjectsPublishProjects")]
   [Authorize(KeycloakPolicies.PublishProjects)]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllProjectsResponse))]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PublishProjectsResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> PublishProject()
+  public async Task<IResult> PublishProject([FromBody] List<string> projectIds)
   {
-    var result = await _mediator.Send(new GetAllProjectsQuery());
+    var result = await _mediator.Send(new PublishProjectsQuery()
+    {
+      ProjectIds = projectIds,
+    });
+    return Results.Ok(result);
+  }
+
+  [HttpPut("Unpublish")]
+  [EndpointName("ProjectsUnpublishProjects")]
+  [Authorize(KeycloakPolicies.PublishProjects)]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UnpublishProjectsResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> UnpublishProject([FromBody] List<string> projectIds)
+  {
+    var result = await _mediator.Send(new UnpublishProjectsQuery()
+    {
+      ProjectIds = projectIds,
+    });
     return Results.Ok(result);
   }
 

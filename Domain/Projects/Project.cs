@@ -11,6 +11,7 @@ public sealed class Project : Entity<string>
   public string? ImageCaption { get; private set; }
   public string? ImageUrl { get; private set; }
   public string? ImageCredits { get; private set; }
+  public bool Published { get; private set; }
 
   private Project(string id, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
     imageCredits)
@@ -22,11 +23,22 @@ public sealed class Project : Entity<string>
     ImageCaption = imageCaption;
     ImageUrl = imageUrl;
     ImageCredits = imageCredits;
+    Published = false;
   }
 
   public static Result<Project> Create(string id, string title, string? description, string? fullText, string? imageCaption,
     string? imageUrl, string? imageCredits)
   {
     return new Project(id, title, description, fullText, imageCaption, imageUrl, imageCredits);
+  }
+
+  public void Publish()
+  {
+    Published = true;
+  }
+
+  public void UnPublish()
+  {
+    Published = false;
   }
 }

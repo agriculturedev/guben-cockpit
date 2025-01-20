@@ -43,7 +43,6 @@
       <Folder Include="Controllers\Events\UpdateEvent\" />
       <Folder Include="Controllers\Projects\CreateProject\" />
       <Folder Include="Controllers\Projects\DeleteProject\" />
-      <Folder Include="Controllers\Projects\PublishProject\" />
       <Folder Include="Controllers\Projects\UpdateProject\" />
     </ItemGroup>
 

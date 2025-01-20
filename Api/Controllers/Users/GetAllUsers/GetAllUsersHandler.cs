@@ -16,7 +16,7 @@ public class GetAllUsersHandler : ApiRequestHandler<GetAllUsersQuery, GetAllUser
 
   public override async Task<GetAllUsersResponse> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
   {
-    var users = await _userRepository.GetAll(e => new UserResponse()
+    var users = await _userRepository.GetAllProjected(e => new UserResponse()
     {
       Id = e.Id,
       KeycloakId = e.KeycloakId,
