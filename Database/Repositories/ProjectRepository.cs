@@ -10,14 +10,18 @@ namespace Database.Repositories;
 public class ProjectRepository
   : EntityFrameworkRepository<Project, string, GubenDbContext>, IProjectRepository
 {
+
+  private readonly IQueryable<Project> _publishedSet;
+
   public ProjectRepository(ICustomDbContextFactory<GubenDbContext> dbContextFactory)
     : base(dbContextFactory)
   {
+    _publishedSet = Set.Where(p => p.Published);
   }
 
   public IEnumerable<Project> GetAllProjects()
   {
-    return Set
+    return _publishedSet
       .AsNoTracking()
       .AsSplitQuery()
       .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllProjects))
@@ -26,7 +30,7 @@ public class ProjectRepository
 
   public Task<List<Project>> GetAllByIds(IList<string> ids)
   {
-    return Set
+    return _publishedSet
       .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllByIds))
       .Where(p => ids.Contains(p.Id))
       .ToListAsync();

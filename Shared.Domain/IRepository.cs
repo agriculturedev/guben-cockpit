@@ -17,6 +17,7 @@ public interface IRepository<TEntity, TKey> where
   /// </summary>
   /// <returns>All entities of a specific type</returns>
   Task<List<TEntity>> GetAll();
+  Task<PagedResult<TEntity>> GetAllPaged(PagedCriteria criteria);
   Task<List<TProjection>> GetAllProjected<TProjection>(Expression<Func<TEntity, TProjection>> projection);
   Task<List<TProjection>> GetAllNonTrackingProjected<TProjection>(Expression<Func<TEntity, TProjection>> projection);
   Task<List<TProjection>> GetAllNonTrackingSplitQueryProjected<TProjection>(Expression<Func<TEntity, TProjection>> projection);

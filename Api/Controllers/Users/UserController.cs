@@ -1,6 +1,5 @@
 ﻿using System.Net.Mime;
 using System.Security.Claims;
-using Api.Controllers.Users.CreateUser;
 using Api.Controllers.Users.GetAllUsers;
 using Api.Controllers.Users.GetMe;
 using Api.Controllers.Users.GetUser;
@@ -8,6 +7,7 @@ using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api.Pagination;
 
 namespace Api.Controllers.Users;
 
@@ -31,6 +31,8 @@ public class UserController : ControllerBase
   /// <summary>
   /// Returns all users
   /// </summary>
+  /// <param name="pageNumber"></param>
+  /// <param name="pageSize"></param>
   /// <response code="200">Returns all users.</response>
   /// <response code="400">Server cannot/will not process the request due to perceiving a client error. (Bad Request)</response>
   [HttpGet]
@@ -38,16 +40,13 @@ public class UserController : ControllerBase
   [EndpointName("UsersGetAll")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllUsersResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> GetAll()
+  public async Task<IResult> GetAll([FromQuery] int pageNumber = PagedQuery.DefaultPageNumber, [FromQuery] int pageSize = PagedQuery.DefaultPageSize)
   {
-    // Extract the "sub" claim which represents the Keycloak user ID
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Standard claim type
-    if (userId == null)
+    var result = await _mediator.Send(new GetAllUsersQuery()
     {
-      return Results.Unauthorized();
-    }
-
-    var result = await _mediator.Send(new GetAllUsersQuery());
+      PageNumber = pageNumber,
+      PageSize = pageSize
+    });
     return Results.Ok(result);
   }
 
@@ -83,22 +82,6 @@ public class UserController : ControllerBase
     var result = await _mediator.Send(new GetMeQuery()
     {
     });
-    return Results.Ok(result);
-  }
-
-
-  /// <summary>
-  /// Creates a new user
-  /// </summary>
-  /// <response code="201">User has been created.</response>
-  /// <response code="400">Server cannot/will not process the request due to perceiving a client error. (Bad Request)</response>
-  [HttpPost]
-  [EndpointName("UsersCreateUser")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateUserResponse))]
-  [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> CreateUser([FromBody] CreateUserQuery request)
-  {
-    var result = await _mediator.Send(request);
     return Results.Ok(result);
   }
 }

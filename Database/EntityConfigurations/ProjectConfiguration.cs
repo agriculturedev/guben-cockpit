@@ -22,5 +22,6 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     builder.Property(e => e.ImageCaption).IsRequired();
     builder.Property(e => e.ImageUrl).IsRequired();
     builder.Property(e => e.ImageCredits).IsRequired();
+    builder.Property(e => e.Published).IsRequired();
   }
 }

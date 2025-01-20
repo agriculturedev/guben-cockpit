@@ -1,11 +1,12 @@
-﻿using Domain;
+﻿using Api.Controllers.Users.Shared;
+using Domain;
 using Domain.Users.repository;
 using Shared.Api;
 using Shared.Domain.Validation;
 
 namespace Api.Controllers.Users.GetUser;
 
-public class GetUserHandler : ApiRequestHandler<GetUserQuery, GetUserResponse>, IApiRequestWithCustomTransactions
+public class GetUserHandler : ApiRequestHandler<GetUserQuery, GetUserResponse>
 {
   private readonly IUserRepository _userRepository;
 
@@ -20,10 +21,6 @@ public class GetUserHandler : ApiRequestHandler<GetUserQuery, GetUserResponse>, 
     if (user is null)
       throw new ProblemDetailsException(ValidationMessage.CreateError(TranslationKeys.UserNotFound));
 
-    return new GetUserResponse()
-    {
-      Id = user.Id,
-      KeycloakId = user.KeycloakId,
-    };
+    return (UserResponse.Map(user) as GetUserResponse)!;
   }
 }

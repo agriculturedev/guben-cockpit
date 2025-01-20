@@ -1,4 +1,5 @@
-﻿using Api.Infrastructure.Extensions;
+﻿using Api.Controllers.Users.Shared;
+using Api.Infrastructure.Extensions;
 using Domain;
 using Domain.Users.repository;
 using Shared.Api;
@@ -6,7 +7,7 @@ using Shared.Domain.Validation;
 
 namespace Api.Controllers.Users.GetMe;
 
-public class GetMeHandler : ApiRequestHandler<GetMeQuery, GetMeResponse>, IApiRequestWithCustomTransactions, IAuthenticatedApiRequest
+public class GetMeHandler : ApiRequestHandler<GetMeQuery, GetMeResponse>
 {
   private readonly IUserRepository _userRepository;
   private readonly IHttpContextAccessor _httpContextAccessor;
@@ -27,10 +28,6 @@ public class GetMeHandler : ApiRequestHandler<GetMeQuery, GetMeResponse>, IApiRe
     if (user is null)
       throw new ProblemDetailsException(ValidationMessage.CreateError(TranslationKeys.UserNotFound));
 
-    return new GetMeResponse()
-    {
-      Id = user.Id,
-      KeycloakId = user.KeycloakId,
-    };
+    return (UserResponse.Map(user) as GetMeResponse)!;
   }
 }

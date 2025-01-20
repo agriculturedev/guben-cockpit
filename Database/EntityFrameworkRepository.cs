@@ -78,6 +78,15 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
             .ToListAsync();
     }
 
+    public Task<PagedResult<TEntity>> GetAllPaged(PagedCriteria criteria)
+    {
+      return Set
+        .TagWith(GetType().Name + '.' + nameof(GetAllPaged))
+        .AsNoTracking()
+        .IgnoreAutoIncludes()
+        .ToPagedResult(criteria);
+    }
+
     public Task<List<TProjection>> GetAllProjected<TProjection>(Expression<Func<TEntity, TProjection>> projection)
     {
         return Set

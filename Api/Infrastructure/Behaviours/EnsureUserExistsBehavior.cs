@@ -47,11 +47,40 @@ public class EnsureUserExistsBehavior<TRequest, TResponse> : IPipelineBehavior<T
         .ConfigureAwait(false);
       try
       {
-        var (newUserResult, newUser) = User.Create(keycloakId);
+        var firstName = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.GivenName);
+        var lastName = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Surname);
+        var email = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+
+        var (newUserResult, newUser) = User.Create(keycloakId, firstName, lastName, email);
         if (newUserResult.IsFailure)
           throw new ProblemDetailsException(TranslationKeys.CreatingUserFailed);
 
         await _userRepository.SaveAsync(newUser);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        await tx.CommitAsync(cancellationToken).ConfigureAwait(false);
+      }
+      catch
+      {
+        await tx.RollbackAsync(cancellationToken).ConfigureAwait(false);
+        throw; // Re-throw the exception to maintain the pipeline's behavior.
+      }
+    }
+    else
+    {
+      await using var tx = await dbContext.Database.BeginTransactionAsync(cancellationToken)
+        .ConfigureAwait(false);
+      try
+      {
+        var user = await _userRepository.GetByKeycloakId(keycloakId);
+        if (user is null )
+          throw new ProblemDetailsException(TranslationKeys.UserNotFound);
+
+        var firstName = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.GivenName);
+        var lastName = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Surname);
+        var email = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+
+        user.Update(firstName, lastName, email);
+
         await dbContext.SaveChangesAsync(cancellationToken);
         await tx.CommitAsync(cancellationToken).ConfigureAwait(false);
       }

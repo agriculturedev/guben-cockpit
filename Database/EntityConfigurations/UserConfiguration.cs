@@ -14,5 +14,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     builder.Property(e => e.Id).ValueGeneratedNever();
 
     builder.Property(e => e.KeycloakId).HasMaxLength(50);
+    builder.Property(e => e.FirstName).HasMaxLength(50);
+    builder.Property(e => e.LastName).HasMaxLength(50);
+    builder.Property(e => e.Email).HasMaxLength(100);
   }
 }

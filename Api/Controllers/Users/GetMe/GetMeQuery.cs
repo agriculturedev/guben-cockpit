@@ -2,6 +2,6 @@
 
 namespace Api.Controllers.Users.GetMe;
 
-public class GetMeQuery : IApiRequest<GetMeResponse>
+public class GetMeQuery : IApiRequestWithCustomTransactions, IAuthenticatedApiRequest, IApiRequest<GetMeResponse>
 {
 }

@@ -4,8 +4,7 @@ using Shared.Api;
 
 namespace Api.Controllers.Users.GetAllUsers;
 
-public class GetAllUsersHandler : ApiRequestHandler<GetAllUsersQuery, GetAllUsersResponse>,
-  IApiRequestWithCustomTransactions, IAuthenticatedApiRequest
+public class GetAllUsersHandler : ApiRequestHandler<GetAllUsersQuery, GetAllUsersResponse>
 {
   private readonly IUserRepository _userRepository;
 
@@ -16,15 +15,15 @@ public class GetAllUsersHandler : ApiRequestHandler<GetAllUsersQuery, GetAllUser
 
   public override async Task<GetAllUsersResponse> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
   {
-    var users = await _userRepository.GetAllProjected(e => new UserResponse()
-    {
-      Id = e.Id,
-      KeycloakId = e.KeycloakId,
-    });
+    var pagedResult = await _userRepository.GetAllPaged(request);
 
     return new GetAllUsersResponse
     {
-      Users = users
+      PageNumber = pagedResult.PageNumber,
+      PageSize = pagedResult.PageSize,
+      TotalCount = pagedResult.TotalCount,
+      PageCount = pagedResult.PageCount,
+      Results = pagedResult.Results.Select(UserResponse.Map)
     };
   }
 }
