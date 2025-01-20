@@ -1,4 +1,6 @@
 {
   "Test": "test but in german",
-  "LogOut": "Abmelden"
+  "NoResults": "No results",
+  "Name": "Name",
+  "Email": "Email"
 }

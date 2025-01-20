@@ -10,10 +10,10 @@ export const Navigation = () => {
   const linkStyle = "h-full p-3 flex items-center justify-center w-auto rounded-xl group hover:bg-[#cd1421]";
   const iconStyle = "icon h-5 w-5 text-[#cd1421] group-hover:text-white";
   const auth = useAuth();
-  const {t} = useTranslation();
+  const {t} = useTranslation("navigation");
 
   return (
-    <div className="w-full h-20 bg-white sticky top-0 z-10 shadow p-0 rounded-b flex items-center justify-between">
+    <div className="w-full h-20 bg-white sticky top-0 z-10 shadow p-0 pr-2 rounded-b flex items-center justify-between">
       <div id="logo" className="flex-1 flex justify-start items-center h-full pl-5">
         <Link to="/" className="h-full flex justify-center items-center">
           <img src="/guben-logo.jpg" alt="logo" className={"h-2/3"}/>
@@ -22,28 +22,28 @@ export const Navigation = () => {
       </div>
       <ul className="flex-1 flex gap-1 h-full items-center justify-center self-center">
         <li>
-          <CustomTooltip text="Dashboard">
+          <CustomTooltip text={t("Dashboard")}>
             <Link to="/" className={linkStyle}>
               <HomeIcon className={iconStyle}/>
             </Link>
           </CustomTooltip>
         </li>
         <li>
-          <CustomTooltip text="Projekte">
+          <CustomTooltip text={t("Projects")}>
             <Link to="/projects" className={linkStyle}>
               <Squares2X2Icon className={iconStyle}/>
             </Link>
           </CustomTooltip>
         </li>
         <li>
-          <CustomTooltip text="Karte">
+          <CustomTooltip text={t("Map")}>
             <Link to="/map" className={linkStyle}>
               <MapIcon className={iconStyle}/>
             </Link>
           </CustomTooltip>
         </li>
         <li>
-          <CustomTooltip text="Veranstaltungen">
+          <CustomTooltip text={t("Events")}>
             <Link to="/events" className={linkStyle}>
               <ListBulletIcon className={iconStyle}/>
             </Link>
@@ -51,18 +51,16 @@ export const Navigation = () => {
         </li>
       </ul>
       <div className="flex-1 w-full">
-        <div className="flex gap-1 float-end">
+        <div className="flex gap-2 float-end items-center">
           {auth.isAuthenticated &&
-            <div className="flex gap-2 items-center">
-              <Label className={"text-medium text-md"}>
-                {auth.user?.profile.name}
-              </Label>
-            </div>
+            <Label className={"text-medium text-md"}>
+              {auth.user?.profile.name}
+            </Label>
           }
 
           <ul className="gap-1 flex h-full items-center justify-center self-center">
             <li>
-              <CustomTooltip text="Admin">
+              <CustomTooltip text={t("Admin")}>
                 <Link to="/admin" className={linkStyle}>
                   <IceCreamConeIcon className={iconStyle}/>
                 </Link>
@@ -72,16 +70,15 @@ export const Navigation = () => {
             {auth.isAuthenticated &&
               <li>
                 <CustomTooltip text={t("LogOut")}>
-                  <Link className={linkStyle}>
-                    <LogOutIcon className={iconStyle}
-                                onClick={() => auth.signoutRedirect(
-                                  {
-                                    redirectMethod: "assign",
-                                    redirectTarget: "self",
-                                    post_logout_redirect_uri: import.meta.env.VITE_REDIRECT_URI
-                                  },
-                                )}/>
-                  </Link>
+                  <div className={linkStyle} onClick={() => auth.signoutRedirect(
+                    {
+                      redirectMethod: "assign",
+                      redirectTarget: "self",
+                      post_logout_redirect_uri: import.meta.env.VITE_REDIRECT_URI
+                    },
+                  )}>
+                    <LogOutIcon className={iconStyle}/>
+                  </div>
                 </CustomTooltip>
               </li>
             }

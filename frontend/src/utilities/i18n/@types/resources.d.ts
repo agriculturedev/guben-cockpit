@@ -1,7 +1,17 @@
 interface Resources {
   "common": {
     "Test": "test but in german",
-    "LogOut": "Abmelden"
+    "NoResults": "No results",
+    "Name": "Name",
+    "Email": "Email"
+  },
+  "navigation": {
+    "Dashboard": "Dashboard",
+    "Projects": "Projekte",
+    "Map": "Karte",
+    "Events": "Veranstaltungen",
+    "LogOut": "Abmelden",
+    "Admin": "Admin"
   }
 }
 

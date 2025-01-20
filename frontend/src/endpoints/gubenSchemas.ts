@@ -58,17 +58,6 @@ export type CreateUrlQuery = {
   description?: string;
 };
 
-export type CreateUserQuery = {
-  keycloakId: string;
-};
-
-export type CreateUserResponse = {
-  /**
-   * @format uuid
-   */
-  userId: string;
-};
-
 export type EventResponse = {
   /**
    * @format uuid
@@ -124,11 +113,41 @@ export type GetAllProjectsResponse = {
 };
 
 export type GetAllUsersResponse = {
-  users: UserResponse[];
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
+  results: UserResponse[];
+};
+
+export type GetMeResponse = {
+  keycloakId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  /**
+   * @format uuid
+   */
+  id: string;
 };
 
 export type GetUserResponse = {
   keycloakId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   /**
    * @format uuid
    */
@@ -160,6 +179,10 @@ export type ProjectResponse = {
   imageCredits?: string | null;
 };
 
+export type PublishProjectsResponse = Record<string, any>;
+
+export type UnpublishProjectsResponse = Record<string, any>;
+
 export type UrlResponse = {
   link?: string;
   description?: string;
@@ -167,6 +190,9 @@ export type UrlResponse = {
 
 export type UserResponse = {
   keycloakId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   /**
    * @format uuid
    */

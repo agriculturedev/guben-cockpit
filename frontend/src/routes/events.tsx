@@ -38,7 +38,6 @@ function EventComponent() {
   } = usePagination();
 
   const {filters} = useEventFilters();
-  console.log(filters);
 
   const queryParams = useMemo(() =>
     filters.reduce((acc: HashMap<string | number>, val) => {
@@ -65,11 +64,9 @@ function EventComponent() {
   });
 
   useEffect(() => {
-    // setPageSize(eventsData?.meta?.pagination?.pageSize ?? defaultPaginationProps.pageSize);
-    // setPageIndex(eventsData?.meta?.pagination?.page ?? defaultPaginationProps.page);
     setTotal(eventsData2?.totalCount ?? defaultPaginationProps.total);
     setPageCount(eventsData2?.pageCount ?? defaultPaginationProps.pageCount);
-  }, [eventsData]);
+  }, [eventsData2]);
 
   return (
     <View

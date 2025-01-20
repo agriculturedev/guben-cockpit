@@ -3,7 +3,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useAuth } from "react-oidc-context";
 import { useEffect } from "react";
 import {useTranslation} from "react-i18next";
-import { UserList } from "@/components/admin/AllUsers";
+import { UserList } from "@/components/admin/UsersList";
+import { View } from "@/components/layout/View";
 
 export const Route = createFileRoute('/admin')({
   component: AdminComponent,
@@ -21,9 +22,9 @@ function AdminComponent() {
 
   if (auth.isAuthenticated) {
     return (
-      <div className={"flex flex-col"}>
+      <View>
         <UserList/>
-      </div>
+      </View>
     )
   }
 }

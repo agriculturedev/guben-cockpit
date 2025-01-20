@@ -9,12 +9,27 @@ import type * as Fetcher from "./gubenFetcher";
 import { gubenFetch } from "./gubenFetcher";
 import type * as Schemas from "./gubenSchemas";
 
+export type UsersGetAllQueryParams = {
+  /**
+   * @format int32
+   * @default 1
+   */
+  pageNumber?: number;
+  /**
+   * @format int32
+   * @default 2
+   */
+  pageSize?: number;
+};
+
 export type UsersGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type UsersGetAllVariables = GubenContext["fetcherOptions"];
+export type UsersGetAllVariables = {
+  queryParams?: UsersGetAllQueryParams;
+} & GubenContext["fetcherOptions"];
 
 export const fetchUsersGetAll = (
   variables: UsersGetAllVariables,
@@ -25,7 +40,7 @@ export const fetchUsersGetAll = (
     UsersGetAllError,
     undefined,
     {},
-    {},
+    UsersGetAllQueryParams,
     {}
   >({ url: "/users", method: "get", ...variables, signal });
 
@@ -55,50 +70,6 @@ export const useUsersGetAll = <TData = Schemas.GetAllUsersResponse,>(
       fetchUsersGetAll({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
-  });
-};
-
-export type UsersCreateUserError = Fetcher.ErrorWrapper<{
-  status: 400;
-  payload: Schemas.ProblemDetails;
-}>;
-
-export type UsersCreateUserVariables = {
-  body: Schemas.CreateUserQuery;
-} & GubenContext["fetcherOptions"];
-
-export const fetchUsersCreateUser = (
-  variables: UsersCreateUserVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<
-    Schemas.CreateUserResponse,
-    UsersCreateUserError,
-    Schemas.CreateUserQuery,
-    {},
-    {},
-    {}
-  >({ url: "/users", method: "post", ...variables, signal });
-
-export const useUsersCreateUser = (
-  options?: Omit<
-    reactQuery.UseMutationOptions<
-      Schemas.CreateUserResponse,
-      UsersCreateUserError,
-      UsersCreateUserVariables
-    >,
-    "mutationFn"
-  >,
-) => {
-  const { fetcherOptions } = useGubenContext();
-  return reactQuery.useMutation<
-    Schemas.CreateUserResponse,
-    UsersCreateUserError,
-    UsersCreateUserVariables
-  >({
-    mutationFn: (variables: UsersCreateUserVariables) =>
-      fetchUsersCreateUser({ ...fetcherOptions, ...variables }),
-    ...options,
   });
 };
 
@@ -144,6 +115,45 @@ export const useUsersGet = <TData = Schemas.GetUserResponse,>(
     }),
     queryFn: ({ signal }) =>
       fetchUsersGet({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type UsersGetMeError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type UsersGetMeVariables = GubenContext["fetcherOptions"];
+
+export const fetchUsersGetMe = (
+  variables: UsersGetMeVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<Schemas.GetMeResponse, UsersGetMeError, undefined, {}, {}, {}>({
+    url: "/users/me",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useUsersGetMe = <TData = Schemas.GetMeResponse,>(
+  variables: UsersGetMeVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<Schemas.GetMeResponse, UsersGetMeError, TData>,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<Schemas.GetMeResponse, UsersGetMeError, TData>({
+    queryKey: queryKeyFn({
+      path: "/users/me",
+      operationId: "usersGetMe",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchUsersGetMe({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
   });
@@ -195,6 +205,98 @@ export const useProjectsGetAll = <TData = Schemas.GetAllProjectsResponse,>(
       fetchProjectsGetAll({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
+  });
+};
+
+export type ProjectsPublishProjectsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsPublishProjectsRequestBody = string[];
+
+export type ProjectsPublishProjectsVariables = {
+  body?: ProjectsPublishProjectsRequestBody;
+} & GubenContext["fetcherOptions"];
+
+export const fetchProjectsPublishProjects = (
+  variables: ProjectsPublishProjectsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.PublishProjectsResponse,
+    ProjectsPublishProjectsError,
+    ProjectsPublishProjectsRequestBody,
+    {},
+    {},
+    {}
+  >({ url: "/projects/Publish", method: "put", ...variables, signal });
+
+export const useProjectsPublishProjects = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.PublishProjectsResponse,
+      ProjectsPublishProjectsError,
+      ProjectsPublishProjectsVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.PublishProjectsResponse,
+    ProjectsPublishProjectsError,
+    ProjectsPublishProjectsVariables
+  >({
+    mutationFn: (variables: ProjectsPublishProjectsVariables) =>
+      fetchProjectsPublishProjects({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type ProjectsUnpublishProjectsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsUnpublishProjectsRequestBody = string[];
+
+export type ProjectsUnpublishProjectsVariables = {
+  body?: ProjectsUnpublishProjectsRequestBody;
+} & GubenContext["fetcherOptions"];
+
+export const fetchProjectsUnpublishProjects = (
+  variables: ProjectsUnpublishProjectsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UnpublishProjectsResponse,
+    ProjectsUnpublishProjectsError,
+    ProjectsUnpublishProjectsRequestBody,
+    {},
+    {},
+    {}
+  >({ url: "/projects/Unpublish", method: "put", ...variables, signal });
+
+export const useProjectsUnpublishProjects = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UnpublishProjectsResponse,
+      ProjectsUnpublishProjectsError,
+      ProjectsUnpublishProjectsVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UnpublishProjectsResponse,
+    ProjectsUnpublishProjectsError,
+    ProjectsUnpublishProjectsVariables
+  >({
+    mutationFn: (variables: ProjectsUnpublishProjectsVariables) =>
+      fetchProjectsUnpublishProjects({ ...fetcherOptions, ...variables }),
+    ...options,
   });
 };
 
@@ -430,6 +532,11 @@ export type QueryOperation =
       path: "/users/{keycloakId}";
       operationId: "usersGet";
       variables: UsersGetVariables;
+    }
+  | {
+      path: "/users/me";
+      operationId: "usersGetMe";
+      variables: UsersGetMeVariables;
     }
   | {
       path: "/projects";
