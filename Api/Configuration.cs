@@ -3,7 +3,7 @@
 public class Configuration
 {
   public ConnectionStrings ConnectionStrings { get; set; } = null!;
-  public JwtConfiguration Jwt { get; set; } = null!;
+  public KeycloakConfiguration Keycloak { get; set; } = null!;
   public FrontendConfiguration Frontend { get; set; } = null!;
 }
 
@@ -12,7 +12,7 @@ public class ConnectionStrings
   public string DefaultConnection { get; set; } = null!;
 }
 
-public class JwtConfiguration
+public class KeycloakConfiguration
 {
   public string Authority { get; set; } = null!;
   public string Audience { get; set; } = null!;

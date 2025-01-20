@@ -1,5 +1,3 @@
-import { EventResponse } from "@/endpoints/gubenSchemas";
-import { EventCard } from "@/components/events/EventCard";
 import { useUsersGetAll } from "@/endpoints/gubenComponents";
 import { useAuthHeaders } from "@/hooks/useAuthHeaders";
 
@@ -12,12 +10,11 @@ export const UserList = () => {
 
   const users = allUsersResponse?.users;
 
-
   return (
     <div className={"grid grid-cols-3 gap-2"}>
       {users &&
         users.map((user, index) => (
-          <div key={index} >
+          <div key={index}>
             {user.id}
           </div>
         ))

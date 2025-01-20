@@ -2,7 +2,9 @@
 using System.Security.Claims;
 using Api.Controllers.Users.CreateUser;
 using Api.Controllers.Users.GetAllUsers;
+using Api.Controllers.Users.GetMe;
 using Api.Controllers.Users.GetUser;
+using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +34,7 @@ public class UserController : ControllerBase
   /// <response code="200">Returns all users.</response>
   /// <response code="400">Server cannot/will not process the request due to perceiving a client error. (Bad Request)</response>
   [HttpGet]
+  [Authorize(KeycloakPolicies.ViewUsers)]
   [EndpointName("UsersGetAll")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllUsersResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -62,6 +65,23 @@ public class UserController : ControllerBase
     var result = await _mediator.Send(new GetUserQuery()
     {
       KeycloakId = keycloakId
+    });
+    return Results.Ok(result);
+  }
+
+  /// <summary>
+  /// Returns logged in user
+  /// </summary>
+  /// <response code="200">Returns logged in user.</response>
+  /// <response code="400">Server cannot/will not process the request due to perceiving a client error. (Bad Request)</response>
+  [HttpGet("me")]
+  [EndpointName("UsersGetMe")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMeResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> GetMe()
+  {
+    var result = await _mediator.Send(new GetMeQuery()
+    {
     });
     return Results.Ok(result);
   }

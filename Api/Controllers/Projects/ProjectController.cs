@@ -1,7 +1,9 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.Events.GetAllEvents;
 using Api.Controllers.Projects.GetAllProjects;
+using Api.Infrastructure.Keycloak;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Projects;
@@ -27,6 +29,17 @@ public class ProjectController : ControllerBase
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllProjectsResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> GetAll()
+  {
+    var result = await _mediator.Send(new GetAllProjectsQuery());
+    return Results.Ok(result);
+  }
+
+  [HttpPost]
+  [EndpointName("ProjectsPublish")]
+  [Authorize(KeycloakPolicies.PublishProjects)]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllProjectsResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> PublishProject()
   {
     var result = await _mediator.Send(new GetAllProjectsQuery());
     return Results.Ok(result);

@@ -35,34 +35,34 @@ public class EnsureUserExistsBehavior<TRequest, TResponse> : IPipelineBehavior<T
 
     var keycloakId = _httpContextAccessor.HttpContext?.User.GetKeycloakId();
 
-    if (!string.IsNullOrEmpty(keycloakId))
+    if (string.IsNullOrEmpty(keycloakId))
+      throw new UnauthorizedAccessException(TranslationKeys.UserNotLoggedIn);
+
+    await using var dbContext = _dbContextFactory.CreateNew();
+    var userExists = _userRepository.Exists(keycloakId);
+
+    if (!userExists)
     {
-      await using var dbContext = _dbContextFactory.CreateNew();
-
-      var userExists = _userRepository.Exists(keycloakId);
-
-      if (!userExists)
+      await using var tx = await dbContext.Database.BeginTransactionAsync(cancellationToken)
+        .ConfigureAwait(false);
+      try
       {
-        await using var tx = await dbContext.Database.BeginTransactionAsync(cancellationToken)
-          .ConfigureAwait(false);
-        try
-        {
-          var (newUserResult, newUser) = User.Create(keycloakId);
-          if (newUserResult.IsFailure)
-            throw new ProblemDetailsException(TranslationKeys.CreatingUserFailed);
+        var (newUserResult, newUser) = User.Create(keycloakId);
+        if (newUserResult.IsFailure)
+          throw new ProblemDetailsException(TranslationKeys.CreatingUserFailed);
 
-          await _userRepository.SaveAsync(newUser);
-          await dbContext.SaveChangesAsync(cancellationToken);
-          await tx.CommitAsync(cancellationToken).ConfigureAwait(false);
-        }
-        catch
-        {
-          await tx.RollbackAsync(cancellationToken).ConfigureAwait(false);
-          throw; // Re-throw the exception to maintain the pipeline's behavior.
-        }
+        await _userRepository.SaveAsync(newUser);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        await tx.CommitAsync(cancellationToken).ConfigureAwait(false);
+      }
+      catch
+      {
+        await tx.RollbackAsync(cancellationToken).ConfigureAwait(false);
+        throw; // Re-throw the exception to maintain the pipeline's behavior.
       }
     }
 
     return await next();
+
   }
 }

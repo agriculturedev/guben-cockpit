@@ -1,21 +1,15 @@
-using System.Diagnostics;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
-using Api.Infrastructure.Behaviours;
+using Api.Infrastructure.Cors;
 using Api.Infrastructure.ExceptionHandlers;
+using Api.Infrastructure.HangFire;
 using Api.Infrastructure.JsonConverters;
+using Api.Infrastructure.Keycloak;
+using Api.Infrastructure.MediatR;
 using Api.Infrastructure.OpenApi;
 using Database;
 using Domain;
 using Hangfire;
-using Hangfire.MemoryStorage;
 using Jobs.EventImporter;
 using Jobs.ProjectImporter;
-using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Api;
 
@@ -51,84 +45,17 @@ public class Startup(IConfiguration configuration)
       .AddApi();
 
     services.AddControllers()
-      .AddJsonOptions(options =>
-      {
-        var assembly = Assembly.GetExecutingAssembly();
+      .AddJsonConverters();
 
-        var dataContractEnums = assembly.GetTypes()
-          .Where(type => type.IsEnum)
-          .Where(type => type.GetCustomAttributes(typeof(DataContractAttribute), false).Any());
-
-        foreach (var enumType in dataContractEnums)
-        {
-          var converterType = typeof(EnumMemberConverter<>).MakeGenericType(enumType);
-          var converter = Activator.CreateInstance(converterType);
-          if (converter is null) throw new NullReferenceException("JsonConverter is null");
-          options.JsonSerializerOptions.Converters.Add((JsonConverter)converter);
-        }
-      });
-
-    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-      .AddJwtBearer(options =>
-      {
-        options.Authority = MappedConfiguration.Jwt.Authority;
-        options.Audience = MappedConfiguration.Jwt.Audience;
-        options.RequireHttpsMetadata = false; // TODO: true for production
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-          // ValidateIssuerSigningKey = true,
-          RoleClaimType = "roles", // Use Keycloak's role claim
-          NameClaimType = "preferred_username" // Map to Keycloak's username claim
-        };
-      });
-
-    services.AddAuthorization();
-
-    services.AddCors(options =>
-    {
-      options.AddPolicy("AllowReactApp",
-        builder =>
-        {
-          builder.WithOrigins(MappedConfiguration.Frontend.BaseUri)
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-        });
-      options.AddPolicy("AllowSelf",
-        builder =>
-        {
-          builder.WithOrigins("http://localhost:5000")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-        });
-    });
-
-    services.AddHangfire(configuration => configuration
-      .UseSerilogLogProvider()
-      .UseSimpleAssemblyNameTypeSerializer()
-      .UseRecommendedSerializerSettings()
-      .UseMemoryStorage());
-
-    // Add the processing server as IHostedService
-    services.AddHangfireServer();
-
-    services.AddMediatR(new MediatRServiceConfiguration()
-      .RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+    services.AddKeycloak(Configuration);
+    services.AddCustomCors(MappedConfiguration);
+    services.AddCustomHangfire();
+    services.AddCustomMediatR();
 
     services.AddDatabase(Configuration, true);
-    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(EnsureUserExistsBehavior<,>));
-    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
     services.AddEndpointsApiExplorer();
 
-    services.AddProblemDetails(options =>
-    {
-      options.CustomizeProblemDetails = context =>
-      {
-        Activity? activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
-
-        context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
-        context.ProblemDetails.Extensions.Add("requestId", context.HttpContext.TraceIdentifier);
-      };
-    });
+    ProblemDetailsServiceCollectionExtensions.AddProblemDetails(services);
 
     services.AddAntiforgery(); // TODO: investigage, does this need further configuration?
     services.AddExceptionHandler<ProblemExceptionHandler>();
