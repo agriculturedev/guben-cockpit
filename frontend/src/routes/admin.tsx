@@ -22,9 +22,6 @@ function AdminComponent() {
   if (auth.isAuthenticated) {
     return (
       <div className={"flex flex-col"}>
-        <p>admin test dashboard, keycloak login required</p>
-        <p>welcome {auth.user?.profile.name}</p>
-        <p>{t("Test")}</p>
         <UserList/>
       </div>
     )
