@@ -82,7 +82,7 @@ public class ProjectImporter
 
       if (existingProject is not null)
       {
-        // update logic
+        existingProject.Update(project.Title, project.Description, project.FullText, project.ImageCaption, project.ImageUrl, project.ImageCredits);
         return;
       }
 

@@ -32,6 +32,17 @@ public sealed class Project : Entity<string>
     return new Project(id, title, description, fullText, imageCaption, imageUrl, imageCredits);
   }
 
+  public void Update(string title, string? description, string? fullText, string? imageCaption, string? imageUrl,
+    string? imageCredits)
+  {
+    Title = title;
+    Description = description;
+    FullText = fullText;
+    ImageCaption = imageCaption;
+    ImageUrl = imageUrl;
+    ImageCredits = imageCredits;
+  }
+
   public void Publish()
   {
     Published = true;
