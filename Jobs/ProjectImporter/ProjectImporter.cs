@@ -39,7 +39,7 @@ public class ProjectImporter
         try
         {
           await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory,
-            async dbContext => { await ProcessProjectAsync(project); });
+            async dbContext => { await UpsertProjectAsync(project); });
         }
         catch
         {
@@ -70,7 +70,7 @@ public class ProjectImporter
     return jsonResponse.Data;
   }
 
-  private async Task ProcessProjectAsync(RawProject rawProject)
+  private async Task UpsertProjectAsync(RawProject rawProject)
   {
     var (result, project) = Project.Create(
       rawProject.Id, rawProject.Title, rawProject.Introtext, rawProject.Fulltext,
@@ -88,7 +88,6 @@ public class ProjectImporter
 
       await _projectRepository.SaveAsync(project);
       Console.WriteLine("Project saved.");
-
     }
     else
     {

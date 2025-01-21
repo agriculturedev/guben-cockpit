@@ -34,8 +34,7 @@ internal sealed class ProblemExceptionHandler : IExceptionHandler
     {
       Type = exception.GetType().Name,
       Title = _translator.Translate(TranslationKeys.AnErrorOccured),
-      Detail = exception
-        .Message, // TODO: dangerous to use in production, could possibly be exploited to see details about system
+      Detail = exception.Message, // TODO: dangerous to use in production, could possibly be exploited to see details about system
       // Detail = _translator.Translate(TranslationKeys.ContactDeveloper),
     };
 

@@ -43,13 +43,8 @@ public sealed class Project : Entity<string>
     ImageCredits = imageCredits;
   }
 
-  public void Publish()
+  public void SetPublishedState(bool publish)
   {
-    Published = true;
-  }
-
-  public void UnPublish()
-  {
-    Published = false;
+    Published = publish;
   }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Net.Mime;
-using System.Security.Claims;
 using Api.Controllers.Users.GetAllUsers;
 using Api.Controllers.Users.GetMe;
 using Api.Controllers.Users.GetUser;

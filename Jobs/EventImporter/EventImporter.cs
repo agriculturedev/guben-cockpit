@@ -211,7 +211,6 @@ public class EventImporter
       if (existingEvent != null)
       {
         Console.WriteLine($"Updating existing event: {@event.Id}");
-        // Update logic
         existingEvent.Update(@event);
         await _eventRepository.SaveAsync(existingEvent);
         return;
@@ -233,7 +232,7 @@ public class EventImporter
     if (existingLocation != null)
     {
       Console.WriteLine($"Updating existing location: {location.Name}");
-      // Update logic
+      // TODO: Update logic
       return;
     }
 
@@ -255,7 +254,7 @@ public class EventImporter
     if (existingCategory != null)
     {
       Console.WriteLine($"Updating existing category: {category.Id}");
-      // Update logic
+      // TODO: Update logic
       return;
     }
 

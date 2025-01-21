@@ -19,7 +19,7 @@ export const UserList = () => {
     setTotal,
     setPageCount
   } = usePagination();
-  const headers = useAuthHeaders()
+  const headers = useAuthHeaders();
 
   const {data: pagedUserData, refetch, isLoading} = useUsersGetAll({
     queryParams: {

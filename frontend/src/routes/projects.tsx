@@ -15,7 +15,6 @@ export const Route = createFileRoute('/projects')({
 function ProjectsComponent() {
   const { data: projectViewData, error: projectViewError, isLoading: projectViewIsLoading } = useGetProjectView({ queryParams: { populate: "projects,allProjects,InfoFromAdmin" } });
 
-
   const { data: projectData } = useProjectsGetAll({ });
 
   return (

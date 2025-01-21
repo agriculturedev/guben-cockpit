@@ -19,7 +19,7 @@ public class PublishProjectsHandler : ApiRequestHandler<PublishProjectsQuery, Pu
 
     foreach (var project in projects)
     {
-      project.Publish();
+      project.SetPublishedState(request.Publish);
     }
 
     return new PublishProjectsResponse();

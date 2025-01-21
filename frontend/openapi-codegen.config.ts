@@ -39,6 +39,7 @@ export default defineConfig({
       });
 
       await generateReactQueryComponents(context, {
+        useEnums: true,
         filenamePrefix,
         schemasFiles,
       });

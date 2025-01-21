@@ -51,6 +51,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     _event.UpdateLocation(location);
     _event.AddUrls(urls);
     _event.AddCategories(categories);
+    // TODO: use UpdateTitle
 
     return Result.Ok(_event);
   }
