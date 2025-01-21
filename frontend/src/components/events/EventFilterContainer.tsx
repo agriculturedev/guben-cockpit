@@ -49,7 +49,7 @@ export const EventFilterContainer = () => {
     <div className={"flex gap-2 flex-col mb-2"}>
       <div className={"flex p-0 gap-2"}>
         <TextFilter controller={controllers.textController}/>
-        <LocationFilter controller={controllers.locationController}/>
+        <LocationFilter controller={controllers.locationController} defaultValue={"Guben"}/>
         <DateRangeFilter controller={controllers.dateController}/>
         <CategoryFilter controller={controllers.categoryController}/>
         <SortFilter controller={controllers.sortController}/>
