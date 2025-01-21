@@ -1,17 +1,25 @@
 import { LocationFilterController } from "@/hooks/useLocationFilter";
 import { Input } from "../ui/input";
+import { useEffect } from "react";
 
 interface Props {
   controller: LocationFilterController;
+  defaultValue?: string;
 }
 
-export const LocationFilter = (props: Props) => {
+export const LocationFilter = ({controller, defaultValue}: Props) => {
+
+  useEffect(() => {
+    controller.setSearchText(defaultValue ?? "");
+  }, [defaultValue])
+
   return (
     <Input
       type="text"
       placeholder="Location"
-      value={props.controller.searchText}
-      onChange={(e) => props.controller.setSearchText(e.target.value)}
+      defaultValue={defaultValue}
+      value={controller.searchText}
+      onChange={(e) => controller.setSearchText(e.target.value)}
     />
   );
 }

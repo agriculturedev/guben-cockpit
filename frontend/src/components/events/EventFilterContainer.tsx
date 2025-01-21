@@ -8,6 +8,8 @@ import {ReactNode} from "@tanstack/react-router";
 import {getContrast, getHexColorFromText, hexToRgb} from "@/lib/colorUtils";
 import {FilterTag} from "@/components/general/FilterTag";
 import { LocationFilter } from "../filters/LocationFilter";
+import { SortFilter } from "@/components/filters/SortFilter";
+
 
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
@@ -48,9 +50,10 @@ export const EventFilterContainer = () => {
     <div className={"flex gap-2 flex-col mb-2"}>
       <div className={"flex p-0 gap-2"}>
         <TextFilter controller={controllers.textController}/>
-        <LocationFilter controller={controllers.locationController}/>
+        <LocationFilter controller={controllers.locationController} defaultValue={"Guben"}/>
         <DateRangeFilter controller={controllers.dateController}/>
         <CategoryFilter controller={controllers.categoryController}/>
+        <SortFilter controller={controllers.sortController}/>
       </div>
 
       <div className={"flex gap-2"}>{tagElements}</div>

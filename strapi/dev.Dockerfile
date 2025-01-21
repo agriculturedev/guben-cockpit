@@ -13,6 +13,6 @@ ENV PATH /opt/node_modules/.bin:$PATH
 WORKDIR /opt/
 COPY . .
 
-# RUN ["npm", "run", "build"]
+#RUN ["npm", "run", "prebuild"]
 EXPOSE 1337
 CMD ["npm", "run", "develop"]

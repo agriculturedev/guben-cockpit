@@ -9,6 +9,8 @@ import {TextFilterController, useTextFilter} from "@/hooks/useTextFilter";
 import {DateFilterController, useDateFilter} from "@/hooks/useDateFilter";
 import {CategoryFilterController, useCategoryFilter} from "@/hooks/useCategoryFilter";
 import { LocationFilterController, useLocationFilter } from "@/hooks/useLocationFilter";
+import { SorterController, useSorter } from "@/hooks/useSorter";
+
 
 interface EventFiltersContext {
   filters: QueryFilter[];
@@ -16,6 +18,7 @@ interface EventFiltersContext {
 }
 
 interface EventFiltersControllers {
+  sortController: SorterController,
   textController: TextFilterController,
   dateController: DateFilterController,
   categoryController: CategoryFilterController,
@@ -28,17 +31,20 @@ interface EventFiltersProviderProps extends PropsWithChildren {
 }
 
 export function EventFiltersProvider({children}: EventFiltersProviderProps) {
+  const [sorting, setSorting] = useState<QueryFilter[]>([]);
   const [textFilters, setTextFilters] = useState<QueryFilter[]>([]);
   const [dateFilters, setDateFilters] = useState<QueryFilter[]>([]);
   const [categoryFilters, setCategoryFilters] = useState<QueryFilter[]>([]);
   const [locationFilters, setLocationFilters] = useState<QueryFilter[]>([]);
 
   const filters = useMemo(() => [
+    ...sorting,
     ...textFilters,
     ...dateFilters,
     ...categoryFilters,
     ...locationFilters
   ], [
+    sorting,
     textFilters,
     dateFilters,
     categoryFilters,
@@ -46,6 +52,7 @@ export function EventFiltersProvider({children}: EventFiltersProviderProps) {
   ]);
 
   const controllers: EventFiltersControllers = {
+    sortController: useSorter(sorting, setSorting),
     textController: useTextFilter(textFilters, setTextFilters),
     dateController: useDateFilter(dateFilters, setDateFilters),
     categoryController: useCategoryFilter(categoryFilters, setCategoryFilters),
