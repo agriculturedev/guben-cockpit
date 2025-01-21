@@ -10,6 +10,7 @@ import {FilterTag} from "@/components/general/FilterTag";
 import { LocationFilter } from "../filters/LocationFilter";
 import { SortFilter } from "@/components/filters/SortFilter";
 
+
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
 

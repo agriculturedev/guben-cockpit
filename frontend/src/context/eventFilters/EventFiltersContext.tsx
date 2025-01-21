@@ -11,6 +11,7 @@ import {CategoryFilterController, useCategoryFilter} from "@/hooks/useCategoryFi
 import { LocationFilterController, useLocationFilter } from "@/hooks/useLocationFilter";
 import { SorterController, useSorter } from "@/hooks/useSorter";
 
+
 interface EventFiltersContext {
   filters: QueryFilter[];
   controllers: EventFiltersControllers;
