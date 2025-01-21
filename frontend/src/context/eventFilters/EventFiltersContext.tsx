@@ -10,6 +10,7 @@ import {DateFilterController, useDateFilter} from "@/hooks/useDateFilter";
 import {CategoryFilterController, useCategoryFilter} from "@/hooks/useCategoryFilter";
 import { SorterController, useSorter } from "@/hooks/useSorter";
 
+
 interface EventFiltersContext {
   filters: QueryFilter[];
   controllers: EventFiltersControllers;

@@ -9,6 +9,7 @@ import {getContrast, getHexColorFromText, hexToRgb} from "@/utilities/colorUtils
 import {FilterTag} from "@/components/general/FilterTag";
 import { SortFilter } from "@/components/filters/SortFilter";
 
+
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
 
@@ -43,6 +44,8 @@ export const EventFilterContainer = () => {
 
     return elements;
   }, [controllers]);
+
+  // TODO@JOREN: add Guben as default location filter
 
   return (
     <div className={"flex gap-2 flex-col mb-2"}>
