@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using Database;
 using Domain.Projects;
 using Domain.Projects.repository;
+using Domain.Users;
 using Shared.Database;
 
 namespace Jobs.ProjectImporter;
@@ -74,7 +75,7 @@ public class ProjectImporter
   {
     var (result, project) = Project.Create(
       rawProject.Id, rawProject.Title, rawProject.Introtext, rawProject.Fulltext,
-      rawProject.ImageCaption, rawProject.ImageUrl, rawProject.ImageCredits);
+      rawProject.ImageCaption, rawProject.ImageUrl, rawProject.ImageCredits, User.SystemUserId);
 
     if (result.IsSuccessful)
     {

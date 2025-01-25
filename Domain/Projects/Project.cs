@@ -12,9 +12,10 @@ public sealed class Project : Entity<string>
   public string? ImageUrl { get; private set; }
   public string? ImageCredits { get; private set; }
   public bool Published { get; private set; }
+  public Guid CreatedBy { get; private set; }
 
   private Project(string id, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
-    imageCredits)
+    imageCredits, Guid createdBy)
   {
     Id = id;
     Title = title;
@@ -24,12 +25,13 @@ public sealed class Project : Entity<string>
     ImageUrl = imageUrl;
     ImageCredits = imageCredits;
     Published = false;
+    CreatedBy = createdBy;
   }
 
   public static Result<Project> Create(string id, string title, string? description, string? fullText, string? imageCaption,
-    string? imageUrl, string? imageCredits)
+    string? imageUrl, string? imageCredits, Guid createdBy)
   {
-    return new Project(id, title, description, fullText, imageCaption, imageUrl, imageCredits);
+    return new Project(id, title, description, fullText, imageCaption, imageUrl, imageCredits, createdBy);
   }
 
   public void Update(string title, string? description, string? fullText, string? imageCaption, string? imageUrl,

@@ -5,6 +5,8 @@ namespace Domain.Users;
 
 public sealed class User : Entity<Guid>
 {
+  public static Guid SystemUserId = Guid.Empty;
+
   public string KeycloakId { get; set; }
   public string FirstName { get; set; }
   public string LastName { get; set; }
@@ -30,4 +32,9 @@ public sealed class User : Entity<Guid>
     LastName = lastName ?? "";
     Email = email ?? "";
   }
+
+  public static readonly User SystemUser = new User("system", "System", "User", "system@example.com")
+  {
+    Id = SystemUserId // Predefined GUID for the system user
+  };
 }
