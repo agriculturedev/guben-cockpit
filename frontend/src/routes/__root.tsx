@@ -1,13 +1,8 @@
 import * as React from 'react'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Navigation } from "@/components/layout/Navigation";
 import "./index.css";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Footer } from "@/components/layout/Footer";
-
-const queryClient = new QueryClient()
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -15,14 +10,14 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <div className={"min-h-dvh bg-background flex flex-col"}>
+    <div className={"min-h-dvh h-screen w-screen bg-background flex flex-col"}>
       <Navigation/>
-      <QueryClientProvider client={queryClient}>
+      <div className={"h-full w-full flex overflow-auto"}>
         <Outlet/>
-        <ReactQueryDevtools initialIsOpen={false} position={"bottom"}/>
-      </QueryClientProvider>
+      </div>
+      {/*<ReactQueryDevtools initialIsOpen={false} position={"bottom"}/>*/}
       <Footer/>
-      <TanStackRouterDevtools position="bottom-left"/>
+      {/*<TanStackRouterDevtools position="bottom-left"/>*/}
     </div>
   )
 }

@@ -9,13 +9,11 @@ import {EventsList} from "@/components/events/EventsList";
 import {EventFilterContainer} from "@/components/events/EventFilterContainer";
 import {EventFiltersProvider, useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 import {HashMap} from "@/types/common.types";
+import {useEventsGetAll} from "@/endpoints/gubenComponents";
 
 export const Route = createFileRoute('/events')({
   component: WrappedComponent,
 })
-
-export interface Filters {
-}
 
 function WrappedComponent() {
   return (
@@ -45,13 +43,10 @@ function EventComponent() {
     filters.reduce((acc: HashMap<string | number>, val) => {
       acc[val[0]] = val[1];
       return acc;
-    }, {
-      "pagination[pageSize]": pageSize,
-      "pagination[page]": page,
-      "populate[0]": "categories",
-      "populate[1]": "location"
-    }
+    }, {}
   ), [filters, page, pageSize]);
+
+  console.log(queryParams)
 
   const {
     data: eventsData
@@ -62,12 +57,16 @@ function EventComponent() {
     isLoading: eventViewIsLoading
   } = useGetEventView({queryParams: {}});
 
+  const { data: eventsData2 } = useEventsGetAll({
+    queryParams: {
+      pageSize, pageNumber: page, ...queryParams
+    }
+  });
+
   useEffect(() => {
-    // setPageSize(eventsData?.meta?.pagination?.pageSize ?? defaultPaginationProps.pageSize);
-    // setPageIndex(eventsData?.meta?.pagination?.page ?? defaultPaginationProps.page);
-    setTotal(eventsData?.meta?.pagination?.total ?? defaultPaginationProps.total);
-    setPageCount(eventsData?.meta?.pagination?.pageCount ?? defaultPaginationProps.pageCount);
-  }, [eventsData]);
+    setTotal(eventsData2?.totalCount ?? defaultPaginationProps.total);
+    setPageCount(eventsData2?.pageCount ?? defaultPaginationProps.pageCount);
+  }, [eventsData2]);
 
   return (
     <View
@@ -81,7 +80,7 @@ function EventComponent() {
         page={page}
       >
         <EventFilterContainer/>
-        <EventsList events={eventsData?.data}/>
+        <EventsList events={eventsData2?.results}/>
       </PaginationContainer>
     </View>
   );

@@ -1,7 +1,7 @@
 import {useCallback, useState} from "react";
 import {FilterController, QueryFilter, UseFilterHook} from "@/types/filtering.types";
 import {HashMap, Option} from "@/types/common.types";
-import {tryGetEnumValue} from "@/lib/enumUtils";
+import {tryGetEnumValue} from "@/utilities/enumUtils";
 
 export enum DateFilterPreset {
   TODAY = 'today',
@@ -25,16 +25,12 @@ interface QueryDefinitions {
 
 const queryDefinitions: QueryDefinitions = {
   rangeQueries: [
-    ["filters[$and][0][$or][0][$and][0][startDate][$gte]", "min"],
-    ["filters[$and][0][$or][0][$and][1][startDate][$lte]", "max"],
-    ["filters[$and][0][$or][1][$and][0][endDate][$gte]", "min"],
-    ["filters[$and][0][$or][1][$and][1][endDate][$lte]", "max"],
-    ["filters[$and][0][$or][2][$and][0][startDate][$lte]", "min"],
-    ["filters[$and][0][$or][2][$and][1][endDate][$gte]", "max"]
+    ["startDate", "min"],
+    ["endDate", "max"]
   ],
   singleDateQueries: [
-    ["filters[$and][0][$and][0][startDate][$gte]", "min"],
-    ["filters[$and][0][$and][0][endDate][$lte]", "min"]
+    ["startDate", "min"],
+    ["endDate", "min"]
   ]
 }
 
@@ -62,10 +58,7 @@ export const useDateFilter: UseFilterHook<DateFilterController> = (filters, setF
     setMinDate(startDate);
     setMaxDate(endDate);
 
-    // only needed if for some reason you would have multiple date pickers in one filter section
-    // const newFilters = filters.filter(([k, _]) => queryDefinitionsMap[k] !== undefined);
-    const newFilters: QueryFilter[] = [];
-
+    const newFilters = filters.filter(([k, _]) => queryDefinitionsMap[k] !== undefined);
     if(startDate && endDate) newFilters.push(...queryDefinitions.rangeQueries.map(def => [def[0], {"min": startDate, "max": endDate}[def[1]].toIsoDate()] as QueryFilter));
     else if(startDate) newFilters.push(...queryDefinitions.singleDateQueries.map(def => [def[0], startDate.toIsoDate()] as QueryFilter));
 

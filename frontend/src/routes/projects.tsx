@@ -2,10 +2,11 @@ import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useGetProjectView } from '@/endpoints/gubenProdComponents'
 import { View } from "@/components/layout/View";
-import { FeaturedProjectsList } from "@/components/projects/FeaturedProjects";
-import { isNullOrUndefinedOrEmpty } from "@/lib/nullabilityUtils";
+import { FeaturedProjectsList, FeaturedProjectsList2 } from "@/components/projects/FeaturedProjects";
+import { useProjectsGetAll } from "@/endpoints/gubenComponents";
 import { GenericButtonComponent } from "@/endpoints/gubenProdSchemas";
 import { Button } from "@/components/ui/button";
+import { isNullOrUndefinedOrEmpty } from '@/utilities/nullabilityUtils';
 
 export const Route = createFileRoute('/projects')({
   component: ProjectsComponent,
@@ -14,6 +15,7 @@ export const Route = createFileRoute('/projects')({
 function ProjectsComponent() {
   const { data: projectViewData, error: projectViewError, isLoading: projectViewIsLoading } = useGetProjectView({ queryParams: { populate: "projects,allProjects,InfoFromAdmin" } });
 
+  const { data: projectData } = useProjectsGetAll({ });
 
   return (
     <>
@@ -22,10 +24,10 @@ function ProjectsComponent() {
 		      <FeaturedProjectsList projects={projectViewData!.data!.attributes!.projects!}/>
         }
 
-        {!isNullOrUndefinedOrEmpty(projectViewData?.data?.attributes?.allProjects?.data) &&
+        {!isNullOrUndefinedOrEmpty(projectData?.projects) &&
           (<>
             <h1 className={"text-gubenAccent text-h1 font-bold"}>{"Gubener Marktpatz"}</h1>
-            <FeaturedProjectsList projects={projectViewData!.data!.attributes!.allProjects!}/>
+            <FeaturedProjectsList2 projects={projectData?.projects!}/>
           </>)
         }
 

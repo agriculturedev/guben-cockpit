@@ -5,9 +5,8 @@ import {CategoryFilter} from "@/components/filters/CategoryFilter";
 import {useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 import {useMemo} from "react";
 import {ReactNode} from "@tanstack/react-router";
-import {getContrast, getHexColorFromText, hexToRgb} from "@/lib/colorUtils";
+import {getContrast, getHexColorFromText, hexToRgb} from "@/utilities/colorUtils";
 import {FilterTag} from "@/components/general/FilterTag";
-import { LocationFilter } from "../filters/LocationFilter";
 import { SortFilter } from "@/components/filters/SortFilter";
 
 
@@ -18,7 +17,7 @@ export const EventFilterContainer = () => {
     const elements: ReactNode[] = [];
 
     if (controllers.categoryController.category) {
-      const color = getHexColorFromText(controllers.categoryController.category);
+      const color = getHexColorFromText(controllers.categoryController.category?.name ?? "");
       const contrast = getContrast(hexToRgb(color)!, [255, 255, 255]);
 
       elements.push(<FilterTag
@@ -26,7 +25,7 @@ export const EventFilterContainer = () => {
         bgColor={color}
         textColor={contrast < 4.5 ? "#000000" : "#ffffff"}
         title={"Kategorie"}
-        value={controllers.categoryController.category}
+        value={controllers.categoryController.category.name ?? ""}
         onClear={controllers.categoryController.clearFilter}
       />)
     }
@@ -46,11 +45,13 @@ export const EventFilterContainer = () => {
     return elements;
   }, [controllers]);
 
+  // TODO@JOREN: add Guben as default location filter
+
   return (
     <div className={"flex gap-2 flex-col mb-2"}>
       <div className={"flex p-0 gap-2"}>
-        <TextFilter controller={controllers.textController}/>
-        <LocationFilter controller={controllers.locationController} defaultValue={"Guben"}/>
+        <TextFilter controller={controllers.titleController} placeHolder={"Search"}/>
+        <TextFilter controller={controllers.locationController} placeHolder={"Location"}/>
         <DateRangeFilter controller={controllers.dateController}/>
         <CategoryFilter controller={controllers.categoryController}/>
         <SortFilter controller={controllers.sortController}/>
