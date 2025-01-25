@@ -1,0 +1,44 @@
+services:
+  web:
+    image: ${CONTAINER_REGISTRY-}guben-cockpit-web
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    container_name: web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_STRAPI_URL: ${VITE_STRAPI_URL}
+      VITE_API_URL: ${VITE_API_URL}
+      VITE_AUTHORITY: ${VITE_AUTHORITY}
+      VITE_AUDIENCE: ${VITE_AUDIENCE}
+      VITE_REDIRECT_URI: ${VITE_REDIRECT_URI}
+    networks:
+      - app
+
+  api:
+    image: ${CONTAINER_REGISTRY-}guben-cockpit-api
+    build:
+      context: .
+      dockerfile: ./Api/Dockerfile
+    container_name: api
+    restart: unless-stopped
+# if api should be publicly accessible, open up port
+#    ports:
+#      - "5001:5001" # Only expose HTTPS port
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      Frontend:BaseUrl: https://web:3000
+      ConnectionStrings:DefaultConnection: ${DATABASE_CONNECTION_STRING}
+      Keycloak:realm: ${KEYCLOAK_REALM}
+      Keycloak:auth-server-url: ${KEYCLOAK_AUTH_SERVER}
+      Keycloak:ssl-required: ${KEYCLOAK_ENABLE_SSL}
+      Keycloak:resource: ${KEYCLOAK_RESOURCE}
+      Keycloak:verify-token-audience: ${KEYCLOAK_VERIFY_AUDIENCE}
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
