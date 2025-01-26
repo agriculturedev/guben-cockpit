@@ -26,7 +26,7 @@ public class GetMeHandler : ApiRequestHandler<GetMeQuery, GetMeResponse>
 
     var user = await _userRepository.GetByKeycloakId(keycloakId);
     if (user is null)
-      throw new ProblemDetailsException(ValidationMessage.CreateError(TranslationKeys.UserNotFound));
+      throw new ProblemDetailsException(TranslationKeys.UserNotFound);
 
     return (UserResponse.Map(user) as GetMeResponse)!;
   }

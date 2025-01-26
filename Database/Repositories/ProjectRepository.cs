@@ -16,6 +16,14 @@ public class ProjectRepository
     ModifiedSet = Set.Where(p => p.Published);
   }
 
+  public Task<Project?> GetIncludingUnpublished(string id)
+  {
+    return Set
+      .TagWith(GetType().Name + '.' + nameof(GetIncludingUnpublished))
+      .IgnoreAutoIncludes()
+      .FirstOrDefaultAsync(a => a.Id.Equals(id));
+  }
+
   public IEnumerable<Project> GetAllProjects()
   {
     return ModifiedSet

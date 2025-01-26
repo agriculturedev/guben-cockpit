@@ -23,10 +23,6 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
   private readonly List<Category.Category> _categories = [];
   public IReadOnlyCollection<Category.Category> Categories => _categories.AsReadOnly();
 
-  private Event()
-  {
-  }
-
   private Event(string eventId, string terminId, string title, string description, DateTime startDate, DateTime
     endDate, Coordinates.Coordinates? coordinates)
   {

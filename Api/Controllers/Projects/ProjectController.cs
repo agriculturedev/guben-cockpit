@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using Api.Controllers.Projects.CreateProject;
 using Api.Controllers.Projects.GetAllProjects;
 using Api.Controllers.Projects.PublishProjects;
 using Api.Infrastructure.Keycloak;
@@ -59,14 +60,14 @@ public class ProjectController : ControllerBase
   // }
 
 
-  // [HttpPost]
-  // [Authorize]
-  // [EndpointName("EventsCreateEvent")]
-  // [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateEventResponse))]
-  // [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  // public async Task<IResult> CreateEvent([FromBody] CreateEventQuery request)
-  // {
-  //   var result = await _mediator.Send(request);
-  //   return Results.Ok(result);
-  // }
+  [HttpPost]
+  [Authorize]
+  [EndpointName("ProjectsCreateProject")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProjectResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> CreateEvent([FromBody] CreateProjectCommand command)
+  {
+    var result = await _mediator.Send(command);
+    return Results.Ok(result);
+  }
 }

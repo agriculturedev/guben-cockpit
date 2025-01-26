@@ -34,6 +34,12 @@ public sealed class Project : Entity<string>
     return new Project(id, title, description, fullText, imageCaption, imageUrl, imageCredits, createdBy);
   }
 
+  public static Result<Project> CreateWithGeneratedId(string title, string? description, string? fullText, string? imageCaption,
+    string? imageUrl, string? imageCredits, Guid createdBy)
+  {
+    return new Project(Guid.CreateVersion7().ToString(), title, description, fullText, imageCaption, imageUrl, imageCredits, createdBy);
+  }
+
   public void Update(string title, string? description, string? fullText, string? imageCaption, string? imageUrl,
     string? imageCredits)
   {

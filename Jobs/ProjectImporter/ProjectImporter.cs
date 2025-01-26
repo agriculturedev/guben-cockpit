@@ -68,18 +68,24 @@ public class ProjectImporter
     response.EnsureSuccessStatusCode();
 
     var jsonResponse = await response.Content.ReadFromJsonAsync<JsonResponse>();
+    if (jsonResponse is null)
+      throw new NullReferenceException("JsonResponse is null");
+
     return jsonResponse.Data;
   }
 
   private async Task UpsertProjectAsync(RawProject rawProject)
   {
+    if (rawProject.Id is null || rawProject.Title is null)
+      throw new NullReferenceException("id and title are required");
+
     var (result, project) = Project.Create(
       rawProject.Id, rawProject.Title, rawProject.Introtext, rawProject.Fulltext,
       rawProject.ImageCaption, rawProject.ImageUrl, rawProject.ImageCredits, User.SystemUserId);
 
     if (result.IsSuccessful)
     {
-      var existingProject = await _projectRepository.Get(project.Id);
+      var existingProject = await _projectRepository.GetIncludingUnpublished(project.Id);
 
       if (existingProject is not null)
       {
@@ -99,8 +105,12 @@ public class ProjectImporter
   private static HttpRequestMessage CopyRequest(HttpResponseMessage response)
   {
     var oldRequest = response.RequestMessage;
+    if (oldRequest is null)
+      throw new NullReferenceException("oldRequest is null");
 
     var newRequest = new HttpRequestMessage(oldRequest.Method, oldRequest?.RequestUri);
+    if (newRequest.RequestUri is null)
+      throw new NullReferenceException("request is null");
 
     if (response.Headers.Location != null)
     {
@@ -117,33 +127,33 @@ public class ProjectImporter
     foreach (var header in oldRequest.Headers)
     {
       if (header.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase) &&
-          !(oldRequest.RequestUri.Host.Equals(newRequest?.RequestUri?.Host)))
+          !(oldRequest.RequestUri!.Host.Equals(newRequest?.RequestUri?.Host)))
       {
         //do not leak Authorization Header to other hosts
         continue;
       }
 
-      newRequest?.Headers.TryAddWithoutValidation(header.Key, header.Value);
+      newRequest!.Headers.TryAddWithoutValidation(header.Key, header.Value);
     }
 
-    foreach (var property in oldRequest.Properties)
+    foreach (var property in oldRequest.Options)
     {
-      newRequest.Properties.Add(property);
+      newRequest!.Options.TryAdd(property.Key, property.Value);
     }
 
     if (response.StatusCode == HttpStatusCode.Redirect
         || response.StatusCode == HttpStatusCode.Found
         || response.StatusCode == HttpStatusCode.SeeOther)
     {
-      newRequest.Content = null;
+      newRequest!.Content = null;
       newRequest.Method = HttpMethod.Get;
     }
     else if (oldRequest.Content != null)
     {
-      newRequest.Content = new StreamContent(oldRequest.Content.ReadAsStreamAsync().Result);
+      newRequest!.Content = new StreamContent(oldRequest.Content.ReadAsStreamAsync().Result);
     }
 
-    return newRequest;
+    return newRequest!;
   }
 }
 
@@ -191,7 +201,7 @@ internal class JsonResponse
   public string? Version { get; set; }
 
   [JsonPropertyName("data")]
-  public List<RawProject> Data { get; set; }
+  public List<RawProject> Data { get; set; } = null!;
 }
 
 public class CustomNullableIntegerConverter : JsonConverter<int?>
