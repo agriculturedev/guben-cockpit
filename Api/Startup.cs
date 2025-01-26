@@ -102,7 +102,6 @@ public class Startup(IConfiguration configuration)
     {
       var dbContextFactory = scope.ServiceProvider.GetRequiredService<ICustomDbContextFactory<GubenDbContext>>();
       var dbContext = dbContextFactory.CreateDbContext();
-      dbContext.Database.EnsureCreated();
       dbContext.Database.Migrate();
     }
 
