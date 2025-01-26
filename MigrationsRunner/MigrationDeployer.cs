@@ -2,7 +2,6 @@ using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Migrations;
 
 namespace MigrationsRunner;
 
