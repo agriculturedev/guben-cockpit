@@ -15,14 +15,16 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
   protected EntityFrameworkRepository(ICustomDbContextFactory<TContext> dbContextFactory)
   {
     _dbContextFactory = dbContextFactory;
+    ModifiedSet = Set;
   }
 
   protected TContext Context => _dbContextFactory.CreateDbContext();
   protected DbSet<TEntity> Set => _dbContextFactory.CreateDbContext().Set<TEntity>();
+  protected IQueryable<TEntity> ModifiedSet { get; set; } // used in project and user repo to apply default filters like Published or to filter out system user
 
    public Task<TEntity?> Get(TKey id)
     {
-        return Set
+        return ModifiedSet
             .TagWith(GetType().Name + '.' + nameof(Get))
             .IgnoreAutoIncludes()
             .FirstOrDefaultAsync(a => a.Id.Equals(id));
@@ -30,7 +32,7 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
 
     public Task<TEntity?> GetNonTracking(TKey id)
     {
-        return Set
+        return ModifiedSet
             .TagWith(GetType().Name + '.' + nameof(GetNonTracking))
             .AsNoTracking()
             .IgnoreAutoIncludes()
@@ -39,7 +41,7 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
 
     public Task<TEntity?> GetNonTrackingSplitQuery(TKey id)
     {
-        return Set
+        return ModifiedSet
             .TagWith(GetType().Name + '.' + nameof(GetNonTrackingSplitQuery))
             .AsNoTracking()
             .AsSplitQuery()
@@ -49,7 +51,7 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
 
     public Task<TProjection?> GetNonTrackingProjected<TProjection>(TKey id, Expression<Func<TEntity, TProjection>> projection)
     {
-        return Set
+        return ModifiedSet
             .TagWith(GetType().Name + '.' + nameof(GetNonTrackingProjected))
             .AsNoTracking()
             .IgnoreAutoIncludes()
@@ -60,7 +62,7 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
 
     public Task<TProjection?> GetNonTrackingSplitQueryProjected<TProjection>(TKey id, Expression<Func<TEntity, TProjection>> projection)
     {
-        return Set
+        return ModifiedSet
             .TagWith(GetType().Name + '.' + nameof(GetNonTrackingSplitQueryProjected))
             .AsNoTracking()
             .AsSplitQuery()
@@ -72,7 +74,7 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
 
     public Task<List<TEntity>> GetAll()
     {
-        return Set
+        return ModifiedSet
             .TagWith(GetType().Name + '.' + nameof(GetAll))
             .IgnoreAutoIncludes()
             .ToListAsync();
@@ -80,7 +82,7 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
 
     public Task<PagedResult<TEntity>> GetAllPaged(PagedCriteria criteria)
     {
-      return Set
+      return ModifiedSet
         .TagWith(GetType().Name + '.' + nameof(GetAllPaged))
         .AsNoTracking()
         .IgnoreAutoIncludes()
@@ -89,7 +91,7 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
 
     public Task<List<TProjection>> GetAllProjected<TProjection>(Expression<Func<TEntity, TProjection>> projection)
     {
-        return Set
+        return ModifiedSet
             .TagWith(GetType().Name + '.' + nameof(GetAllProjected))
             .IgnoreAutoIncludes()
             .Select(projection)
@@ -98,7 +100,7 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
 
     public Task<List<TProjection>> GetAllNonTrackingProjected<TProjection>(Expression<Func<TEntity, TProjection>> projection)
     {
-        return Set
+        return ModifiedSet
             .TagWith(GetType().Name + '.' + nameof(GetAllNonTrackingProjected))
             .AsNoTracking()
             .IgnoreAutoIncludes()
@@ -107,7 +109,7 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
     }
     public Task<List<TProjection>> GetAllNonTrackingSplitQueryProjected<TProjection>(Expression<Func<TEntity, TProjection>> projection)
     {
-        return Set
+        return ModifiedSet
             .TagWith(GetType().Name + '.' + nameof(GetAllNonTrackingSplitQueryProjected))
             .AsSplitQuery()
             .AsNoTracking()
