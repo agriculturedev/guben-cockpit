@@ -5,7 +5,7 @@ import {
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons"
 
-import { cn } from "@/utilities/twMerge"
+import { cn } from "@/lib/utils";
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "./select"
 

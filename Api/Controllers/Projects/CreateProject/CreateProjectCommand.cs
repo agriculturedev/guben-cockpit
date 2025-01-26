@@ -2,7 +2,7 @@ using Shared.Api;
 
 namespace Api.Controllers.Projects.CreateProject;
 
-public class CreateProjectCommand : IApiRequestWithCustomTransactions, IAuthenticatedApiRequest, IApiRequest<CreateProjectResponse>
+public class CreateProjectCommand : IAuthenticatedApiRequest, IApiRequest<CreateProjectResponse>
 {
   public required string Title { get; set; }
   public string? Description { get; set; }

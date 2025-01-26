@@ -1,5 +1,5 @@
 import {PropsWithChildren} from "react";
-import {cn} from "@/utilities/twMerge";
+import { cn } from "@/lib/utils";
 
 export interface TagProps extends PropsWithChildren {
   bgColor?: string;

@@ -208,15 +208,57 @@ export const useProjectsGetAll = <TData = Schemas.GetAllProjectsResponse,>(
   });
 };
 
+export type ProjectsCreateProjectError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsCreateProjectVariables = {
+  body: Schemas.CreateProjectCommand;
+} & GubenContext["fetcherOptions"];
+
+export const fetchProjectsCreateProject = (
+  variables: ProjectsCreateProjectVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateProjectResponse,
+    ProjectsCreateProjectError,
+    Schemas.CreateProjectCommand,
+    {},
+    {},
+    {}
+  >({ url: "/projects", method: "post", ...variables, signal });
+
+export const useProjectsCreateProject = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateProjectResponse,
+      ProjectsCreateProjectError,
+      ProjectsCreateProjectVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateProjectResponse,
+    ProjectsCreateProjectError,
+    ProjectsCreateProjectVariables
+  >({
+    mutationFn: (variables: ProjectsCreateProjectVariables) =>
+      fetchProjectsCreateProject({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type ProjectsPublishProjectsError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type ProjectsPublishProjectsRequestBody = string[];
-
 export type ProjectsPublishProjectsVariables = {
-  body?: ProjectsPublishProjectsRequestBody;
+  body: Schemas.PublishProjectsQuery;
 } & GubenContext["fetcherOptions"];
 
 export const fetchProjectsPublishProjects = (
@@ -226,7 +268,7 @@ export const fetchProjectsPublishProjects = (
   gubenFetch<
     Schemas.PublishProjectsResponse,
     ProjectsPublishProjectsError,
-    ProjectsPublishProjectsRequestBody,
+    Schemas.PublishProjectsQuery,
     {},
     {},
     {}
@@ -250,52 +292,6 @@ export const useProjectsPublishProjects = (
   >({
     mutationFn: (variables: ProjectsPublishProjectsVariables) =>
       fetchProjectsPublishProjects({ ...fetcherOptions, ...variables }),
-    ...options,
-  });
-};
-
-export type ProjectsUnpublishProjectsError = Fetcher.ErrorWrapper<{
-  status: 400;
-  payload: Schemas.ProblemDetails;
-}>;
-
-export type ProjectsUnpublishProjectsRequestBody = string[];
-
-export type ProjectsUnpublishProjectsVariables = {
-  body?: ProjectsUnpublishProjectsRequestBody;
-} & GubenContext["fetcherOptions"];
-
-export const fetchProjectsUnpublishProjects = (
-  variables: ProjectsUnpublishProjectsVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<
-    Schemas.UnpublishProjectsResponse,
-    ProjectsUnpublishProjectsError,
-    ProjectsUnpublishProjectsRequestBody,
-    {},
-    {},
-    {}
-  >({ url: "/projects/Unpublish", method: "put", ...variables, signal });
-
-export const useProjectsUnpublishProjects = (
-  options?: Omit<
-    reactQuery.UseMutationOptions<
-      Schemas.UnpublishProjectsResponse,
-      ProjectsUnpublishProjectsError,
-      ProjectsUnpublishProjectsVariables
-    >,
-    "mutationFn"
-  >,
-) => {
-  const { fetcherOptions } = useGubenContext();
-  return reactQuery.useMutation<
-    Schemas.UnpublishProjectsResponse,
-    ProjectsUnpublishProjectsError,
-    ProjectsUnpublishProjectsVariables
-  >({
-    mutationFn: (variables: ProjectsUnpublishProjectsVariables) =>
-      fetchProjectsUnpublishProjects({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };

@@ -1,5 +1,5 @@
 import { Loader2Icon } from "lucide-react"
-import { cn } from "@/utilities/twMerge";
+import { cn } from "@/lib/utils";
 
 export const LoadingIndicator = ({className}: { className?: string }) => {
   return <Loader2Icon className={cn(
