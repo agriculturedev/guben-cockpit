@@ -33,9 +33,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Log in to GitHub Container Registry (explicit login)
-        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
       - name: Extract metadata (tags, labels) for Docker
         id: meta-web
         uses: docker/metadata-action@v5
@@ -74,7 +71,7 @@ jobs:
         id: meta-strapi
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-strapi
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-strapi-v2
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
