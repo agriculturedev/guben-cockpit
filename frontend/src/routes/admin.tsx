@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import {useTranslation} from "react-i18next";
 import { UserList } from "@/components/admin/UsersList";
 import { View } from "@/components/layout/View";
+import { AddProjectDialogButton } from "@/components/projects/createProject/CreateProjectDialogButton";
 
 export const Route = createFileRoute('/admin')({
   component: AdminComponent,
@@ -23,7 +24,10 @@ function AdminComponent() {
   if (auth.isAuthenticated) {
     return (
       <View>
-        <UserList/>
+        <div className={"flex flex-col gap-2"}>
+          <AddProjectDialogButton/>
+          <UserList/>
+        </div>
       </View>
     )
   }

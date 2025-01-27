@@ -4,7 +4,7 @@ namespace Api.Controllers.Projects.Shared;
 
 public class ProjectResponse
 {
-  public string Title { get; set; }
+  public required string Title { get; set; }
   public string? Description { get; set; }
   public string? FullText { get; set; }
   public string? ImageCaption { get; set; }

@@ -3,7 +3,14 @@ interface Resources {
     "Test": "test but in german",
     "NoResults": "No results",
     "Name": "Name",
-    "Email": "Email"
+    "Email": "Email",
+    "Title": "Title",
+    "Description": "Description",
+    "FullText": "Full text",
+    "ImageCaption": "Image caption",
+    "ImageUrl": "Image url",
+    "ImageCredits": "Image credits",
+    "Save": "Save"
   },
   "navigation": {
     "Dashboard": "Dashboard",
@@ -12,6 +19,9 @@ interface Resources {
     "Events": "Veranstaltungen",
     "LogOut": "Abmelden",
     "Admin": "Admin"
+  },
+  "projects": {
+    "Add": "Add project"
   }
 }
 

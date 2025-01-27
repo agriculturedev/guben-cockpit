@@ -19,7 +19,15 @@ public class DescribeEnumMemberValues : IOpenApiSchemaTransformer
 
       foreach (var enumValue in Enum.GetValues(context.JsonTypeInfo.Type))
       {
-        var memberInfo = context.JsonTypeInfo.Type.GetMember(enumValue.ToString())[0];
+        var name = enumValue.ToString();
+        if (name is null)
+        {
+          // TOOD: proper error logging
+          Console.WriteLine("enumValue {0} is not defined or has no name", enumValue);
+          continue;
+        }
+
+        var memberInfo = context.JsonTypeInfo.Type.GetMember(name)[0];
         var enumMemberAttribute = memberInfo.GetCustomAttributes(typeof(EnumMemberAttribute), false)
           .FirstOrDefault() as EnumMemberAttribute;
 

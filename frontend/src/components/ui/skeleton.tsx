@@ -1,4 +1,4 @@
-import { cn } from "@/utilities/twMerge"
+import { cn } from "@/lib/utils";
 
 function Skeleton({
   className,

@@ -5,7 +5,7 @@ namespace Api.Controllers.Categories.Shared;
 
 public class CategoryResponse : EntityResponse<Guid>
 {
-  public string Name { get; set; }
+  public required string Name { get; set; }
 
   public static CategoryResponse Map(Category category)
   {

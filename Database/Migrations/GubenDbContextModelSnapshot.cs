@@ -122,6 +122,9 @@ namespace Migrations.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -150,6 +153,8 @@ namespace Migrations.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
 
                     b.ToTable("Project", "Guben");
                 });
@@ -182,6 +187,16 @@ namespace Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User", "Guben");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000000"),
+                            Email = "system@example.com",
+                            FirstName = "System",
+                            KeycloakId = "system",
+                            LastName = "User"
+                        });
                 });
 
             modelBuilder.Entity("EventCategory", b =>
@@ -237,6 +252,15 @@ namespace Migrations.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("Urls");
+                });
+
+            modelBuilder.Entity("Domain.Projects.Project", b =>
+                {
+                    b.HasOne("Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EventCategory", b =>

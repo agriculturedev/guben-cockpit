@@ -2,6 +2,7 @@ using Database.Converters;
 using Domain.Coordinates;
 using Domain.Events;
 using Domain.Projects;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,5 +24,9 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     builder.Property(e => e.ImageUrl).IsRequired();
     builder.Property(e => e.ImageCredits).IsRequired();
     builder.Property(e => e.Published).IsRequired();
+    builder.HasOne<User>()
+      .WithMany()
+      .HasForeignKey(p => p.CreatedBy)
+      .OnDelete(DeleteBehavior.Restrict);
   }
 }
