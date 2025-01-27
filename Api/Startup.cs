@@ -10,6 +10,8 @@ using Domain;
 using Hangfire;
 using Jobs.EventImporter;
 using Jobs.ProjectImporter;
+using Microsoft.EntityFrameworkCore;
+using Shared.Database;
 
 namespace Api;
 
@@ -95,6 +97,13 @@ public class Startup(IConfiguration configuration)
 
     app.MapOpenApi()
       .CacheOutput();
+
+    using (var scope = app.Services.CreateScope())
+    {
+      var dbContextFactory = scope.ServiceProvider.GetRequiredService<ICustomDbContextFactory<GubenDbContext>>();
+      var dbContext = dbContextFactory.CreateDbContext();
+      dbContext.Database.Migrate();
+    }
 
     app.Run();
   }

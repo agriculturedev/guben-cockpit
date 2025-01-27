@@ -4,7 +4,7 @@ namespace Api.Controllers.Locations.GetOrCreatelocation;
 
 public class GetOrCreateLocationQuery : IApiRequest<GetOrCreateLocationResponse>
 {
-  public string Name { get; set; }
+  public required string Name { get; set; }
   public string? City { get; set; }
   public string? Street { get; set; }
   public string? TelephoneNumber { get; set; }

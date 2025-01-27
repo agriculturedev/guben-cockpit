@@ -80,6 +80,7 @@ ssl
 nbproject
 public/uploads/*
 !public/uploads/.gitkeep
+appsettings.*.json
 
 ############################
 # Node.js

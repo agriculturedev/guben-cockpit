@@ -4,7 +4,7 @@
  * @version 1.0.0
  */
 export type CategoryResponse = {
-  name?: string;
+  name: string;
   /**
    * @format uuid
    */
@@ -23,8 +23,8 @@ export type CoordinatesResponse = {
 } | null;
 
 export type CreateEventQuery = {
-  eventId?: string;
-  terminId?: string;
+  eventId: string;
+  terminId: string;
   title: string;
   description: string;
   /**
@@ -43,8 +43,8 @@ export type CreateEventQuery = {
    * @format double
    */
   longitude?: number;
-  urls?: CreateUrlQuery[];
-  categoryIds?: string[];
+  urls: CreateUrlQuery[];
+  categoryIds: string[];
   /**
    * @format uuid
    */
@@ -53,9 +53,20 @@ export type CreateEventQuery = {
 
 export type CreateEventResponse = Record<string, any>;
 
+export type CreateProjectCommand = {
+  title: string;
+  description?: string | null;
+  fullText?: string | null;
+  imageCaption?: string | null;
+  imageUrl?: string | null;
+  imageCredits?: string | null;
+};
+
+export type CreateProjectResponse = Record<string, any>;
+
 export type CreateUrlQuery = {
-  link?: string;
-  description?: string;
+  link: string;
+  description: string;
 };
 
 export type EventResponse = {
@@ -171,7 +182,7 @@ export type ProblemDetails = {
 };
 
 export type ProjectResponse = {
-  title?: string;
+  title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
@@ -179,13 +190,16 @@ export type ProjectResponse = {
   imageCredits?: string | null;
 };
 
+export type PublishProjectsQuery = {
+  publish?: boolean;
+  projectIds: string[];
+};
+
 export type PublishProjectsResponse = Record<string, any>;
 
-export type UnpublishProjectsResponse = Record<string, any>;
-
 export type UrlResponse = {
-  link?: string;
-  description?: string;
+  link: string;
+  description: string;
 };
 
 export type UserResponse = {

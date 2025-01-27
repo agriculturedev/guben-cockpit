@@ -30,7 +30,12 @@ public class GubenDbContextFactory : ICustomDbContextFactory<GubenDbContext>
   public GubenDbContext CreateNew()
   {
     var dbOptions = new DbContextOptionsBuilder()
-      .UseNpgsql(_connectionString)
+      .UseNpgsql(_connectionString,
+          options =>
+          {
+            options.MigrationsAssembly(typeof(GubenDbContextFactory).Assembly.FullName);
+            options.MigrationsHistoryTable("Migrations", GubenDbContext.DefaultSchema);
+          })
       .EnableSensitiveDataLogging()
       .LogTo(Console.WriteLine, (eventId, logLevel) => logLevel >= LogLevel.Information
                                                        || eventId == RelationalEventId.DataReaderDisposing);

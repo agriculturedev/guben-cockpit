@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace Database;
 
@@ -20,5 +21,7 @@ public class GubenDbContext(DbContextOptions options) : DbContext(options)
   {
     modelBuilder.HasDefaultSchema(DefaultSchema);
     modelBuilder.ApplyConfigurationsFromAssembly(typeof(GubenDbContext).Assembly);
+
+    modelBuilder.Entity<User>().HasData(User.SystemUser);
   }
 }

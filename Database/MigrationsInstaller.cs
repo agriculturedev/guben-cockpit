@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Migrations;
+namespace Database;
 
 public static class MigrationsInstaller
 {

@@ -1,10 +1,9 @@
-﻿using Database;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Logging;
 
-namespace Migrations;
+namespace Database;
 
 public interface IMigrationService
 {

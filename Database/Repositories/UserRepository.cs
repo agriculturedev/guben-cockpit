@@ -11,16 +11,16 @@ public class UserRepository
   public UserRepository(ICustomDbContextFactory<GubenDbContext> dbContextFactory)
     : base(dbContextFactory)
   {
+    ModifiedSet = Set.Where(p => p.Id != User.SystemUserId);
   }
-
 
   public Task<User?> GetByKeycloakId(string keycloakId)
   {
-    return Set.FirstOrDefaultAsync(u => u.KeycloakId == keycloakId);
+    return ModifiedSet.FirstOrDefaultAsync(u => u.KeycloakId == keycloakId);
   }
 
   public bool Exists(string keycloakId)
   {
-    return Set.Any(u => u.KeycloakId == keycloakId);
+    return ModifiedSet.Any(u => u.KeycloakId == keycloakId);
   }
 }
