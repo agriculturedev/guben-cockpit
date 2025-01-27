@@ -82,7 +82,6 @@ public class Startup(IConfiguration configuration)
     app.UseCors("AllowReactApp");
     app.UseCors("AllowSelf");
     app.UseHttpsRedirection();
-    app.UseAntiforgery();
     app.UseExceptionHandler();
     app.UseStatusCodePages();
 
