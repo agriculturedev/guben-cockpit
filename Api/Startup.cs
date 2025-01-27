@@ -59,7 +59,6 @@ public class Startup(IConfiguration configuration)
 
     ProblemDetailsServiceCollectionExtensions.AddProblemDetails(services);
 
-    services.AddAntiforgery(); // TODO: investigage, does this need further configuration?
     services.AddExceptionHandler<ProblemExceptionHandler>();
     services.AddLocalization();
     services.AddOpenApi(options => { options.AddSchemaTransformer<DescribeEnumMemberValues>(); });
