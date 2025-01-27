@@ -1,12 +1,15 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:9.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
+ENV ASPNETCORE_HTTP_PORTS=5000
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Api/Api.csproj", "Api/"]
-RUN dotnet restore "Api/Api.csproj"
+
+COPY ["./Api/Api.csproj", "Api/"]
+RUN dotnet restore "./Api/Api.csproj"
+
 COPY . .
 WORKDIR "/src/Api"
 RUN dotnet build "Api.csproj" -c $BUILD_CONFIGURATION -o /app/build

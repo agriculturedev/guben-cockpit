@@ -1,0 +1,82 @@
+name: Build and push Docker image on tag
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: agriculturedev/guben-cockpit
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    environment: main
+    permissions:
+      contents: read
+      packages: write
+    env:
+      VITE_API_URL: ${{ vars.VITE_API_URL }}
+      VITE_AUTHORITY: ${{ vars.VITE_AUTHORITY }}
+      VITE_AUDIENCE: ${{ vars.VITE_AUDIENCE }}
+      VITE_REDIRECT_URI: ${{ vars.VITE_REDIRECT_URI }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta-web
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-web
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ steps.meta-web.outputs.tags }}
+          labels: ${{ steps.meta-web.outputs.labels }}
+          build-args: |
+            VITE_API_URL=${{ vars.VITE_API_URL }}
+            VITE_REDIRECT_URI=${{ vars.VITE_REDIRECT_URI }}
+            VITE_AUTHORITY=${{ vars.VITE_AUTHORITY }}
+            VITE_AUDIENCE=${{ vars.VITE_AUDIENCE }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta-api
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-api
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Api/Dockerfile
+          push: true
+          tags: ${{ steps.meta-api.outputs.tags }}
+          labels: ${{ steps.meta-api.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta-strapi
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-strapi
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./strapi
+          push: true
+          tags: ${{ steps.meta-strapi.outputs.tags }}
+          labels: ${{ steps.meta-strapi.outputs.labels }}

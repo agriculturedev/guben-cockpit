@@ -1,0 +1,65 @@
+services:
+  web:
+    build: ./frontend
+    container_name: web-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file: ./frontend/.env
+    networks:
+      - app
+
+  api:
+    build:
+      context: .
+      dockerfile: ./Api/Dockerfile
+    container_name: api-dev
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Frontend:BaseUrl: https://web:3000
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    networks:
+      - app
+      - backend
+
+  postgres:
+    image: postgres
+    container_name: postgres-dev
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: VeryStrongPassword123
+      POSTGRES_USER: guben
+      POSTGRES_DB: guben_cockpit_dev
+    volumes:
+      - guben_cockpit:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  adminer:
+    image: adminer
+    container_name: adminer-dev
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_PASSWORD: VeryStrongPassword123
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+  app:
+    driver: bridge
+
+volumes:
+  guben_cockpit:
