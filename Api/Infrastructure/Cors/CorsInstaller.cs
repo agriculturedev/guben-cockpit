@@ -6,17 +6,10 @@ public static class CorsInstaller
   {
     services.AddCors(options =>
     {
-      options.AddPolicy("AllowReactApp",
+      options.AddPolicy("Cors",
         builder =>
         {
-          builder.WithOrigins(configuration.Frontend.BaseUri)
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-        });
-      options.AddPolicy("AllowSelf",
-        builder =>
-        {
-          builder.WithOrigins("http://localhost:5000")
+          builder.WithOrigins("http://localhost:5000", configuration.Frontend.BaseUri)
             .AllowAnyHeader()
             .AllowAnyMethod();
         });

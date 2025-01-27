@@ -79,8 +79,7 @@ public class Startup(IConfiguration configuration)
   /// <param name="environment"></param>
   public void Configure(WebApplication app, IHostEnvironment environment)
   {
-    app.UseCors("AllowReactApp");
-    app.UseCors("AllowSelf");
+    app.UseCors("Cors");
     app.UseHttpsRedirection();
     app.UseExceptionHandler();
     app.UseStatusCodePages();
