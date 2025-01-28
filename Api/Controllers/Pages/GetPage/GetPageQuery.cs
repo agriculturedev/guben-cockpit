@@ -4,7 +4,7 @@ using Shared.Api.Pagination;
 
 namespace Api.Controllers.Pages.GetPage;
 
-public class GetPageQuery : PagedQuery, IApiRequest<PageResponse>, IApiRequestWithCustomTransactions
+public class GetPageQuery : IApiRequest<PageResponse>, IApiRequestWithCustomTransactions
 {
   public required string Id { get; set; }
 

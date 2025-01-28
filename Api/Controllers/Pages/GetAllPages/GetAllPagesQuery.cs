@@ -3,6 +3,6 @@ using Shared.Api.Pagination;
 
 namespace Api.Controllers.Pages.GetAllPages;
 
-public class GetAllPagesQuery : PagedQuery, IApiRequest<GetAllPagesResponse>, IApiRequestWithCustomTransactions
+public class GetAllPagesQuery : IApiRequest<GetAllPagesResponse>, IApiRequestWithCustomTransactions
 {
 }

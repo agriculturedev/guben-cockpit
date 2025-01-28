@@ -10,6 +10,7 @@ public class ProjectResponse
   public string? ImageCaption { get; set; }
   public string? ImageUrl { get; set; }
   public string? ImageCredits { get; set; }
+  public bool Highlighted { get; set; } = true; // TODO: this is used for the weird 'project carousel' and gubener marktplatz, needs to be clarified if they want more of a list view or whatever
 
   public static ProjectResponse Map(Project project)
   {
