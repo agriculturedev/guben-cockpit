@@ -565,6 +565,57 @@ export const useEventsCreateEvent = (
   });
 };
 
+export type DashboardGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchDashboardGetAll = (
+  variables: DashboardGetAllVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllDashboardTabsResponse,
+    DashboardGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/dashboard", method: "get", ...variables, signal });
+
+export const useDashboardGetAll = <
+  TData = Schemas.GetAllDashboardTabsResponse,
+>(
+  variables: DashboardGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllDashboardTabsResponse,
+      DashboardGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllDashboardTabsResponse,
+    DashboardGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/dashboard",
+      operationId: "dashboardGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchDashboardGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type CategoriesGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -654,6 +705,11 @@ export type QueryOperation =
       path: "/events";
       operationId: "eventsGetAll";
       variables: EventsGetAllVariables;
+    }
+  | {
+      path: "/dashboard";
+      operationId: "dashboardGetAll";
+      variables: DashboardGetAllVariables;
     }
   | {
       path: "/categories";

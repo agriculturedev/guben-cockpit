@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {createFileRoute} from '@tanstack/react-router'
-import {useGetEvents, useGetEventView} from "@/endpoints/gubenProdComponents";
 import {View} from "@/components/layout/View";
 import {PaginationContainer} from "@/components/DataDisplay/PaginationContainer";
 import {defaultPaginationProps, usePagination} from "@/hooks/usePagination";
@@ -46,27 +45,16 @@ function EventComponent() {
     }, {}
   ), [filters, page, pageSize]);
 
-  console.log(queryParams)
-
-  const {
-    data: eventsData
-  } = useGetEvents({queryParams: queryParams}, {});
-
-  const {
-    data: eventViewData,
-    isLoading: eventViewIsLoading
-  } = useGetEventView({queryParams: {}});
-
-  const { data: eventsData2 } = useEventsGetAll({
+  const { data: eventsData } = useEventsGetAll({
     queryParams: {
       pageSize, pageNumber: page, ...queryParams
     }
   });
 
   useEffect(() => {
-    setTotal(eventsData2?.totalCount ?? defaultPaginationProps.total);
-    setPageCount(eventsData2?.pageCount ?? defaultPaginationProps.pageCount);
-  }, [eventsData2]);
+    setTotal(eventsData?.totalCount ?? defaultPaginationProps.total);
+    setPageCount(eventsData?.pageCount ?? defaultPaginationProps.pageCount);
+  }, [eventsData]);
 
   return (
     <View pageKey={"Events"}>
@@ -76,7 +64,7 @@ function EventComponent() {
         page={page}
       >
         <EventFilterContainer/>
-        <EventsList events={eventsData2?.results}/>
+        <EventsList events={eventsData?.results}/>
       </PaginationContainer>
     </View>
   );

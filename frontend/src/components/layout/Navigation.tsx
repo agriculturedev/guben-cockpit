@@ -74,7 +74,7 @@ export const Navigation = () => {
                     {
                       redirectMethod: "assign",
                       redirectTarget: "self",
-                      post_logout_redirect_uri: import.meta.env.VITE_REDIRECT_URI
+                      post_logout_redirect_uri: window.location.origin
                     },
                   )}>
                     <LogOutIcon className={iconStyle}/>
