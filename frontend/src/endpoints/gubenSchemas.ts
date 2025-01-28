@@ -170,6 +170,12 @@ export type LocationResponse = {
   city?: string | null;
 };
 
+export type PageResponse = {
+  name: string;
+  title: string;
+  description: string;
+};
+
 export type ProblemDetails = {
   type?: string | null;
   title?: string | null;

@@ -19,7 +19,7 @@ function ProjectsComponent() {
 
   return (
     <>
-      <View title={projectViewData?.data?.attributes?.Title} description={projectViewData?.data?.attributes?.Description} isLoading={projectViewIsLoading}>
+      <View pageKey={"Projects"}>
         {!isNullOrUndefinedOrEmpty(projectViewData?.data?.attributes?.projects?.data) &&
 		      <FeaturedProjectsList projects={projectViewData!.data!.attributes!.projects!}/>
         }

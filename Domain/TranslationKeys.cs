@@ -20,4 +20,5 @@ public class TranslationKeys
   public const string GetOrCreateLocationFailed = "GetOrCreateLocationFailed";
   public const string TitleCannotBeEmpty = "TitleCannotBeEmpty";
   public const string UserNotLoggedIn = "UserNotLoggedIn";
+  public const string PageNotFound = "PageNotFound";
 }

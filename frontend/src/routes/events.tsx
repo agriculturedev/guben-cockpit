@@ -69,11 +69,7 @@ function EventComponent() {
   }, [eventsData2]);
 
   return (
-    <View
-      title={eventViewData?.data?.attributes?.Title}
-      description={eventViewData?.data?.attributes?.Description}
-      isLoading={eventViewIsLoading}
-    >
+    <View pageKey={"Events"}>
       <PaginationContainer
         nextPage={nextPage} previousPage={previousPage} setPageIndex={setPageIndex}
         setPageSize={setPageSize} total={total} pageCount={pageCount} pageSize={pageSize}
