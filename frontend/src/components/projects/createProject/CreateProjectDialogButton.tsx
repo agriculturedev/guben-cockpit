@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { z } from "zod";
 import { useState } from "react";
-import { useAuthHeaders } from "@/hooks/useAuthHeaders";
 import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
 import { useMutationErrorToast } from "@/hooks/useErrorToast";
 import { useCreateProjectFormSchema } from "./useCreateProjectFormSchema";
@@ -17,7 +16,6 @@ interface AddProjectDialogButtonProps {
 }
 
 export const AddProjectDialogButton = ({onProjectCreated}: AddProjectDialogButtonProps) => {
-  const headers = useAuthHeaders()
   const {t} = useTranslation("projects");
   const [open, setOpen] = useState(false);
 
@@ -44,7 +42,7 @@ export const AddProjectDialogButton = ({onProjectCreated}: AddProjectDialogButto
       imageCaption: values.imageCaption,
     };
 
-    mutation.mutate({body: newProject, ...headers});
+    mutation.mutate({body: newProject});
   }
 
   return (
