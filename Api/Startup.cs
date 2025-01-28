@@ -88,10 +88,7 @@ public class Startup(IConfiguration configuration)
     app.UseAuthorization();
 
     app.MapControllers();
-    app.UseHangfireDashboard("/hangfire", new DashboardOptions
-    {
-      Authorization = new [] { new AuthorizationFilter() }
-    });
+    app.UseHangfireDashboard();
 
     AddJobs();
 
