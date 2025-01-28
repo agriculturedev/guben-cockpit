@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
@@ -9,7 +8,9 @@ import { AuthProvider } from "react-oidc-context";
 import { User } from "oidc-client-ts";
 
 import "./utilities/i18n/initializeTranslations.ts";
-import "./utilities/dateExtensions"
+import "./utilities/dateExtensions";
+import {FetchInterceptor} from "./utilities/fetchApiExtensions";
+FetchInterceptor.register();
 
 const queryClient = new QueryClient();
 

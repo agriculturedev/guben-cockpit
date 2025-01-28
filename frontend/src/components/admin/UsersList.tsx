@@ -1,5 +1,4 @@
 import { useUsersGetAll } from "@/endpoints/gubenComponents";
-import { useAuthHeaders } from "@/hooks/useAuthHeaders";
 import { defaultPaginationProps, usePagination } from "@/hooks/usePagination";
 import { useEffect } from "react";
 import { PaginationContainer } from "@/components/DataDisplay/PaginationContainer";
@@ -19,13 +18,11 @@ export const UserList = () => {
     setTotal,
     setPageCount
   } = usePagination();
-  const headers = useAuthHeaders();
 
-  const {data: pagedUserData, refetch, isLoading} = useUsersGetAll({
+  const {data: pagedUserData} = useUsersGetAll({
     queryParams: {
       pageSize, pageNumber: page
-    },
-    ...headers
+    }
   });
 
   useEffect(() => {
