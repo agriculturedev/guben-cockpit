@@ -34,9 +34,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: VeryStrongPassword123
       POSTGRES_USER: guben
-      POSTGRES_DB: guben_cockpit_dev
+      POSTGRES_PASSWORD: VeryStrongPassword123
+      POSTGRES_DB: guben
     volumes:
       - guben_cockpit:/var/lib/postgresql/data
     networks:
