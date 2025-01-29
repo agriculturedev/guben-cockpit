@@ -16,7 +16,6 @@ public class GetAllDashboardTabsHandler : ApiRequestHandler<GetAllDashboardTabsQ
   public override async Task<GetAllDashboardTabsResponse> Handle(GetAllDashboardTabsQuery request, CancellationToken cancellationToken)
   {
     var dashboardTabs = await _dashboardRepository.GetAll();
-
     if (dashboardTabs is null)
       return new GetAllDashboardTabsResponse();
 
