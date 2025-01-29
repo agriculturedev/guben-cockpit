@@ -14,7 +14,7 @@ interface DashboardTabsProps {
 }
 
 export const DashboardTabs = ({tabs}: DashboardTabsProps) => {
-    const [tab, setTab] = useState(tabs[0].title);
+    const [tab, setTab] = useState(tabs[0]?.title ?? "");
 
     const onTabChange = (value: string) => {
         setTab(value);
