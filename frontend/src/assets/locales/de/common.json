@@ -9,5 +9,7 @@
   "ImageCaption": "Image caption",
   "ImageUrl": "Image url",
   "ImageCredits": "Image credits",
-  "Save": "Save"
+  "Save": "Save",
+  "Search": "Suchen",
+  "NoItemsFound": "Keine Ergebnisse"
 }
