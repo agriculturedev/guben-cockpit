@@ -194,6 +194,7 @@ export type InformationCardResponse = {
 };
 
 export type LocationResponse = {
+  id: string;
   name: string;
   city?: string | null;
 };

@@ -9,6 +9,7 @@ import {TextFilterController, useTextFilter} from "@/hooks/useTextFilter";
 import {DateFilterController, useDateFilter} from "@/hooks/useDateFilter";
 import {CategoryFilterController, useCategoryFilter} from "@/hooks/useCategoryFilter";
 import { SorterController, useSorter } from "@/hooks/useSorter";
+import {LocationFilterController, useLocationFilter} from "@/hooks/useLocationFilter";
 
 
 interface EventFiltersContext {
@@ -19,7 +20,7 @@ interface EventFiltersContext {
 interface EventFiltersControllers {
   sortController: SorterController,
   titleController: TextFilterController,
-  locationController: TextFilterController,
+  locationController: LocationFilterController,
   dateController: DateFilterController,
   categoryController: CategoryFilterController,
 }
@@ -53,7 +54,7 @@ export function EventFiltersProvider({children}: EventFiltersProviderProps) {
   const controllers: EventFiltersControllers = {
     sortController: useSorter(sorting, setSorting, ""),
     titleController: useTextFilter(textFilters, setTextFilters, "title"),
-    locationController: useTextFilter(locationFilters, setLocationFilters, "location"),
+    locationController: useLocationFilter(locationFilters, setLocationFilters, "location"),
     dateController: useDateFilter(dateFilters, setDateFilters, ""),
     categoryController: useCategoryFilter(categoryFilters, setCategoryFilters, "categoryId"),
   };

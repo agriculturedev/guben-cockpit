@@ -10,7 +10,8 @@ interface Resources {
     "ImageCaption": "Image caption",
     "ImageUrl": "Image url",
     "ImageCredits": "Image credits",
-    "Save": "Save"
+    "Save": "Save",
+    "NoItemsFound": "No items found."
   },
   "navigation": {
     "Dashboard": "Dashboard",

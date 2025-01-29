@@ -5,6 +5,8 @@ namespace Database.Converters;
 
 public class CoordinatesConverter : ValueConverter<Coordinates?, string?>
 {
+  private const char Separator = ';';
+
   public CoordinatesConverter()
     : base(
       coordinates => ToDatabase(coordinates), // Conversion to string
@@ -16,7 +18,7 @@ public class CoordinatesConverter : ValueConverter<Coordinates?, string?>
     if (coordinates is null)
       return null;
 
-    return $"{coordinates.Latitude},{coordinates.Longitude}";
+    return $"{coordinates.Latitude}{Separator}{coordinates.Longitude}";
   }
 
   public static Coordinates? FromDatabase(string? value)
@@ -24,7 +26,7 @@ public class CoordinatesConverter : ValueConverter<Coordinates?, string?>
     if (value is null)
       return null;
 
-    var parts = value.Split(',');
+    var parts = value.Split(Separator);
     var (coordsResult, coords) = Coordinates.Create(
       double.Parse(parts[0]),
       double.Parse(parts[1])

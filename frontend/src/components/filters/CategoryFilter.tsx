@@ -1,6 +1,5 @@
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {CategoryFilterController} from "@/hooks/useCategoryFilter";
-import {useGetCategories} from "@/endpoints/gubenProdComponents";
 import {useCategoriesGetAll} from "@/endpoints/gubenComponents";
 
 interface Props {
