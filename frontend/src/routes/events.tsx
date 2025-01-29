@@ -9,6 +9,7 @@ import {EventFilterContainer} from "@/components/events/EventFilterContainer";
 import {EventFiltersProvider, useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 import {HashMap} from "@/types/common.types";
 import {useEventsGetAll} from "@/endpoints/gubenComponents";
+import { useErrorToast } from "@/hooks/useErrorToast";
 
 export const Route = createFileRoute('/events')({
   component: WrappedComponent,

@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { z } from "zod";
 import { useState } from "react";
 import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
-import { useMutationErrorToast } from "@/hooks/useErrorToast";
+import { useErrorToast } from "@/hooks/useErrorToast";
 import { useCreateProjectFormSchema } from "./useCreateProjectFormSchema";
 import { useDialogFormToggle } from "@/hooks/useDialogFormToggle";
 import { CreateProjectCommand } from "@/endpoints/gubenSchemas";
@@ -25,7 +25,7 @@ export const AddProjectDialogButton = ({onProjectCreated}: AddProjectDialogButto
       onProjectCreated && onProjectCreated(response.projectId);
     },
     onError: (error) => {
-      useMutationErrorToast(error);
+      useErrorToast(error);
     }
   });
 

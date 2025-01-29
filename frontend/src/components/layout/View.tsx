@@ -2,6 +2,7 @@ import { ReactNode } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import Markdown from "react-markdown";
 import { usePagesGet } from "@/endpoints/gubenComponents";
+import { useErrorToast } from "@/hooks/useErrorToast";
 
 interface Props {
   pageKey?: string;
@@ -13,9 +14,13 @@ interface ViewHeaderProps {
 }
 
 const ViewHeader = ({pageKey}: ViewHeaderProps) => {
-  const {data: homePage, isFetching} = usePagesGet({
+  const {data: homePage, isFetching, error} = usePagesGet({
     pathParams: {id: pageKey ?? ""}
   })
+
+  if (error) {
+    useErrorToast(error);
+  }
 
   return (
     isFetching ? (
