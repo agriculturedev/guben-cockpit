@@ -1,6 +1,8 @@
 ﻿using System.Net.Mime;
+using Api.Controllers.DashboardTabs.CreateDashboardTab;
 using Api.Controllers.DashboardTabs.GetAllDashboardTabs;
 using Api.Controllers.DashboardTabs.UpdateDashboardTab;
+using Database.Migrations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +39,16 @@ public class DashboardTabsController : ControllerBase
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateDashboardTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> Update([FromBody] UpdateDashboardTabQuery request)
+  {
+    var result = await _mediator.Send(request);
+    return Results.Ok(result);
+  }
+
+  [HttpPost]
+  [EndpointName("DashboardCreate")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateDashboardTabResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> Create([FromBody] CreateDashboardTabQuery request)
   {
     var result = await _mediator.Send(request);
     return Results.Ok(result);
