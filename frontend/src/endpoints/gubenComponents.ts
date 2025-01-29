@@ -456,8 +456,8 @@ export type EventsGetAllQueryParams = {
    * @format date
    */
   endDate?: string;
-  sortBy?: "Title" | "StartDate";
-  sortDirection?: "Ascending" | "Descending";
+  sortBy?: Schemas.EventSortOption;
+  sortDirection?: Schemas.SortDirection;
   /**
    * @format int32
    * @default 1
@@ -613,6 +613,94 @@ export const useDashboardGetAll = <
       fetchDashboardGetAll({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
+  });
+};
+
+export type DashboardUpdateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardUpdateVariables = {
+  body: Schemas.UpdateDashboardTabQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardUpdate = (
+  variables: DashboardUpdateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpdateDashboardTabResponse,
+    DashboardUpdateError,
+    Schemas.UpdateDashboardTabQuery,
+    {},
+    {},
+    {}
+  >({ url: "/dashboard", method: "put", ...variables, signal });
+
+export const useDashboardUpdate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpdateDashboardTabResponse,
+      DashboardUpdateError,
+      DashboardUpdateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpdateDashboardTabResponse,
+    DashboardUpdateError,
+    DashboardUpdateVariables
+  >({
+    mutationFn: (variables: DashboardUpdateVariables) =>
+      fetchDashboardUpdate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DashboardCreateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardCreateVariables = {
+  body: Schemas.CreateDashboardTabQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardCreate = (
+  variables: DashboardCreateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateDashboardTabResponse,
+    DashboardCreateError,
+    Schemas.CreateDashboardTabQuery,
+    {},
+    {},
+    {}
+  >({ url: "/dashboard", method: "post", ...variables, signal });
+
+export const useDashboardCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateDashboardTabResponse,
+      DashboardCreateError,
+      DashboardCreateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateDashboardTabResponse,
+    DashboardCreateError,
+    DashboardCreateVariables
+  >({
+    mutationFn: (variables: DashboardCreateVariables) =>
+      fetchDashboardCreate({ ...fetcherOptions, ...variables }),
+    ...options,
   });
 };
 

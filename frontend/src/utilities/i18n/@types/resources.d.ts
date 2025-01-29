@@ -10,7 +10,18 @@ interface Resources {
     "ImageCaption": "Image caption",
     "ImageUrl": "Image url",
     "ImageCredits": "Image credits",
-    "Save": "Save"
+    "Save": "Save",
+    "Search": "Suchen",
+    "NoItemsFound": "Keine Ergebnisse"
+  },
+  "dashboard": {
+    "Title": "Dashboard",
+    "SelectTabToEdit": "Zum Bearbeiten Element auswählen",
+    "MapUrl": "Map url",
+    "Add": "Add new tab"
+  },
+  "events": {
+    "Title": "Veranstaltungen"
   },
   "navigation": {
     "Dashboard": "Dashboard",
@@ -21,7 +32,11 @@ interface Resources {
     "Admin": "Admin"
   },
   "projects": {
+    "Title": "Projekte",
     "Add": "Add project"
+  },
+  "users": {
+    "Title": "Users"
   }
 }
 

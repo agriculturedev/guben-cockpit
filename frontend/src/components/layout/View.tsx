@@ -34,17 +34,16 @@ const ViewHeader = ({pageKey}: ViewHeaderProps) => {
         {homePage?.description && <Markdown>{homePage.description}</Markdown>}
       </div>
     ))
-
 }
 
 export const View = ({children, pageKey}: Props) => {
   return (
-    <main className={"w-full h-full flex flex-1 pl-20 pr-20 flex-col items-center"}>
-      <article className={"max-w-[1600px] pt-5 pb-5"}>
-        {pageKey &&
+    <main className={"w-full h-full flex flex-1 pl-20 pt-5 pr-20 flex-col items-center"}>
+      {pageKey &&
+        <article className={"max-w-[1600px] pb-5"}>
           <ViewHeader pageKey={pageKey}/>
-        }
-      </article>
+        </article>
+      }
       <section className={"max-w-[1600px] w-full"}>
         {children}
       </section>

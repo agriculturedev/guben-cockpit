@@ -3,6 +3,16 @@
  *
  * @version 1.0.0
  */
+export enum EventSortOption {
+  Title = "Title",
+  StartDate = "StartDate",
+}
+
+export enum SortDirection {
+  Ascending = "Ascending",
+  Descending = "Descending",
+}
+
 export type ButtonResponse = {
   title?: string;
   url?: string;
@@ -27,6 +37,13 @@ export type CoordinatesResponse = {
    */
   longitude?: number;
 } | null;
+
+export type CreateDashboardTabQuery = {
+  title: string;
+  mapUrl: string;
+};
+
+export type CreateDashboardTabResponse = Record<string, any>;
 
 export type CreateEventQuery = {
   eventId: string;
@@ -76,6 +93,10 @@ export type CreateUrlQuery = {
 };
 
 export type DashboardTabResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
   title: string;
   /**
    * @format int32
@@ -231,6 +252,17 @@ export type PublishProjectsQuery = {
 };
 
 export type PublishProjectsResponse = Record<string, any>;
+
+export type UpdateDashboardTabQuery = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  title: string;
+  mapUrl: string;
+};
+
+export type UpdateDashboardTabResponse = Record<string, any>;
 
 export type UrlResponse = {
   link: string;
