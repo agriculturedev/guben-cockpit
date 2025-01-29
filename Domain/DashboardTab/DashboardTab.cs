@@ -28,6 +28,19 @@ public sealed class DashboardTab : Entity<Guid>
     return dashboardTab;
   }
 
+  public Result Update(string title, string mapUrl)
+  {
+    Title = title;
+    MapUrl = mapUrl;
+
+    return Result.Ok();
+  }
+
+  public void UpdateSequence(int sequence)
+  {
+    Sequence = sequence;
+  }
+
   public void AddInformationCards(List<InformationCard> informationCards)
   {
     foreach (var informationCard in informationCards)

@@ -22,4 +22,8 @@ public class TranslationKeys
   public const string UserNotLoggedIn = "UserNotLoggedIn";
   public const string PageNotFound = "PageNotFound";
   public const string InformationCardNotFound = "InformationCardNotFound";
+  public const string DashboardTabNotFound = "DashboardTabNotFound";
+  public const string NoDashboardTabsFound = "NoDashboardTabsFound";
+  public const string SequenceNotFoundForTab = "SequenceNotFoundForTab";
+  public const string SequenceInterrupted = "SequenceInterrupted";
 }

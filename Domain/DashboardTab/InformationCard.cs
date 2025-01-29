@@ -13,17 +13,27 @@ public class InformationCard : Entity<Guid>
 
   private InformationCard() { }
 
-  private InformationCard(string? title, string? description, string? imageUrl, Button? button)
+  private InformationCard(string? title, string? description, string? imageUrl, string? imageAlt, Button? button)
   {
     Title = title;
     Description = description;
     ImageUrl = imageUrl;
+    ImageAlt = imageUrl;
     Button = button;
   }
 
-  public static Result<InformationCard> Create(string? title, string? description, string? imageUrl, Button? button)
+  public static Result<InformationCard> Create(string? title, string? description, string? imageUrl, string? imageAlt, Button? button)
   {
-    return new InformationCard(title, description, imageUrl, button);
+    return new InformationCard(title, description, imageUrl, imageAlt, button);
+  }
+
+  public void Update(string? title, string? description, string? imageUrl, string? imageAlt, Button? button)
+  {
+    Title = title;
+    Description = description;
+    ImageUrl = imageUrl;
+    ImageAlt = imageAlt;
+    Button = button;
   }
 
 }
