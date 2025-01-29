@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {createFileRoute} from '@tanstack/react-router'
-import {useGetEvents, useGetEventView} from "@/endpoints/gubenProdComponents";
 import {View} from "@/components/layout/View";
 import {PaginationContainer} from "@/components/DataDisplay/PaginationContainer";
 import {defaultPaginationProps, usePagination} from "@/hooks/usePagination";
@@ -10,6 +9,7 @@ import {EventFilterContainer} from "@/components/events/EventFilterContainer";
 import {EventFiltersProvider, useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 import {HashMap} from "@/types/common.types";
 import {useEventsGetAll} from "@/endpoints/gubenComponents";
+import { useErrorToast } from "@/hooks/useErrorToast";
 
 export const Route = createFileRoute('/events')({
   component: WrappedComponent,
@@ -46,41 +46,26 @@ function EventComponent() {
     }, {}
   ), [filters, page, pageSize]);
 
-  console.log(queryParams)
-
-  const {
-    data: eventsData
-  } = useGetEvents({queryParams: queryParams}, {});
-
-  const {
-    data: eventViewData,
-    isLoading: eventViewIsLoading
-  } = useGetEventView({queryParams: {}});
-
-  const { data: eventsData2 } = useEventsGetAll({
+  const { data: eventsData } = useEventsGetAll({
     queryParams: {
       pageSize, pageNumber: page, ...queryParams
     }
   });
 
   useEffect(() => {
-    setTotal(eventsData2?.totalCount ?? defaultPaginationProps.total);
-    setPageCount(eventsData2?.pageCount ?? defaultPaginationProps.pageCount);
-  }, [eventsData2]);
+    setTotal(eventsData?.totalCount ?? defaultPaginationProps.total);
+    setPageCount(eventsData?.pageCount ?? defaultPaginationProps.pageCount);
+  }, [eventsData]);
 
   return (
-    <View
-      title={eventViewData?.data?.attributes?.Title}
-      description={eventViewData?.data?.attributes?.Description}
-      isLoading={eventViewIsLoading}
-    >
+    <View pageKey={"Events"}>
       <PaginationContainer
         nextPage={nextPage} previousPage={previousPage} setPageIndex={setPageIndex}
         setPageSize={setPageSize} total={total} pageCount={pageCount} pageSize={pageSize}
         page={page}
       >
         <EventFilterContainer/>
-        <EventsList events={eventsData2?.results}/>
+        <EventsList events={eventsData?.results}/>
       </PaginationContainer>
     </View>
   );

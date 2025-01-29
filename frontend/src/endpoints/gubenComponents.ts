@@ -296,6 +296,102 @@ export const useProjectsPublishProjects = (
   });
 };
 
+export type PagesGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type PagesGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchPagesGetAll = (
+  variables: PagesGetAllVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllEventsResponse,
+    PagesGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/pages", method: "get", ...variables, signal });
+
+export const usePagesGetAll = <TData = Schemas.GetAllEventsResponse,>(
+  variables: PagesGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllEventsResponse,
+      PagesGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllEventsResponse,
+    PagesGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/pages",
+      operationId: "pagesGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchPagesGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type PagesGetPathParams = {
+  id: string;
+};
+
+export type PagesGetError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type PagesGetVariables = {
+  pathParams: PagesGetPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchPagesGet = (
+  variables: PagesGetVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.PageResponse,
+    PagesGetError,
+    undefined,
+    {},
+    {},
+    PagesGetPathParams
+  >({ url: "/pages/${id}", method: "get", ...variables, signal });
+
+export const usePagesGet = <TData = Schemas.PageResponse,>(
+  variables: PagesGetVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<Schemas.PageResponse, PagesGetError, TData>,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<Schemas.PageResponse, PagesGetError, TData>({
+    queryKey: queryKeyFn({
+      path: "/pages/${id}",
+      operationId: "pagesGet",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchPagesGet({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type LocationsGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -469,6 +565,57 @@ export const useEventsCreateEvent = (
   });
 };
 
+export type DashboardGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchDashboardGetAll = (
+  variables: DashboardGetAllVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllDashboardTabsResponse,
+    DashboardGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/dashboard", method: "get", ...variables, signal });
+
+export const useDashboardGetAll = <
+  TData = Schemas.GetAllDashboardTabsResponse,
+>(
+  variables: DashboardGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllDashboardTabsResponse,
+      DashboardGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllDashboardTabsResponse,
+    DashboardGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/dashboard",
+      operationId: "dashboardGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchDashboardGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type CategoriesGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -540,6 +687,16 @@ export type QueryOperation =
       variables: ProjectsGetAllVariables;
     }
   | {
+      path: "/pages";
+      operationId: "pagesGetAll";
+      variables: PagesGetAllVariables;
+    }
+  | {
+      path: "/pages/${id}";
+      operationId: "pagesGet";
+      variables: PagesGetVariables;
+    }
+  | {
       path: "/locations";
       operationId: "locationsGetAll";
       variables: LocationsGetAllVariables;
@@ -548,6 +705,11 @@ export type QueryOperation =
       path: "/events";
       operationId: "eventsGetAll";
       variables: EventsGetAllVariables;
+    }
+  | {
+      path: "/dashboard";
+      operationId: "dashboardGetAll";
+      variables: DashboardGetAllVariables;
     }
   | {
       path: "/categories";

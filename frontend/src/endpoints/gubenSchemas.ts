@@ -3,6 +3,12 @@
  *
  * @version 1.0.0
  */
+export type ButtonResponse = {
+  title?: string;
+  url?: string;
+  openInNewTab?: boolean;
+} | null;
+
 export type CategoryResponse = {
   name: string;
   /**
@@ -69,6 +75,16 @@ export type CreateUrlQuery = {
   description: string;
 };
 
+export type DashboardTabResponse = {
+  title: string;
+  /**
+   * @format int32
+   */
+  sequence: number;
+  mapUrl: string;
+  informationCards?: InformationCardResponse[];
+};
+
 export type EventResponse = {
   /**
    * @format uuid
@@ -93,6 +109,10 @@ export type EventResponse = {
 
 export type GetAllCategoriesResponse = {
   categories: CategoryResponse[];
+};
+
+export type GetAllDashboardTabsResponse = {
+  tabs?: DashboardTabResponse[];
 };
 
 export type GetAllEventsResponse = {
@@ -165,9 +185,23 @@ export type GetUserResponse = {
   id: string;
 };
 
+export type InformationCardResponse = {
+  title?: string | null;
+  description?: string | null;
+  button?: ButtonResponse;
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+};
+
 export type LocationResponse = {
   name: string;
   city?: string | null;
+};
+
+export type PageResponse = {
+  name: string;
+  title: string;
+  description: string;
 };
 
 export type ProblemDetails = {
@@ -188,6 +222,7 @@ export type ProjectResponse = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
+  highlighted?: boolean;
 };
 
 export type PublishProjectsQuery = {

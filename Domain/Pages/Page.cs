@@ -1,16 +1,18 @@
+using Shared.Domain;
 using Shared.Domain.Validation;
 
 namespace Domain.Pages;
 
-public sealed class Page
+public sealed class Page : Entity<string>
 {
-  public string Name { get; private set; }
   public string Title { get; private set; }
   public string Description { get; private set; }
 
-  private Page(string name, string title, string description)
+  private Page(){}
+
+  private Page(string id, string title, string description)
   {
-    Name = name;
+    Id = id;
     Title = title;
     Description = description;
   }

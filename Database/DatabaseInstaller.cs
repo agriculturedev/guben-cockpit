@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Shared.Database;
 using Shared.Domain;
 
@@ -27,6 +30,22 @@ public static class DatabaseInstaller
     services.AddRepositories();
     services.AddScoped<ICustomDbContextFactory<GubenDbContext>, GubenDbContextFactory>(_ =>
       new GubenDbContextFactory(connectionString));
+
+    services.AddDbContext<GubenDbContext>(options =>
+    {
+      options
+        .UseNpgsql(connectionString,
+          options =>
+          {
+            options.MigrationsAssembly(typeof(GubenDbContextFactory).Assembly.FullName);
+            options.MigrationsHistoryTable("Migrations", GubenDbContext.DefaultSchema);
+          })
+        .EnableSensitiveDataLogging()
+        .LogTo(Console.WriteLine, (eventId, logLevel) => logLevel >= LogLevel.Information
+                                                         || eventId == RelationalEventId.DataReaderDisposing);
+
+      new GubenDbContext(options.Options);
+    });
 
     return services;
   }

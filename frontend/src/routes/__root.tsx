@@ -3,6 +3,7 @@ import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { Navigation } from "@/components/layout/Navigation";
 import "./index.css";
 import { Footer } from "@/components/layout/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -18,6 +19,7 @@ function RootComponent() {
       {/*<ReactQueryDevtools initialIsOpen={false} position={"bottom"}/>*/}
       <Footer/>
       {/*<TanStackRouterDevtools position="bottom-left"/>*/}
+      <Toaster/>
     </div>
   )
 }

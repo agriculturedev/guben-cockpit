@@ -2,7 +2,7 @@ import { ApiErrorResult } from "@/types/ApiErrorResult";
 import { toast } from "sonner";
 import { ErrorWrapper } from "@/endpoints/gubenFetcher";
 
-export const useMutationErrorToast = (error: ErrorWrapper<ApiErrorResult>) => {
+export const useErrorToast = (error: ErrorWrapper<ApiErrorResult>) => {
   // @ts-ignore
   error = error["stack"];
   if (typeof error == "object") {

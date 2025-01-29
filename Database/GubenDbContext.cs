@@ -7,9 +7,12 @@ namespace Database;
 /// The DbContext for the data layer
 /// </summary>
 /// <param name="options"></param>
-public class GubenDbContext(DbContextOptions options) : DbContext(options)
+public class GubenDbContext : DbContext
 {
   public const string DefaultSchema = "Guben";
+
+  public GubenDbContext(DbContextOptions options) : base(options)
+  { }
 
   // add dbsets here
 

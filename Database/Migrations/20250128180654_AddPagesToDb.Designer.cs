@@ -3,17 +3,20 @@ using System;
 using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Migrations.Migrations
+namespace Database.Migrations
 {
     [DbContext(typeof(GubenDbContext))]
-    partial class GubenDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250128180654_AddPagesToDb")]
+    partial class AddPagesToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,27 +41,6 @@ namespace Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category", "Guben");
-                });
-
-            modelBuilder.Entity("Domain.DashboardTab.DashboardTab", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("MapUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Sequence")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DashboardTab", "Guben");
                 });
 
             modelBuilder.Entity("Domain.Events.Event", b =>
@@ -251,67 +233,6 @@ namespace Migrations.Migrations
                     b.HasIndex("EventsId");
 
                     b.ToTable("EventCategory", "Guben");
-                });
-
-            modelBuilder.Entity("Domain.DashboardTab.DashboardTab", b =>
-                {
-                    b.OwnsMany("Domain.DashboardTab.InformationCard", "InformationCards", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid");
-
-                            b1.Property<Guid>("DashboardTabId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Description")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("ImageAlt")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("ImageUrl")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Title")
-                                .HasColumnType("text");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("DashboardTabId");
-
-                            b1.ToTable("InformationCard", "Guben");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DashboardTabId");
-
-                            b1.OwnsOne("Domain.DashboardTab.Button", "Button", b2 =>
-                                {
-                                    b2.Property<Guid>("InformationCardId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<bool>("OpenInNewTab")
-                                        .HasColumnType("boolean");
-
-                                    b2.Property<string>("Title")
-                                        .IsRequired()
-                                        .HasColumnType("text");
-
-                                    b2.Property<string>("Url")
-                                        .IsRequired()
-                                        .HasColumnType("text");
-
-                                    b2.HasKey("InformationCardId");
-
-                                    b2.ToTable("InformationCard", "Guben");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("InformationCardId");
-                                });
-
-                            b1.Navigation("Button");
-                        });
-
-                    b.Navigation("InformationCards");
                 });
 
             modelBuilder.Entity("Domain.Events.Event", b =>

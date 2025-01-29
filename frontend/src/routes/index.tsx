@@ -1,34 +1,31 @@
 import * as React from 'react'
-import {createFileRoute} from '@tanstack/react-router'
-import {useGetHomeView} from "@/endpoints/gubenProdComponents";
-import {View} from "@/components/layout/View";
-import {DashboardTabs, TabItem} from "@/components/home/DashboardTabs";
-import {InfoCardVariant1} from "@/components/home/InfoCard/InfoCardVariant1";
+import { createFileRoute } from '@tanstack/react-router'
+import { View } from "@/components/layout/View";
+import { DashboardTabs, TabItem } from "@/components/home/DashboardTabs";
+import { InfoCard } from "@/components/home/InfoCard/InfoCardVariant1";
+import { useDashboardGetAll } from "@/endpoints/gubenComponents";
 
 export const Route = createFileRoute('/')({
   component: HomeComponent,
 })
 
 function HomeComponent() {
-  const {data: homeViewData, error: homeViewError, isLoading: homeViewIsLoading} = useGetHomeView({queryParams: {populate: "tabs,tabs.cards,tabs.cards.button"}});
+  const {data: dashboardData} = useDashboardGetAll({});
 
-  const tabItems: TabItem[] | undefined = homeViewData?.data?.attributes?.tabs?.data?.map((tab) => {
+  const tabItems: TabItem[] | undefined = dashboardData?.tabs?.map((tab) => {
     return {
-      value: tab?.attributes?.title,
-      description: tab?.attributes?.title,
-      content: tab?.attributes?.cards?.map((card) => {
+      title: tab?.title,
+      content: tab?.informationCards?.map((card, index) => {
         return (
-            <InfoCardVariant1 key={card.id} card={card} />
+          <InfoCard key={index} card={card}/>
         )
       })
     } as TabItem
   });
 
   return (
-    <>
-      <View title={homeViewData?.data?.attributes?.title} description={homeViewData?.data?.attributes?.description} isLoading={homeViewIsLoading}>
-        {tabItems && <DashboardTabs tabs={tabItems}/>}
-      </View>
-    </>
+    <View pageKey={"Home"}>
+      {tabItems && <DashboardTabs tabs={tabItems}/>}
+    </View>
   );
 }
