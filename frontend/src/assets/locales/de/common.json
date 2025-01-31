@@ -11,5 +11,8 @@
   "ImageCredits": "Image credits",
   "Save": "Save",
   "Search": "Suchen",
-  "NoItemsFound": "Keine Ergebnisse"
+  "No": "Nein",
+  "Yes": "Ja",
+  "NoItemsFound": "Keine Ergebnisse",
+  "PermanentActionConfirmation": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden"
 }

@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.DashboardTabs.CreateDashboardTab;
+using Api.Controllers.DashboardTabs.DeleteDashboardTab;
 using Api.Controllers.DashboardTabs.GetAllDashboardTabs;
 using Api.Controllers.DashboardTabs.UpdateDashboardTab;
 using Database.Migrations;
@@ -51,6 +52,16 @@ public class DashboardTabsController : ControllerBase
   public async Task<IResult> Create([FromBody] CreateDashboardTabQuery request)
   {
     var result = await _mediator.Send(request);
+    return Results.Ok(result);
+  }
+
+  [HttpDelete("{id:guid}")]
+  [EndpointName("DashboardDelete")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteDashboardTabResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> Delete([FromRoute] Guid id)
+  {
+    var result = await _mediator.Send(new DeleteDashboardTabQuery { Id = id });
     return Results.Ok(result);
   }
 }

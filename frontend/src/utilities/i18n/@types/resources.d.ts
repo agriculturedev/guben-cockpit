@@ -12,13 +12,17 @@ interface Resources {
     "ImageCredits": "Image credits",
     "Save": "Save",
     "Search": "Suchen",
-    "NoItemsFound": "Keine Ergebnisse"
+    "No": "Nein",
+    "Yes": "Ja",
+    "NoItemsFound": "Keine Ergebnisse",
+    "PermanentActionConfirmation": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden"
   },
   "dashboard": {
     "Title": "Dashboard",
     "SelectTabToEdit": "Zum Bearbeiten Element auswählen",
     "MapUrl": "Map url",
-    "Add": "Add new tab"
+    "Add": "Add new tab",
+    "Delete": "Delete dashboard tab"
   },
   "events": {
     "Title": "Veranstaltungen"

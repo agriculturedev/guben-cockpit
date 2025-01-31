@@ -456,8 +456,8 @@ export type EventsGetAllQueryParams = {
    * @format date
    */
   endDate?: string;
-  sortBy?: Schemas.EventSortOption;
-  sortDirection?: Schemas.SortDirection;
+  sortBy?: "Title" | "StartDate";
+  sortDirection?: "Ascending" | "Descending";
   /**
    * @format int32
    * @default 1
@@ -700,6 +700,65 @@ export const useDashboardCreate = (
   >({
     mutationFn: (variables: DashboardCreateVariables) =>
       fetchDashboardCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DashboardDeletePathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type DashboardDeleteQueryParams = {
+  /**
+   * @format uuid
+   */
+  id?: string;
+};
+
+export type DashboardDeleteError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardDeleteVariables = {
+  pathParams: DashboardDeletePathParams;
+  queryParams?: DashboardDeleteQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardDelete = (
+  variables: DashboardDeleteVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteDashboardTabResponse,
+    DashboardDeleteError,
+    undefined,
+    {},
+    DashboardDeleteQueryParams,
+    DashboardDeletePathParams
+  >({ url: "/dashboard/{id}", method: "delete", ...variables, signal });
+
+export const useDashboardDelete = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteDashboardTabResponse,
+      DashboardDeleteError,
+      DashboardDeleteVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteDashboardTabResponse,
+    DashboardDeleteError,
+    DashboardDeleteVariables
+  >({
+    mutationFn: (variables: DashboardDeleteVariables) =>
+      fetchDashboardDelete({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };

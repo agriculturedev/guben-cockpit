@@ -3,16 +3,6 @@
  *
  * @version 1.0.0
  */
-export enum EventSortOption {
-  Title = "Title",
-  StartDate = "StartDate",
-}
-
-export enum SortDirection {
-  Ascending = "Ascending",
-  Descending = "Descending",
-}
-
 export type ButtonResponse = {
   title?: string;
   url?: string;
@@ -105,6 +95,8 @@ export type DashboardTabResponse = {
   mapUrl: string;
   informationCards?: InformationCardResponse[];
 };
+
+export type DeleteDashboardTabResponse = Record<string, any>;
 
 export type EventResponse = {
   /**

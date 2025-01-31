@@ -2,5 +2,6 @@
   "Title": "Dashboard",
   "SelectTabToEdit": "Zum Bearbeiten Element auswählen",
   "MapUrl": "Map url",
-  "Add": "Add new tab"
+  "Add": "Add new tab",
+  "Delete": "Delete dashboard tab"
 }
