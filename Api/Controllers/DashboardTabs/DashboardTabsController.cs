@@ -7,6 +7,7 @@ using Api.Controllers.DashboardTabs.GetAllDashboardTabs;
 using Api.Controllers.DashboardTabs.UpdateCardOnTab;
 using Api.Controllers.DashboardTabs.UpdateDashboardTab;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.DashboardTabs;
@@ -38,6 +39,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpPut]
+  [Authorize]
   [EndpointName("DashboardUpdate")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateDashboardTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,6 +50,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpPost]
+  [Authorize]
   [EndpointName("DashboardCreate")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateDashboardTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,6 +61,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpDelete("{id:guid}")]
+  [Authorize]
   [EndpointName("DashboardDelete")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteDashboardTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -68,6 +72,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpPost("{id:guid}/card")]
+  [Authorize]
   [EndpointName("DashboardCreateCard")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddCardToTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -79,6 +84,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpPut("{id:guid}/card/{cardId:guid}")]
+  [Authorize]
   [EndpointName("DashboardCardUpdate")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCardOnTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -92,6 +98,7 @@ public class DashboardTabsController : ControllerBase
 
 
   [HttpDelete("{id:guid}/card/{cardId:guid}")]
+  [Authorize]
   [EndpointName("DashboardCardDelete")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteCardFromTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
