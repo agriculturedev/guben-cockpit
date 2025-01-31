@@ -107,7 +107,7 @@ const CardButtonForm = ({form}: {form: DashboardCardFormType}) => {
           <FormItem>
             <FormLabel>{t("Cards.Button.Title", {ns: "dashboard"})}</FormLabel>
             <FormControl>
-              <Input placeholder={t("Cards.Description", {ns: "dashboard"})} {...field} />
+              <Input placeholder={t("Cards.Button.Title", {ns: "dashboard"})} {...field} />
             </FormControl>
             <FormMessage/>
           </FormItem>
@@ -121,7 +121,7 @@ const CardButtonForm = ({form}: {form: DashboardCardFormType}) => {
           <FormItem>
             <FormLabel>{t("Cards.Button.Url", {ns: "dashboard"})}</FormLabel>
             <FormControl>
-              <Input placeholder={t("Cards.Description", {ns: "dashboard"})} {...field} />
+              <Input placeholder={t("Cards.Button.Url", {ns: "dashboard"})} {...field} />
             </FormControl>
             <FormMessage/>
           </FormItem>

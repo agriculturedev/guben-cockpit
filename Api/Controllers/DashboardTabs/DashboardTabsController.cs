@@ -1,11 +1,11 @@
 ﻿using System.Net.Mime;
+using Api.Controllers.DashboardTabs.AddCardToTab;
 using Api.Controllers.DashboardTabs.CreateDashboardTab;
 using Api.Controllers.DashboardTabs.DeleteCardFromTab;
 using Api.Controllers.DashboardTabs.DeleteDashboardTab;
 using Api.Controllers.DashboardTabs.GetAllDashboardTabs;
 using Api.Controllers.DashboardTabs.UpdateCardOnTab;
 using Api.Controllers.DashboardTabs.UpdateDashboardTab;
-using Database.Migrations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,13 +67,14 @@ public class DashboardTabsController : ControllerBase
     return Results.Ok(result);
   }
 
-  [HttpDelete("{id:guid}/card/{cardId:guid}")]
-  [EndpointName("DashboardCardDelete")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteCardFromTabResponse))]
+  [HttpPost("{id:guid}/card")]
+  [EndpointName("DashboardCreateCard")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddCardToTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> DeleteCard([FromRoute] Guid id, [FromRoute] Guid cardId)
+  public async Task<IResult> CreateCard([FromBody] AddCardToTabQuery request, [FromRoute] Guid id)
   {
-    var result = await _mediator.Send(new DeleteCardFromTabQuery() { Id = id, CardId = cardId});
+    request.TabId = id;
+    var result = await _mediator.Send(request);
     return Results.Ok(result);
   }
 
@@ -85,8 +86,18 @@ public class DashboardTabsController : ControllerBase
   {
     request.CardId = cardId;
     request.TabId = id;
-
     var result = await _mediator.Send(request);
+    return Results.Ok(result);
+  }
+
+
+  [HttpDelete("{id:guid}/card/{cardId:guid}")]
+  [EndpointName("DashboardCardDelete")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteCardFromTabResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> DeleteCard([FromRoute] Guid id, [FromRoute] Guid cardId)
+  {
+    var result = await _mediator.Send(new DeleteCardFromTabQuery() { Id = id, CardId = cardId});
     return Results.Ok(result);
   }
 }

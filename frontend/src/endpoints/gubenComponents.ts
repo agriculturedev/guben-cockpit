@@ -755,62 +755,54 @@ export const useDashboardDelete = (
   });
 };
 
-export type DashboardCardDeletePathParams = {
+export type DashboardCreateCardPathParams = {
   /**
    * @format uuid
    */
   id: string;
-  /**
-   * @format uuid
-   */
-  cardId: string;
 };
 
-export type DashboardCardDeleteError = Fetcher.ErrorWrapper<{
+export type DashboardCreateCardError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type DashboardCardDeleteVariables = {
-  pathParams: DashboardCardDeletePathParams;
+export type DashboardCreateCardVariables = {
+  body: Schemas.AddCardToTabQuery;
+  pathParams: DashboardCreateCardPathParams;
 } & GubenContext["fetcherOptions"];
 
-export const fetchDashboardCardDelete = (
-  variables: DashboardCardDeleteVariables,
+export const fetchDashboardCreateCard = (
+  variables: DashboardCreateCardVariables,
   signal?: AbortSignal,
 ) =>
   gubenFetch<
-    Schemas.DeleteCardFromTabResponse,
-    DashboardCardDeleteError,
-    undefined,
+    Schemas.AddCardToTabResponse,
+    DashboardCreateCardError,
+    Schemas.AddCardToTabQuery,
     {},
     {},
-    DashboardCardDeletePathParams
-  >({
-    url: "/dashboard/{id}/card/{cardId}",
-    method: "delete",
-    ...variables,
-    signal,
-  });
+    DashboardCreateCardPathParams
+  >({ url: "/dashboard/{id}/card", method: "post", ...variables, signal });
 
-export const useDashboardCardDelete = (
+export const useDashboardCreateCard = (
   options?: Omit<
     reactQuery.UseMutationOptions<
-      Schemas.DeleteCardFromTabResponse,
-      DashboardCardDeleteError,
-      DashboardCardDeleteVariables
+      Schemas.AddCardToTabResponse,
+      DashboardCreateCardError,
+      DashboardCreateCardVariables
     >,
     "mutationFn"
   >,
 ) => {
   const { fetcherOptions } = useGubenContext();
   return reactQuery.useMutation<
-    Schemas.DeleteCardFromTabResponse,
-    DashboardCardDeleteError,
-    DashboardCardDeleteVariables
+    Schemas.AddCardToTabResponse,
+    DashboardCreateCardError,
+    DashboardCreateCardVariables
   >({
-    mutationFn: (variables: DashboardCardDeleteVariables) =>
-      fetchDashboardCardDelete({ ...fetcherOptions, ...variables }),
+    mutationFn: (variables: DashboardCreateCardVariables) =>
+      fetchDashboardCreateCard({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -872,6 +864,66 @@ export const useDashboardCardUpdate = (
   >({
     mutationFn: (variables: DashboardCardUpdateVariables) =>
       fetchDashboardCardUpdate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DashboardCardDeletePathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  /**
+   * @format uuid
+   */
+  cardId: string;
+};
+
+export type DashboardCardDeleteError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardCardDeleteVariables = {
+  pathParams: DashboardCardDeletePathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardCardDelete = (
+  variables: DashboardCardDeleteVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteCardFromTabResponse,
+    DashboardCardDeleteError,
+    undefined,
+    {},
+    {},
+    DashboardCardDeletePathParams
+  >({
+    url: "/dashboard/{id}/card/{cardId}",
+    method: "delete",
+    ...variables,
+    signal,
+  });
+
+export const useDashboardCardDelete = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteCardFromTabResponse,
+      DashboardCardDeleteError,
+      DashboardCardDeleteVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteCardFromTabResponse,
+    DashboardCardDeleteError,
+    DashboardCardDeleteVariables
+  >({
+    mutationFn: (variables: DashboardCardDeleteVariables) =>
+      fetchDashboardCardDelete({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };

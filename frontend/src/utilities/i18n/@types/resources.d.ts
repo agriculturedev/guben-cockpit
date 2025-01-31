@@ -28,6 +28,7 @@ interface Resources {
       "Cards": "Cards",
       "Title": "Card title",
       "Edit": "Edit card",
+      "Add": "Add card",
       "Delete": "Delete card",
       "Description": "Card description",
       "ImageUrl": "Image url",

@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapComponent } from "@/components/home/MapComponent";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DashboardPage } from "@/components/admin/DashboardEditTab";
+import { EditDashboard } from "@/components/dashboard/EditDashboard";
 
 export const Route = createFileRoute('/admin')({
   component: AdminComponent,
@@ -28,7 +28,7 @@ function AdminComponent() {
           </TabsList>
 
           <TabsContent value={"Dashboard"}>
-            <DashboardPage/>
+            <EditDashboard/>
           </TabsContent>
 
           <TabsContent value={"Users"}>

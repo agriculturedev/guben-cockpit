@@ -5,6 +5,9 @@ import { useDashboardTabFormSchema } from "@/components/dashboard/useDashboardTa
 import { z } from "zod";
 import { DashboardTabForm } from "@/components/dashboard/DashboardTabForm";
 import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   tab: DashboardTabResponse;
@@ -12,6 +15,8 @@ interface Props {
 }
 
 export const EditDashboardTab = ({tab, onSuccess}: Props) => {
+  const {t} = useTranslation(["dashboard"]);
+
   const mutation = useDashboardUpdate({
     onSuccess: async (_) => {
       onSuccess && await onSuccess();
@@ -34,7 +39,8 @@ export const EditDashboardTab = ({tab, onSuccess}: Props) => {
   }
 
 
-  return (<Card className={"flex flex-col gap-2 p-2 w-fit"}>
+  return (<Card className={"flex flex-col gap-2 p-2 h-fit"}>
+    <Label className={"text-xl"}>{t("TabInformation")}</Label>
     <DashboardTabForm form={form} onSubmit={onSubmit} className={"w-64"}/>
   </Card>)
 }

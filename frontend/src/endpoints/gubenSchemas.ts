@@ -3,6 +3,20 @@
  *
  * @version 1.0.0
  */
+export type AddCardToTabQuery = {
+  /**
+   * @format uuid
+   */
+  tabId: string;
+  title?: string | null;
+  description?: string | null;
+  button?: UpsertButtonQuery;
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+};
+
+export type AddCardToTabResponse = Record<string, any>;
+
 export type ButtonResponse = {
   title?: string;
   url?: string;
