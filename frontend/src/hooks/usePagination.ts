@@ -15,7 +15,6 @@ export const defaultPaginationProps: PaginationProps = {
 }
 
 export const usePagination = () => {
-
   const [page, setPage] = useState<number>(defaultPaginationProps.page);
   const [pageSize, setPageSize] = useState<number>(defaultPaginationProps.pageSize);
   const [total, setTotal] = useState<number>(defaultPaginationProps.total);

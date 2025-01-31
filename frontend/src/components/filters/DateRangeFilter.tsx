@@ -1,32 +1,33 @@
-import { DateFilterController, DateFilterPreset } from "@/hooks/useDateFilter";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DateRangePicker } from "@/components/ui/dateRangePicker";
 import { DateRange } from "react-day-picker"
-import { Option } from "@/types/common.types";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import {DateFilterPreset, UseDateRangeFilterHook} from "@/hooks/filters/useDateRangeFilter";
 
 interface Props {
-  controller: DateFilterController;
+  controller: UseDateRangeFilterHook;
 }
 
 export const DateRangeFilter = ({controller}: Props) => {
-
-  const toDateRange = (dateRange: [Option<Date>, Option<Date>]) : DateRange => {
+  const dateRange = useMemo(() => {
     return {
-      from: dateRange[0] ?? undefined,
-      to: dateRange[1] ?? undefined
+      from: controller.filter.startDate ?? undefined,
+      to: controller.filter.endDate ?? undefined,
     }
-  }
+  }, []);
 
   const onChange = useCallback((dateRange?: DateRange ) => {
-    controller.setSelectedDateRange(dateRange?.from ?? null, dateRange?.to ?? null);
+    controller.setFilter({
+      startDate: dateRange?.from ?? null,
+      endDate: dateRange?.to ?? null
+    });
   }, [controller]);
 
   return (
     <>
       <Select
-        value={controller.selectedPreset ?? "none"}
-        onValueChange={preset => controller.setFromPreset(preset === "none" ? null : preset)}
+        value={controller.preset ?? "none"}
+        onValueChange={preset => controller.setFilter(preset as DateFilterPreset)}
       >
         <SelectTrigger className={"w-[180px]"}>
           <SelectValue placeholder="Datum"/>
@@ -44,9 +45,7 @@ export const DateRangeFilter = ({controller}: Props) => {
         </SelectContent>
       </Select>
 
-      {controller.selectedPreset == DateFilterPreset.CUSTOM &&
-        <DateRangePicker dateRange={toDateRange(controller.selectedDateRange)} onChange={onChange}/>
-      }
+      {controller.preset == DateFilterPreset.CUSTOM && <DateRangePicker {...{dateRange, onChange}} />}
     </>
   );
 }

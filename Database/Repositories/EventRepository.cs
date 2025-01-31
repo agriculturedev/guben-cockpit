@@ -66,10 +66,12 @@ internal static class EventRepositoryExtensions
     if (filter.CategoryIdQuery.HasValue)
       query = query.Where(w => w.Categories.Any(cat => cat.Id == filter.CategoryIdQuery.Value));
 
-    if (!string.IsNullOrWhiteSpace(filter.LocationQuery))
-      query = query.Where(w => EF.Functions.Like(w.Location.Name.ToLower(), "%" + filter.LocationQuery.ToLower() + "%")
-                               || (w.Location.City != null && EF.Functions.Like(w.Location.City.ToLower(), "%" + filter
-                               .LocationQuery.ToLower() + "%")));
+    if (filter.LocationQuery?.Length > 0)
+      query = query.Where(w =>
+        filter.LocationQuery.Any(l =>
+          EF.Functions.Like(w.Location.Name.ToLower(), "%" + l + "%")
+          || (w.Location.City != null
+              && EF.Functions.Like(w.Location.City.ToLower(), "%" + l + "%"))));
 
     return query;
   }

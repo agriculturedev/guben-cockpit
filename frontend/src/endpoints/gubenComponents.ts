@@ -443,7 +443,7 @@ export const useLocationsGetAll = <TData = Schemas.GetAllLocationsResponse,>(
 
 export type EventsGetAllQueryParams = {
   title?: string;
-  location?: string;
+  locations?: string[];
   /**
    * @format uuid
    */

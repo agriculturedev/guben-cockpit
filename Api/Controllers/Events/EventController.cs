@@ -30,14 +30,14 @@ public class EventController : ControllerBase
   [EndpointName("EventsGetAll")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllEventsResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> GetAll([FromQuery] string? title, [FromQuery] string? location, [FromQuery] Guid?
+  public async Task<IResult> GetAll([FromQuery] string? title, [FromQuery] string[] locations, [FromQuery] Guid?
     categoryId, [FromQuery] DateOnly? startDate, [FromQuery] DateOnly? endDate, [FromQuery] EventSortOption sortBy, [FromQuery] SortDirection sortDirection, [FromQuery] int
     pageNumber = PagedQuery.DefaultPageNumber, [FromQuery] int pageSize = PagedQuery.DefaultPageSize)
   {
-    var result = await _mediator.Send(new GetAllEventsQuery()
+    var result = await _mediator.Send(new GetAllEventsQuery
     {
       TitleSearch = title,
-      LocationSearch = location,
+      LocationSearch = locations,
       CategoryId = categoryId,
       StartDate = startDate,
       EndDate = endDate,

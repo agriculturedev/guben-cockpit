@@ -1,13 +1,13 @@
 import {MultiComboBox, ComboboxOption} from "@/components/inputs/MultiComboBox/MultiComboBox";
-import {LocationFilterController} from "@/hooks/useLocationFilter";
 import {useLocationsGetAll} from "@/endpoints/gubenComponents";
+import {UseMultiComboFilterHook} from "@/hooks/filters/useMultiComboFilter";
 
 type MultiComboFilterProps = {
-  controller: LocationFilterController;
+  controller: UseMultiComboFilterHook;
   placeHolder: string;
 }
 
-export default function LocationFilter(props: MultiComboFilterProps) {
+export function LocationFilter(props: MultiComboFilterProps) {
   const {data} = useLocationsGetAll({});
 
   const options: ComboboxOption[] = [];
@@ -28,10 +28,10 @@ export default function LocationFilter(props: MultiComboFilterProps) {
 
   return (
     <MultiComboBox
-      defaultValues={["Guben"]}
+      defaultValues={props.controller.filters}
       options={options}
       placeholder={props.placeHolder}
-      onSelect={props.controller.setLocations}
+      onSelect={props.controller.setFilter}
     />
   )
 }

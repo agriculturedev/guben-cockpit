@@ -1,8 +1,8 @@
 import {Input} from "@/components/ui/input"
-import {TextFilterController} from "@/hooks/useTextFilter";
+import {UseTextFilterHook} from "@/hooks/filters/useTextFilter";
 
 interface Props {
-  controller: TextFilterController;
+  controller: UseTextFilterHook;
   placeHolder: string;
 }
 
@@ -11,8 +11,8 @@ export function TextFilter({controller, placeHolder}: Props) {
     <Input
       type="text"
       placeholder={placeHolder}
-      value={controller.searchText}
-      onChange={(e) => controller.setSearchText(e.target.value)}
+      value={controller.filter ?? ""}
+      onChange={(e) => controller.setFilter(e.target.value)}
     />
   )
 }

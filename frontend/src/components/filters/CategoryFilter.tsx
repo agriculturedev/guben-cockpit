@@ -1,20 +1,25 @@
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {CategoryFilterController} from "@/hooks/useCategoryFilter";
 import {useCategoriesGetAll} from "@/endpoints/gubenComponents";
+import {UseTextFilterHook} from "@/hooks/filters/useTextFilter";
+import { useCallback } from "react";
 
 interface Props {
-  controller: CategoryFilterController;
+  controller: UseTextFilterHook;
 }
 
-export const CategoryFilter = (props: Props) => {
+export const CategoryFilter = ({controller}: Props) => {
   const {data: categoriesData} = useCategoriesGetAll({});
+
+  const onChange = useCallback((value: string) => {
+    if(value == "none") return controller.clearFilter();
+    const cat = categoriesData?.categories.find(c => c.id === value)?.id;
+    controller.setFilter(cat ?? null);
+  }, []);
 
   return (
     <Select
-      value={props.controller.category?.id ?? "none"}
-      onValueChange={cat => props.controller.setCategory(cat === "none"
-        ? null
-        : categoriesData?.categories.find(c => c.id === cat) ?? null)}
+      value={controller.filter ?? "none"}
+      onValueChange={onChange}
     >
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Kategorie"/>
@@ -22,10 +27,7 @@ export const CategoryFilter = (props: Props) => {
       <SelectContent>
         <SelectItem value={"none"}>(Kategorie)</SelectItem>
         {categoriesData?.categories?.map(category => (category.name &&
-          <SelectItem
-            key={category.id}
-            value={category.id}
-          >
+          <SelectItem key={category.id} value={category.id}>
             {category.name}
           </SelectItem>
         ))}
