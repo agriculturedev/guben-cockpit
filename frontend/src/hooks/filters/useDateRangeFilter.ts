@@ -17,15 +17,17 @@ export enum DateFilterPreset {
 
 export type UseDateRangeFilterHook = ReturnType<typeof useDateRangeFilter>;
 
-export function useDateRangeFilter() {
-  const [preset, setPreset] = useState<DateFilterPreset | undefined>();
+export function useDateRangeFilter(defaultPreset?: DateFilterPreset) {
+  const [preset, setPreset] = useState<DateFilterPreset | undefined>(defaultPreset);
 
   const [startDate, setStartDate] = useState<Option<Date>>(null);
   const [endDate, setEndDate] = useState<Option<Date>>(null);
 
-  function setFilter(value: ValueType) {
+  function setFilter(value?: ValueType) {
+    if(value === undefined) return clearFilter();
+
     if (IsDateRange(value)) {
-      setPreset(undefined);
+      setPreset(DateFilterPreset.CUSTOM);
       setStartDate(value.startDate);
       setEndDate(value.endDate);
     } else {
@@ -37,7 +39,7 @@ export function useDateRangeFilter() {
   }
 
   function clearFilter() {
-    setPreset(undefined);
+    setPreset(defaultPreset);
     setStartDate(null);
     setEndDate(null)
   }

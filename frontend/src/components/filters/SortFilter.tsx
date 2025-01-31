@@ -19,11 +19,14 @@ export const SortFilter = ({controller}: Props) => {
     if(value == SortingOptions.NONE) return controller.clearFilter();
     const [field, direction] = value.split(":");
     controller.setFilter(field, direction as SortingDirection);
-  }, []);
+  }, [controller]);
 
   return (
     <Select
-      value={controller.filter.field ?? "none"}
+      value={controller.filter.field
+        && controller.filter.direction
+        && `${controller.filter.field}:${controller.filter.direction}`
+        || "none"}
       onValueChange={handleChange}
     >
       <SelectTrigger className="w-[180px]">

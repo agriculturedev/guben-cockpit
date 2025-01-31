@@ -1,4 +1,4 @@
-import {MultiComboBox, ComboboxOption} from "@/components/inputs/MultiComboBox/MultiComboBox";
+import {MultiComboBox, ComboboxOption} from "@/components/inputs/MultiComboBox";
 import {useLocationsGetAll} from "@/endpoints/gubenComponents";
 import {UseMultiComboFilterHook} from "@/hooks/filters/useMultiComboFilter";
 

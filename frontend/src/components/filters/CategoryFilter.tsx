@@ -14,7 +14,7 @@ export const CategoryFilter = ({controller}: Props) => {
     if(value == "none") return controller.clearFilter();
     const cat = categoriesData?.categories.find(c => c.id === value)?.id;
     controller.setFilter(cat ?? null);
-  }, []);
+  }, [categoriesData, controller]);
 
   return (
     <Select

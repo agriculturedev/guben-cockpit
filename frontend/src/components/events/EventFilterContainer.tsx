@@ -7,9 +7,11 @@ import {CategoryFilter} from "@/components/filters/CategoryFilter";
 import {ReactNode, useMemo } from "react";
 import {getContrast, getHexColorFromText, hexToRgb } from "@/utilities/colorUtils";
 import {FilterTag} from "@/components/general/FilterTag";
+import {useCategoriesGetAll} from "@/endpoints/gubenComponents";
 
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
+  const {data: categories} = useCategoriesGetAll({});
 
   const tagElements = useMemo(() => {
     const elements: ReactNode[] = [];
@@ -17,12 +19,17 @@ export const EventFilterContainer = () => {
       const color = getHexColorFromText(controllers.category.filter ?? "");
       const contrast = getContrast(hexToRgb(color)!, [255, 255, 255]);
 
+      const cat = categories
+        ?.categories
+        .find(c => c.id === controllers.category.filter)
+        ?.name ?? "Unknown category";
+
       elements.push(<FilterTag
         key={"category"}
         bgColor={color}
         textColor={contrast < 4.5 ? "#000000" : "#ffffff"}
         title={"Kategorie"}
-        value={controllers.category.filter ?? ""}
+        value={cat}
         onClear={controllers.category.clearFilter}
       />)
     }

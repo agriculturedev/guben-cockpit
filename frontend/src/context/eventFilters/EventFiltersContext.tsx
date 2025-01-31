@@ -34,16 +34,21 @@ export function EventFiltersProvider({children}: PropsWithChildren) {
   };
 
   const filters: EventsGetAllQueryParams = useMemo(() => {
-    return {
+    const retVal = {
       title: controllers.title.filter ?? undefined,
-      locations: controllers.location.filters ?? undefined,
-      categoryId: controllers.category.filter ?? undefined,
+      location: controllers.location.filters?.join(",") ?? undefined,
+      category: controllers.category.filter ?? undefined,
       startDate: controllers.dateRange.filter.startDate?.toIsoDate() ?? undefined,
       endDate: controllers.dateRange.filter.endDate?.toIsoDate() ?? undefined,
+      ordering: controllers.sorting.filter.direction ?? undefined
       // TODO @Kilian: fix these filters with type constraints
       // sortBy: controllers.sorting.filter.field ?? undefined,
-      sortDirection: controllers.sorting.filter.direction ?? undefined
     }
+
+    let k: keyof typeof retVal;
+    for(k in retVal) if(retVal[k] === undefined) delete retVal[k];
+
+    return retVal;
   }, [controllers]);
 
   return (

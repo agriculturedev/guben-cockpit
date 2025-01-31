@@ -443,11 +443,11 @@ export const useLocationsGetAll = <TData = Schemas.GetAllLocationsResponse,>(
 
 export type EventsGetAllQueryParams = {
   title?: string;
-  locations?: string[];
+  location?: string;
   /**
    * @format uuid
    */
-  categoryId?: string;
+  category?: string;
   /**
    * @format date
    */
@@ -456,16 +456,14 @@ export type EventsGetAllQueryParams = {
    * @format date
    */
   endDate?: string;
-  sortBy?: "Title" | "StartDate";
-  sortDirection?: "Ascending" | "Descending";
+  sortBy?: string;
+  ordering?: string;
   /**
    * @format int32
-   * @default 1
    */
   pageNumber?: number;
   /**
    * @format int32
-   * @default 2
    */
   pageSize?: number;
 };

@@ -44,7 +44,8 @@ export const MultiComboBox = ({
 
   const {t} = useTranslation();
   const [open, setOpen] = React.useState(defaultOpen);
-  const [selectedValues, setSelectedValues] = useState<string[]>(defaultValues);
+  const [selectedValues, setSelectedValues] = useState<string[]>(defaultValues
+    ?.toSorted((a,b) => a.localeCompare(b)));
 
   const optionsIndex = useMemo(() => {
     return options.reduce((acc, val) => {
@@ -57,7 +58,8 @@ export const MultiComboBox = ({
     return options.reduce((acc: string[], val) => {
       if (selectedValues.indexOf(val.value) === -1) acc.push(val.value);
       return acc;
-    }, []);
+    }, [])
+      .toSorted((a, b) => a.localeCompare(b));
   }, [selectedValues, options]);
 
   const handleItemSelect = useCallback((selectedValue: string) => {
@@ -99,23 +101,28 @@ export const MultiComboBox = ({
               {isLoading ? <LoadingIndicator /> : (
                 <>
                   <CommandEmpty>{t("NoItemsFound")}</CommandEmpty>
-                  <CommandGroup heading={"Selected items"}>
-                    {selectedValues.map((value) => {
-                      const option = optionsIndex[value]
-                      return option && (
-                        <CommandItem
-                          key={option.value}
-                          value={option.value}
-                          onSelect={handleItemSelect}
-                          className={option.hasPriority ? "font-bold" : ""}
-                        >
-                          {option.label}
-                          <Check className={cn("ml-auto")}/>
-                        </CommandItem>
-                    )})}
-                  </CommandGroup>
-                  <CommandSeparator />
-                  <CommandGroup heading={"Locations"}>
+                  {selectedValues.length > 0 && (
+                    <>
+                      <CommandGroup heading={t("SelectedItems")}>
+                        {selectedValues.map((value) => {
+                          const option = optionsIndex[value]
+                          return option && (
+                            <CommandItem
+                              key={option.value}
+                              value={option.value}
+                              onSelect={handleItemSelect}
+                              className={option.hasPriority ? "font-bold" : ""}
+                            >
+                              {option.label}
+                              <Check className={cn("ml-auto")}/>
+                            </CommandItem>
+                        )})}
+                      </CommandGroup>
+                      <CommandSeparator />
+                    </>
+                  )}
+                  
+                  <CommandGroup heading={t("Items")}>
                     {unselectedValues.map((value) => {
                       const option = optionsIndex[value]
                       return (
@@ -138,3 +145,5 @@ export const MultiComboBox = ({
     </Popover>
   )
 }
+
+export default MultiComboBox;

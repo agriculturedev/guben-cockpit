@@ -10,7 +10,7 @@ export function useTextFilter() {
 
   return {
     filter: value,
-    setFilter: (value: ValueType) => setValue(value),
+    setFilter: (newValue: ValueType) => setValue(newValue),
     clearFilter: () => setValue(null),
   }
 }

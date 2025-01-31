@@ -1,25 +1,18 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DateRangePicker } from "@/components/ui/dateRangePicker";
 import { DateRange } from "react-day-picker"
 import { useCallback, useMemo } from "react";
 import {DateFilterPreset, UseDateRangeFilterHook} from "@/hooks/filters/useDateRangeFilter";
+import DateRangePicker from "../inputs/DateRangePicker";
 
 interface Props {
   controller: UseDateRangeFilterHook;
 }
 
 export const DateRangeFilter = ({controller}: Props) => {
-  const dateRange = useMemo(() => {
-    return {
-      from: controller.filter.startDate ?? undefined,
-      to: controller.filter.endDate ?? undefined,
-    }
-  }, []);
-
-  const onChange = useCallback((dateRange?: DateRange ) => {
+  const onChange = useCallback((newRange?: DateRange ) => {
     controller.setFilter({
-      startDate: dateRange?.from ?? null,
-      endDate: dateRange?.to ?? null
+      startDate: newRange?.from ?? null,
+      endDate: newRange?.to ?? null
     });
   }, [controller]);
 
@@ -45,7 +38,11 @@ export const DateRangeFilter = ({controller}: Props) => {
         </SelectContent>
       </Select>
 
-      {controller.preset == DateFilterPreset.CUSTOM && <DateRangePicker {...{dateRange, onChange}} />}
+      {controller.preset == DateFilterPreset.CUSTOM
+        && <DateRangePicker
+          placeholder={"Datum auswählen"}
+          onChange={onChange}
+        />}
     </>
   );
 }

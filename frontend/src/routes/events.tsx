@@ -36,7 +36,6 @@ function EventComponent() {
   } = usePagination();
 
   const {filters} = useEventFilters();
-
   const { data: eventsData } = useEventsGetAll({
     queryParams: {
       pageSize,
