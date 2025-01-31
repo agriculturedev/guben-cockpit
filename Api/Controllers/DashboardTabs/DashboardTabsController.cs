@@ -1,7 +1,9 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.DashboardTabs.CreateDashboardTab;
+using Api.Controllers.DashboardTabs.DeleteCardFromTab;
 using Api.Controllers.DashboardTabs.DeleteDashboardTab;
 using Api.Controllers.DashboardTabs.GetAllDashboardTabs;
+using Api.Controllers.DashboardTabs.UpdateCardOnTab;
 using Api.Controllers.DashboardTabs.UpdateDashboardTab;
 using Database.Migrations;
 using MediatR;
@@ -62,6 +64,29 @@ public class DashboardTabsController : ControllerBase
   public async Task<IResult> Delete([FromRoute] Guid id)
   {
     var result = await _mediator.Send(new DeleteDashboardTabQuery { Id = id });
+    return Results.Ok(result);
+  }
+
+  [HttpDelete("{id:guid}/card/{cardId:guid}")]
+  [EndpointName("DashboardCardDelete")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteCardFromTabResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> DeleteCard([FromRoute] Guid id, [FromRoute] Guid cardId)
+  {
+    var result = await _mediator.Send(new DeleteCardFromTabQuery() { Id = id, CardId = cardId});
+    return Results.Ok(result);
+  }
+
+  [HttpPut("{id:guid}/card/{cardId:guid}")]
+  [EndpointName("DashboardCardUpdate")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCardOnTabResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> UpdateCard([FromBody] UpdateCardOnTabQuery request, [FromRoute] Guid id, [FromRoute] Guid cardId)
+  {
+    request.CardId = cardId;
+    request.TabId = id;
+
+    var result = await _mediator.Send(request);
     return Results.Ok(result);
   }
 }

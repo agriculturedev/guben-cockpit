@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { EditDashboardTab } from "../dashboard/editDashboardTab/EditDashboardTab";
 import { CreateDashboardTabDialogButton } from "@/components/dashboard/createDashboardTab/CreateDashboardTabDialogButton";
 import { DeleteDashboardTabButton } from "@/components/dashboard/deleteDashboardTab/DeleteDashboardTabButton";
+import { EditDashboardCards } from "@/components/dashboard/cards/EditDashboardCards";
 
 
 export const DashboardPage = () => {
@@ -14,7 +15,7 @@ export const DashboardPage = () => {
   const [selectedTabId, setselectedTabId] = useState<string | undefined>();
   const {t} = useTranslation(["dashboard", "common"]);
 
-  const refetch = useCallback(async () => {
+  const refetchAndUnselectTab = useCallback(async () => {
     await refetchDashboard();
     setselectedTabId(undefined);
   }, [refetchDashboard, setselectedTabId]);
@@ -33,11 +34,25 @@ export const DashboardPage = () => {
           {t("SelectTabToEdit")}
         </Label>
         <Combobox options={options} placeholder={t("Search", {ns: "common"})} isLoading={isLoading} onSelect={setselectedTabId} value={selectedTabId} defaultOpen={false}/>
-        <CreateDashboardTabDialogButton onSuccess={refetch}/>
-        {selectedTab && <DeleteDashboardTabButton dashboardTabId={selectedTab.id} refetch={refetch}/>}
+        <CreateDashboardTabDialogButton onSuccess={refetchAndUnselectTab}/>
+        {selectedTab && <DeleteDashboardTabButton dashboardTabId={selectedTab.id} refetch={refetchAndUnselectTab}/>}
       </div>
 
-      {selectedTab && <EditDashboardTab tab={selectedTab} onSuccess={refetch}/>}
+      {selectedTab &&
+        <div className="flex flex-wrap gap-4">
+
+          <div>
+            <Label className={"text-xl"}>{t("TabInformation")}</Label>
+            <EditDashboardTab tab={selectedTab} onSuccess={refetchDashboard}/>
+          </div>
+
+          <div>
+            <Label className={"text-xl"}>{t("Cards.Cards")}</Label>
+            <EditDashboardCards tab={selectedTab} refetch={refetchDashboard}/>
+          </div>
+
+        </div>
+      }
     </div>
   )
 }

@@ -7,8 +7,8 @@ import { z } from "zod";
 import { CreateDashboardTabQuery } from "@/endpoints/gubenSchemas";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AddIconButton } from "@/components/iconButtons/AddIconButton";
-import { useDashboardTabFormSchema } from "@/components/dashboard/editDashboardTab/useDashboardTabFormSchema";
-import { DashboardTabForm } from "@/components/dashboard/editDashboardTab/DashboardTabForm";
+import { useDashboardTabFormSchema } from "@/components/dashboard/useDashboardTabFormSchema";
+import { DashboardTabForm } from "@/components/dashboard/DashboardTabForm";
 
 interface Props {
   onSuccess?: () => Promise<any>;
@@ -20,8 +20,8 @@ export const CreateDashboardTabDialogButton = ({onSuccess}: Props) => {
 
   const mutation = useDashboardCreate({
     onSuccess: async (_) => {
-      toggleDialog(false);
       onSuccess && await onSuccess();
+      toggleDialog(false);
     },
     onError: (error) => {
       useErrorToast(error);

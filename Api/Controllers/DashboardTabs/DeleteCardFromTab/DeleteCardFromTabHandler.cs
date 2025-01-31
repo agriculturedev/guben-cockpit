@@ -3,18 +3,18 @@ using Domain;
 using Domain.DashboardTab.repository;
 using Shared.Api;
 
-namespace Api.Controllers.DashboardTabs.RemoveCardFromTab;
+namespace Api.Controllers.DashboardTabs.DeleteCardFromTab;
 
-public class RemoveCardFromTabHandler : ApiRequestHandler<RemoveCardFromTabQuery, RemoveCardFromTabResponse>
+public class DeleteCardFromTabHandler : ApiRequestHandler<DeleteCardFromTabQuery, DeleteCardFromTabResponse>
 {
   private readonly IDashboardRepository _dashboardRepository;
 
-  public RemoveCardFromTabHandler(IDashboardRepository dashboardRepository)
+  public DeleteCardFromTabHandler(IDashboardRepository dashboardRepository)
   {
     _dashboardRepository = dashboardRepository;
   }
 
-  public override async Task<RemoveCardFromTabResponse> Handle(RemoveCardFromTabQuery request, CancellationToken cancellationToken)
+  public override async Task<DeleteCardFromTabResponse> Handle(DeleteCardFromTabQuery request, CancellationToken cancellationToken)
   {
     var dashboardTab = await _dashboardRepository.Get(request.Id);
     if (dashboardTab is null)
@@ -23,6 +23,6 @@ public class RemoveCardFromTabHandler : ApiRequestHandler<RemoveCardFromTabQuery
     var result = dashboardTab.DeleteInformationCard(request.CardId);
     result.ThrowIfFailure();
 
-    return new RemoveCardFromTabResponse();
+    return new DeleteCardFromTabResponse();
   }
 }

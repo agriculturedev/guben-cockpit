@@ -29,11 +29,11 @@ export const DashboardTabs = ({tabs}: DashboardTabsProps) => {
                 <div className={"flex min-h-[70vh] h-full"}>
                   <MapComponent src={tab.mapUrl} />
                   <div className={"flex-1 h-full columns-2 px-4 pt-2"}>
-                        {tab?.informationCards?.map((card, index) => {
-                          return (
-                            <InfoCard key={index} card={card}/>
-                          )
-                        })}
+                      {tab?.informationCards?.map((card, index) => {
+                        return (
+                          <InfoCard key={index} card={card}/>
+                        )
+                      })}
                     </div>
                 </div>
 

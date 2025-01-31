@@ -22,7 +22,22 @@ interface Resources {
     "SelectTabToEdit": "Zum Bearbeiten Element auswählen",
     "MapUrl": "Map url",
     "Add": "Add new tab",
-    "Delete": "Delete dashboard tab"
+    "Delete": "Delete dashboard tab",
+    "TabInformation": "Tab Information",
+    "Cards": {
+      "Cards": "Cards",
+      "Title": "Card title",
+      "Edit": "Edit card",
+      "Delete": "Delete card",
+      "Description": "Card description",
+      "ImageUrl": "Image url",
+      "ImageAlt": "Image alternative text",
+      "Button": {
+        "Title": "Button text",
+        "Url": "Button url",
+        "OpenInNewTab": "Open url in new tab"
+      }
+    }
   },
   "events": {
     "Title": "Veranstaltungen"

@@ -96,6 +96,8 @@ export type DashboardTabResponse = {
   informationCards?: InformationCardResponse[];
 };
 
+export type DeleteCardFromTabResponse = Record<string, any>;
+
 export type DeleteDashboardTabResponse = Record<string, any>;
 
 export type EventResponse = {
@@ -199,6 +201,10 @@ export type GetUserResponse = {
 };
 
 export type InformationCardResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
   title?: string | null;
   description?: string | null;
   button?: ButtonResponse;
@@ -245,6 +251,24 @@ export type PublishProjectsQuery = {
 
 export type PublishProjectsResponse = Record<string, any>;
 
+export type UpdateCardOnTabQuery = {
+  /**
+   * @format uuid
+   */
+  cardId: string;
+  /**
+   * @format uuid
+   */
+  tabId: string;
+  title?: string | null;
+  description?: string | null;
+  button?: UpsertButtonQuery;
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+};
+
+export type UpdateCardOnTabResponse = Record<string, any>;
+
 export type UpdateDashboardTabQuery = {
   /**
    * @format uuid
@@ -255,6 +279,12 @@ export type UpdateDashboardTabQuery = {
 };
 
 export type UpdateDashboardTabResponse = Record<string, any>;
+
+export type UpsertButtonQuery = {
+  title: string;
+  url: string;
+  openInNewTab: boolean;
+} | null;
 
 export type UrlResponse = {
   link: string;
