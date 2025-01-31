@@ -18,9 +18,9 @@ export type AddCardToTabQuery = {
 export type AddCardToTabResponse = Record<string, any>;
 
 export type ButtonResponse = {
-  title?: string;
-  url?: string;
-  openInNewTab?: boolean;
+  title: string;
+  url: string;
+  openInNewTab: boolean;
 } | null;
 
 export type CategoryResponse = {

@@ -3,7 +3,7 @@ using Shared.Domain.Validation;
 
 namespace Domain.DashboardTab;
 
-public class InformationCard : Entity<Guid>
+public sealed class InformationCard : Entity<Guid>
 {
   public string? Title { get; private set; }
   public string? Description { get; private set; }
@@ -15,10 +15,11 @@ public class InformationCard : Entity<Guid>
 
   private InformationCard(string? title, string? description, string? imageUrl, string? imageAlt, Button? button)
   {
+    Id = Guid.CreateVersion7();
     Title = title;
     Description = description;
     ImageUrl = imageUrl;
-    ImageAlt = imageUrl;
+    ImageAlt = imageAlt;
     Button = button;
   }
 

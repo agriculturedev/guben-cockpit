@@ -1,4 +1,3 @@
-import { CardsInformationCardVariant1Component } from "@/endpoints/gubenProdSchemas";
 import { Button } from "@/components/ui/button";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';

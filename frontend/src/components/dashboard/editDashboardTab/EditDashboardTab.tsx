@@ -6,7 +6,6 @@ import { z } from "zod";
 import { DashboardTabForm } from "@/components/dashboard/DashboardTabForm";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
 interface Props {

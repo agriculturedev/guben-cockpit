@@ -34,6 +34,7 @@ interface Resources {
       "ImageUrl": "Image url",
       "ImageAlt": "Image alternative text",
       "Button": {
+        "Add": "Add button",
         "Title": "Button text",
         "Url": "Button url",
         "OpenInNewTab": "Open url in new tab"

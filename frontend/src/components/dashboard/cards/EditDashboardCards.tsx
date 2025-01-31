@@ -6,7 +6,6 @@ import { DeleteDashboardCardButton } from "@/components/dashboard/cards/deleteDa
 import { EditDashboardCardButton } from "@/components/dashboard/cards/editDashboardCard.tsx/editDashboardCardButton";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "react-i18next";
-import { CreateDashboardTabDialogButton } from "@/components/dashboard/createDashboardTab/CreateDashboardTabDialogButton";
 import { CreateDashboardCardButton } from "@/components/dashboard/cards/createDashboardCard/CreateDashboardCardButton";
 
 interface Props {

@@ -6,8 +6,9 @@ import { DashboardCardFormType } from "./useDashboardCardFormSchema";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { WithClassName } from "@/types/WithClassName";
 import { cn } from "@/lib/utils";
-import { t } from "i18next";
 import { Switch } from "@/components/ui/switch";
+import { useState } from "react";
+import {  isNullOrUndefinedOrWhiteSpace } from "@/utilities/nullabilityUtils";
 
 interface DashboardCardFormProps extends WithClassName {
   form: DashboardCardFormType;
@@ -96,51 +97,77 @@ export const DashboardCardForm = ({form, onSubmit, className}: DashboardCardForm
   )
 }
 
-const CardButtonForm = ({form}: {form: DashboardCardFormType}) => {
+
+const CardButtonForm = ({ form }: { form: DashboardCardFormType }) => {
+  const { t } = useTranslation("dashboard");
+  const [addButton, setAddButton] = useState(!isNullOrUndefinedOrWhiteSpace(form.getValues("button")?.title)); // Initialize based on form value
+
   return (
-    <div className={"flex flex-col gap-2"}>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <Switch
+          checked={addButton}
+          onCheckedChange={(checked) => {
+            setAddButton(checked);
+            if (checked) {
+              form.setValue("button", {
+                title: "",
+                url: "",
+                openInNewTab: false, // Set default to false when enabling
+              });
+            } else {
+              form.setValue("button", null);
+            }
+          }}
+        />
+        <span>{t("Cards.Button.Add", { ns: "dashboard" })}</span>
+      </div>
 
-      <FormField
-        control={form.control}
-        name="button.title"
-        render={({field}) => (
-          <FormItem>
-            <FormLabel>{t("Cards.Button.Title", {ns: "dashboard"})}</FormLabel>
-            <FormControl>
-              <Input placeholder={t("Cards.Button.Title", {ns: "dashboard"})} {...field} />
-            </FormControl>
-            <FormMessage/>
-          </FormItem>
-        )}
-      />
+      {addButton && (
+        <>
+          <FormField
+            control={form.control}
+            name="button.title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("Cards.Button.Title", { ns: "dashboard" })}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t("Cards.Button.Title", { ns: "dashboard" })} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-      <FormField
-        control={form.control}
-        name="button.url"
-        render={({field}) => (
-          <FormItem>
-            <FormLabel>{t("Cards.Button.Url", {ns: "dashboard"})}</FormLabel>
-            <FormControl>
-              <Input placeholder={t("Cards.Button.Url", {ns: "dashboard"})} {...field} />
-            </FormControl>
-            <FormMessage/>
-          </FormItem>
-        )}
-      />
+          <FormField
+            control={form.control}
+            name="button.url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("Cards.Button.Url", { ns: "dashboard" })}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t("Cards.Button.Url", { ns: "dashboard" })} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-      <FormField
-        control={form.control}
-        name="button.openInNewTab"
-        render={({field}) => (
-          <FormItem className={"flex flex-col gap-2"}>
-            <FormLabel>{t("Cards.Button.OpenInNewTab", {ns: "dashboard"})}</FormLabel>
-            <FormControl>
-              <Switch onCheckedChange={field.onChange} checked={field.value} />
-            </FormControl>
-            <FormMessage/>
-          </FormItem>
-        )}
-      />
+          <FormField
+            control={form.control}
+            name="button.openInNewTab"
+            render={({ field }) => (
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>{t("Cards.Button.OpenInNewTab", { ns: "dashboard" })}</FormLabel>
+                <FormControl>
+                  <Switch onCheckedChange={field.onChange} checked={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </>
+      )}
     </div>
-  )
-}
+  );
+};

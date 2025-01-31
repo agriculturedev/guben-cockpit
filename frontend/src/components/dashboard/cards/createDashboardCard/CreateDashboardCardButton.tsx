@@ -4,7 +4,7 @@ import { useDashboardCreateCard } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useDialogFormToggle } from "@/hooks/useDialogFormToggle";
 import { z } from "zod";
-import { AddCardToTabQuery, CreateDashboardTabQuery, UpdateCardOnTabQuery } from "@/endpoints/gubenSchemas";
+import { AddCardToTabQuery } from "@/endpoints/gubenSchemas";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AddIconButton } from "@/components/iconButtons/AddIconButton";
 import { useDashboardCardFormSchema } from "@/components/dashboard/cards/useDashboardCardFormSchema";
@@ -40,7 +40,6 @@ export const CreateDashboardCardButton = ({dashboardTabId, onSuccess}: Props) =>
       imageAlt: values.imageAlt,
       imageUrl: values.imageUrl,
       button: values.button,
-
     }
 
     mutation.mutate({body: updateQuery, pathParams: {id: dashboardTabId}});

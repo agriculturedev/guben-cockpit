@@ -8,7 +8,7 @@ export const useDashboardCardFormSchema = (card?: InformationCardResponse) => {
   const objectFormSchema = z.object({
     title: z.string(),
     url: z.string(),
-    openInNewTab: z.boolean()
+    openInNewTab: z.boolean().default(false),
   })
 
   const formSchema = z.object({
@@ -24,7 +24,11 @@ export const useDashboardCardFormSchema = (card?: InformationCardResponse) => {
     defaultValues: {
       title: card?.title ?? null,
       description: card?.description ?? null,
-      button: card?.button ?? null,
+      button: card?.button ?? {
+        title: "",
+        url: "",
+        openInNewTab: false,
+      },
       imageUrl: card?.imageUrl ?? null,
       imageAlt: card?.imageAlt ?? null,
     },
@@ -34,7 +38,11 @@ export const useDashboardCardFormSchema = (card?: InformationCardResponse) => {
     form.reset({
       title: card?.title ?? null,
       description: card?.description ?? null,
-      button: card?.button ?? null,
+      button: card?.button ?? {
+        title: "",
+        url: "",
+        openInNewTab: false,
+      },
       imageUrl: card?.imageUrl ?? null,
       imageAlt: card?.imageAlt ?? null,
     });
