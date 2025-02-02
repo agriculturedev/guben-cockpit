@@ -17,8 +17,12 @@ public class DashboardRepository
   {
     var currentMaxSequence = Set.
       TagWith(nameof(DashboardRepository) + "." + nameof(GetNextSequence))
-      .Max(tab => tab.Sequence);
+      .Select(tab => (int?)tab.Sequence) // Ensure nullable to handle empty case
+      .Max();
 
-    return currentMaxSequence + 1;
+    if (currentMaxSequence.HasValue)
+      return currentMaxSequence.Value + 1;
+
+    return 0;
   }
 }
