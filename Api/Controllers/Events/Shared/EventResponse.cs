@@ -8,7 +8,7 @@ using Domain.Urls;
 
 namespace Api.Controllers.Events.Shared;
 
-public class EventResponse
+public struct EventResponse
 {
   public required Guid Id { get; set; }
   public required string EventId { get; set; }

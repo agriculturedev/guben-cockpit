@@ -1,6 +1,6 @@
 namespace Api.Controllers.Projects.PublishProjects;
 
-public class PublishProjectsResponse
+public struct PublishProjectsResponse
 {
 
 }

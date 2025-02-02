@@ -2,7 +2,7 @@ using Domain.Locations;
 
 namespace Api.Controllers.Locations.Shared;
 
-public class LocationResponse
+public struct LocationResponse
 {
   public required string Name { get; set; }
   public string? City { get; set; }

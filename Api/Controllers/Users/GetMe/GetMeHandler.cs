@@ -7,7 +7,7 @@ using Shared.Domain.Validation;
 
 namespace Api.Controllers.Users.GetMe;
 
-public class GetMeHandler : ApiRequestHandler<GetMeQuery, GetMeResponse>
+public class GetMeHandler : ApiRequestHandler<GetMeQuery, UserResponse>
 {
   private readonly IUserRepository _userRepository;
   private readonly IHttpContextAccessor _httpContextAccessor;
@@ -18,7 +18,7 @@ public class GetMeHandler : ApiRequestHandler<GetMeQuery, GetMeResponse>
     _httpContextAccessor = httpContextAccessor;
   }
 
-  public override async Task<GetMeResponse> Handle(GetMeQuery request, CancellationToken cancellationToken)
+  public override async Task<UserResponse> Handle(GetMeQuery request, CancellationToken cancellationToken)
   {
     var keycloakId = _httpContextAccessor.HttpContext?.User.GetKeycloakId();
     if (keycloakId == null)
@@ -28,6 +28,6 @@ public class GetMeHandler : ApiRequestHandler<GetMeQuery, GetMeResponse>
     if (user is null)
       throw new ProblemDetailsException(TranslationKeys.UserNotFound);
 
-    return (UserResponse.Map(user) as GetMeResponse)!;
+    return UserResponse.Map(user);
   }
 }

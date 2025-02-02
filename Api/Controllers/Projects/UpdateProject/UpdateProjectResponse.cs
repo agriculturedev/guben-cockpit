@@ -1,6 +1,6 @@
 namespace Api.Controllers.Projects.UpdateProject;
 
-public class UpdateProjectResponse
+public struct UpdateProjectResponse
 {
-  
+
 }

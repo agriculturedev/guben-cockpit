@@ -2,7 +2,7 @@ using Domain.DashboardTab;
 
 namespace Api.Controllers.DashboardTabs.Shared;
 
-public sealed class ButtonResponse
+public struct ButtonResponse
 {
   public required string Title { get; set; }
   public required string Url { get; set; }

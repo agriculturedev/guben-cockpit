@@ -4,7 +4,7 @@ using Shared.Api;
 
 namespace Api.Controllers.Users.GetAllUsers;
 
-public class GetAllUsersHandler : ApiRequestHandler<GetAllUsersQuery, GetAllUsersResponse>
+public class GetAllUsersHandler : ApiPagedRequestHandler<GetAllUsersQuery, GetAllUsersResponse, UserResponse>
 {
   private readonly IUserRepository _userRepository;
 
