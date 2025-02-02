@@ -25,7 +25,7 @@ export const EditDashboard = () => {
 
   const options = useMemo(() => orderedTabs?.map((tab: DashboardTabResponse) => {
     return {label: tab.title, value: tab.id}
-  }) ?? [], [dashboardData?.tabs]);
+  }) ?? [], [orderedTabs]);
 
   return (
     <div className="flex flex-col gap-2">
