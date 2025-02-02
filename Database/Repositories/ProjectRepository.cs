@@ -40,4 +40,13 @@ public class ProjectRepository
       .Where(p => ids.Contains(p.Id))
       .ToListAsync();
   }
+
+  public IEnumerable<Project> GetAllOwnedBy(Guid userId)
+  {
+    return Set
+      .TagWith(GetType().Name + '.' + nameof(GetAllOwnedBy))
+      .IgnoreAutoIncludes()
+      .Where(a => a.CreatedBy.Equals(userId))
+      .AsEnumerable();
+  }
 }

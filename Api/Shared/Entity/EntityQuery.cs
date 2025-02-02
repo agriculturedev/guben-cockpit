@@ -1,6 +1,6 @@
 ﻿namespace Api.Shared.Entity;
 
-public abstract class EntityQuery
+public abstract class EntityQuery<T>
 {
-  public required Guid Id { get; set; }
+  public required T Id { get; set; }
 }
