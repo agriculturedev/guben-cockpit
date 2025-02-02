@@ -10,14 +10,14 @@ import { EditIconButton } from "@/components/iconButtons/EditIconButton";
 import {  z } from "zod";
 import { useDialogFormToggle } from "@/hooks/useDialogFormToggle";
 
-interface DeleteDashboardCardButtonProps {
+interface EditDashboardCardButtonProps {
   dashboardTabId: string;
   card: InformationCardResponse;
 
   refetch: () => Promise<any>;
 }
 
-export const EditDashboardCardButton = ({dashboardTabId, card, refetch}: DeleteDashboardCardButtonProps) => {
+export const EditDashboardCardButton = ({dashboardTabId, card, refetch}: EditDashboardCardButtonProps) => {
   const {t} = useTranslation(["dashboard"]);
   const [open, setOpen] = useState(false);
 
