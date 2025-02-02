@@ -33,6 +33,9 @@ public class DeleteProjectHandler : ApiRequestHandler<DeleteProjectQuery, Delete
     if(projectToDelete is null)
       throw new ProblemDetailsException(TranslationKeys.ProjectNotFound);
 
+    if (projectToDelete.CreatedBy != user.Id)
+      throw new UnauthorizedAccessException(TranslationKeys.ProjectNotOwnedByUser);
+
     _projectRepository.Delete(projectToDelete);
 
     return new DeleteProjectResponse();
