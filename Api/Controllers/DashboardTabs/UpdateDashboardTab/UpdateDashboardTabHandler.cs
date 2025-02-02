@@ -20,7 +20,7 @@ public class UpdateDashboardTabHandler : ApiRequestHandler<UpdateDashboardTabQue
     if (dashboardTab is null)
       throw new ProblemDetailsException(TranslationKeys.DashboardTabNotFound);
 
-    var result = dashboardTab.Update(request.Name, request.MapUrl);
+    var result = dashboardTab.Update(request.Title, request.MapUrl);
     result.ThrowIfFailure();
 
     return new UpdateDashboardTabResponse();

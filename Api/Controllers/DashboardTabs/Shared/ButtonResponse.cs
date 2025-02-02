@@ -2,11 +2,11 @@ using Domain.DashboardTab;
 
 namespace Api.Controllers.DashboardTabs.Shared;
 
-public class ButtonResponse
+public sealed class ButtonResponse
 {
-  public string Title { get; set; }
-  public string Url { get; set; }
-  public bool OpenInNewTab { get; set; }
+  public required string Title { get; set; }
+  public required string Url { get; set; }
+  public required bool OpenInNewTab { get; set; }
 
   public static ButtonResponse Map(Button button)
   {

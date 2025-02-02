@@ -1,9 +1,9 @@
-import { CardsInformationCardVariant1Component } from "@/endpoints/gubenProdSchemas";
 import { Button } from "@/components/ui/button";
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { InformationCardResponse } from "@/endpoints/gubenSchemas";
+import { Card } from "@/components/ui/card";
 
 interface Props {
   card: InformationCardResponse;
@@ -11,7 +11,7 @@ interface Props {
 
 export const InfoCard = ({card}: Props) => {
   return (
-    <div className="flex flex-col bg-white p-4 gap-1 rounded-lg shadow-lg mb-4 break-inside-avoid">
+    <Card className="flex flex-col bg-white p-4 gap-1 rounded-lg shadow-lg mb-4 break-inside-avoid">
       {card.imageUrl &&
         <img src={card.imageUrl} alt={card.imageAlt ?? undefined} className={"rounded"}/>
       }
@@ -21,8 +21,8 @@ export const InfoCard = ({card}: Props) => {
       </p>
 
       {card.button?.url && card.button?.title && <div className={"flex justify-center"}>
-        <Button variant={"destructive"}><a href={card.button?.url} target={"_blank"}>{card.button?.title}</a></Button>
+        <Button variant={"destructive"}><a href={card.button?.url} target={card.button.openInNewTab ? "_blank" : "_self"}> {card.button?.title}</a></Button>
       </div>}
-    </div>
+    </Card>
   );
 }

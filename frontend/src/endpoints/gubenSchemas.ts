@@ -3,10 +3,24 @@
  *
  * @version 1.0.0
  */
+export type AddCardToTabQuery = {
+  /**
+   * @format uuid
+   */
+  tabId: string;
+  title?: string | null;
+  description?: string | null;
+  button?: UpsertButtonQuery;
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+};
+
+export type AddCardToTabResponse = Record<string, any>;
+
 export type ButtonResponse = {
-  title?: string;
-  url?: string;
-  openInNewTab?: boolean;
+  title: string;
+  url: string;
+  openInNewTab: boolean;
 } | null;
 
 export type CategoryResponse = {
@@ -27,6 +41,13 @@ export type CoordinatesResponse = {
    */
   longitude?: number;
 } | null;
+
+export type CreateDashboardTabQuery = {
+  title: string;
+  mapUrl: string;
+};
+
+export type CreateDashboardTabResponse = Record<string, any>;
 
 export type CreateEventQuery = {
   eventId: string;
@@ -76,6 +97,10 @@ export type CreateUrlQuery = {
 };
 
 export type DashboardTabResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
   title: string;
   /**
    * @format int32
@@ -84,6 +109,10 @@ export type DashboardTabResponse = {
   mapUrl: string;
   informationCards?: InformationCardResponse[];
 };
+
+export type DeleteCardFromTabResponse = Record<string, any>;
+
+export type DeleteDashboardTabResponse = Record<string, any>;
 
 export type EventResponse = {
   /**
@@ -186,6 +215,10 @@ export type GetUserResponse = {
 };
 
 export type InformationCardResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
   title?: string | null;
   description?: string | null;
   button?: ButtonResponse;
@@ -235,6 +268,41 @@ export type PublishProjectsQuery = {
 };
 
 export type PublishProjectsResponse = Record<string, any>;
+
+export type UpdateCardOnTabQuery = {
+  /**
+   * @format uuid
+   */
+  cardId: string;
+  /**
+   * @format uuid
+   */
+  tabId: string;
+  title?: string | null;
+  description?: string | null;
+  button?: UpsertButtonQuery;
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+};
+
+export type UpdateCardOnTabResponse = Record<string, any>;
+
+export type UpdateDashboardTabQuery = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  title: string;
+  mapUrl: string;
+};
+
+export type UpdateDashboardTabResponse = Record<string, any>;
+
+export type UpsertButtonQuery = {
+  title: string;
+  url: string;
+  openInNewTab: boolean;
+} | null;
 
 export type UrlResponse = {
   link: string;

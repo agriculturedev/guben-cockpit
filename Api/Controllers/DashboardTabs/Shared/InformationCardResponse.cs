@@ -4,6 +4,7 @@ namespace Api.Controllers.DashboardTabs.Shared;
 
 public class InformationCardResponse
 {
+  public required Guid Id { get;  set; }
   public string? Title { get;  set; }
   public string? Description { get;  set; }
   public ButtonResponse? Button { get;  set; }
@@ -14,6 +15,7 @@ public class InformationCardResponse
   {
     return new InformationCardResponse()
     {
+      Id = informationCard.Id,
       Title = informationCard.Title,
       Description = informationCard.Description,
       ImageUrl = informationCard.ImageUrl,
