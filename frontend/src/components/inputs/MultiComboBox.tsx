@@ -87,9 +87,9 @@ export const MultiComboBox = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[20em] justify-between overflow-hidden"
+          className="w-[20em] justify-between overflow-hidden bg-white"
         >
-          {selectedValues.length} selected
+          {t("ItemsSelected", {count: selectedValues.length})}
           <ChevronsUpDown className="opacity-50"/>
         </Button>
       </PopoverTrigger>
@@ -121,7 +121,7 @@ export const MultiComboBox = ({
                       <CommandSeparator />
                     </>
                   )}
-                  
+
                   <CommandGroup heading={t("Items")}>
                     {unselectedValues.map((value) => {
                       const option = optionsIndex[value]

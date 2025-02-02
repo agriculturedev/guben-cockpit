@@ -1,9 +1,12 @@
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {SortingDirection, UseSortingFilterHook} from "@/hooks/filters/useSortingFilter";
 import {useCallback} from "react";
+import {Label} from "@/components/ui/label";
+import {cn} from "@/lib/utils";
 
 interface Props {
   controller: UseSortingFilterHook;
+  className?: string;
 }
 
 enum SortingOptions {
@@ -14,7 +17,7 @@ enum SortingOptions {
   DATE_DESC = "startDate:descending",
 }
 
-export const SortFilter = ({controller}: Props) => {
+export const SortFilter = ({controller, className}: Props) => {
   const handleChange = useCallback((value: string) => {
     if(value == SortingOptions.NONE) return controller.clearFilter();
     const [field, direction] = value.split(":");
@@ -22,23 +25,26 @@ export const SortFilter = ({controller}: Props) => {
   }, [controller]);
 
   return (
-    <Select
-      value={controller.filter.field
-        && controller.filter.direction
-        && `${controller.filter.field}:${controller.filter.direction}`
-        || "none"}
-      onValueChange={handleChange}
-    >
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Sortierung"/>
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value={SortingOptions.NONE}>{"Sortierung"}</SelectItem>
-        <SelectItem value={SortingOptions.TITLE_ASC}>{"Titel Aufsteigend"}</SelectItem>
-        <SelectItem value={SortingOptions.TITLE_DESC}>{"Titel Absteigend"}</SelectItem>
-        <SelectItem value={SortingOptions.DATE_ASC}>{"Datum Aufsteigend"}</SelectItem>
-        <SelectItem value={SortingOptions.DATE_DESC}>{"Datum Absteigend"}</SelectItem>
-      </SelectContent>
-    </Select>
+    <div className={cn("flex flex-col gap-2", className ?? "")}>
+      <Label>Sortierung</Label>
+      <Select
+        value={controller.filter.field
+          && controller.filter.direction
+          && `${controller.filter.field}:${controller.filter.direction}`
+          || "none"}
+        onValueChange={handleChange}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Sortierung"/>
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={SortingOptions.NONE}>{"Sortierung"}</SelectItem>
+          <SelectItem value={SortingOptions.TITLE_ASC}>{"Titel Aufsteigend"}</SelectItem>
+          <SelectItem value={SortingOptions.TITLE_DESC}>{"Titel Absteigend"}</SelectItem>
+          <SelectItem value={SortingOptions.DATE_ASC}>{"Datum Aufsteigend"}</SelectItem>
+          <SelectItem value={SortingOptions.DATE_DESC}>{"Datum Absteigend"}</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
   );
 }

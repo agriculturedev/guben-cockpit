@@ -4,7 +4,7 @@ namespace Api.Controllers.Locations.Shared;
 
 public class LocationResponse
 {
-  public required string Id { get; set; }
+  public required Guid Id { get; set; }
   public required string Name { get; set; }
   public string? City { get; set; }
 
@@ -12,7 +12,7 @@ public class LocationResponse
   {
     return new LocationResponse
     {
-      Id = location.Id.ToString(),
+      Id = location.Id,
       Name = location.Name,
       City = location.City
     };

@@ -36,7 +36,7 @@ export function EventFiltersProvider({children}: PropsWithChildren) {
   const filters: EventsGetAllQueryParams = useMemo(() => {
     const retVal = {
       title: controllers.title.filter ?? undefined,
-      location: controllers.location.filters?.join(",") ?? undefined,
+      location: controllers.location.filters?.join(";") ?? undefined,
       category: controllers.category.filter ?? undefined,
       startDate: controllers.dateRange.filter.startDate?.toIsoDate() ?? undefined,
       endDate: controllers.dateRange.filter.endDate?.toIsoDate() ?? undefined,

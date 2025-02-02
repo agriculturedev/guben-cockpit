@@ -20,7 +20,7 @@ public class GetAllEventsHandler : ApiRequestHandler<GetAllEventsQuery, GetAllEv
     var filter = new EventFilterCriteria
     {
       TitleQuery = request.TitleSearch,
-      LocationQuery = request.LocationSearch?.Split(","),
+      LocationQuery = request.LocationSearch?.Split(";"),
       CategoryIdQuery = request.CategoryId,
       StartDateQuery = request.StartDate,
       EndDateQuery = request.EndDate,

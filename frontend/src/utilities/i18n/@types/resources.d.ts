@@ -11,7 +11,11 @@ interface Resources {
     "ImageUrl": "Image url",
     "ImageCredits": "Image credits",
     "Save": "Save",
-    "NoItemsFound": "No items found."
+    "NoItemsFound": "No items found.",
+    "SelectedItems": "Selected items",
+    "Items": "Items",
+    "ItemsSelected_one": "{{count}} item selected",
+    "ItemsSelected_other": "{{count}} items selected"
   },
   "navigation": {
     "Dashboard": "Dashboard",
