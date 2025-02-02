@@ -9,8 +9,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "start": "vite",
-    "codegen": "npx openapi-codegen gen gubenProd",
-    "codegen2": "npx openapi-codegen gen guben",
+    "codegen": "npx openapi-codegen gen guben",
     "translations": "i18next-resources-for-ts interface -i ./src/assets/locales/de -o ./src/utilities/i18n/@types/resources.d.ts"
   },
   "devDependencies": {

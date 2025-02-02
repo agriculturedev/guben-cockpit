@@ -17,10 +17,10 @@ public class GetAllEventsHandler : ApiPagedRequestHandler<GetAllEventsQuery, Get
   public override async Task<GetAllEventsResponse> Handle(GetAllEventsQuery request, CancellationToken
       cancellationToken)
   {
-    var filter = new EventFilterCriteria()
+    var filter = new EventFilterCriteria
     {
       TitleQuery = request.TitleSearch,
-      LocationQuery = request.LocationSearch,
+      LocationQuery = request.LocationSearch?.Split(";"),
       CategoryIdQuery = request.CategoryId,
       StartDateQuery = request.StartDate,
       EndDateQuery = request.EndDate,

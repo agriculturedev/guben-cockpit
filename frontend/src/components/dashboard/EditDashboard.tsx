@@ -20,12 +20,12 @@ export const EditDashboard = () => {
     setselectedTabId(undefined);
   }, [refetchDashboard, setselectedTabId]);
 
-  const selectedTab = dashboardData?.tabs?.find((tab: DashboardTabResponse) => tab.id === selectedTabId);
-  const orderedTabs = dashboardData?.tabs?.sort((a, b) => a.sequence - b.sequence);
+  const selectedTab = useMemo(() => dashboardData?.tabs?.find((tab: DashboardTabResponse) => tab.id === selectedTabId), [dashboardData, selectedTabId]);
+  const orderedTabs = useMemo(() => dashboardData?.tabs?.toSorted((a, b) => a.sequence - b.sequence), [dashboardData]);
 
   const options = useMemo(() => orderedTabs?.map((tab: DashboardTabResponse) => {
     return {label: tab.title, value: tab.id}
-  }) ?? [], [dashboardData?.tabs]);
+  }) ?? [], [orderedTabs]);
 
   return (
     <div className="flex flex-col gap-2">
