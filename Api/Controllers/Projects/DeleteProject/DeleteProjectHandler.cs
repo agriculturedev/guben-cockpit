@@ -33,7 +33,7 @@ public class DeleteProjectHandler : ApiRequestHandler<DeleteProjectQuery, Delete
     if(projectToDelete is null)
       throw new ProblemDetailsException(TranslationKeys.ProjectNotFound);
 
-    if (projectToDelete.CreatedBy != user.Id)
+    if (projectToDelete.CreatedBy != user.Id) // TODO: or if user is admin, but these rules need to be clarified with Sophie
       throw new UnauthorizedAccessException(TranslationKeys.ProjectNotOwnedByUser);
 
     _projectRepository.Delete(projectToDelete);
