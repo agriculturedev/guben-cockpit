@@ -9,8 +9,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "start": "vite",
-    "codegen": "npx openapi-codegen gen gubenProd",
-    "codegen2": "npx openapi-codegen gen guben",
+    "codegen": "npx openapi-codegen gen guben",
     "translations": "i18next-resources-for-ts interface -i ./src/assets/locales/de -o ./src/utilities/i18n/@types/resources.d.ts"
   },
   "devDependencies": {
@@ -31,7 +30,7 @@
   "dependencies": {
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.10.0",
-    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.1.5",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-popover": "^1.1.4",
@@ -46,6 +45,7 @@
     "@tanstack/router-devtools": "^1.58.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.3.0",
     "i18next": "^24.2.1",

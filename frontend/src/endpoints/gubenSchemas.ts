@@ -194,6 +194,10 @@ export type InformationCardResponse = {
 };
 
 export type LocationResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
   name: string;
   city?: string | null;
 };
