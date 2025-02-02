@@ -2,65 +2,57 @@ import {
   createContext,
   PropsWithChildren,
   useContext, useMemo,
-  useState
 } from "react";
-import {QueryFilter} from "@/types/filtering.types";
-import {TextFilterController, useTextFilter} from "@/hooks/useTextFilter";
-import {DateFilterController, useDateFilter} from "@/hooks/useDateFilter";
-import {CategoryFilterController, useCategoryFilter} from "@/hooks/useCategoryFilter";
-import { SorterController, useSorter } from "@/hooks/useSorter";
+import {EventsGetAllQueryParams} from "@/endpoints/gubenComponents";
+import {useTextFilter, UseTextFilterHook} from "@/hooks/filters/useTextFilter";
+import {useDateRangeFilter, UseDateRangeFilterHook} from "@/hooks/filters/useDateRangeFilter";
+import {useSortingFilter, UseSortingFilterHook} from "@/hooks/filters/useSortingFilter";
+import {useMultiComboFilter, UseMultiComboFilterHook} from "@/hooks/filters/useMultiComboFilter";
 
-
-interface EventFiltersContext {
-  filters: QueryFilter[];
-  controllers: EventFiltersControllers;
+interface EventFilterControllers {
+  title: UseTextFilterHook;
+  dateRange: UseDateRangeFilterHook;
+  sorting: UseSortingFilterHook;
+  location: UseMultiComboFilterHook;
+  category: UseTextFilterHook;
 }
 
-interface EventFiltersControllers {
-  sortController: SorterController,
-  titleController: TextFilterController,
-  locationController: TextFilterController,
-  dateController: DateFilterController,
-  categoryController: CategoryFilterController,
+interface EventFiltersContext {
+  filters: EventsGetAllQueryParams;
+  controllers: EventFilterControllers;
 }
 
 const EventFiltersContext = createContext<EventFiltersContext | undefined>(undefined);
 
-interface EventFiltersProviderProps extends PropsWithChildren {
-}
-
-export function EventFiltersProvider({children}: EventFiltersProviderProps) {
-  const [sorting, setSorting] = useState<QueryFilter[]>([]);
-  const [textFilters, setTextFilters] = useState<QueryFilter[]>([]);
-  const [dateFilters, setDateFilters] = useState<QueryFilter[]>([]);
-  const [categoryFilters, setCategoryFilters] = useState<QueryFilter[]>([]);
-  const [locationFilters, setLocationFilters] = useState<QueryFilter[]>([]);
-
-  const filters = useMemo(() => [
-    ...sorting,
-    ...textFilters,
-    ...dateFilters,
-    ...categoryFilters,
-    ...locationFilters
-  ], [
-    sorting,
-    textFilters,
-    dateFilters,
-    categoryFilters,
-    locationFilters
-  ]);
-
-  const controllers: EventFiltersControllers = {
-    sortController: useSorter(sorting, setSorting, ""),
-    titleController: useTextFilter(textFilters, setTextFilters, "title"),
-    locationController: useTextFilter(locationFilters, setLocationFilters, "location"),
-    dateController: useDateFilter(dateFilters, setDateFilters, ""),
-    categoryController: useCategoryFilter(categoryFilters, setCategoryFilters, "categoryId"),
+export function EventFiltersProvider({children}: PropsWithChildren) {
+  const controllers = {
+    title: useTextFilter(),
+    dateRange: useDateRangeFilter(),
+    sorting: useSortingFilter(),
+    location: useMultiComboFilter(["Guben"]),
+    category: useTextFilter(),
   };
 
-  const ctx: EventFiltersContext = {filters, controllers};
+  const filters: EventsGetAllQueryParams = useMemo(() => {
+    const retVal = {
+      title: controllers.title.filter ?? undefined,
+      location: controllers.location.filters?.join(";") ?? undefined,
+      category: controllers.category.filter ?? undefined,
+      startDate: controllers.dateRange.filter.startDate?.toIsoDate() ?? undefined,
+      endDate: controllers.dateRange.filter.endDate?.toIsoDate() ?? undefined,
+      ordering: controllers.sorting.filter.direction ?? undefined
+      // TODO @Kilian: fix these filters with type constraints
+      // sortBy: controllers.sorting.filter.field ?? undefined,
+    }
+
+    let k: keyof typeof retVal;
+    for(k in retVal) if(retVal[k] === undefined) delete retVal[k];
+
+    return retVal;
+  }, [controllers]);
+
   return (
-    <EventFiltersContext.Provider value={ctx}>
+    <EventFiltersContext.Provider value={{filters, controllers}}>
       {children}
     </EventFiltersContext.Provider>
   )

@@ -15,7 +15,11 @@ interface Resources {
     "No": "Nein",
     "Yes": "Ja",
     "NoItemsFound": "Keine Ergebnisse",
-    "PermanentActionConfirmation": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden"
+    "PermanentActionConfirmation": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden",
+    "SelectedItems": "Selected items",
+    "Items": "Items",
+    "ItemsSelected_one": "{{count}} item selected",
+    "ItemsSelected_other": "{{count}} items selected"
   },
   "dashboard": {
     "Title": "Dashboard",
