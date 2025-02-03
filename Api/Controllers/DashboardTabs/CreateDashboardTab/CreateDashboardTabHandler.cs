@@ -5,11 +5,11 @@ using Shared.Api;
 
 namespace Api.Controllers.DashboardTabs.CreateDashboardTab;
 
-public class UpdateDashboardTabHandler : ApiRequestHandler<CreateDashboardTabQuery, CreateDashboardTabResponse>
+public class CreateDashboardTabHandler : ApiRequestHandler<CreateDashboardTabQuery, CreateDashboardTabResponse>
 {
   private readonly IDashboardRepository _dashboardRepository;
 
-  public UpdateDashboardTabHandler(IDashboardRepository dashboardRepository)
+  public CreateDashboardTabHandler(IDashboardRepository dashboardRepository)
   {
     _dashboardRepository = dashboardRepository;
   }
@@ -21,7 +21,7 @@ public class UpdateDashboardTabHandler : ApiRequestHandler<CreateDashboardTabQue
     var (result, dashboardTab) = DashboardTab.Create(request.Title, nextSequence, request.MapUrl, new List<InformationCard>());
     result.ThrowIfFailure();
 
-    _dashboardRepository.Save(dashboardTab);
+    await _dashboardRepository.SaveAsync(dashboardTab);
 
     return new CreateDashboardTabResponse();
   }
