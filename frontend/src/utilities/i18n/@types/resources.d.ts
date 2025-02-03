@@ -35,8 +35,10 @@ interface Resources {
       "Add": "Add card",
       "Delete": "Delete card",
       "Description": "Card description",
+      "Image": "Image",
       "ImageUrl": "Image url",
       "ImageAlt": "Image alternative text",
+      "ImageAltExplanation": "a text that will be shown when the image could not be found",
       "Button": {
         "Add": "Add button",
         "Title": "Button text",
