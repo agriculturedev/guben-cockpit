@@ -9,4 +9,5 @@ public interface IProjectRepository : IRepository<Project, string>
   IEnumerable<Project> GetAllProjects();
   Task<List<Project>> GetAllByIds(IList<string> ids);
   IEnumerable<Project> GetAllOwnedBy(Guid userId);
+  Task<PagedResult<Project>> GetAllOwnedByUserPaged(Guid userId, PagedCriteria pagination);
 }

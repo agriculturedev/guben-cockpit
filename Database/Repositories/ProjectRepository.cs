@@ -4,6 +4,7 @@ using Domain.Projects;
 using Domain.Projects.repository;
 using Microsoft.EntityFrameworkCore;
 using Shared.Database;
+using Shared.Domain;
 
 namespace Database.Repositories;
 
@@ -48,5 +49,15 @@ public class ProjectRepository
       .IgnoreAutoIncludes()
       .Where(a => a.CreatedBy.Equals(userId))
       .AsEnumerable();
+  }
+
+  public Task<PagedResult<Project>> GetAllOwnedByUserPaged(Guid userId, PagedCriteria pagination)
+  {
+    return Set
+      .AsNoTracking()
+      .AsSplitQuery()
+      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllOwnedByUserPaged))
+      .Where(a => a.CreatedBy.Equals(userId))
+      .ToPagedResult(pagination);
   }
 }
