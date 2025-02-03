@@ -3,12 +3,13 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { DashboardCardFormType } from "./useDashboardCardFormSchema";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { WithClassName } from "@/types/WithClassName";
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import {  isNullOrUndefinedOrWhiteSpace } from "@/utilities/nullabilityUtils";
+import { EditableImage } from "@/components/ui/editableImage";
 
 interface DashboardCardFormProps extends WithClassName {
   form: DashboardCardFormType;
@@ -66,9 +67,14 @@ export const DashboardCardForm = ({form, onSubmit, className}: DashboardCardForm
           name="imageUrl"
           render={({field}) => (
             <FormItem>
-              <FormLabel>{t("Cards.ImageUrl", {ns: "dashboard"})}</FormLabel>
+              <FormLabel>{t("Cards.Image", {ns: "dashboard"})}</FormLabel>
               <FormControl>
-                <Input placeholder={t("Cards.ImageUrl", {ns: "dashboard"})} {...field} value={field.value ?? undefined} />
+                {
+                  field.value != null
+                    ? <EditableImage imageUrl={field.value} onChange={field.onChange}/>
+                    : <Input placeholder={t("Cards.ImageUrl", {ns: "dashboard"})} {...field} value={undefined} />
+                }
+
               </FormControl>
               <FormMessage/>
             </FormItem>
@@ -81,6 +87,7 @@ export const DashboardCardForm = ({form, onSubmit, className}: DashboardCardForm
           render={({field}) => (
             <FormItem>
               <FormLabel>{t("Cards.ImageAlt", {ns: "dashboard"})}</FormLabel>
+              <FormDescription>{t("Cards.ImageAltExplanation", {ns: "dashboard"})}</FormDescription>
               <FormControl>
                 <Input placeholder={t("Cards.ImageAlt", {ns: "dashboard"})} {...field} value={field.value ?? undefined} />
               </FormControl>
