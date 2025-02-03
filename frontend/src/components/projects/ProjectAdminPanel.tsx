@@ -7,6 +7,7 @@ import { defaultPaginationProps, usePagination } from "@/hooks/usePagination";
 import { useProjectsGetMyProjects } from "@/endpoints/gubenComponents";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { useEffect } from "react";
+import { EditProjectButton } from "@/components/projects/editProject.tsx/editProjectButton";
 
 export const ProjectAdminPanel = () => {
   const {t} = useTranslation(["projects"]);
@@ -39,7 +40,7 @@ const ProjectList = () => {
     setPageCount
   } = usePagination();
 
-  const { data: projectData } = useProjectsGetMyProjects({
+  const { data: projectData, refetch } = useProjectsGetMyProjects({
     queryParams: {
       pageSize,
       pageNumber: page,
@@ -60,8 +61,11 @@ const ProjectList = () => {
       <div className={"grid grid-cols-4 gap-2"}>
         {projectData?.results &&
           projectData.results.map((project, index) =>
-            <ProjectCard key={index} project={project} />) // TODO@JOREN: editable project cards, with edit button and popup to edit project fields
-        }
+            <div className="relative w-full h-full">
+              <ProjectCard key={index} project={project} />
+              <EditProjectButton project={project} refetch={refetch} className="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md" />
+            </div>
+          )}
       </div>
     </PaginationContainer>
   );

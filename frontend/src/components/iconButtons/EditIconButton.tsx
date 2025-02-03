@@ -1,8 +1,9 @@
 import { PencilIcon } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { CustomTooltip } from "@/components/general/Tooltip";
+import { WithClassName } from "@/types/WithClassName";
 
-interface EditIconButtonProps {
+interface EditIconButtonProps extends WithClassName {
   tooltip: string;
   disabledTooltip?: string;
   dialogTrigger?: boolean;
@@ -10,9 +11,9 @@ interface EditIconButtonProps {
   onClick?: () => void;
 }
 
-export const EditIconButton = ({tooltip, disabledTooltip, onClick, dialogTrigger = false, disabled = false}: EditIconButtonProps) => {
+export const EditIconButton = ({tooltip, disabledTooltip, onClick, className, dialogTrigger = false, disabled = false}: EditIconButtonProps) => {
   return (
-    <CustomTooltip text={disabled ? disabledTooltip ?? "" : tooltip}>
+    <CustomTooltip text={disabled ? disabledTooltip ?? "" : tooltip} className={className}>
 
       {dialogTrigger
         ? (<DialogTrigger asChild>

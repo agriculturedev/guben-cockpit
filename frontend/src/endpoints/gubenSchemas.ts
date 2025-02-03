@@ -251,6 +251,7 @@ export type ProblemDetails = {
 };
 
 export type ProjectResponse = {
+  id: string;
   title: string;
   description?: string | null;
   fullText?: string | null;

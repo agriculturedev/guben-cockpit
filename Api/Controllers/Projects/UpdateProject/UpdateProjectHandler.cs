@@ -29,7 +29,7 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
     if (user is null)
       throw new UnauthorizedAccessException(TranslationKeys.UserNotFound);
 
-    var project = await _projectRepository.Get(request.Id);
+    var project = await _projectRepository.GetIncludingUnpublished(request.Id);
     if (project is null)
       throw new ProblemDetailsException(TranslationKeys.ProjectNotFound);
 

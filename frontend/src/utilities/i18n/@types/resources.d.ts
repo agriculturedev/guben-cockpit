@@ -62,6 +62,7 @@ interface Resources {
   "projects": {
     "Title": "Projekte",
     "Add": "Add project",
+    "Edit": "Edit project",
     "MyProjects": "Meine Projekte"
   },
   "users": {
