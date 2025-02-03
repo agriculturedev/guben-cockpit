@@ -91,7 +91,7 @@ export const fetchUsersGet = (
   signal?: AbortSignal,
 ) =>
   gubenFetch<
-    Schemas.GetUserResponse,
+    Schemas.UserResponse,
     UsersGetError,
     undefined,
     {},
@@ -99,15 +99,15 @@ export const fetchUsersGet = (
     UsersGetPathParams
   >({ url: "/users/{keycloakId}", method: "get", ...variables, signal });
 
-export const useUsersGet = <TData = Schemas.GetUserResponse,>(
+export const useUsersGet = <TData = Schemas.UserResponse,>(
   variables: UsersGetVariables,
   options?: Omit<
-    reactQuery.UseQueryOptions<Schemas.GetUserResponse, UsersGetError, TData>,
+    reactQuery.UseQueryOptions<Schemas.UserResponse, UsersGetError, TData>,
     "queryKey" | "queryFn" | "initialData"
   >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<Schemas.GetUserResponse, UsersGetError, TData>({
+  return reactQuery.useQuery<Schemas.UserResponse, UsersGetError, TData>({
     queryKey: queryKeyFn({
       path: "/users/{keycloakId}",
       operationId: "usersGet",
@@ -131,22 +131,22 @@ export const fetchUsersGetMe = (
   variables: UsersGetMeVariables,
   signal?: AbortSignal,
 ) =>
-  gubenFetch<Schemas.GetMeResponse, UsersGetMeError, undefined, {}, {}, {}>({
+  gubenFetch<Schemas.UserResponse, UsersGetMeError, undefined, {}, {}, {}>({
     url: "/users/me",
     method: "get",
     ...variables,
     signal,
   });
 
-export const useUsersGetMe = <TData = Schemas.GetMeResponse,>(
+export const useUsersGetMe = <TData = Schemas.UserResponse,>(
   variables: UsersGetMeVariables,
   options?: Omit<
-    reactQuery.UseQueryOptions<Schemas.GetMeResponse, UsersGetMeError, TData>,
+    reactQuery.UseQueryOptions<Schemas.UserResponse, UsersGetMeError, TData>,
     "queryKey" | "queryFn" | "initialData"
   >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<Schemas.GetMeResponse, UsersGetMeError, TData>({
+  return reactQuery.useQuery<Schemas.UserResponse, UsersGetMeError, TData>({
     queryKey: queryKeyFn({
       path: "/users/me",
       operationId: "usersGetMe",
@@ -214,7 +214,7 @@ export type ProjectsCreateProjectError = Fetcher.ErrorWrapper<{
 }>;
 
 export type ProjectsCreateProjectVariables = {
-  body: Schemas.CreateProjectCommand;
+  body: Schemas.CreateProjectQuery;
 } & GubenContext["fetcherOptions"];
 
 export const fetchProjectsCreateProject = (
@@ -224,7 +224,7 @@ export const fetchProjectsCreateProject = (
   gubenFetch<
     Schemas.CreateProjectResponse,
     ProjectsCreateProjectError,
-    Schemas.CreateProjectCommand,
+    Schemas.CreateProjectQuery,
     {},
     {},
     {}
@@ -249,6 +249,57 @@ export const useProjectsCreateProject = (
     mutationFn: (variables: ProjectsCreateProjectVariables) =>
       fetchProjectsCreateProject({ ...fetcherOptions, ...variables }),
     ...options,
+  });
+};
+
+export type ProjectsGetMyProjectsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsGetMyProjectsVariables = GubenContext["fetcherOptions"];
+
+export const fetchProjectsGetMyProjects = (
+  variables: ProjectsGetMyProjectsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetMyProjectsResponse,
+    ProjectsGetMyProjectsError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/projects/owned", method: "get", ...variables, signal });
+
+export const useProjectsGetMyProjects = <
+  TData = Schemas.GetMyProjectsResponse,
+>(
+  variables: ProjectsGetMyProjectsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetMyProjectsResponse,
+      ProjectsGetMyProjectsError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetMyProjectsResponse,
+    ProjectsGetMyProjectsError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/projects/owned",
+      operationId: "projectsGetMyProjects",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchProjectsGetMyProjects({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
   });
 };
 
@@ -292,6 +343,55 @@ export const useProjectsPublishProjects = (
   >({
     mutationFn: (variables: ProjectsPublishProjectsVariables) =>
       fetchProjectsPublishProjects({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type ProjectsUpdateProjectPathParams = {
+  id: string;
+};
+
+export type ProjectsUpdateProjectError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsUpdateProjectVariables = {
+  body: Schemas.UpdateProjectQuery;
+  pathParams: ProjectsUpdateProjectPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchProjectsUpdateProject = (
+  variables: ProjectsUpdateProjectVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateProjectResponse,
+    ProjectsUpdateProjectError,
+    Schemas.UpdateProjectQuery,
+    {},
+    {},
+    ProjectsUpdateProjectPathParams
+  >({ url: "/projects/{id}", method: "put", ...variables, signal });
+
+export const useProjectsUpdateProject = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateProjectResponse,
+      ProjectsUpdateProjectError,
+      ProjectsUpdateProjectVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateProjectResponse,
+    ProjectsUpdateProjectError,
+    ProjectsUpdateProjectVariables
+  >({
+    mutationFn: (variables: ProjectsUpdateProjectVariables) =>
+      fetchProjectsUpdateProject({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -995,6 +1095,11 @@ export type QueryOperation =
       path: "/projects";
       operationId: "projectsGetAll";
       variables: ProjectsGetAllVariables;
+    }
+  | {
+      path: "/projects/owned";
+      operationId: "projectsGetMyProjects";
+      variables: ProjectsGetMyProjectsVariables;
     }
   | {
       path: "/pages";

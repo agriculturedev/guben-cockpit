@@ -1,42 +1,62 @@
-import { DashboardTabResponse } from "@/endpoints/gubenSchemas";
-import { Card } from "@/components/ui/card";
-import { InfoCard } from "@/components/home/InfoCard/InfoCardVariant1";
-import * as React from "react";
+import { CreateDashboardCardButton } from "@/components/dashboard/cards/createDashboardCard/CreateDashboardCardButton";
 import { DeleteDashboardCardButton } from "@/components/dashboard/cards/deleteDashboardCard/DeleteDashboardCardButton";
 import { EditDashboardCardButton } from "@/components/dashboard/cards/editDashboardCard.tsx/editDashboardCardButton";
+import { InfoCard } from "@/components/home/InfoCard/InfoCardVariant1";
+import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { DashboardTabResponse } from "@/endpoints/gubenSchemas";
 import { useTranslation } from "react-i18next";
-import { CreateDashboardCardButton } from "@/components/dashboard/cards/createDashboardCard/CreateDashboardCardButton";
+import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 
 interface Props {
   tab: DashboardTabResponse;
   refetch: () => Promise<any>;
 }
 
-export const EditDashboardCards = ({tab, refetch}: Props) => {
-  const {t} = useTranslation(["dashboard"]);
-  const sortedCards = tab?.informationCards?.sort((a,b) => a.id.localeCompare(b.id));
+export const EditDashboardCards = ({ tab, refetch }: Props) => {
+  const { t } = useTranslation(["dashboard"]);
+  const sortedCards = tab?.informationCards?.sort((a, b) => a.id.localeCompare(b.id));
 
   return (
-    <Card className="flex flex-col gap-2 p-2 h-max">
-      <div className={"flex gap-2 items-center"}>
-        <Label className={"text-xl"}>{t("Cards.Cards")}</Label>
-        <CreateDashboardCardButton onSuccess={refetch} dashboardTabId={tab.id}/>
+    <div className='gap-4'>
+      <div className="flex gap-2 mb-2">
+        <h1>{t("Cards.Cards")}</h1>
+        <CreateDashboardCardButton onSuccess={refetch} dashboardTabId={tab.id} />
       </div>
 
-      <div className="flex flex-wrap h-max gap-2">
-        {sortedCards?.map((card, index) => {
-          return (
-            <div className={"w-64 flex flex-col h-full"} key={index}>
-              <InfoCard card={card}/>
-              <div className={"w-full justify-evenly flex"}>
-                <DeleteDashboardCardButton cardId={card.id} dashboardTabId={tab.id} refetch={refetch} />
-                <EditDashboardCardButton card={card} dashboardTabId={tab.id} refetch={refetch} />
-              </div>
+      <div className="grid grid-cols-4 gap-5 p-4">
+        {sortedCards && [...sortedCards, ...sortedCards, ...sortedCards]?.map((card, index) => (
+          <Card className=" p-8 flex flex-col gap-2 relative">
+            {card.imageUrl &&
+              <img
+                className="rounded-lg"
+                src={card.imageUrl}
+                alt={card.imageAlt ?? undefined}
+              />
+            }
+
+            <h2 className="font-bold">{card.title}</h2>
+            <Markdown className={"text-gray-500"} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} >
+              {card.description}
+            </Markdown>
+
+            {card.button &&
+              <a
+                className="bg-gubenAccent mt-auto hover:bg-red-400 rounded-lg py-2 px-4 text-white w-1/2"
+                href={card.button?.url}
+                target={card.button.openInNewTab ? "_blank" : "_self"}
+              >{card.button?.title}</a>
+            }
+
+            <div className="flex flex-col gap-2 absolute right-0 top-4 translate-x-[45%]">
+              <EditDashboardCardButton card={card} dashboardTabId={tab.id} refetch={refetch} />
+              <DeleteDashboardCardButton cardId={card.id} dashboardTabId={tab.id} refetch={refetch} />
             </div>
-          )
-        })}
+          </Card>
+        ))}
       </div>
-    </Card>
+    </div>
   );
 }

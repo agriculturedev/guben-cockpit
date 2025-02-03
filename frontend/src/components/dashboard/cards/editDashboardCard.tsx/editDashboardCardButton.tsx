@@ -51,7 +51,7 @@ export const EditDashboardCardButton = ({dashboardTabId, card, refetch}: EditDas
 
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
-      <EditIconButton tooltip={t("Cards.Edit")} dialogTrigger={true}/>
+      <EditIconButton tooltip={t("Cards.Edit")} dialogTrigger={true} />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("Cards.Edit")}</DialogTitle>

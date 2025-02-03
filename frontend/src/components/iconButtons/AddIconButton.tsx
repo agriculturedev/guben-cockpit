@@ -10,19 +10,33 @@ interface AddIconButtonProps {
   onClick?: () => void;
 }
 
-export const AddIconButton = ({tooltip, disabledTooltip, onClick, dialogTrigger = false, disabled = false}: AddIconButtonProps) => {
+export const AddIconButton = ({ tooltip, disabledTooltip, onClick, dialogTrigger = false, disabled = false }: AddIconButtonProps) => {
   return (
     <CustomTooltip text={disabled ? disabledTooltip ?? "" : tooltip}>
       {dialogTrigger
         ? (
-          disabled
-            ? <PlusIcon className={"hover:bg-hover hover:shadow rounded p-1.5 stroke-gray-300"} size={"2rem"}/>
-            : <DialogTrigger asChild>
-              <PlusIcon className={"text-[#cd1421] hover:bg-hover hover:shadow rounded p-1.5"} size={"2rem"}/>
-            </DialogTrigger>
-        )
 
-        : <PlusIcon className={"text-[#cd1421] hover:bg-hover hover:shadow rounded p-1.5"} size={"2rem"} onClick={onClick}/>
+          disabled
+            ? (
+              <PlusIcon
+                className={"hover:bg-hover hover:shadow rounded p-1.5 stroke-gray-300"}
+                size={"2rem"}
+              />
+            ) : (
+              <DialogTrigger asChild>
+                <PlusIcon
+                  className={"text-[#cd1421] hover:bg-hover hover:shadow hover:cursor-pointer rounded p-1.5"}
+                  size={"2rem"}
+                />
+              </DialogTrigger>
+            )
+        ) : (
+          <PlusIcon
+            className={"text-[#cd1421] hover:bg-hover hover:shadow rounded p-1.5"}
+            size={"2rem"}
+            onClick={onClick}
+          />
+        )
       }
     </CustomTooltip>
   );
