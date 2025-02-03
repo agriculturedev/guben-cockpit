@@ -10,7 +10,7 @@ import { DeleteDashboardTabButton } from "@/components/dashboard/deleteDashboard
 import { EditDashboardCards } from "@/components/dashboard/cards/EditDashboardCards";
 
 
-export const EditDashboard = () => {
+export const DashboardAdminPanel = () => {
   const {data: dashboardData, isLoading, refetch: refetchDashboard} = useDashboardGetAll({});
   const [selectedTabId, setselectedTabId] = useState<string | undefined>();
   const {t} = useTranslation(["dashboard", "common"]);
