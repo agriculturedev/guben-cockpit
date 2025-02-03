@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { projectFormType } from "./useCreateProjectFormSchema";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { EditableImage } from "@/components/ui/editableImage";
 
 interface ProjectFormProps {
   form: projectFormType;
@@ -92,7 +93,7 @@ export const ProjectForm = ({form, onSubmit}: ProjectFormProps) => {
             <FormItem>
               <FormLabel>{t("ImageUrl")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("ImageUrl")} {...field} value={field.value ?? undefined} />
+                <EditableImage imageUrl={field.value ?? undefined} onChange={field.onChange} startInEditingState={field.value == null}/>
               </FormControl>
               <FormMessage/>
             </FormItem>

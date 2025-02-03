@@ -19,7 +19,8 @@ interface Resources {
     "SelectedItems": "Selected items",
     "Items": "Items",
     "ItemsSelected_one": "{{count}} item selected",
-    "ItemsSelected_other": "{{count}} items selected"
+    "ItemsSelected_other": "{{count}} items selected",
+    "ShowPreview": "Show preview"
   },
   "dashboard": {
     "Title": "Dashboard",

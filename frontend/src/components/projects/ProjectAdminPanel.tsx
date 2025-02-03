@@ -10,20 +10,6 @@ import { useEffect } from "react";
 
 export const ProjectAdminPanel = () => {
   const {t} = useTranslation(["projects"]);
-  const {
-    page,
-    pageCount,
-    total,
-    pageSize,
-    nextPage,
-    previousPage,
-    setPageIndex,
-    setPageSize,
-    setTotal,
-    setPageCount
-  } = usePagination();
-
-
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2 justify-between items-center">
@@ -74,7 +60,7 @@ const ProjectList = () => {
       <div className={"grid grid-cols-4 gap-2"}>
         {projectData?.results &&
           projectData.results.map((project, index) =>
-            <ProjectCard key={index} project={project} />)
+            <ProjectCard key={index} project={project} />) // TODO@JOREN: editable project cards, with edit button and popup to edit project fields
         }
       </div>
     </PaginationContainer>
