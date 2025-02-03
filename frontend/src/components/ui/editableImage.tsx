@@ -2,25 +2,32 @@ import { useState } from "react";
 import { Pencil, Save, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { isNullOrUndefinedOrWhiteSpace } from "@/utilities/nullabilityUtils";
+import { BaseImgTag } from "@/components/ui/BaseImgTag";
 
 interface EditableImageProps {
-  imageUrl: string;
+  imageUrl?: string;
   imageAlt?: string;
-  onChange: (imageUrl: string) => void;
+  onChange: (imageUrl?: string) => void;
+  startInEditingState?: boolean;
 }
 
-export const EditableImage = ({imageUrl, imageAlt, onChange}: EditableImageProps) => {
-  const [isEditing, setIsEditing] = useState(false);
+export const EditableImage = ({imageUrl, imageAlt, onChange, startInEditingState = false}: EditableImageProps) => {
+  const [isEditing, setIsEditing] = useState(startInEditingState);
   const [newUrl, setNewUrl] = useState(imageUrl);
 
   const handleSave = () => {
-    setIsEditing(false);
+    if(!isNullOrUndefinedOrWhiteSpace(newUrl)){
+      setIsEditing(false);
+    }
     onChange(newUrl);
   };
 
   const handleCancel = () => {
+    if(!isNullOrUndefinedOrWhiteSpace(newUrl)) {
+      setIsEditing(false);
+    }
     setNewUrl(imageUrl);
-    setIsEditing(false);
   };
 
   return (
@@ -33,17 +40,17 @@ export const EditableImage = ({imageUrl, imageAlt, onChange}: EditableImageProps
             className="mb-2"
           />
           <div className="flex gap-2">
-            <Button size="sm" onClick={handleSave}>
+            <Button size="sm" onClick={handleSave} type={"button"}>
               <Save className="w-4 h-4"/> Save
             </Button>
-            <Button size="sm" variant="destructive" onClick={handleCancel}>
+            <Button size="sm" variant="destructive" onClick={handleCancel} type={"button"}>
               <X className="w-4 h-4"/> Cancel
             </Button>
           </div>
         </div>
       ) : (
         <div className="relative w-full h-full">
-          <img src={newUrl} alt={imageAlt} className="w-full h-full object-cover"/>
+          <BaseImgTag src={newUrl} alt={imageAlt} className="w-full h-full object-cover"/>
 
           <button
             className="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md"

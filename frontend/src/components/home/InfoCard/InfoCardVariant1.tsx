@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { InformationCardResponse } from "@/endpoints/gubenSchemas";
 import { Card } from "@/components/ui/card";
+import { BaseImgTag } from "@/components/ui/BaseImgTag";
 
 interface Props {
   card: InformationCardResponse;
@@ -13,7 +14,7 @@ export const InfoCard = ({card}: Props) => {
   return (
     <Card className="flex flex-col bg-white p-4 gap-1 rounded-lg shadow-lg mb-4 break-inside-avoid">
       {card.imageUrl &&
-        <img src={card.imageUrl} alt={card.imageAlt ?? undefined} className={"rounded"}/>
+        <BaseImgTag src={card.imageUrl} alt={card.imageAlt ?? undefined} className={"rounded"}/>
       }
       <h1 className="text-xl font-bold text-gubenAccent text-center">{card.title}</h1>
       <p className="text-gray-500">

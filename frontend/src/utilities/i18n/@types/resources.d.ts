@@ -60,7 +60,8 @@ interface Resources {
   },
   "projects": {
     "Title": "Projekte",
-    "Add": "Add project"
+    "Add": "Add project",
+    "MyProjects": "Meine Projekte"
   },
   "users": {
     "Title": "Users"

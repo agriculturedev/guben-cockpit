@@ -5,6 +5,7 @@ import { IceCreamConeIcon, LogOutIcon } from "lucide-react";
 import { useAuth } from 'react-oidc-context';
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "react-i18next";
+import { BaseImgTag } from "@/components/ui/BaseImgTag";
 
 export const Navigation = () => {
   const linkStyle = "h-full p-3 flex items-center justify-center w-auto rounded-xl group hover:bg-[#cd1421]";
@@ -16,9 +17,9 @@ export const Navigation = () => {
     <div className="w-full h-20 bg-white sticky top-0 z-10 shadow p-0 pr-2 rounded-b flex items-center justify-between">
       <div id="logo" className="flex-1 flex justify-start items-center h-full pl-5">
         <Link to="/" className="h-full flex justify-center items-center">
-          <img src="/guben-logo.jpg" alt="logo" className={"h-2/3"}/>
+          <BaseImgTag src="/guben-logo.jpg" alt="logo" className={"h-2/3"}/>
         </Link>
-        <img src="/smart-city-guben-logo.svg" alt="logo" className={"h-2/3"}/>
+        <BaseImgTag src="/smart-city-guben-logo.svg" alt="logo" className={"h-2/3"}/>
       </div>
       <ul className="flex-1 flex gap-1 h-full items-center justify-center self-center">
         <li>

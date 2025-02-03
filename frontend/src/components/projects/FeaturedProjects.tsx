@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, } from "@/components/ui/carousel"
-import { ProjectViewListResponse } from "@/endpoints/gubenProdSchemas";
-import { ProjectCardWithDialog, ProjectCardWithDialog2 } from "@/components/projects/ProjectCardWithDialog";
+import {  ProjectCardWithDialog } from "@/components/projects/ProjectCardWithDialog";
 import { ProjectResponse } from "@/endpoints/gubenSchemas";
 
 interface FeaturedProjectsListProps {
@@ -20,7 +19,7 @@ export const FeaturedProjectsList = ({ projects }: FeaturedProjectsListProps) =>
         {projects && projects.map((project, index) => (
           <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
             <div className="p-1">
-              <ProjectCardWithDialog2 key={index} project={project}/>
+              <ProjectCardWithDialog key={index} project={project}/>
             </div>
           </CarouselItem>
         ))}

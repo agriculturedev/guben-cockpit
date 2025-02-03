@@ -69,12 +69,7 @@ export const DashboardCardForm = ({form, onSubmit, className}: DashboardCardForm
             <FormItem>
               <FormLabel>{t("Cards.Image", {ns: "dashboard"})}</FormLabel>
               <FormControl>
-                {
-                  field.value != null
-                    ? <EditableImage imageUrl={field.value} onChange={field.onChange}/>
-                    : <Input placeholder={t("Cards.ImageUrl", {ns: "dashboard"})} {...field} value={undefined} /> // TODO@JOREN: when starting to type it switches, add bool to editable tab 'StartInEditingState'
-                }
-
+                 <EditableImage imageUrl={field.value ?? undefined} onChange={field.onChange} startInEditingState={field.value == null}/>
               </FormControl>
               <FormMessage/>
             </FormItem>
