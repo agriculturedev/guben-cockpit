@@ -1,9 +1,7 @@
 import { CreateDashboardCardButton } from "@/components/dashboard/cards/createDashboardCard/CreateDashboardCardButton";
 import { DeleteDashboardCardButton } from "@/components/dashboard/cards/deleteDashboardCard/DeleteDashboardCardButton";
 import { EditDashboardCardButton } from "@/components/dashboard/cards/editDashboardCard.tsx/editDashboardCardButton";
-import { InfoCard } from "@/components/home/InfoCard/InfoCardVariant1";
 import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { DashboardTabResponse } from "@/endpoints/gubenSchemas";
 import { useTranslation } from "react-i18next";
 import Markdown from "react-markdown";
@@ -27,8 +25,8 @@ export const EditDashboardCards = ({ tab, refetch }: Props) => {
       </div>
 
       <div className="grid grid-cols-4 gap-5 p-4">
-        {sortedCards && [...sortedCards, ...sortedCards, ...sortedCards]?.map((card, index) => (
-          <Card className=" p-8 flex flex-col gap-2 relative">
+        {sortedCards?.map((card, index) => (
+          <Card key={index} className=" p-8 flex flex-col gap-2 relative">
             {card.imageUrl &&
               <img
                 className="rounded-lg"
