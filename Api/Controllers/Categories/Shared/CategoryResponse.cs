@@ -1,10 +1,10 @@
-using Api.Shared.Entity;
 using Domain.Category;
 
 namespace Api.Controllers.Categories.Shared;
 
-public class CategoryResponse : EntityResponse<Guid>
+public struct CategoryResponse
 {
+  public required Guid Id { get; set; }
   public required string Name { get; set; }
 
   public static CategoryResponse Map(Category category)

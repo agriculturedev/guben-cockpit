@@ -2,7 +2,7 @@ using Domain.DashboardTab;
 
 namespace Api.Controllers.DashboardTabs.Shared;
 
-public class DashboardTabResponse
+public struct DashboardTabResponse
 {
   public required Guid Id { get; set; }
   public required string Title { get; set; }

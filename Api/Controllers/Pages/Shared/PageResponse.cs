@@ -2,7 +2,7 @@ using Domain.Pages;
 
 namespace Api.Controllers.Pages.Shared;
 
-public class PageResponse
+public struct PageResponse
 {
   public required string Name { get; set; }
   public required string Title { get; set; }
