@@ -6,28 +6,16 @@ namespace Database.Tests.Repositories;
 
 public class DashboardRepoTests
 {
-  [Fact]
-  public async Task GetNextSequence_ShouldReturnZeroWhenNoTabsExist()
+  [Theory]
+  [InlineData(0)]
+  [InlineData(1)]
+  [InlineData(2)]
+  public async Task GetNextSequence_ShouldReturnNextSequence(int count)
   {
     // Arrange
     var dbContextFactory = new GubenDbContextTestFactory();
     var repository = new DashboardRepository(dbContextFactory);
 
-    // Act
-    var result = repository.GetNextSequence();
-
-    // Assert
-    result.ShouldBe(0);
-  }
-
-  [Fact]
-  public async Task GetNextSequence_ShouldReturnNextSequenceWhenTabsExist()
-  {
-    // Arrange
-    var dbContextFactory = new GubenDbContextTestFactory();
-    var repository = new DashboardRepository(dbContextFactory);
-
-    var count = 4;
     await AddItemsToDatabase(repository, count);
 
     var context = dbContextFactory.CreateDbContext();
