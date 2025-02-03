@@ -7,7 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapComponent } from "@/components/home/MapComponent";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EditDashboard } from "@/components/dashboard/EditDashboard";
+import { DashboardAdminPanel } from "@/components/dashboard/DashboardAdminPanel";
+import { ProjectAdminPanel } from "@/components/projects/ProjectAdminPanel";
 
 export const Route = createFileRoute('/admin')({
   component: AdminComponent,
@@ -28,7 +29,7 @@ function AdminComponent() {
           </TabsList>
 
           <TabsContent value={"Dashboard"}>
-            <EditDashboard/>
+            <DashboardAdminPanel/>
           </TabsContent>
 
           <TabsContent value={"Users"}>
@@ -36,7 +37,7 @@ function AdminComponent() {
           </TabsContent>
 
           <TabsContent value={"Projects"}>
-            <AddProjectDialogButton />
+            <ProjectAdminPanel/>
           </TabsContent>
 
           <TabsContent value={"Events"}>
