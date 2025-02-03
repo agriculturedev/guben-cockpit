@@ -5,7 +5,7 @@ using Api.Shared;
 
 namespace Api.Controllers.Events.GetAllEvents;
 
-public class GetAllEventsHandler : ApiRequestHandler<GetAllEventsQuery, GetAllEventsResponse>
+public class GetAllEventsHandler : ApiPagedRequestHandler<GetAllEventsQuery, GetAllEventsResponse, EventResponse>
 {
   private readonly IEventRepository _eventRepository;
 

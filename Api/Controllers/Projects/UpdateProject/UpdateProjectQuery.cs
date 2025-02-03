@@ -1,9 +1,10 @@
 using Shared.Api;
 
-namespace Api.Controllers.Projects.CreateProject;
+namespace Api.Controllers.Projects.UpdateProject;
 
-public class CreateProjectCommand : IAuthenticatedApiRequest, IApiRequest<CreateProjectResponse>
+public class UpdateProjectQuery : IAuthenticatedApiRequest, IApiRequest<UpdateProjectResponse>
 {
+  public required string Id { get; set; }
   public required string Title { get; set; }
   public string? Description { get; set; }
   public string? FullText { get; set; }

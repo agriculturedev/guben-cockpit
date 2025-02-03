@@ -1,6 +1,6 @@
 namespace Api.Controllers.DashboardTabs.CreateDashboardTab;
 
-public class CreateDashboardTabResponse
+public struct CreateDashboardTabResponse
 {
 
 }

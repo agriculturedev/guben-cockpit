@@ -7,7 +7,7 @@ using Shared.Api;
 
 namespace Api.Controllers.Projects.CreateProject;
 
-public class CreateProjectHandler : ApiRequestHandler<CreateProjectCommand, CreateProjectResponse>
+public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, CreateProjectResponse>
 {
   private readonly IProjectRepository _projectRepository;
   private readonly IUserRepository _userRepository;
@@ -20,7 +20,7 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectCommand, Crea
     _httpContextAccessor = httpContextAccessor;
   }
 
-  public override async Task<CreateProjectResponse> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+  public override async Task<CreateProjectResponse> Handle(CreateProjectQuery request, CancellationToken cancellationToken)
   {
     var keycloakId = _httpContextAccessor.HttpContext?.User.GetKeycloakId();
     if (keycloakId == null)

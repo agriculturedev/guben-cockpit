@@ -2,6 +2,7 @@
 using Api.Controllers.Users.GetAllUsers;
 using Api.Controllers.Users.GetMe;
 using Api.Controllers.Users.GetUser;
+using Api.Controllers.Users.Shared;
 using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -56,7 +57,7 @@ public class UserController : ControllerBase
   /// <response code="400">Server cannot/will not process the request due to perceiving a client error. (Bad Request)</response>
   [HttpGet("{keycloakId}")]
   [EndpointName("UsersGet")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetUserResponse))]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> Get([FromRoute] string keycloakId)
   {
@@ -74,7 +75,7 @@ public class UserController : ControllerBase
   /// <response code="400">Server cannot/will not process the request due to perceiving a client error. (Bad Request)</response>
   [HttpGet("me")]
   [EndpointName("UsersGetMe")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMeResponse))]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> GetMe()
   {

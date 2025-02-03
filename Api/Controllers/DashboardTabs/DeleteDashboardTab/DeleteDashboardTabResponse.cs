@@ -1,6 +1,6 @@
 namespace Api.Controllers.DashboardTabs.DeleteDashboardTab;
 
-public class DeleteDashboardTabResponse
+public struct DeleteDashboardTabResponse
 {
 
 }

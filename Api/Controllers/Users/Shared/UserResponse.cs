@@ -1,11 +1,10 @@
-﻿using Api.Shared.Entity;
-using Domain;
-using Domain.Users;
+﻿using Domain.Users;
 
 namespace Api.Controllers.Users.Shared;
 
-public class UserResponse : EntityResponse<Guid>
+public struct UserResponse
 {
+  public required Guid Id { get; set; }
   public required string KeycloakId { get; set; }
   public required string FirstName { get; set; }
   public required string LastName { get; set; }

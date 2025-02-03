@@ -26,4 +26,6 @@ public class TranslationKeys
   public const string NoDashboardTabsFound = "NoDashboardTabsFound";
   public const string SequenceNotFoundForTab = "SequenceNotFoundForTab";
   public const string SequenceInterrupted = "SequenceInterrupted";
+  public const string ProjectNotFound = "ProjectNotFound";
+  public const string ProjectNotOwnedByUser = "ProjectNotOwnedByUser";
 }

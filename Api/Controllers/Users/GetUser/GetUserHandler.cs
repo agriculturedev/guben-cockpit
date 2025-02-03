@@ -6,7 +6,7 @@ using Shared.Domain.Validation;
 
 namespace Api.Controllers.Users.GetUser;
 
-public class GetUserHandler : ApiRequestHandler<GetUserQuery, GetUserResponse>
+public class GetUserHandler : ApiRequestHandler<GetUserQuery, UserResponse>
 {
   private readonly IUserRepository _userRepository;
 
@@ -15,12 +15,12 @@ public class GetUserHandler : ApiRequestHandler<GetUserQuery, GetUserResponse>
     _userRepository = userRepository;
   }
 
-  public override async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
+  public override async Task<UserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
   {
     var user = await _userRepository.GetByKeycloakId(request.KeycloakId);
     if (user is null)
       throw new ProblemDetailsException(ValidationMessage.CreateError(TranslationKeys.UserNotFound));
 
-    return (UserResponse.Map(user) as GetUserResponse)!;
+    return UserResponse.Map(user)!;
   }
 }
