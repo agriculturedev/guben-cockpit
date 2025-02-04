@@ -24,7 +24,7 @@ export const EditDashboardCards = ({ tab, refetch }: Props) => {
         <CreateDashboardCardButton onSuccess={refetch} dashboardTabId={tab.id} />
       </div>
 
-      <div className="grid grid-cols-4 gap-5 p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 p-4">
         {sortedCards?.map((card, index) => (
           <Card key={index} className=" p-8 flex flex-col gap-2 relative">
             {card.imageUrl &&
