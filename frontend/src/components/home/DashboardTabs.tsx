@@ -3,7 +3,7 @@ import {ReactNode} from "@tanstack/react-router";
 import {MapComponent} from "@/components/home/MapComponent";
 import {useState} from "react";
 import { DashboardTabResponse } from "@/endpoints/gubenSchemas";
-import { InfoCard } from "@/components/home/InfoCard/InfoCardVariant1";
+import { InfoCard } from "@/components/home/InfoCard/InfoCard";
 import * as React from "react";
 
 interface DashboardTabsProps {

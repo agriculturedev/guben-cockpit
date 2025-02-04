@@ -5,6 +5,9 @@ import { cn } from "@/lib/utils";
 import { WithClassName } from "@/types/WithClassName";
 import { useTranslation } from "react-i18next";
 import { DashboardTabFormType } from "./useDashboardTabFormSchema";
+import { isNullOrUndefinedOrWhiteSpace } from "@/utilities/nullabilityUtils";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { MapComponent } from "@/components/home/MapComponent";
 
 type OnSubmitFnArgs = { title: string, mapUrl: string }
 
@@ -47,11 +50,14 @@ export const DashboardTabForm = ({ form, onSubmit, className }: DashboardFormPro
               <FormItem className="flex-1">
                 <FormLabel>{t("dashboard:MapUrl")}</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder={t("dashboard:MapUrl")}
-                    {...field}
-                    value={field.value ?? undefined}
-                  />
+                  <div className={"flex gap-2"}>
+                    <Input
+                      placeholder={t("dashboard:MapUrl")}
+                      {...field}
+                      value={field.value ?? undefined}
+                    />
+                    <MapPreviewDialog mapUrl={field.value} />
+                  </div>
                 </FormControl>
               </FormItem>
             )}
@@ -67,5 +73,27 @@ export const DashboardTabForm = ({ form, onSubmit, className }: DashboardFormPro
         </Button>
       </form>
     </Form>
+  )
+}
+
+interface MapPreviewProps {
+  mapUrl: string;
+}
+
+export const MapPreviewDialog = ({mapUrl}: MapPreviewProps) => {
+  const mapUrlIsEmpty = isNullOrUndefinedOrWhiteSpace(mapUrl);
+  const { t } = useTranslation(["common"]);
+
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <Button size="sm" disabled={mapUrlIsEmpty} type={"button"}>
+          {t("ShowPreview")}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="w-3/4 max-w-full h-3/4 p-1 pt-12">
+        <MapComponent src={mapUrl} className={"w-auto"} />
+      </DialogContent>
+    </Dialog>
   )
 }

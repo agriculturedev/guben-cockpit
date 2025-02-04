@@ -187,7 +187,6 @@ export type GetAllUsersResponse = {
 };
 
 export type GetMyProjectsResponse = {
-<<<<<<< HEAD
   /**
    * @format int32
    */
@@ -205,9 +204,6 @@ export type GetMyProjectsResponse = {
    */
   pageCount: number;
   results: ProjectResponse[];
-=======
-  projects: ProjectResponse[];
->>>>>>> dev
 };
 
 export type InformationCardResponse = {

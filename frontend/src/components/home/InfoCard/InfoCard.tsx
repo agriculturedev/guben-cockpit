@@ -5,14 +5,16 @@ import rehypeRaw from 'rehype-raw';
 import { InformationCardResponse } from "@/endpoints/gubenSchemas";
 import { Card } from "@/components/ui/card";
 import { BaseImgTag } from "@/components/ui/BaseImgTag";
+import { WithClassName } from "@/types/WithClassName";
+import { cn } from "@/lib/utils";
 
-interface Props {
+interface Props extends WithClassName{
   card: InformationCardResponse;
 }
 
-export const InfoCard = ({card}: Props) => {
+export const InfoCard = ({card, className}: Props) => {
   return (
-    <Card className="flex flex-col bg-white p-4 gap-1 rounded-lg shadow-lg mb-4 break-inside-avoid">
+    <Card className={cn("flex flex-col bg-white p-4 gap-1 rounded-lg shadow-lg mb-4 break-inside-avoid", className)}>
       {card.imageUrl &&
         <BaseImgTag src={card.imageUrl} alt={card.imageAlt ?? undefined} className={"rounded"}/>
       }
