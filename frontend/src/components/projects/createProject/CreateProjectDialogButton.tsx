@@ -4,11 +4,11 @@ import { z } from "zod";
 import { useState } from "react";
 import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
-import { useCreateProjectFormSchema } from "./useCreateProjectFormSchema";
+import { useProjectFormSchema } from "./useProjectFormSchema";
 import { useDialogFormToggle } from "@/hooks/useDialogFormToggle";
-import { CreateProjectCommand } from "@/endpoints/gubenSchemas";
+import { CreateProjectQuery } from "@/endpoints/gubenSchemas";
 import { AddIconButton } from "@/components/iconButtons/AddIconButton";
-import { ProjectForm } from "@/components/projects/createProject/CreateProjectForm";
+import { ProjectForm } from "@/components/projects/ProjectForm";
 
 
 interface AddProjectDialogButtonProps {
@@ -29,11 +29,11 @@ export const AddProjectDialogButton = ({onProjectCreated}: AddProjectDialogButto
     }
   });
 
-  const {formSchema, form} = useCreateProjectFormSchema();
+  const {formSchema, form} = useProjectFormSchema();
   const toggleDialog = useDialogFormToggle(form, setOpen);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const newProject: CreateProjectCommand = {
+    const newProject: CreateProjectQuery = {
       title: values.title,
       description: values.description,
       fullText: values.fullText,

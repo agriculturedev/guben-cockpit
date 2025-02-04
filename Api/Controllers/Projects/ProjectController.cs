@@ -41,9 +41,9 @@ public class ProjectController : ControllerBase
   [EndpointName("ProjectsGetMyProjects")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMyProjectsResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> GetMyProjects()
+  public async Task<IResult> GetMyProjects([FromQuery] GetMyProjectsQuery query)
   {
-    var result = await _mediator.Send(new GetMyProjectsQuery());
+    var result = await _mediator.Send(query);
     return Results.Ok(result);
   }
 

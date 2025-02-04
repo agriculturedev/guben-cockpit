@@ -23,7 +23,7 @@ function Layout() {
             <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})} />
           </Nav>
 
-          <div className='col-span-10 p-8 bg-white rounded-lg h-[1000px]'>
+          <div className='col-span-10 p-8 bg-white rounded-lg max-h-[1000px]'>
             <Outlet />
           </div>
         </div>

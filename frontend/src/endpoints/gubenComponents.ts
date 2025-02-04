@@ -252,12 +252,25 @@ export const useProjectsCreateProject = (
   });
 };
 
+export type ProjectsGetMyProjectsQueryParams = {
+  /**
+   * @format int32
+   */
+  pageNumber?: number;
+  /**
+   * @format int32
+   */
+  pageSize?: number;
+};
+
 export type ProjectsGetMyProjectsError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type ProjectsGetMyProjectsVariables = GubenContext["fetcherOptions"];
+export type ProjectsGetMyProjectsVariables = {
+  queryParams?: ProjectsGetMyProjectsQueryParams;
+} & GubenContext["fetcherOptions"];
 
 export const fetchProjectsGetMyProjects = (
   variables: ProjectsGetMyProjectsVariables,
@@ -268,7 +281,7 @@ export const fetchProjectsGetMyProjects = (
     ProjectsGetMyProjectsError,
     undefined,
     {},
-    {},
+    ProjectsGetMyProjectsQueryParams,
     {}
   >({ url: "/projects/owned", method: "get", ...variables, signal });
 

@@ -187,7 +187,23 @@ export type GetAllUsersResponse = {
 };
 
 export type GetMyProjectsResponse = {
-  projects: ProjectResponse[];
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
+  results: ProjectResponse[];
 };
 
 export type InformationCardResponse = {
@@ -235,6 +251,7 @@ export type ProblemDetails = {
 };
 
 export type ProjectResponse = {
+  id: string;
   title: string;
   description?: string | null;
   fullText?: string | null;

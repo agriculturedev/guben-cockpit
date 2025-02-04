@@ -138,38 +138,14 @@
     <data name="EmployeeNotFound" xml:space="preserve">
         <value>Medewerker niet gevonden</value>
     </data>
-    <data name="ClientNotFound" xml:space="preserve">
-        <value>Klant niet gevonden</value>
-    </data>
-    <data name="BreakConfigNotFound" xml:space="preserve">
-        <value>Pauze configuratie niet gevonden</value>
-    </data>
-    <data name="AbsenceReasonNotFound" xml:space="preserve">
-        <value>Afwezigheidsreden niet gevonden</value>
-    </data>
     <data name="ProjectNotFound" xml:space="preserve">
-        <value>Opdracht niet gevonden</value>
-    </data>
-    <data name="AssignmentHasOverlap" xml:space="preserve">
-        <value>Prestatie overlapt met een reeds bestaande prestatie</value>
-    </data>
-    <data name="AssignmentAlreadyExists" xml:space="preserve">
-        <value>Er bestaat reeds een prestatie met deze gegevens</value>
+      <value>Project niet gevonden</value>
     </data>
     <data name="ConfigNotFound" xml:space="preserve">
         <value>Instellingen niet gevonden</value>
     </data>
-    <data name="EmptyAbsenceReasonNotFound" xml:space="preserve">
-        <value>Lege afwezigheidsreden niet gevonden</value>
-    </data>
     <data name="ContactDeveloper" xml:space="preserve">
         <value>Contacteer de developer voor help</value>
-    </data>
-    <data name="ProjectAlreadyHasACostForDate" xml:space="preserve">
-        <value>Opdracht heeft a een kost voor deze datum</value>
-    </data>
-    <data name="AssignmentNotFound" xml:space="preserve">
-        <value>Prestatie niet gevonden</value>
     </data>
     <data name="NameCannotBeEmpty" xml:space="preserve">
         <value>Naam mag niet leeg zijn</value>

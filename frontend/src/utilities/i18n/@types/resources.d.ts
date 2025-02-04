@@ -19,7 +19,8 @@ interface Resources {
     "SelectedItems": "Selected items",
     "Items": "Items",
     "ItemsSelected_one": "{{count}} item selected",
-    "ItemsSelected_other": "{{count}} items selected"
+    "ItemsSelected_other": "{{count}} items selected",
+    "ShowPreview": "Show preview"
   },
   "dashboard": {
     "Title": "Dashboard",
@@ -35,8 +36,10 @@ interface Resources {
       "Add": "Add card",
       "Delete": "Delete card",
       "Description": "Card description",
+      "Image": "Image",
       "ImageUrl": "Image url",
       "ImageAlt": "Image alternative text",
+      "ImageAltExplanation": "a text that will be shown when the image could not be found",
       "Button": {
         "Add": "Add button",
         "Title": "Button text",
@@ -58,7 +61,9 @@ interface Resources {
   },
   "projects": {
     "Title": "Projekte",
-    "Add": "Add project"
+    "Add": "Add project",
+    "Edit": "Edit project",
+    "MyProjects": "Meine Projekte"
   },
   "users": {
     "Title": "Users"

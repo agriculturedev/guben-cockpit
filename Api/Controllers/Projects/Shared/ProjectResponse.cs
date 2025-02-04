@@ -4,6 +4,7 @@ namespace Api.Controllers.Projects.Shared;
 
 public struct ProjectResponse
 {
+  public required string Id { get; set; }
   public required string Title { get; set; }
   public string? Description { get; set; }
   public string? FullText { get; set; }
@@ -16,6 +17,7 @@ public struct ProjectResponse
   {
     return new ProjectResponse()
     {
+      Id = project.Id,
       Title = project.Title,
       Description = project.Description,
       FullText = project.FullText,

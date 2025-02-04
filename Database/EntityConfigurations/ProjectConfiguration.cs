@@ -1,6 +1,3 @@
-using Database.Converters;
-using Domain.Coordinates;
-using Domain.Events;
 using Domain.Projects;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +15,11 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     builder.Property(e => e.Id).ValueGeneratedNever();
 
     builder.Property(e => e.Title).IsRequired();
-    builder.Property(e => e.Description).IsRequired();
-    builder.Property(e => e.FullText).IsRequired();
-    builder.Property(e => e.ImageCaption).IsRequired();
-    builder.Property(e => e.ImageUrl).IsRequired();
-    builder.Property(e => e.ImageCredits).IsRequired();
+    builder.Property(e => e.Description);
+    builder.Property(e => e.FullText);
+    builder.Property(e => e.ImageCaption);
+    builder.Property(e => e.ImageUrl);
+    builder.Property(e => e.ImageCredits);
     builder.Property(e => e.Published).IsRequired();
     builder.HasOne<User>()
       .WithMany()

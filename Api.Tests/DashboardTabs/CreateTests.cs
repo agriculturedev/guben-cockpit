@@ -5,7 +5,7 @@ using Shouldly;
 
 namespace Api.Tests.DashboardTabs;
 
-public class DashboardRepositoryTests
+public class DashboardTabHandlerTests
 {
   [Fact]
   public async Task Handle_ShouldCreateDashboardTabAndSaveIt()
@@ -20,8 +20,12 @@ public class DashboardRepositoryTests
 
       var query = new CreateDashboardTabQuery { Title = "Test Tab", MapUrl = "https://test.com" };
 
-      // Act
-      var response = await handler.Handle(query, CancellationToken.None);
+      // Act & Assert
+      await Should.NotThrowAsync(async () =>
+      {
+        var response = await handler.Handle(query, CancellationToken.None);
+        await context.SaveChangesAsync(); // instead of transaction behaviour, save manually
+      });
 
       // Assert
       await context.SaveChangesAsync();
