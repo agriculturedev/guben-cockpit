@@ -6,7 +6,7 @@ import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useProjectFormSchema } from "./useProjectFormSchema";
 import { useDialogFormToggle } from "@/hooks/useDialogFormToggle";
-import { CreateProjectCommand } from "@/endpoints/gubenSchemas";
+import { CreateProjectQuery } from "@/endpoints/gubenSchemas";
 import { AddIconButton } from "@/components/iconButtons/AddIconButton";
 import { ProjectForm } from "@/components/projects/ProjectForm";
 
@@ -33,7 +33,7 @@ export const AddProjectDialogButton = ({onProjectCreated}: AddProjectDialogButto
   const toggleDialog = useDialogFormToggle(form, setOpen);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const newProject: CreateProjectCommand = {
+    const newProject: CreateProjectQuery = {
       title: values.title,
       description: values.description,
       fullText: values.fullText,

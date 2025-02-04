@@ -2,6 +2,7 @@ import { PencilIcon } from "lucide-react";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { CustomTooltip } from "@/components/general/Tooltip";
 import { cn } from "@/lib/utils";
+import { WithClassName } from "@/types/WithClassName";
 
 interface EditIconButtonProps extends WithClassName {
   tooltip: string;

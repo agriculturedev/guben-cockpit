@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProjectNextRepositoriesArgs } from "@openapi-codegen/cli/lib/prompts/queries/github";
 import { ProjectResponse } from "@/endpoints/gubenSchemas";
 import { useEffect } from "react";
 
