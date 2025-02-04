@@ -18,7 +18,6 @@ jobs:
       packages: write
     env:
       VITE_API_URL: ${{ vars.VITE_API_URL }}
-      VITE_REDIRECT_URI: ${{ vars.VITE_REDIRECT_URI }}
       VITE_AUTHORITY: ${{ vars.VITE_AUTHORITY }}
       VITE_AUDIENCE: ${{ vars.VITE_AUDIENCE }}
 
@@ -48,7 +47,6 @@ jobs:
           labels: ${{ steps.meta-web.outputs.labels }}
           build-args: |
             VITE_API_URL=${{ vars.VITE_API_URL }}
-            VITE_REDIRECT_URI=${{ vars.VITE_REDIRECT_URI }}
             VITE_AUTHORITY=${{ vars.VITE_AUTHORITY }}
             VITE_AUDIENCE=${{ vars.VITE_AUDIENCE }}
 
