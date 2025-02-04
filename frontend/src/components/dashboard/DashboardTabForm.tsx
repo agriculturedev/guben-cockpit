@@ -1,57 +1,70 @@
-import { Input } from "@/components/ui/input";
-import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { WithClassName } from "@/types/WithClassName";
 import { useTranslation } from "react-i18next";
 import { DashboardTabFormType } from "./useDashboardTabFormSchema";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { WithClassName } from "@/types/WithClassName";
-import { cn } from "@/lib/utils";
+
+type OnSubmitFnArgs = { title: string, mapUrl: string }
 
 interface DashboardFormProps extends WithClassName {
   form: DashboardTabFormType;
-  onSubmit: (values: {
-    title: string;
-    mapUrl: string;
-  }) => void;
+  onSubmit: (values: OnSubmitFnArgs) => void;
 }
 
-export const DashboardTabForm = ({form, onSubmit, className}: DashboardFormProps) => {
-  const {t} = useTranslation(["dashboard", "common"]);
+export const DashboardTabForm = ({ form, onSubmit, className }: DashboardFormProps) => {
+  const { t } = useTranslation(["dashboard", "common"]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex flex-col gap-2", className)}>
-        <FormField
-          control={form.control}
-          name="title"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel>{t("Title", {ns: "common"})}</FormLabel>
-              <FormControl>
-                <Input placeholder={t("Title", {ns: "common"})} {...field} value={field.value ?? undefined} />
-              </FormControl>
-              <FormMessage/>
-            </FormItem>
-          )}
-        />
+      <form
+        className={cn('flex flex-col gap-4', className)}
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <div className='flex gap-4 w-1/2'>
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>{t("common:Title")}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t("common:Title")}
+                    {...field}
+                    value={field.value ?? undefined}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="mapUrl"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel>{t("MapUrl", {ns: "dashboard"})}</FormLabel>
-              <FormControl>
-                <Input placeholder={t("MapUrl", {ns: "dashboard"})} {...field} value={field.value ?? undefined} />
-              </FormControl>
-              <FormMessage/>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="mapUrl"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>{t("dashboard:MapUrl")}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t("dashboard:MapUrl")}
+                    {...field}
+                    value={field.value ?? undefined}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <DialogFooter>
-          <Button type="submit" disabled={!form.formState.isDirty}>{t("Save", {ns: "common"})}</Button>
-        </DialogFooter>
+        <Button
+          type="submit"
+          disabled={!form.formState.isDirty}
+          className='w-32 bg-gubenAccent hover:bg-red-400'
+        >
+          {t("common:Save")}
+        </Button>
       </form>
     </Form>
   )

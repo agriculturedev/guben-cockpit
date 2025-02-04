@@ -27,6 +27,9 @@ public class DashboardTabHandlerTests
         await context.SaveChangesAsync(); // instead of transaction behaviour, save manually
       });
 
+      // Assert
+      await context.SaveChangesAsync();
+      // Use the SAME DbContext instance to verify the save
       var itemsInRepo = await repository.GetAll();
       itemsInRepo.ShouldNotBeNull().ShouldNotBeEmpty();
       itemsInRepo.Count.ShouldBe(1);
