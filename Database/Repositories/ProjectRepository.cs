@@ -25,6 +25,15 @@ public class ProjectRepository
       .FirstOrDefaultAsync(a => a.Id.Equals(id));
   }
 
+  public IEnumerable<Project> GetAllncludingUnpublished()
+  {
+    return Set
+      .AsNoTracking()
+      .AsSplitQuery()
+      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllncludingUnpublished))
+      .AsEnumerable();
+  }
+
   public IEnumerable<Project> GetAllProjects()
   {
     return ModifiedSet

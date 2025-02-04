@@ -5,7 +5,7 @@ using Shouldly;
 
 namespace Api.Tests.DashboardTabs;
 
-public class DashboardRepositoryTests
+public class DashboardTabHandlerTests
 {
   [Fact]
   public async Task Handle_ShouldCreateDashboardTabAndSaveIt()

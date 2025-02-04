@@ -1,5 +1,6 @@
 using Domain.Tests.DashboardTab;
 using Database.Repositories;
+using Database.Tests.Extensions;
 using Shouldly;
 
 namespace Database.Tests.Repositories;
@@ -16,7 +17,7 @@ public class DashboardRepoTests
     var dbContextFactory = new GubenDbContextTestFactory();
     var repository = new DashboardRepository(dbContextFactory);
 
-    await AddItemsToDatabase(repository, count);
+    await repository.AddItemsToDatabase(count);
 
     var context = dbContextFactory.CreateDbContext();
     await context.SaveChangesAsync();
@@ -28,12 +29,5 @@ public class DashboardRepoTests
     result.ShouldBe(count);
   }
 
-  private static async Task AddItemsToDatabase(DashboardRepository repo, int amount)
-  {
-    for (int i = 0; i < amount; i++)
-    {
-      var dashboardTab = new DashboardTabBuilder().WithSequence(i).Build();
-      await repo.SaveAsync(dashboardTab);
-    }
-  }
+
 }
