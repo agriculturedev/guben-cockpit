@@ -35,7 +35,7 @@ function AdminDashboard() {
   return (
     <div className='flex flex-col gap-8 max-h-full overflow-auto'>
       <div className="flex flex-col gap-2">
-        <Label>{t("SelectTabToEdit")}</Label>
+        <Label>{t("SelectItemToEdit", {ns: "common"})}</Label>
         <div className="flex gap-2">
 
           <Combobox

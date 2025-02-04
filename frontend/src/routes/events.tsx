@@ -8,6 +8,7 @@ import {EventsList} from "@/components/events/EventsList";
 import {EventFilterContainer} from "@/components/events/EventFilterContainer";
 import {EventFiltersProvider, useEventFilters} from "@/context/eventFilters/EventFiltersContext";
 import {useEventsGetAll} from "@/endpoints/gubenComponents";
+import { Pages } from "@/routes/admin/_layout/pages";
 
 export const Route = createFileRoute('/events')({
   component: WrappedComponent,
@@ -50,7 +51,7 @@ function EventComponent() {
   }, [eventsData]);
 
   return (
-    <View pageKey={"Events"}>
+    <View pageKey={Pages.Events}>
       <PaginationContainer
         nextPage={nextPage} previousPage={previousPage} setPageIndex={setPageIndex}
         setPageSize={setPageSize} total={total} pageCount={pageCount} pageSize={pageSize}

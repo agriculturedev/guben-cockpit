@@ -7,7 +7,7 @@ import { ProjectResponse, UpdateProjectQuery } from "@/endpoints/gubenSchemas";
 import { EditIconButton } from "@/components/iconButtons/EditIconButton";
 import { z } from "zod";
 import { useDialogFormToggle } from "@/hooks/useDialogFormToggle";
-import { useProjectFormSchema } from "@/components/projects/createProject/useProjectFormSchema";
+import { useProjectFormSchema } from "@/components/projects/useProjectFormSchema";
 import { ProjectForm } from "@/components/projects/ProjectForm";
 import { WithClassName } from "@/types/WithClassName";
 

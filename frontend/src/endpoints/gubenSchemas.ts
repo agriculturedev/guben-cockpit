@@ -234,7 +234,7 @@ export type NullableOfButtonResponse = {
 } | null;
 
 export type PageResponse = {
-  name: string;
+  id: string;
   title: string;
   description: string;
 };
@@ -296,6 +296,14 @@ export type UpdateDashboardTabQuery = {
 };
 
 export type UpdateDashboardTabResponse = Record<string, any>;
+
+export type UpdatePageQuery = {
+  id: string;
+  title: string;
+  description: string;
+};
+
+export type UpdatePageResponse = Record<string, any>;
 
 export type UpdateProjectQuery = {
   id: string;

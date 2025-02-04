@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
-import { useProjectFormSchema } from "./useProjectFormSchema";
+import { useProjectFormSchema } from "../useProjectFormSchema";
 import { useDialogFormToggle } from "@/hooks/useDialogFormToggle";
 import { CreateProjectQuery } from "@/endpoints/gubenSchemas";
 import { AddIconButton } from "@/components/iconButtons/AddIconButton";
