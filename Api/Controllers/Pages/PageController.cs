@@ -54,6 +54,7 @@ public class PageController : ControllerBase
 
   [HttpPut("${id}")]
   [EndpointName("PagesUpdate")]
+  [Authorize]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdatePageResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> Update([FromBody] UpdatePageQuery query, [FromRoute] string id)
