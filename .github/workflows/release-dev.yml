@@ -17,9 +17,7 @@ jobs:
       contents: read
       packages: write
     env:
-      VITE_STRAPI_URL: ${{ vars.VITE_STRAPI_URL }}
       VITE_API_URL: ${{ vars.VITE_API_URL }}
-      VITE_REDIRECT_URI: ${{ vars.VITE_REDIRECT_URI }}
       VITE_AUTHORITY: ${{ vars.VITE_AUTHORITY }}
       VITE_AUDIENCE: ${{ vars.VITE_AUDIENCE }}
 
@@ -48,9 +46,7 @@ jobs:
           tags: ${{ steps.meta-web.outputs.tags }}
           labels: ${{ steps.meta-web.outputs.labels }}
           build-args: |
-            VITE_STRAPI_URL=${{ vars.VITE_STRAPI_URL }}
             VITE_API_URL=${{ vars.VITE_API_URL }}
-            VITE_REDIRECT_URI=${{ vars.VITE_REDIRECT_URI }}
             VITE_AUTHORITY=${{ vars.VITE_AUTHORITY }}
             VITE_AUDIENCE=${{ vars.VITE_AUDIENCE }}
 
@@ -85,4 +81,4 @@ jobs:
 
       - name: Trigger Portainer Webhook
         run: |
-          curl -X POST "https://portainer.jorenv.eu/api/stacks/webhooks/a7682c5b-1026-4cb9-a744-4a81ace9bbbc"
+          curl -X POST "https://portainer.hagenfaber.dev/api/stacks/webhooks/3306ae6b-3937-4e75-88d3-a8d3ec5fb2e8"
