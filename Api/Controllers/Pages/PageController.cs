@@ -1,15 +1,11 @@
 ﻿using System.Net.Mime;
-using Api.Controllers.Events.CreateEvent;
 using Api.Controllers.Events.GetAllEvents;
-using Api.Controllers.Events.Shared;
 using Api.Controllers.Pages.GetPage;
 using Api.Controllers.Pages.Shared;
 using Api.Controllers.Pages.UpdatePage;
-using Api.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Api.Pagination;
 
 namespace Api.Controllers.Pages;
 
