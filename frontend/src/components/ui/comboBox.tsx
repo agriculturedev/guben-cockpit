@@ -17,8 +17,8 @@ export interface ComboboxOption {
 interface ComboboxProps {
   options: ComboboxOption[];
   placeholder: string;
-  onSelect: (value: string) => void;
-  value?: string;
+  onSelect: (value: string | null) => void;
+  value?: string | null;
   defaultOpen?: boolean;
   isLoading?: boolean;
   disabled?: boolean;
@@ -83,7 +83,7 @@ export const Combobox = ({
                     key={option.value}
                     value={option.value}
                     onSelect={(currentValue) => {
-                      onSelect(currentValue === value ? "" : currentValue)
+                      onSelect(currentValue === value ? null : currentValue)
                       setOpen(false)
                     }}
                     className={option.hasPriority ? "font-bold" : ""}

@@ -1,14 +1,11 @@
 ﻿using System.Net.Mime;
-using Api.Controllers.Events.CreateEvent;
 using Api.Controllers.Events.GetAllEvents;
-using Api.Controllers.Events.Shared;
 using Api.Controllers.Pages.GetPage;
 using Api.Controllers.Pages.Shared;
-using Api.Shared;
+using Api.Controllers.Pages.UpdatePage;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Api.Pagination;
 
 namespace Api.Controllers.Pages;
 
@@ -51,4 +48,15 @@ public class PageController : ControllerBase
     return Results.Ok(result);
   }
 
+  [HttpPut("${id}")]
+  [EndpointName("PagesUpdate")]
+  [Authorize]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdatePageResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> Update([FromBody] UpdatePageQuery query, [FromRoute] string id)
+  {
+    query.Id = id;
+    var result = await _mediator.Send(query);
+    return Results.Ok(result);
+  }
 }

@@ -20,11 +20,11 @@ interface Resources {
     "Items": "Items",
     "ItemsSelected_one": "{{count}} item selected",
     "ItemsSelected_other": "{{count}} items selected",
-    "ShowPreview": "Show preview"
+    "ShowPreview": "Show preview",
+    "SelectItemToEdit": "Zum Bearbeiten Element auswählen"
   },
   "dashboard": {
     "Title": "Dashboard",
-    "SelectTabToEdit": "Zum Bearbeiten Element auswählen",
     "MapUrl": "Map url",
     "Add": "Add new tab",
     "Delete": "Delete dashboard tab",
@@ -58,6 +58,11 @@ interface Resources {
     "Events": "Veranstaltungen",
     "LogOut": "Abmelden",
     "Admin": "Admin"
+  },
+  "pages": {
+    "Title": "Pages",
+    "Add": "Add page",
+    "Edit": "Edit page"
   },
   "projects": {
     "Title": "Projekte",

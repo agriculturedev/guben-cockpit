@@ -4,7 +4,7 @@ namespace Api.Controllers.Pages.Shared;
 
 public struct PageResponse
 {
-  public required string Name { get; set; }
+  public required string Id { get; set; }
   public required string Title { get; set; }
   public required string Description { get; set; }
 
@@ -12,7 +12,7 @@ public struct PageResponse
   {
     return new PageResponse
     {
-      Name = page.Id,
+      Id = page.Id,
       Title = page.Title,
       Description = page.Description
     };

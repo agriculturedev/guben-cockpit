@@ -5,6 +5,7 @@ import { useProjectsGetAll } from "@/endpoints/gubenComponents";
 import { isNullOrUndefinedOrEmpty } from '@/utilities/nullabilityUtils';
 import { FeaturedProjectsList } from "@/components/projects/FeaturedProjects";
 import { Button } from "@/components/ui/button";
+import { Pages } from "@/routes/admin/_layout/pages";
 
 export const Route = createFileRoute('/projects')({
   component: ProjectsComponent,
@@ -17,7 +18,7 @@ function ProjectsComponent() {
 
   return (
     <>
-      <View pageKey={"Projects"}>
+      <View pageKey={Pages.Projects}>
         {highlightedProjects &&
 		      <FeaturedProjectsList projects={highlightedProjects}/>
         }

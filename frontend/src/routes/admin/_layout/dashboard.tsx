@@ -15,11 +15,11 @@ export const Route = createFileRoute('/admin/_layout/dashboard')({
 function AdminDashboard() {
   const {t} = useTranslation(["dashboard", "common"]);
   const {data, isFetching, refetch} = useDashboardGetAll({});
-  const [selectedTabId, setSelectedTabId] = useState<string | undefined>();
+  const [selectedTabId, setSelectedTabId] = useState<string | null>(null);
 
   const onSave = useCallback(async () => {
     await refetch();
-    setSelectedTabId(undefined);
+    setSelectedTabId(null);
   }, [refetch]);
 
   const selectedTab = useMemo(() =>
@@ -35,7 +35,7 @@ function AdminDashboard() {
   return (
     <div className='flex flex-col gap-8 max-h-full overflow-auto'>
       <div className="flex flex-col gap-2">
-        <Label>{t("SelectTabToEdit")}</Label>
+        <Label>{t("SelectItemToEdit", {ns: "common"})}</Label>
         <div className="flex gap-2">
 
           <Combobox

@@ -24,4 +24,10 @@ public sealed class Page : Entity<string>
 
     return new Page(name, title, description);
   }
+
+  public void Update(string title, string description)
+  {
+    Title = title;
+    Description = description;
+  }
 }

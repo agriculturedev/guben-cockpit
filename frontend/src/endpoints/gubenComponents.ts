@@ -505,6 +505,55 @@ export const usePagesGet = <TData = Schemas.PageResponse,>(
   });
 };
 
+export type PagesUpdatePathParams = {
+  id: string;
+};
+
+export type PagesUpdateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type PagesUpdateVariables = {
+  body: Schemas.UpdatePageQuery;
+  pathParams: PagesUpdatePathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchPagesUpdate = (
+  variables: PagesUpdateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpdatePageResponse,
+    PagesUpdateError,
+    Schemas.UpdatePageQuery,
+    {},
+    {},
+    PagesUpdatePathParams
+  >({ url: "/pages/${id}", method: "put", ...variables, signal });
+
+export const usePagesUpdate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpdatePageResponse,
+      PagesUpdateError,
+      PagesUpdateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpdatePageResponse,
+    PagesUpdateError,
+    PagesUpdateVariables
+  >({
+    mutationFn: (variables: PagesUpdateVariables) =>
+      fetchPagesUpdate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type LocationsGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
