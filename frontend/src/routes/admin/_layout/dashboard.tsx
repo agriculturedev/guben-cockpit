@@ -15,11 +15,11 @@ export const Route = createFileRoute('/admin/_layout/dashboard')({
 function AdminDashboard() {
   const {t} = useTranslation(["dashboard", "common"]);
   const {data, isFetching, refetch} = useDashboardGetAll({});
-  const [selectedTabId, setSelectedTabId] = useState<string | undefined>();
+  const [selectedTabId, setSelectedTabId] = useState<string | null>(null);
 
   const onSave = useCallback(async () => {
     await refetch();
-    setSelectedTabId(undefined);
+    setSelectedTabId(null);
   }, [refetch]);
 
   const selectedTab = useMemo(() =>
