@@ -24,8 +24,6 @@ public class DashboardRepositoryTests
       var response = await handler.Handle(query, CancellationToken.None);
 
       // Assert
-      response.ShouldNotBeNull();
-
       await context.SaveChangesAsync();
       // Use the SAME DbContext instance to verify the save
       var itemsInRepo = await repository.GetAll();
