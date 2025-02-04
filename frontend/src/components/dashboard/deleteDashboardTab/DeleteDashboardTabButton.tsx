@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ConfirmationDialogContent } from "@/components/confirmationDialog/confirmationDialogContent";
 import { useDashboardDelete } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
@@ -21,14 +21,14 @@ export const DeleteDashboardTabButton = ({dashboardTabId, refetch}: DeleteDashbo
       await refetch();
       setOpen(false);
     },
-    onError: (error) => {
-      useErrorToast(error);
-    }
+    onError: (error) => useErrorToast(error)
   });
 
-  function onSubmit() {
-    mutation.mutate({pathParams: {id: dashboardTabId}});
-  }
+  const onSubmit = useCallback(() => mutation.mutate({
+    pathParams: {
+      id: dashboardTabId
+    }
+  }), [mutation, dashboardTabId]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

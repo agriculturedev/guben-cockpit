@@ -17,18 +17,12 @@ export type AddCardToTabQuery = {
 
 export type AddCardToTabResponse = Record<string, any>;
 
-export type ButtonResponse = {
-  title: string;
-  url: string;
-  openInNewTab: boolean;
-} | null;
-
 export type CategoryResponse = {
-  name: string;
   /**
    * @format uuid
    */
   id: string;
+  name: string;
 };
 
 export type CoordinatesResponse = {
@@ -80,7 +74,7 @@ export type CreateEventQuery = {
 
 export type CreateEventResponse = Record<string, any>;
 
-export type CreateProjectCommand = {
+export type CreateProjectQuery = {
   title: string;
   description?: string | null;
   fullText?: string | null;
@@ -192,26 +186,8 @@ export type GetAllUsersResponse = {
   results: UserResponse[];
 };
 
-export type GetMeResponse = {
-  keycloakId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  /**
-   * @format uuid
-   */
-  id: string;
-};
-
-export type GetUserResponse = {
-  keycloakId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  /**
-   * @format uuid
-   */
-  id: string;
+export type GetMyProjectsResponse = {
+  projects: ProjectResponse[];
 };
 
 export type InformationCardResponse = {
@@ -221,7 +197,7 @@ export type InformationCardResponse = {
   id: string;
   title?: string | null;
   description?: string | null;
-  button?: ButtonResponse;
+  button?: NullableOfButtonResponse;
   imageUrl?: string | null;
   imageAlt?: string | null;
 };
@@ -234,6 +210,12 @@ export type LocationResponse = {
   name: string;
   city?: string | null;
 };
+
+export type NullableOfButtonResponse = {
+  title: string;
+  url: string;
+  openInNewTab: boolean;
+} | null;
 
 export type PageResponse = {
   name: string;
@@ -298,6 +280,16 @@ export type UpdateDashboardTabQuery = {
 
 export type UpdateDashboardTabResponse = Record<string, any>;
 
+export type UpdateProjectQuery = {
+  id: string;
+  title: string;
+  description?: string | null;
+  fullText?: string | null;
+  imageCaption?: string | null;
+  imageUrl?: string | null;
+  imageCredits?: string | null;
+};
+
 export type UpsertButtonQuery = {
   title: string;
   url: string;
@@ -310,12 +302,12 @@ export type UrlResponse = {
 };
 
 export type UserResponse = {
-  keycloakId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
   /**
    * @format uuid
    */
   id: string;
+  keycloakId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 };

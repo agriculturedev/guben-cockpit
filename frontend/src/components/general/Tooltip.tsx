@@ -9,9 +9,11 @@ export const CustomTooltip = ({children, className, text}: {children: ReactNode,
                 <TooltipTrigger asChild className={cn("", className)}>
                     {children}
                 </TooltipTrigger>
-                <TooltipContent>
-                    <p>{text}</p>
-                </TooltipContent>
+                {text &&
+                  <TooltipContent>
+                      <p>{text}</p>
+                  </TooltipContent>
+                }
             </Tooltip>
         </TooltipProvider>
     )
