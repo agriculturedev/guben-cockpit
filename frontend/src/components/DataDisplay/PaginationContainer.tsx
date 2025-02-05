@@ -5,6 +5,8 @@ import {
   PaginationPrevious
 } from "@/components/ui/pagination";
 import { ReactNode } from "@tanstack/react-router";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   nextPage: () => void;
@@ -29,6 +31,8 @@ export const PaginationContainer = ({
                                       pageCount,
                                       total
                                     }: Props) => {
+  const {t} = useTranslation();
+
   return (
     <>
       <section>
@@ -36,7 +40,7 @@ export const PaginationContainer = ({
       </section>
 
       <Pagination>
-        <PageIndicator>{`Page: ${page} of ${pageCount}, total: ${total}`}</PageIndicator>
+        <PageIndicator>{`${t("Page")}: ${page} ${t("Of")} ${pageCount}, ${t("Total")}: ${total}`}</PageIndicator>
         <PageSizePicker value={pageSize} onChange={(value: string) => setPageSize(parseInt(value))}/>
         <PaginationContent>
           <PaginationItem>

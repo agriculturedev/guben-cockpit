@@ -1,26 +1,26 @@
 {
   "Title": "Dashboard",
-  "MapUrl": "Map url",
-  "Add": "Add new tab",
-  "Delete": "Delete dashboard tab",
-  "TabInformation": "Tab Information",
+  "MapUrl": "Karten-URL",
+  "Add": "Neue Registerkarte hinzufügen",
+  "Delete": "Dashboard-Registerkarte löschen",
+  "TabInformation": "Registerkarten-Informationen",
   "Cards": {
-    "Cards": "Cards",
-    "Title": "Card title",
-    "Edit": "Edit card",
-    "Add": "Add card",
-    "Delete": "Delete card",
-    "Description": "Card description",
-    "Image": "Image",
-    "ImageUrl": "Image url",
-    "ImageAlt": "Image alternative text",
-    "ImageAltExplanation": "a text that will be shown when the image could not be found",
+    "Cards": "Karten",
+    "Title": "Kartentitel",
+    "Edit": "Karte bearbeiten",
+    "Add": "Karte hinzufügen",
+    "Delete": "Karte löschen",
+    "Description": "Kartenbeschreibung",
+    "Image": "Bild",
+    "ImageUrl": "Bild-URL",
+    "ImageAlt": "Alternativer Bildtext",
+    "ImageAltExplanation": "Ein Text, der angezeigt wird, wenn das Bild nicht gefunden werden kann",
 
     "Button": {
-      "Add": "Add button",
-      "Title": "Button text",
-      "Url": "Button url",
-      "OpenInNewTab": "Open url in new tab"
+      "Add": "Schaltfläche hinzufügen",
+      "Title": "Schaltflächentext",
+      "Url": "Schaltflächen-URL",
+      "OpenInNewTab": "URL in neuem Tab öffnen"
     }
   }
 }

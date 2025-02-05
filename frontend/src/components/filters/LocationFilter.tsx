@@ -3,15 +3,17 @@ import {useLocationsGetAll} from "@/endpoints/gubenComponents";
 import {UseMultiComboFilterHook} from "@/hooks/filters/useMultiComboFilter";
 import {Label} from "@/components/ui/label";
 import {cn} from "@/lib/utils";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 type MultiComboFilterProps = {
   controller: UseMultiComboFilterHook;
-  placeHolder: string;
   className?: string;
 }
 
 export function LocationFilter(props: MultiComboFilterProps) {
   const {data} = useLocationsGetAll({});
+  const {t} = useTranslation();
 
   const options: ComboboxOption[] = [];
   if(data?.locations) {
@@ -31,11 +33,11 @@ export function LocationFilter(props: MultiComboFilterProps) {
 
   return (
     <div className={cn("flex flex-col gap-2", props.className ?? "")}>
-      <Label>Location</Label>
+      <Label>{t("Location")}</Label>
       <MultiComboBox
         defaultValues={props.controller.filters}
         options={options}
-        placeholder={props.placeHolder}
+        placeholder={t("Location")}
         onSelect={props.controller.setFilter}
       />
     </div>
