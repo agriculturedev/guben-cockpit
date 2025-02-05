@@ -50,6 +50,7 @@ public class Startup(IConfiguration configuration)
       .AddJsonConverters();
 
     services.AddKeycloak(Configuration);
+    services.AddKeycloak2(MappedConfiguration);
     services.AddCustomCors(MappedConfiguration);
     services.AddCustomHangfire();
     services.AddCustomMediatR();

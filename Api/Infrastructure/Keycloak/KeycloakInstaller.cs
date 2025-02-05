@@ -1,6 +1,8 @@
 using Keycloak.AuthServices.Authentication;
 using Keycloak.AuthServices.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Infrastructure.Keycloak;
 
@@ -31,5 +33,27 @@ public static class KeycloakInstaller
     );
 
     return authBuilder;
+  }
+
+  public static IServiceCollection AddKeycloak2(this IServiceCollection services, Configuration configuration)
+  {
+    // TODO@JOREN: add keycloak again to mapped config for easy use here
+    services
+      .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+      .AddJwtBearer(options =>
+      {
+        options.Authority = "https://your-keycloak-server/auth/realms/your-realm";
+        options.Audience = "your-client-id"; // Ensure this matches your Keycloak client ID
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+          ValidateIssuer = true,
+          ValidateAudience = true,
+          ValidateLifetime = true,
+          ValidateIssuerSigningKey = true
+        };
+      });
+
+    return services;
   }
 }
