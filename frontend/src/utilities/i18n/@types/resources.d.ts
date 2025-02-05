@@ -63,7 +63,9 @@ interface Resources {
     }
   },
   "events": {
-    "Title": "Veranstaltungen"
+    "Title": "Veranstaltungen",
+    "CitizenInformationText": "CitizenInformationText",
+    "ClickHere": "Click here"
   },
   "navigation": {
     "Dashboard": "Dashboard",
