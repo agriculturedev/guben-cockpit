@@ -71,7 +71,8 @@ interface Resources {
     "Map": "Karte",
     "Events": "Veranstaltungen",
     "LogOut": "Abmelden",
-    "Admin": "Admin"
+    "Admin": "Admin",
+    "ServicePortal": "Service portal"
   },
   "pages": {
     "Title": "Seiten",
