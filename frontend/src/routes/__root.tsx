@@ -11,14 +11,12 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <div className={"min-h-dvh h-screen w-screen bg-background flex flex-col"}>
+    <div className={"min-h-screen flex flex-col bg-background"}>
       <Navigation/>
-      <div className={"h-full w-full flex overflow-auto"}>
+      <div className={"w-full flex-grow overflow-hidden"}>
         <Outlet/>
       </div>
-      {/*<ReactQueryDevtools initialIsOpen={false} position={"bottom"}/>*/}
       <Footer/>
-      {/*<TanStackRouterDevtools position="bottom-left"/>*/}
       <Toaster/>
     </div>
   )

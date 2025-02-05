@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <footer className="bg-gubenAccent text-gubenAccent-foreground p-4 flex justify-center items-center">
+    <footer className="bg-gubenAccent text-gubenAccent-foreground p-4 h-14 flex justify-center items-center">
       <ul className={"flex flex-row gap-10"}>
         <li>
           <p>Software entwickler</p>
