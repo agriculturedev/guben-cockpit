@@ -109,3 +109,11 @@ public class Startup(IConfiguration configuration)
     app.Run();
   }
 }
+
+// TODO@JOREN: header to wipe all data, local storage, session storage, cookies
+// clear-site-data: *
+// https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#cookies
+// force cookie SECURE flag, otherwise this will be false when running as http (we always run http and use Npm to add https)
+// run backend as https.... this will involve some certificate fuckery
+// https://chatgpt.com/c/67a3d1b5-084c-800f-bc94-18d628beff4a
+// https://medium.com/@hilalyazbek/using-keycloak-to-authenticate-dotnet-applications-cc358ba014bb
