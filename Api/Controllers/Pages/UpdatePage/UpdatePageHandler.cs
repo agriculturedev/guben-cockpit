@@ -1,4 +1,6 @@
+using Api.Infrastructure.Extensions;
 using Domain;
+using Domain.Pages;
 using Domain.Pages.repository;
 using Shared.Api;
 
@@ -17,9 +19,15 @@ public class UpdatePageHandler : ApiRequestHandler<UpdatePageQuery, UpdatePageRe
   {
     var page = await _pageRepository.Get(request.Id);
     if (page is null)
-      throw new ProblemDetailsException(TranslationKeys.PageNotFound);
-
-    page.Update(request.Title, request.Description);
+    {
+      var (pageResult, newPage) = Page.Create(request.Id, request.Title, request.Description);
+      pageResult.ThrowIfFailure();
+      await _pageRepository.SaveAsync(newPage);
+    }
+    else
+    {
+      page.Update(request.Title, request.Description);
+    }
 
     return new UpdatePageResponse();
   }
