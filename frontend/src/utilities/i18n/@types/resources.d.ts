@@ -18,7 +18,6 @@ interface Resources {
     "No": "Nein",
     "NoItemsFound": "Keine Ergebnisse",
     "NoResults": "Keine Ergebnisse",
-    "Of": "von",
     "Page": "Seite",
     "PermanentActionConfirmation": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden",
     "Save": "Speichern",
@@ -36,7 +35,7 @@ interface Resources {
     "Total": "total",
     "Yes": "Ja",
     "ComingSoon": "Demnächst verfügbar",
-    "PaginationText": "Zeite {{page}} von {{pageCount}}, total: {{total}}"
+    "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}"
   },
   "dashboard": {
     "Title": "Dashboard",
