@@ -2,12 +2,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { EventDate } from "@/components/events/EventDate";
 import {EventResponse} from "@/endpoints/gubenSchemas";
+import { useTranslation } from "react-i18next";
 
 interface EventCardProps {
   event: EventResponse;
 }
 
 export const EventCard = ({event}: EventCardProps) => {
+  const {t} = useTranslation();
+
   const startDate = event.startDate ? new Date(event.startDate) : null
   const endDate = event.endDate ? new Date(event.endDate) : null
   const categories = event.categories ?? []
@@ -34,14 +37,14 @@ export const EventCard = ({event}: EventCardProps) => {
 
           {hasCategories &&
 	          <div className={"grid grid-cols-3 gap-2"}>
-		          <div className={"col-span-1 flex justify-end"}>Kategorie</div>
+		          <div className={"col-span-1 flex justify-end"}>{t("Category")}</div>
 		          <div className={"col-span-2"}>{categories?.map(c => c.name).join(", ")}</div>
 	          </div>
           }
 
           {locationCity &&
 		        <div className={"grid grid-cols-3 gap-2"}>
-			        <div className={"col-span-1 flex justify-end"}>Ort</div>
+			        <div className={"col-span-1 flex justify-end"}>{t("Location")}</div>
 			        <div
 				        className={"col-span-2"}>{locationCity}
 			        </div>
@@ -50,7 +53,7 @@ export const EventCard = ({event}: EventCardProps) => {
 
           {filteredLinks.length > 0 &&
 		        <div className={"grid grid-cols-3 gap-2"}>
-			        <div className={"col-span-1 flex justify-end"}>Links</div>
+			        <div className={"col-span-1 flex justify-end"}>{t("Links")}</div>
 			        <div
 				        className={"col-span-2"}>{
                 filteredLinks.map((link: any, index: number) =>

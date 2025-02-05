@@ -4,6 +4,7 @@ import {UseTextFilterHook} from "@/hooks/filters/useTextFilter";
 import { useCallback } from "react";
 import {Label} from "@/components/ui/label";
 import {cn} from "@/lib/utils";
+import { t } from "i18next";
 
 interface Props {
   controller: UseTextFilterHook;
@@ -21,7 +22,7 @@ export const CategoryFilter = ({controller, className}: Props) => {
 
   return (
     <div className={cn("flex flex-col gap-2", className ?? "")}>
-      <Label>Kategorie</Label>
+      <Label>{t("Category")}</Label>
       <Select
         value={controller.filter ?? "none"}
         onValueChange={onChange}
@@ -30,7 +31,7 @@ export const CategoryFilter = ({controller, className}: Props) => {
           <SelectValue placeholder="Kategorie"/>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={"none"}>(Kategorie)</SelectItem>
+          <SelectItem value={"none"}>{t("Category")}</SelectItem>
           {categoriesData?.categories?.map(category => (category.name &&
             <SelectItem key={category.id} value={category.id}>
               {category.name}

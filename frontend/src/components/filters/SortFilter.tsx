@@ -3,6 +3,7 @@ import {SortingDirection, UseSortingFilterHook} from "@/hooks/filters/useSorting
 import {useCallback} from "react";
 import {Label} from "@/components/ui/label";
 import {cn} from "@/lib/utils";
+import { t } from "i18next";
 
 interface Props {
   controller: UseSortingFilterHook;
@@ -26,7 +27,7 @@ export const SortFilter = ({controller, className}: Props) => {
 
   return (
     <div className={cn("flex flex-col gap-2", className ?? "")}>
-      <Label>Sortierung</Label>
+      <Label>{t("Sorting.Title")}</Label>
       <Select
         value={controller.filter.field
           && controller.filter.direction
@@ -35,14 +36,14 @@ export const SortFilter = ({controller, className}: Props) => {
         onValueChange={handleChange}
       >
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Sortierung"/>
+          <SelectValue placeholder={t("Sorting.Title")}/>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={SortingOptions.NONE}>{"Sortierung"}</SelectItem>
-          <SelectItem value={SortingOptions.TITLE_ASC}>{"Titel Aufsteigend"}</SelectItem>
-          <SelectItem value={SortingOptions.TITLE_DESC}>{"Titel Absteigend"}</SelectItem>
-          <SelectItem value={SortingOptions.DATE_ASC}>{"Datum Aufsteigend"}</SelectItem>
-          <SelectItem value={SortingOptions.DATE_DESC}>{"Datum Absteigend"}</SelectItem>
+          <SelectItem value={SortingOptions.NONE}>{t("Sorting.Title")}</SelectItem>
+          <SelectItem value={SortingOptions.TITLE_ASC}>{`${t("Title")} ${t("Sorting.Ascending")}`}</SelectItem>
+          <SelectItem value={SortingOptions.TITLE_DESC}>{`${t("Title")} ${t("Sorting.Descending")}`}</SelectItem>
+          <SelectItem value={SortingOptions.DATE_ASC}>{`${t("Date")} ${t("Sorting.Ascending")}`}</SelectItem>
+          <SelectItem value={SortingOptions.DATE_DESC}>{`${t("Date")} ${t("Sorting.Descending")}`}</SelectItem>
         </SelectContent>
       </Select>
     </div>

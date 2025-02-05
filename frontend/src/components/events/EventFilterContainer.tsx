@@ -8,10 +8,13 @@ import {ReactNode, useMemo } from "react";
 import {getContrast, getHexColorFromText, hexToRgb } from "@/utilities/colorUtils";
 import {FilterTag} from "@/components/general/FilterTag";
 import {useCategoriesGetAll} from "@/endpoints/gubenComponents";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export const EventFilterContainer = () => {
   const {controllers} = useEventFilters();
   const {data: categories} = useCategoriesGetAll({});
+  const {t} = useTranslation();
 
   const tagElements = useMemo(() => {
     const elements: ReactNode[] = [];
@@ -28,7 +31,7 @@ export const EventFilterContainer = () => {
         key={"category"}
         bgColor={color}
         textColor={contrast < 4.5 ? "#000000" : "#ffffff"}
-        title={"Kategorie"}
+        title={t("Category")}
         value={cat}
         onClear={controllers.category.clearFilter}
       />)
@@ -52,8 +55,8 @@ export const EventFilterContainer = () => {
   return (
     <div className={"flex gap-2 flex-col mb-2"}>
       <div className={"flex p-0 gap-2 w-full"}>
-        <TextFilter className="flex-1" controller={controllers.title} placeHolder={"Search"}/>
-        <LocationFilter controller={controllers.location} placeHolder={"Location"} />
+        <TextFilter className="flex-1" controller={controllers.title}/>
+        <LocationFilter controller={controllers.location} />
         <DateRangeFilter controller={controllers.dateRange}/>
         <SortFilter controller={controllers.sorting}/>
         <CategoryFilter controller={controllers.category}/>

@@ -11,7 +11,10 @@ import { EditProjectButton } from "@/components/projects/editProject.tsx/editPro
 import * as React from "react";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
-  component: () => <div className='text-5xl flex items-center justify-center h-full'>Coming soon...</div>, // TODO@JOREN: finish after page editing has been completed
+  component: () =>{
+    const {t} = useTranslation();
+    return (<div className='text-5xl flex items-center justify-center h-full'>{t("ComingSoon")}...</div>);
+  },
 })
 
 function ProjectAdminPanel() {

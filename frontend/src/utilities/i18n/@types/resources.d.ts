@@ -1,50 +1,64 @@
 interface Resources {
   "common": {
-    "Test": "test but in german",
-    "NoResults": "No results",
+    "Category": "Kategorie",
+    "Date": "Datum",
+    "Description": "Beschreibung",
+    "Email": "E-Mail",
+    "EndDate": "Enddatum",
+    "FullText": "Volltext",
+    "ImageCaption": "Bildunterschrift",
+    "ImageCredits": "Bildnachweis",
+    "ImageUrl": "Bild-URL",
+    "Items": "Elemente",
+    "ItemsSelected_one": "{{count}} Element ausgewählt",
+    "ItemsSelected_other": "{{count}} Elemente ausgewählt",
+    "Links": "Links",
+    "Location": "Adresse",
     "Name": "Name",
-    "Email": "Email",
-    "Title": "Title",
-    "Description": "Description",
-    "FullText": "Full text",
-    "ImageCaption": "Image caption",
-    "ImageUrl": "Image url",
-    "ImageCredits": "Image credits",
-    "Save": "Save",
-    "Search": "Suchen",
     "No": "Nein",
-    "Yes": "Ja",
     "NoItemsFound": "Keine Ergebnisse",
+    "NoResults": "Keine Ergebnisse",
+    "Page": "Seite",
     "PermanentActionConfirmation": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden",
-    "SelectedItems": "Selected items",
-    "Items": "Items",
-    "ItemsSelected_one": "{{count}} item selected",
-    "ItemsSelected_other": "{{count}} items selected",
-    "ShowPreview": "Show preview",
-    "SelectItemToEdit": "Zum Bearbeiten Element auswählen"
+    "Save": "Speichern",
+    "Search": "Suche",
+    "SelectItemToEdit": "Zum Bearbeiten Element auswählen",
+    "SelectedItems": "Ausgewählte Elemente",
+    "ShowPreview": "Vorschau anzeigen",
+    "Sorting": {
+      "Title": "Sortierung",
+      "Ascending": "Aufsteigend",
+      "Descending": "Absteigend"
+    },
+    "StartDate": "Startdatum",
+    "Title": "Titel",
+    "Total": "total",
+    "Yes": "Ja",
+    "ComingSoon": "Demnächst verfügbar",
+    "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}"
   },
   "dashboard": {
     "Title": "Dashboard",
-    "MapUrl": "Map url",
-    "Add": "Add new tab",
-    "Delete": "Delete dashboard tab",
-    "TabInformation": "Tab Information",
+    "MapUrl": "Karten-URL",
+    "Add": "Neue Registerkarte hinzufügen",
+    "Delete": "Dashboard-Registerkarte löschen",
+    "TabInformation": "Registerkarten-Informationen",
     "Cards": {
-      "Cards": "Cards",
-      "Title": "Card title",
-      "Edit": "Edit card",
-      "Add": "Add card",
-      "Delete": "Delete card",
-      "Description": "Card description",
-      "Image": "Image",
-      "ImageUrl": "Image url",
-      "ImageAlt": "Image alternative text",
-      "ImageAltExplanation": "a text that will be shown when the image could not be found",
+      "Cards": "Karten",
+      "Title": "Kartentitel",
+      "Edit": "Karte bearbeiten",
+      "Add": "Karte hinzufügen",
+      "Delete": "Karte löschen",
+      "Description": "Kartenbeschreibung",
+      "Image": "Bild",
+      "ImageUrl": "Bild-URL",
+      "ImageAlt": "Alternativer Bildtext",
+      "ImageAltExplanation": "Ein Text, der angezeigt wird, wenn das Bild nicht gefunden werden kann",
       "Button": {
-        "Add": "Add button",
-        "Title": "Button text",
-        "Url": "Button url",
-        "OpenInNewTab": "Open url in new tab"
+        "Add": "Schaltfläche hinzufügen",
+        "Title": "Schaltflächentext",
+        "Url": "Schaltflächen-URL",
+        "OpenInNewTab": "URL in neuem Tab öffnen"
       }
     }
   },
@@ -61,18 +75,18 @@ interface Resources {
     "ServicePortal": "Service portal"
   },
   "pages": {
-    "Title": "Pages",
-    "Add": "Add page",
-    "Edit": "Edit page"
+    "Title": "Seiten",
+    "Add": "Seite hinzufügen",
+    "Edit": "Seite bearbeiten"
   },
   "projects": {
     "Title": "Projekte",
-    "Add": "Add project",
-    "Edit": "Edit project",
+    "Add": "Projekt hinzufügen",
+    "Edit": "Projekt bearbeiten",
     "MyProjects": "Meine Projekte"
   },
   "users": {
-    "Title": "Users"
+    "Title": "Benutzer"
   }
 }
 
