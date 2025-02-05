@@ -1,5 +1,4 @@
 import * as React from "react"
-import logo from '@/assets/images/pngegg.png';
 
 import { cn } from "@/lib/utils";
 import { BaseImgTag } from "@/components/ui/BaseImgTag";
