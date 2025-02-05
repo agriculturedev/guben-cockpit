@@ -70,6 +70,10 @@ public class Startup(IConfiguration configuration)
 
     RecurringJob.AddOrUpdate<EventImporter>("EventImporter", (importer) => importer.Import(), Cron.Daily);
     RecurringJob.AddOrUpdate<ProjectImporter>("ProjectImporter", (importer) => importer.Import(), Cron.Daily);
+
+    // Run the jobs immediately on startup, TODO@JOREN: add api endpoints to trigger importer from ui
+    BackgroundJob.Enqueue<EventImporter>(importer => importer.Import());
+    BackgroundJob.Enqueue<ProjectImporter>(importer => importer.Import());
   }
 
   /// <summary>
