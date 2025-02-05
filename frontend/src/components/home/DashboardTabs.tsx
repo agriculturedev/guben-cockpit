@@ -5,6 +5,8 @@ import {useState} from "react";
 import { DashboardTabResponse } from "@/endpoints/gubenSchemas";
 import { InfoCard } from "@/components/home/InfoCard/InfoCard";
 import * as React from "react";
+import { z } from "zod";
+
 
 interface DashboardTabsProps {
     tabs: DashboardTabResponse[];

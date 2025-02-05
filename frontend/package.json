@@ -45,6 +45,7 @@
     "@tanstack/react-query-devtools": "^5.59.0",
     "@tanstack/react-router": "^1.58.17",
     "@tanstack/router-devtools": "^1.58.17",
+    "@tanstack/zod-adapter": "^1.99.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",

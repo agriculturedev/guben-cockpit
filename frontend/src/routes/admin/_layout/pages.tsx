@@ -1,12 +1,20 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { Label } from '@/components/ui/label'
 import * as React from 'react'
 import { Combobox } from "@/components/ui/comboBox";
 import { EditPageForm } from "@/components/pages/editPage/editPageForm";
+import { z } from "zod";
+import { zodValidator } from "@tanstack/zod-adapter";
+import { useCallback } from "react";
+
+const SelectedPageSchema = z.object({
+  selectedPageId: z.string().optional(),
+})
 
 export const Route = createFileRoute('/admin/_layout/pages')({
-  component: PagesAdminPanel
+  component: PagesAdminPanel,
+  validateSearch: zodValidator(SelectedPageSchema),
 })
 
 // TODO@JOREN: define from backend, make the GetPage endpoint accept an enum as id and define this enum in the backend with the correct options.
@@ -18,7 +26,12 @@ export enum Pages {
 
 function PagesAdminPanel() {
   const { t } = useTranslation(['pages', 'common'])
-  const [selectedPageId, setSelectedPageId] = React.useState<string | null>(Pages.Home);
+  const {selectedPageId} = Route.useSearch()
+  const navigate = useNavigate({from: Route.fullPath})
+
+  const setSelectedPageId = useCallback(async (selectedPageId?: string | null) => {
+    await navigate({search: (search: {selectedPageId: string | undefined}) => ({...search, selectedPageId: selectedPageId ?? undefined})})
+  }, [navigate]);
 
   const options = Object.values(Pages).map(value => ({
     label: value,
