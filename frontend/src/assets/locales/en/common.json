@@ -35,5 +35,6 @@
   "Title": "Title",
   "Total": "total",
   "Yes": "Ja",
-  "ComingSoon": "Coming soon"
+  "ComingSoon": "Coming soon",
+  "PaginationText": "Page {{page}} of {{pageCount}}, total: {{total}}"
 }

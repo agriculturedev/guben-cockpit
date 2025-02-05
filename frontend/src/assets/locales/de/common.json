@@ -34,5 +34,6 @@
   "Title": "Titel",
   "Total": "total",
   "Yes": "Ja",
-  "ComingSoon": "Demnächst verfügbar"
+  "ComingSoon": "Demnächst verfügbar",
+  "PaginationText": "Zeite {{page}} von {{pageCount}}, total: {{total}}"
 }
