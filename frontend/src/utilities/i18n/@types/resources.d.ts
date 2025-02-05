@@ -13,16 +13,15 @@ interface Resources {
     "ItemsSelected_one": "{{count}} Element ausgewählt",
     "ItemsSelected_other": "{{count}} Elemente ausgewählt",
     "Links": "Links",
-    "Location": "Ort",
+    "Location": "Adresse",
     "Name": "Name",
     "No": "Nein",
     "NoItemsFound": "Keine Ergebnisse",
     "NoResults": "Keine Ergebnisse",
-    "Of": "von",
     "Page": "Seite",
     "PermanentActionConfirmation": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden",
     "Save": "Speichern",
-    "Search": "Suchen",
+    "Search": "Suche",
     "SelectItemToEdit": "Zum Bearbeiten Element auswählen",
     "SelectedItems": "Ausgewählte Elemente",
     "ShowPreview": "Vorschau anzeigen",
@@ -35,7 +34,8 @@ interface Resources {
     "Title": "Titel",
     "Total": "total",
     "Yes": "Ja",
-    "ComingSoon": "Demnächst verfügbar"
+    "ComingSoon": "Demnächst verfügbar",
+    "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}"
   },
   "dashboard": {
     "Title": "Dashboard",
@@ -71,7 +71,8 @@ interface Resources {
     "Map": "Karte",
     "Events": "Veranstaltungen",
     "LogOut": "Abmelden",
-    "Admin": "Admin"
+    "Admin": "Admin",
+    "ServicePortal": "Service portal"
   },
   "pages": {
     "Title": "Seiten",
