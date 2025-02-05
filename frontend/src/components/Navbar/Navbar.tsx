@@ -4,10 +4,13 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from '@tanstack/react-router';
 import { CalendarDaysIcon, ExternalLink, HomeIcon, Icon, LayoutGridIcon, LogOutIcon, MapIcon, ShieldIcon } from "lucide-react";
-import React, { createContext, HtmlHTMLAttributes, useCallback, useContext, useMemo } from 'react';
+import React, { createContext, HtmlHTMLAttributes, PropsWithChildren, useCallback, useContext, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
 import { useAuth } from 'react-oidc-context';
 import { ServicePortalIcon, SmartCityGubenLogoIcon } from "../icons";
+import i18next from "i18next";
+import { Language } from "@/utilities/i18n/Languages";
+import { WithClassName } from "@/types/WithClassName";
 
 type TNavContext = { location: string }
 const NavContext = createContext<TNavContext>({ location: "/" });
@@ -36,8 +39,8 @@ const NavLink = (props: { name: string, to: string, children: React.ReactNode, t
   )
 }
 
-const NavList = ({ children }: { children: React.ReactNode }) => (
-  <ul className='flex-1 flex gap-2 h-full items-center justify-center self-center'>
+const NavList = ({ children, className }: PropsWithChildren & WithClassName) => (
+  <ul className={cn('flex-1 flex gap-2 h-full items-center justify-center self-center', className)}>
     {children}
   </ul>
 );
@@ -94,9 +97,9 @@ export const Navbar = () => {
           </NavLink>
         </NavList>
 
-        <NavList>
+        <NavList className={"justify-end"}>
           {auth.isAuthenticated &&
-            <Label className='text-medium text-md mr-8'>
+            <Label className='text-medium text-md'>
               {auth.user?.profile.name}
             </Label>
           }
@@ -110,8 +113,37 @@ export const Navbar = () => {
               <LogOutIcon className={iconStyle} />
             </NavButton>
           }
+
+          <LanguageSection/>
         </NavList>
+
       </div>
     </NavContext.Provider>
+  )
+}
+
+const LanguageSection = () => {
+  return (
+    <div className="relative flex items-center justify-center">
+      <div className="group">
+        {/* Display current language */}
+        <button className="p-2 rounded-lg text-[#cd1421] group-hover:bg-[#cd1421] group-hover:text-white">
+          {i18next.language === Language.de ? "DE" : "EN"}
+        </button>
+
+        {/* Dropdown Menu */}
+        <div className="absolute right-0 hidden rounded-lg shadow-lg group-hover:block bg-white border ">
+          {Object.values(Language).map((lang) => (
+            <button
+              key={lang}
+              className="w-full text-left px-3 py-2 rounded-lg text-[#cd1421] hover:bg-[#cd1421] hover:text-white"
+              onClick={async () => await i18next.changeLanguage(lang)}
+            >
+              {lang === Language.de ? "DE" : "EN"}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }
