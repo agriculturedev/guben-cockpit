@@ -7,6 +7,8 @@ using Database;
 using Domain.Projects;
 using Domain.Projects.repository;
 using Domain.Users;
+using Jobs.HttpClient;
+using Microsoft.Extensions.Configuration;
 using Shared.Database;
 
 namespace Jobs.ProjectImporter;
@@ -15,17 +17,18 @@ public class ProjectImporter
 {
   private readonly ICustomDbContextFactory<GubenDbContext> _dbContextFactory;
   private readonly IProjectRepository _projectRepository;
-  private readonly HttpClientFactory _httpClientFactory;
+  private readonly IConfiguration _configuration;
+  private readonly System.Net.Http.HttpClient _httpClient;
   private readonly string _url = "https://www.guben.de/index.php?option=com_api&app=guben&resource=articles";
 
   public ProjectImporter(
     ICustomDbContextFactory<GubenDbContext> dbContextFactory,
-    IProjectRepository projectRepository
-  )
+    IProjectRepository projectRepository, IConfiguration configuration)
   {
     _dbContextFactory = dbContextFactory;
     _projectRepository = projectRepository;
-    _httpClientFactory = new HttpClientFactory();
+    _configuration = configuration;
+    _httpClient = new System.Net.Http.HttpClient();
   }
 
   public async Task Import()
@@ -58,12 +61,12 @@ public class ProjectImporter
 
   private async Task<List<RawProject>> FetchProjectsAsync()
   {
-    var httpClient = _httpClientFactory.CreateClient("ProjectImporter");
+    _httpClient.AddBearerToken(_configuration, "ProjectImporter");
 
     var requestMessage = new HttpRequestMessage(HttpMethod.Get, _url);
-    var response1 = await httpClient.SendAsync(requestMessage);
+    var response1 = await _httpClient.SendAsync(requestMessage);
     var request = CopyRequest(response1); // because of redirect
-    var response = await httpClient.SendAsync(request);
+    var response = await _httpClient.SendAsync(request);
 
     response.EnsureSuccessStatusCode();
 
@@ -93,6 +96,8 @@ public class ProjectImporter
         return;
       }
 
+      // newly imported projects should be set to true, but we do not want to overwrite existing project's published state
+      project.SetPublishedState(true);
       await _projectRepository.SaveAsync(project);
       Console.WriteLine("Project saved.");
     }
@@ -154,30 +159,6 @@ public class ProjectImporter
     }
 
     return newRequest!;
-  }
-}
-
-public class HttpClientFactory
-{
-  public HttpClient CreateClient(string name)
-  {
-    var handler = new HttpClientHandler
-    {
-      AutomaticDecompression = DecompressionMethods.All,
-    };
-
-    var client = new HttpClient(handler)
-    {
-      DefaultRequestHeaders =
-      {
-        Accept = { new MediaTypeWithQualityHeaderValue("application/json") },
-        Authorization = new AuthenticationHeaderValue("Bearer", "e4aeacde8b1c4bfc2eb6bc4f81663c4c"),
-        UserAgent = { ProductInfoHeaderValue.Parse("Mozilla") },
-        AcceptEncoding = { new StringWithQualityHeaderValue("br") },
-      }
-    };
-
-    return client;
   }
 }
 
