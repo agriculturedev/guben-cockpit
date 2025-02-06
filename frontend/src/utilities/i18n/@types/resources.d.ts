@@ -64,7 +64,7 @@ interface Resources {
   },
   "events": {
     "Title": "Veranstaltungen",
-    "CitizenInformationText": "CitizenInformationText",
+    "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
     "ClickHere": "Click here"
   },
   "navigation": {
