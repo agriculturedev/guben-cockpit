@@ -38,7 +38,7 @@ const ViewHeader = ({pageKey}: ViewHeaderProps) => {
 
 export const View = ({children, pageKey}: Props) => {
   return (
-    <main className={"w-full h-full flex flex-1 pl-20 pt-5 pr-20 flex-col items-center"}>
+    <main className={"w-full h-full flex flex-1 pl-20 pt-5 pr-20 pb-4 flex-col items-center"}>
       {pageKey &&
         <article className={"max-w-[1600px] pb-5"}>
           <ViewHeader pageKey={pageKey}/>
