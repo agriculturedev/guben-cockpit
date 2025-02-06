@@ -5,7 +5,7 @@ import {
   DotsHorizontalIcon,
 } from "@radix-ui/react-icons"
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "./select"
 
@@ -119,9 +119,10 @@ PageIndicator.displayName = "PageIndicator"
 
 const PageSizePicker = ({
     className,
+    value,
     ...props
-    }: { className?: string, onChange: (value: string) => void}) => (
-      <Select onValueChange={(value: string) => props.onChange(value)}>
+    }: { className?: string, onChange: (value: string) => void, value: string | number}) => (
+      <Select value={`${value}`} onValueChange={(value: string) => props.onChange(value)}>
         <SelectTrigger className="w-[180px] h-full">
           <SelectValue placeholder="Page size" />
         </SelectTrigger>

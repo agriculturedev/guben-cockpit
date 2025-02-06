@@ -1,0 +1,26 @@
+{
+  "Title": "Dashboard",
+  "MapUrl": "Karten-URL",
+  "Add": "Neue Registerkarte hinzufügen",
+  "Delete": "Dashboard-Registerkarte löschen",
+  "TabInformation": "Registerkarten-Informationen",
+  "Cards": {
+    "Cards": "Karten",
+    "Title": "Kartentitel",
+    "Edit": "Karte bearbeiten",
+    "Add": "Karte hinzufügen",
+    "Delete": "Karte löschen",
+    "Description": "Kartenbeschreibung",
+    "Image": "Bild",
+    "ImageUrl": "Bild-URL",
+    "ImageAlt": "Alternativer Bildtext",
+    "ImageAltExplanation": "Ein Text, der angezeigt wird, wenn das Bild nicht gefunden werden kann",
+
+    "Button": {
+      "Add": "Schaltfläche hinzufügen",
+      "Title": "Schaltflächentext",
+      "Url": "Schaltflächen-URL",
+      "OpenInNewTab": "URL in neuem Tab öffnen"
+    }
+  }
+}

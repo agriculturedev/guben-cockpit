@@ -1,6 +1,7 @@
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
+import { BaseImgTag } from "@/components/ui/BaseImgTag";
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -9,7 +10,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow",
+      "rounded-lg border bg-card text-card-foreground shadow-lg",
       className
     )}
     {...props}
@@ -33,7 +34,7 @@ const CardHeaderImage = React.forwardRef<
   HTMLImageElement,
   React.ImgHTMLAttributes<HTMLImageElement>
 >(({ className, alt, src, ...props }, ref) => (
-  <img
+  <BaseImgTag
     ref={ref}
     alt={alt}
     src={src}

@@ -1,0 +1,72 @@
+﻿using Domain.Events;
+using Domain.Events.repository;
+using Domain.Projects;
+using Domain.Projects.repository;
+using Microsoft.EntityFrameworkCore;
+using Shared.Database;
+using Shared.Domain;
+
+namespace Database.Repositories;
+
+public class ProjectRepository
+  : EntityFrameworkRepository<Project, string, GubenDbContext>, IProjectRepository
+{
+  public ProjectRepository(ICustomDbContextFactory<GubenDbContext> dbContextFactory)
+    : base(dbContextFactory)
+  {
+    ModifiedSet = Set.Where(p => p.Published);
+  }
+
+  public Task<Project?> GetIncludingUnpublished(string id)
+  {
+    return Set
+      .TagWith(GetType().Name + '.' + nameof(GetIncludingUnpublished))
+      .IgnoreAutoIncludes()
+      .FirstOrDefaultAsync(a => a.Id.Equals(id));
+  }
+
+  public IEnumerable<Project> GetAllncludingUnpublished()
+  {
+    return Set
+      .AsNoTracking()
+      .AsSplitQuery()
+      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllncludingUnpublished))
+      .AsEnumerable();
+  }
+
+  public IEnumerable<Project> GetAllProjects()
+  {
+    return ModifiedSet
+      .AsNoTracking()
+      .AsSplitQuery()
+      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllProjects))
+      .AsEnumerable();
+  }
+
+  public Task<List<Project>> GetAllByIds(IList<string> ids)
+  {
+    return ModifiedSet
+      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllByIds))
+      .Where(p => ids.Contains(p.Id))
+      .ToListAsync();
+  }
+
+  public IEnumerable<Project> GetAllOwnedBy(Guid userId)
+  {
+    return Set
+      .TagWith(GetType().Name + '.' + nameof(GetAllOwnedBy))
+      .IgnoreAutoIncludes()
+      .Where(a => a.CreatedBy.Equals(userId))
+      .AsEnumerable();
+  }
+
+  public Task<PagedResult<Project>> GetAllOwnedByUserPaged(Guid userId, PagedCriteria pagination)
+  {
+    return Set
+      .AsNoTracking()
+      .AsSplitQuery()
+      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllOwnedByUserPaged))
+      .Where(a => a.CreatedBy.Equals(userId))
+      .ToPagedResult(pagination);
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "MigrationsRunner": {
+      "commandName": "Project",
+      "commandLineArgs": "local",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
