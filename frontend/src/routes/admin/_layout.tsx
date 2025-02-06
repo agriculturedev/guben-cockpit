@@ -16,7 +16,7 @@ function Layout() {
     <AuthGuard>
       <View>
         <div className="grid grid-cols-12 gap-4">
-          <Nav className="col-span-2">
+          <Nav className="col-span-2 h-fit">
             <Nav.Item href={"/admin/dashboard"} label={t("Title", {ns: "dashboard"})} />
             <Nav.Item href={"/admin/users"} label={t("Title", {ns: "users"})} />
             <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})} />
