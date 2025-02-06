@@ -8,7 +8,6 @@ using Domain.Events.repository;
 using Domain.Locations;
 using Domain.Locations.repository;
 using Domain.Urls;
-using Microsoft.EntityFrameworkCore;
 using Shared.Database;
 
 namespace Jobs.EventImporter;
@@ -212,7 +211,6 @@ public class EventImporter
       {
         Console.WriteLine($"Updating existing event: {@event.Id}");
         existingEvent.Update(@event);
-        await _eventRepository.SaveAsync(existingEvent);
         return;
       }
 
