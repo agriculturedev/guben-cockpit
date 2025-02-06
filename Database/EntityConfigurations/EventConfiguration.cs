@@ -1,5 +1,5 @@
 ﻿using Database.Converters;
-using Domain.Coordinates;
+using Domain.Category;
 using Domain.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -42,6 +42,18 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
     builder.HasMany(e => e.Categories)
       .WithMany(c => c.Events)
-      .UsingEntity("EventCategory");
+      .UsingEntity<Dictionary<string, object>>(
+        "EventCategory",
+        j => j.HasOne<Category>().WithMany().HasForeignKey("CategoryId").OnDelete(DeleteBehavior.Cascade),
+        j => j.HasOne<Event>().WithMany().HasForeignKey("EventId").OnDelete(DeleteBehavior.Cascade),
+        ecb =>
+        {
+          ecb.HasKey("CategoryId", "EventId");
+          ecb.HasIndex("EventId");
+          ecb.HasIndex("CategoryId");
+          ecb.ToTable("EventCategory");  // Ensure table name is correct
+        }
+      );
+
   }
 }
