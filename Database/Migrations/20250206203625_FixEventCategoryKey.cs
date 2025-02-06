@@ -10,9 +10,7 @@ namespace Database.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"""
-                DELETE FROM EventCategory
-            """);
+            migrationBuilder.Sql(@"DELETE FROM ""Guben"".""EventCategory""");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_EventCategory_Category_CategoriesId",
