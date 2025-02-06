@@ -40,7 +40,7 @@ export const PaginationContainer = ({
       </section>
 
       <Pagination>
-        <PageIndicator>{`${t("Page")}: ${page} ${t("Of")} ${pageCount}, ${t("Total")}: ${total}`}</PageIndicator>
+        <PageIndicator>{t("PaginationText", {page: page, pageCount: pageCount, total: total})}</PageIndicator>
         <PageSizePicker value={pageSize} onChange={(value: string) => setPageSize(parseInt(value))}/>
         <PaginationContent>
           <PaginationItem>

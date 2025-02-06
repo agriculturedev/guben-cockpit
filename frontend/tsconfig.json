@@ -9,6 +9,7 @@
     "jsx": "react-jsx",
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Bundler"
+    "moduleResolution": "Bundler",
+    "types": ["vite-plugin-svgr/client"]
   },
 }

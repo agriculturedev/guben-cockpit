@@ -40,8 +40,8 @@ function HomeComponent() {
 
   return (
     <View pageKey={Pages.Home}>
-      {orderedTabs != null &&
-        <Tabs defaultValue="account" className="w-full flex flex-col h-full" value={selectedTabId} onValueChange={setSelectedTabId}>
+      {orderedTabs != null &&orderedTabs.length >= 1 &&
+        <Tabs defaultValue={orderedTabs[0].id} className="w-full flex flex-col h-full" value={selectedTabId} onValueChange={setSelectedTabId}>
           <TabsList className={"flex flex-row font-bold pl-2"}>
             {orderedTabs.map((tab, index) => <TabsTrigger key={index} value={tab.id}>{tab.title}</TabsTrigger>)}
           </TabsList>
