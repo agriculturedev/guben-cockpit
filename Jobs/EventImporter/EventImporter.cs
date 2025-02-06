@@ -20,7 +20,7 @@ public class EventImporter
   private readonly ICategoryRepository _categoryRepository;
   private readonly ICustomDbContextFactory<GubenDbContext> _dbContextFactory;
 
-  private readonly HttpClient _httpClient;
+  private readonly System.Net.Http.HttpClient _httpClient;
 
   private readonly string _xmlUrl =
     "https://eingabe.events-in-brandenburg.de/exportdata/tmbevents_custom_stadtguben.xml";
@@ -32,7 +32,7 @@ public class EventImporter
     _locationRepository = locationRepository;
     _dbContextFactory = dbContextFactory;
     _categoryRepository = categoryRepository;
-    _httpClient = new HttpClient();
+    _httpClient = new System.Net.Http.HttpClient();
   }
 
   // TODO: batching, see csv importer zorgi

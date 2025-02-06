@@ -1,9 +1,8 @@
-import * as React from 'react'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
-import { Navigation } from "@/components/layout/Navigation";
 import "./index.css";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { Navbar } from '@/components/Navbar';
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -12,7 +11,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <div className={"min-h-screen flex flex-col bg-background"}>
-      <Navigation/>
+      <Navbar />
       <div className={"w-full flex-grow overflow-hidden"}>
         <Outlet/>
       </div>

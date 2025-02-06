@@ -1,5 +1,7 @@
 using Hangfire;
 using Hangfire.MemoryStorage;
+using Jobs.HttpClient;
+using IHttpClientFactory = System.Net.Http.IHttpClientFactory;
 
 namespace Api.Infrastructure.HangFire;
 

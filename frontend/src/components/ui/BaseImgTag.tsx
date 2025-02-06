@@ -1,5 +1,4 @@
 import * as React from "react";
-import fallbackImage from "@/assets/images/pngegg.png";
 import { cn } from "@/lib/utils";
 
 export const BaseImgTag = React.forwardRef<
@@ -11,7 +10,7 @@ export const BaseImgTag = React.forwardRef<
     alt={alt}
     onError={({ currentTarget }) => {
       currentTarget.onerror = null; // prevents looping
-      currentTarget.src=fallbackImage;
+      currentTarget.src="/public/images/image-not-found.png";
     }}
     className={cn(className)}
     {...props}
