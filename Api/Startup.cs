@@ -94,8 +94,6 @@ public class Startup(IConfiguration configuration)
     app.MapControllers();
     app.UseHangfireDashboard();
 
-    AddJobs();
-
     app.MapOpenApi()
       .CacheOutput();
 
@@ -105,6 +103,8 @@ public class Startup(IConfiguration configuration)
       var dbContext = dbContextFactory.CreateDbContext();
       dbContext.Database.Migrate();
     }
+
+    AddJobs();
 
     app.Run();
   }
