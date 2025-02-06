@@ -52,7 +52,7 @@ export const EditDashboardCardButton = ({dashboardTabId, card, refetch}: EditDas
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
       <EditIconButton tooltip={t("Cards.Edit")} dialogTrigger={true} />
-      <DialogContent>
+      <DialogContent className={"max-h-screen overflow-auto"}>
         <DialogHeader>
           <DialogTitle>{t("Cards.Edit")}</DialogTitle>
         </DialogHeader>
