@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Migrations.Migrations
+namespace Database.Migrations
 {
     [DbContext(typeof(GubenDbContext))]
     partial class GubenDbContextModelSnapshot : ModelSnapshot
@@ -235,17 +235,17 @@ namespace Migrations.Migrations
 
             modelBuilder.Entity("EventCategory", b =>
                 {
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid>("CategoriesId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("EventId")
+                    b.Property<Guid>("EventsId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("CategoryId", "EventId");
+                    b.HasKey("CategoriesId", "EventsId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoriesId");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("EventsId");
 
                     b.ToTable("EventCategory", "Guben");
                 });
@@ -364,13 +364,13 @@ namespace Migrations.Migrations
                 {
                     b.HasOne("Domain.Category.Category", null)
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Events.Event", null)
                         .WithMany()
-                        .HasForeignKey("EventId")
+                        .HasForeignKey("EventsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

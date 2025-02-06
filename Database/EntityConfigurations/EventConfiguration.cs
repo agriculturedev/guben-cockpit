@@ -44,16 +44,25 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
       .WithMany(c => c.Events)
       .UsingEntity<Dictionary<string, object>>(
         "EventCategory",
-        j => j.HasOne<Category>().WithMany().HasForeignKey("CategoryId").OnDelete(DeleteBehavior.Cascade),
-        j => j.HasOne<Event>().WithMany().HasForeignKey("EventId").OnDelete(DeleteBehavior.Cascade),
+        j => j.HasOne<Category>()
+          .WithMany()
+          .HasForeignKey("CategoriesId")
+          .HasPrincipalKey(c => c.Id)  // Explicitly reference Category.Id
+          .OnDelete(DeleteBehavior.Cascade),
+
+        j => j.HasOne<Event>()
+          .WithMany()
+          .HasForeignKey("EventsId")
+          .HasPrincipalKey(e => e.Id)  // Explicitly reference Event.Id
+          .OnDelete(DeleteBehavior.Cascade),
+
         ecb =>
         {
-          ecb.HasKey("CategoryId", "EventId");
-          ecb.HasIndex("EventId");
-          ecb.HasIndex("CategoryId");
+          ecb.HasKey("CategoriesId", "EventsId");
+          ecb.HasIndex("EventsId");
+          ecb.HasIndex("CategoriesId");
           ecb.ToTable("EventCategory");  // Ensure table name is correct
         }
       );
-
   }
 }

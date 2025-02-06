@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Database.Migrations
 {
     [DbContext(typeof(GubenDbContext))]
-    [Migration("20250206203625_FixEventCategoryKey")]
-    partial class FixEventCategoryKey
+    [Migration("20250206210822_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,17 +238,17 @@ namespace Database.Migrations
 
             modelBuilder.Entity("EventCategory", b =>
                 {
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid>("CategoriesId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("EventId")
+                    b.Property<Guid>("EventsId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("CategoryId", "EventId");
+                    b.HasKey("CategoriesId", "EventsId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoriesId");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("EventsId");
 
                     b.ToTable("EventCategory", "Guben");
                 });
@@ -367,13 +367,13 @@ namespace Database.Migrations
                 {
                     b.HasOne("Domain.Category.Category", null)
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Events.Event", null)
                         .WithMany()
-                        .HasForeignKey("EventId")
+                        .HasForeignKey("EventsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
