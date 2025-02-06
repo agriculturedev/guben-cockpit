@@ -1,6 +1,4 @@
-﻿using Domain.Events;
-using Domain.Events.repository;
-using Domain.Locations;
+﻿using Domain.Locations;
 using Domain.Locations.repository;
 using Microsoft.EntityFrameworkCore;
 using Shared.Database;
@@ -18,7 +16,6 @@ public class LocationRepository
   public Location? Find(Location location)
   {
     return Set
-      .AsNoTracking()
       .FirstOrDefault(l =>
         l.Name == location.Name &&
         l.City == location.City &&

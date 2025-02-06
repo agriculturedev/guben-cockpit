@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Migrations.Migrations
+namespace Database.Migrations
 {
     [DbContext(typeof(GubenDbContext))]
     partial class GubenDbContextModelSnapshot : ModelSnapshot
@@ -242,6 +242,8 @@ namespace Migrations.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("CategoriesId", "EventsId");
+
+                    b.HasIndex("CategoriesId");
 
                     b.HasIndex("EventsId");
 

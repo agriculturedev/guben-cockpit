@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Database.Migrations
 {
     [DbContext(typeof(GubenDbContext))]
-    [Migration("20250128195730_AddDashboardTabs")]
-    partial class AddDashboardTabs
+    [Migration("20250206210822_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -168,23 +168,18 @@ namespace Database.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FullText")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ImageCaption")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ImageCredits")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("Published")
@@ -250,6 +245,8 @@ namespace Database.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("CategoriesId", "EventsId");
+
+                    b.HasIndex("CategoriesId");
 
                     b.HasIndex("EventsId");
 
