@@ -65,8 +65,8 @@ function AdminDashboard() {
 
       {selectedTab &&
         <div key={selectedTab.id}>
-          <EditDashboardTab tab={selectedTab} onSuccess={onSave}/>
-          <EditDashboardCards tab={selectedTab} refetch={onSave}/>
+          <EditDashboardTab tab={selectedTab} onSuccess={refetch}/>
+          <EditDashboardCards tab={selectedTab} refetch={refetch}/>
         </div>
       }
     </div>
