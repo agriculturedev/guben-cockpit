@@ -11,6 +11,7 @@ import { ServicePortalIcon, SmartCityGubenLogoIcon } from "../icons";
 import i18next from "i18next";
 import { Language } from "@/utilities/i18n/Languages";
 import { WithClassName } from "@/types/WithClassName";
+import { FetchInterceptor } from "@/utilities/fetchApiExtensions";
 
 type TNavContext = { location: string }
 const NavContext = createContext<TNavContext>({ location: "/" });
@@ -123,12 +124,18 @@ export const Navbar = () => {
 }
 
 const LanguageSection = () => {
+  const updateLanguage = async (language: string) => {
+    console.log(language);
+    FetchInterceptor.setHeader("Accept-Language", language);
+    await i18next.changeLanguage(language)
+  }
+
   return (
     <div className="relative flex items-center justify-center">
       <div className="group">
         {/* Display current language */}
         <button className="p-2 rounded-lg text-[#cd1421] group-hover:bg-[#cd1421] group-hover:text-white">
-          {i18next.language === Language.de ? "DE" : "EN"}
+          {i18next.language.toUpperCase()}
         </button>
 
         {/* Dropdown Menu */}
@@ -137,7 +144,7 @@ const LanguageSection = () => {
             <button
               key={lang}
               className="w-full text-left px-3 py-2 rounded-lg text-[#cd1421] hover:bg-[#cd1421] hover:text-white"
-              onClick={async () => await i18next.changeLanguage(lang)}
+              onClick={async () => await updateLanguage(lang)}
             >
               {lang === Language.de ? "DE" : "EN"}
             </button>

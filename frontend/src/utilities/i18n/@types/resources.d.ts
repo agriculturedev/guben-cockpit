@@ -27,6 +27,7 @@ interface Resources {
     "ShowPreview": "Vorschau anzeigen",
     "Sorting": {
       "Title": "Sortierung",
+      "None": "Keine Auswahl",
       "Ascending": "Aufsteigend",
       "Descending": "Absteigend"
     },
@@ -35,7 +36,20 @@ interface Resources {
     "Total": "total",
     "Yes": "Ja",
     "ComingSoon": "Demnächst verfügbar",
-    "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}"
+    "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}",
+    "ClickHere": "Klicken Sie hier",
+    "All": "Alle",
+    "Dates": {
+      "Always": "Immer",
+      "Today": "Heute",
+      "Tomorrow": "Morgen",
+      "ThisWeek": "Diese Woche",
+      "NextWeek": "Nächste Woche",
+      "ThisMonth": "Diesen Monat",
+      "NextMonth": "Nächsten Monat",
+      "ThisYear": "Dieses Jahr",
+      "DateInput": "Datumseingabe"
+    }
   },
   "dashboard": {
     "Title": "Dashboard",

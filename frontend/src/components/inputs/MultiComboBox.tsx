@@ -87,14 +87,14 @@ export const MultiComboBox = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[20em] justify-between overflow-hidden bg-white"
+          className="min-w-[12rem] justify-between overflow-hidden bg-white"
         >
           {t("ItemsSelected", {count: selectedValues.length})}
           <ChevronsUpDown className="opacity-50"/>
         </Button>
       </PopoverTrigger>
       {!disabled &&
-        <PopoverContent className="w-[50em] p-0">
+        <PopoverContent className="w-fit p-0">
           <Command filter={filter}>
             <CommandInput placeholder={placeholder}/>
             <CommandList>

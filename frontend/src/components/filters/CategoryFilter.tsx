@@ -4,7 +4,7 @@ import {UseTextFilterHook} from "@/hooks/filters/useTextFilter";
 import { useCallback } from "react";
 import {Label} from "@/components/ui/label";
 import {cn} from "@/lib/utils";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   controller: UseTextFilterHook;
@@ -13,7 +13,7 @@ interface Props {
 
 export const CategoryFilter = ({controller, className}: Props) => {
   const {data: categoriesData} = useCategoriesGetAll({});
-
+  const {t} = useTranslation();
   const onChange = useCallback((value: string) => {
     if(value == "none") return controller.clearFilter();
     const cat = categoriesData?.categories.find(c => c.id === value)?.id;
@@ -27,11 +27,11 @@ export const CategoryFilter = ({controller, className}: Props) => {
         value={controller.filter ?? "none"}
         onValueChange={onChange}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="min-w-[10rem]">
           <SelectValue placeholder="Kategorie"/>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={"none"}>{t("Category")}</SelectItem>
+          <SelectItem value={"none"}>{t("All")}</SelectItem>
           {categoriesData?.categories?.map(category => (category.name &&
             <SelectItem key={category.id} value={category.id}>
               {category.name}
