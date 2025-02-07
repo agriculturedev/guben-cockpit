@@ -1,3 +1,0 @@
-[submodule "src/guben-cockpit-plugins"]
-	path = src/guben-cockpit-plugins
-	url = ../guben-cockpit-strapi-plugins
