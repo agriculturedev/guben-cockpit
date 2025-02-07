@@ -2,7 +2,7 @@ import { ProjectResponse } from "@/endpoints/gubenSchemas";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import ProjectCard from "./projectCard";
+import ProjectCard from "./projectCard-rename";
 import ProjectCardPlaceholder from "./projectCard.placeholder";
 
 interface IProps {
