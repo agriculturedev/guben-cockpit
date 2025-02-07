@@ -13,8 +13,8 @@ export default function PageIntro(props: IProps) {
         ? <PageIntroSkeleton />
         : (
           <div className="flex flex-col gap-4">
-            <h1 className="text-gubenAccent text-2xl">{props.info?.title}</h1>
-            <p className="text-neutral-900">{props.info?.description}</p>
+            <h1 className="text-gubenAccent text-3xl">{props.info?.title}</h1>
+            <p className="text-lg text-neutral-900">{props.info?.description}</p>
           </div>
         )
       }

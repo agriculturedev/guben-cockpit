@@ -2,8 +2,8 @@ import { ProjectResponse } from "@/endpoints/gubenSchemas";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import ProjectCard from "./projectCard";
 import ProjectCardPlaceholder from "./projectCard.placeholder";
+import ProjectDialog from "./projectDialog";
 
 interface IProps {
   projects: ProjectResponse[];
@@ -19,11 +19,11 @@ export default function HighlightedProjects({ projects }: IProps) {
   return (
     <div className={"flex flex-col items-center w-full h-full gap-4"}>
       <div className="h-[30svh] w-full">
-        <ProjectCard project={projects[selectedIndex]} />
+        <ProjectDialog project={projects[selectedIndex]} />
       </div>
 
       {/* TODO: @Kilian - move this to a Reuuable Carousel component */}
-      <div className="flex justify-between gap-8 w-1/2">
+      <div className="flex w-full xl:w-1/2 justify-between items-center gap-8">
         <button className="group" onClick={onPrevious} disabled={selectedIndex == 0}>
           <ChevronLeft className="size-8 group-hover:text-red-500 group-disabled:text-neutral-500" />
         </button>

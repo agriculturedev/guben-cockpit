@@ -13,7 +13,7 @@ function Component() {
   const { data: projectsResponse } = useProjectsGetAll({});
 
   return (
-    <main className="w-full h-full flex justify-center items-center p-8">
+    <main className="w-full h-full flex justify-center items-center p-8 bg-white">
       <div className="max-w-screen-2xl flex gap-10 items-center">
         <div className='flex-1'>
           <PageIntro info={pageInfo} />
