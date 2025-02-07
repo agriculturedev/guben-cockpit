@@ -5,6 +5,10 @@ import {DateFilterPreset, UseDateRangeFilterHook} from "@/hooks/filters/useDateR
 import DateRangePicker from "../inputs/DateRangePicker";
 import {Label} from "@/components/ui/label";
 import {cn} from "@/lib/utils";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+import { Calendar as CalendarIcon } from "lucide-react";
+import * as React from "react";
 
 interface Props {
   controller: UseDateRangeFilterHook;
@@ -12,6 +16,8 @@ interface Props {
 }
 
 export const DateRangeFilter = ({controller, className}: Props) => {
+  const {t} = useTranslation();
+
   const onChange = useCallback((newRange?: DateRange ) => {
     controller.setFilter({
       startDate: newRange?.from ?? null,
@@ -26,19 +32,24 @@ export const DateRangeFilter = ({controller, className}: Props) => {
         value={controller.preset ?? "none"}
         onValueChange={preset => controller.setFilter(preset as DateFilterPreset)}
       >
-        <SelectTrigger className={"w-[180px]"}>
+        <SelectTrigger className={"min-w-[10rem]"}>
           <SelectValue placeholder="Datum"/>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={"none"}>(Datum)</SelectItem>
-          <SelectItem value={DateFilterPreset.TODAY}>{"heute"}</SelectItem>
-          <SelectItem value={DateFilterPreset.TOMORROW}>{"morgen"}</SelectItem>
-          <SelectItem value={DateFilterPreset.THIS_WEEK}>{"diese woche"}</SelectItem>
-          <SelectItem value={DateFilterPreset.NEXT_WEEK}>{"nächste woche"}</SelectItem>
-          <SelectItem value={DateFilterPreset.THIS_MONTH}>{"diesen monat"}</SelectItem>
-          <SelectItem value={DateFilterPreset.NEXT_MONTH}>{"nächsten monat"}</SelectItem>
-          <SelectItem value={DateFilterPreset.THIS_YEAR}>{"dieses jahr"}</SelectItem>
-          <SelectItem value={DateFilterPreset.CUSTOM}>{"Datumseingabe"}</SelectItem>
+          <SelectItem value={"none"}>{t("Dates.Always")}</SelectItem>
+          <SelectItem value={DateFilterPreset.TODAY}>{t("Dates.Today")}</SelectItem>
+          <SelectItem value={DateFilterPreset.TOMORROW}>{t("Dates.Tomorrow")}</SelectItem>
+          <SelectItem value={DateFilterPreset.THIS_WEEK}>{t("Dates.ThisWeek")}</SelectItem>
+          <SelectItem value={DateFilterPreset.NEXT_WEEK}>{t("Dates.NextWeek")}</SelectItem>
+          <SelectItem value={DateFilterPreset.THIS_MONTH}>{t("Dates.ThisMonth")}</SelectItem>
+          <SelectItem value={DateFilterPreset.NEXT_MONTH}>{t("Dates.NextMonth")}</SelectItem>
+          <SelectItem value={DateFilterPreset.THIS_YEAR}>{t("Dates.ThisYear")}</SelectItem>
+          <SelectItem value={DateFilterPreset.CUSTOM}>
+            <div className={"flex gap-2 items-center"} >
+              <p>{t("Dates.DateInput")}</p>
+              <CalendarIcon />
+            </div>
+          </SelectItem>
         </SelectContent>
       </Select>
 

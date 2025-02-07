@@ -1,5 +1,3 @@
-import i18next from "i18next"
-
 export class FetchInterceptor {
   private static headers: Record<string, string> = {};
 
@@ -13,13 +11,11 @@ export class FetchInterceptor {
         ...options,
         headers: {
           ...options?.headers,
-          "Accept-Language": i18next.language,
           ...FetchInterceptor.headers
         }
       };
 
-      const response = await originalFetch(resource, newOptions);
-      return response;
+      return await originalFetch(resource, newOptions);
     }
   }
 

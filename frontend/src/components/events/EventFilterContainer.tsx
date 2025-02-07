@@ -54,7 +54,7 @@ export const EventFilterContainer = () => {
 
   return (
     <div className={"flex gap-2 flex-col mb-2"}>
-      <div className={"flex p-0 gap-2 w-full"}>
+      <div className={"flex flex-wrap p-0 gap-2 w-full"}>
         <TextFilter className="flex-1" controller={controllers.title}/>
         <LocationFilter controller={controllers.location} />
         <DateRangeFilter controller={controllers.dateRange}/>

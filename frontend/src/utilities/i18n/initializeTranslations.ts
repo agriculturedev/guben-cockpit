@@ -3,6 +3,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { Language } from './Languages';
 import i18next from 'i18next';
+import { FetchInterceptor } from "@/utilities/fetchApiExtensions";
 
 i18next
   .use(initReactI18next)
@@ -22,3 +23,9 @@ i18next
     missingKeyHandler: (lngs, ns, key) =>
       console.error(`Translation for key '${ns}/${key}' in languages: ${lngs} is missing`)
   });
+
+// Correct way to handle language changes
+i18next.on("languageChanged", (lng) => {
+  console.log("langauge changed", lng)
+  FetchInterceptor.setHeader("Accept-Language", lng);
+});

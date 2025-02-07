@@ -13,7 +13,7 @@ export function TextFilter({controller, className}: Props) {
   const {t} = useTranslation(["common"]);
 
   return (
-    <div className={cn("flex flex-col gap-2", className ?? "")}>
+    <div className={cn("flex flex-col gap-2 min-w-[10rem]", className ?? "")}>
       <Label>{t("Search")}</Label>
       <Input
         type="text"
