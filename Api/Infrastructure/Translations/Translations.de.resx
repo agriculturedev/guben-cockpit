@@ -197,5 +197,4 @@ value   : The object must be serialized into a byte array
   <data name="UserNotLoggedIn" xml:space="preserve">
     <value>Der Benutzer ist nicht eingeloggt</value>
 </data>
-
 </root>
