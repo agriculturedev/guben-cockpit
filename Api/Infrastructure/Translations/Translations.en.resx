@@ -140,17 +140,8 @@ value   : The object must be serialized into a byte array
   <data name="AnErrorOccured" xml:space="preserve">
     <value>An error has occurred</value>
 </data>
-  <data name="EmployeeNotFound" xml:space="preserve">
-    <value>Employee not found</value>
-</data>
   <data name="ProjectNotFound" xml:space="preserve">
     <value>Project not found</value>
-</data>
-  <data name="ConfigNotFound" xml:space="preserve">
-    <value>Configuration not found</value>
-</data>
-  <data name="ContactDeveloper" xml:space="preserve">
-    <value>Contact the developer for assistance</value>
 </data>
   <data name="NameCannotBeEmpty" xml:space="preserve">
     <value>Name cannot be empty</value>
@@ -164,7 +155,47 @@ value   : The object must be serialized into a byte array
   <data name="LocationNotFound" xml:space="preserve">
     <value>Location not found</value>
 </data>
-  <data name="GetOrCreateLocationFailed" xml:space="preserve">
-    <value>Retrieving or creating the location failed</value>
+  <data name="DashboardTabNotFound" xml:space="preserve">
+    <value>Dashboard tab not found</value>
 </data>
+  <data name="DescriptionCannotBeEmpty" xml:space="preserve">
+    <value>Description cannot be empty</value>
+</data>
+  <data name="FromCannotBeGreaterThanUntilDateTime" xml:space="preserve">
+    <value>End date and time cannot be greater than the start date and time</value>
+</data>
+  <data name="InformationCardNotFound" xml:space="preserve">
+    <value>Information card not found</value>
+</data>
+  <data name="LatitudeOutOfBounds" xml:space="preserve">
+    <value>Latitude is out of bounds</value>
+</data>
+  <data name="LinkCannotBeEmpty" xml:space="preserve">
+    <value>Link cannot be empty</value>
+</data>
+  <data name="LongitudeOutOfBounds" xml:space="preserve">
+    <value>Longitude is out of bounds</value>
+</data>
+  <data name="NoDashboardTabsFound" xml:space="preserve">
+    <value>No dashboard tabs found</value>
+</data>
+  <data name="PageNotFound" xml:space="preserve">
+    <value>Page not found</value>
+</data>
+  <data name="ProjectNotOwnedByUser" xml:space="preserve">
+    <value>The project is not owned by the user</value>
+</data>
+  <data name="SequenceInterrupted" xml:space="preserve">
+    <value>Sequence was interrupted</value>
+</data>
+  <data name="SequenceNotFoundForTab" xml:space="preserve">
+    <value>No sequence found for the specified tab</value>
+</data>
+  <data name="TitleCannotBeEmpty" xml:space="preserve">
+    <value>Title cannot be empty</value>
+</data>
+  <data name="UserNotLoggedIn" xml:space="preserve">
+    <value>User is not logged in</value>
+</data>
+
 </root>

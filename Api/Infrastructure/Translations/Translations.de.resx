@@ -140,17 +140,8 @@ value   : The object must be serialized into a byte array
   <data name="AnErrorOccured" xml:space="preserve">
     <value>Ein Fehler ist aufgetreten</value>
   </data>
-  <data name="EmployeeNotFound" xml:space="preserve">
-    <value>Mitarbeiter nicht gefunden</value>
-  </data>
   <data name="ProjectNotFound" xml:space="preserve">
     <value>Projekt nicht gefunden</value>
-  </data>
-  <data name="ConfigNotFound" xml:space="preserve">
-    <value>Konfiguration nicht gefunden</value>
-  </data>
-  <data name="ContactDeveloper" xml:space="preserve">
-    <value>Wenden Sie sich an den Entwickler, um Hilfe zu erhalten</value>
   </data>
   <data name="NameCannotBeEmpty" xml:space="preserve">
     <value>Name darf nicht leer sein</value>
@@ -164,7 +155,46 @@ value   : The object must be serialized into a byte array
   <data name="LocationNotFound" xml:space="preserve">
     <value>Standort nicht gefunden</value>
   </data>
-  <data name="GetOrCreateLocationFailed" xml:space="preserve">
-    <value>Das Abrufen oder Erstellen des Standorts ist fehlgeschlagen</value>
-  </data>
+  <data name="DashboardTabNotFound" xml:space="preserve">
+    <value>Dashboard-Tab nicht gefunden</value>
+</data>
+  <data name="DescriptionCannotBeEmpty" xml:space="preserve">
+    <value>Die Beschreibung darf nicht leer sein</value>
+</data>
+  <data name="FromCannotBeGreaterThanUntilDateTime" xml:space="preserve">
+    <value>Enddatum und -zeit dürfen nicht größer sein als das Startdatum und die Startzeit</value>
+</data>
+  <data name="InformationCardNotFound" xml:space="preserve">
+    <value>Informationskarte nicht gefunden</value>
+</data>
+  <data name="LatitudeOutOfBounds" xml:space="preserve">
+    <value>Breitengrad liegt außerhalb des gültigen Bereichs</value>
+</data>
+  <data name="LinkCannotBeEmpty" xml:space="preserve">
+    <value>Der Link darf nicht leer sein</value>
+</data>
+  <data name="LongitudeOutOfBounds" xml:space="preserve">
+    <value>Längengrad liegt außerhalb des gültigen Bereichs</value>
+</data>
+  <data name="NoDashboardTabsFound" xml:space="preserve">
+    <value>Keine Dashboard-Tabs gefunden</value>
+</data>
+  <data name="PageNotFound" xml:space="preserve">
+    <value>Seite nicht gefunden</value>
+</data>
+  <data name="ProjectNotOwnedByUser" xml:space="preserve">
+    <value>Das Projekt gehört nicht dem Benutzer</value>
+</data>
+  <data name="SequenceInterrupted" xml:space="preserve">
+    <value>Die Sequenz wurde unterbrochen</value>
+</data>
+  <data name="SequenceNotFoundForTab" xml:space="preserve">
+    <value>Keine Sequenz für den angegebenen Tab gefunden</value>
+</data>
+  <data name="TitleCannotBeEmpty" xml:space="preserve">
+    <value>Der Titel darf nicht leer sein</value>
+</data>
+  <data name="UserNotLoggedIn" xml:space="preserve">
+    <value>Der Benutzer ist nicht eingeloggt</value>
+</data>
 </root>

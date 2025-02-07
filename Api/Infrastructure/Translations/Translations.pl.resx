@@ -140,17 +140,8 @@ value   : The object must be serialized into a byte array
   <data name="AnErrorOccured" xml:space="preserve">
     <value>Wystąpił błąd</value>
 </data>
-  <data name="EmployeeNotFound" xml:space="preserve">
-    <value>Pracownik nie znaleziony</value>
-</data>
   <data name="ProjectNotFound" xml:space="preserve">
     <value>Projekt nie znaleziony</value>
-</data>
-  <data name="ConfigNotFound" xml:space="preserve">
-    <value>Konfiguracja nie znaleziona</value>
-</data>
-  <data name="ContactDeveloper" xml:space="preserve">
-    <value>Skontaktuj się z programistą w celu uzyskania pomocy</value>
 </data>
   <data name="NameCannotBeEmpty" xml:space="preserve">
     <value>Nazwa nie może być pusta</value>
@@ -164,8 +155,46 @@ value   : The object must be serialized into a byte array
   <data name="LocationNotFound" xml:space="preserve">
     <value>Lokalizacja nie znaleziona</value>
 </data>
-  <data name="GetOrCreateLocationFailed" xml:space="preserve">
-    <value>Nie udało się pobrać lub utworzyć lokalizacji</value>
+  <data name="DashboardTabNotFound" xml:space="preserve">
+    <value>Karta pulpitu nie została znaleziona</value>
 </data>
-
+  <data name="DescriptionCannotBeEmpty" xml:space="preserve">
+    <value>Opis nie może być pusty</value>
+</data>
+  <data name="FromCannotBeGreaterThanUntilDateTime" xml:space="preserve">
+    <value>Data i godzina zakończenia nie mogą być większe niż data i godzina rozpoczęcia</value>
+</data>
+  <data name="InformationCardNotFound" xml:space="preserve">
+    <value>Karta informacyjna nie została znaleziona</value>
+</data>
+  <data name="LatitudeOutOfBounds" xml:space="preserve">
+    <value>Szerokość geograficzna jest poza dozwolonym zakresem</value>
+</data>
+  <data name="LinkCannotBeEmpty" xml:space="preserve">
+    <value>Link nie może być pusty</value>
+</data>
+  <data name="LongitudeOutOfBounds" xml:space="preserve">
+    <value>Długość geograficzna jest poza dozwolonym zakresem</value>
+</data>
+  <data name="NoDashboardTabsFound" xml:space="preserve">
+    <value>Nie znaleziono żadnych kart pulpitu</value>
+</data>
+  <data name="PageNotFound" xml:space="preserve">
+    <value>Strona nie została znaleziona</value>
+</data>
+  <data name="ProjectNotOwnedByUser" xml:space="preserve">
+    <value>Projekt nie należy do użytkownika</value>
+</data>
+  <data name="SequenceInterrupted" xml:space="preserve">
+    <value>Sekwencja została przerwana</value>
+</data>
+  <data name="SequenceNotFoundForTab" xml:space="preserve">
+    <value>Nie znaleziono sekwencji dla podanej karty</value>
+</data>
+  <data name="TitleCannotBeEmpty" xml:space="preserve">
+    <value>Tytuł nie może być pusty</value>
+</data>
+  <data name="UserNotLoggedIn" xml:space="preserve">
+    <value>Użytkownik nie jest zalogowany</value>
+</data>
 </root>
