@@ -1,12 +1,9 @@
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {ReactNode} from "@tanstack/react-router";
 import {MapComponent} from "@/components/home/MapComponent";
 import {useState} from "react";
 import { DashboardTabResponse } from "@/endpoints/gubenSchemas";
 import { InfoCard } from "@/components/home/InfoCard/InfoCard";
 import * as React from "react";
-import { z } from "zod";
-
 
 interface DashboardTabsProps {
     tabs: DashboardTabResponse[];

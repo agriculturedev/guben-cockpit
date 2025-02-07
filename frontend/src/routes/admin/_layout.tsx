@@ -24,7 +24,7 @@ function Layout() {
             <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})} />
           </Nav>
 
-          <div className='col-span-10 p-6 bg-white rounded-lg max-h-[1000px]'>
+          <div className='col-span-10 p-6 bg-white rounded-lg'>
             <Outlet />
           </div>
         </div>

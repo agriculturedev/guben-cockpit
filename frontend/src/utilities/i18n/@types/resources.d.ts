@@ -37,7 +37,6 @@ interface Resources {
     "Yes": "Ja",
     "ComingSoon": "Demnächst verfügbar",
     "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}",
-    "ClickHere": "Klicken Sie hier",
     "All": "Alle",
     "Dates": {
       "Always": "Immer",
@@ -79,7 +78,7 @@ interface Resources {
   "events": {
     "Title": "Veranstaltungen",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
-    "ClickHere": "Click here"
+    "ClickHere": "Klicken Sie hier"
   },
   "navigation": {
     "Dashboard": "Dashboard",
