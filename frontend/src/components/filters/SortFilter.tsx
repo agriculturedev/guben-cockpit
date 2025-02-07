@@ -35,11 +35,11 @@ export const SortFilter = ({controller, className}: Props) => {
           || "none"}
         onValueChange={handleChange}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="min-w-[10rem]">
           <SelectValue placeholder={t("Sorting.Title")}/>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={SortingOptions.NONE}>{t("Sorting.Title")}</SelectItem>
+          <SelectItem value={SortingOptions.NONE}>{t("Sorting.None")}</SelectItem>
           <SelectItem value={SortingOptions.TITLE_ASC}>{`${t("Title")} ${t("Sorting.Ascending")}`}</SelectItem>
           <SelectItem value={SortingOptions.TITLE_DESC}>{`${t("Title")} ${t("Sorting.Descending")}`}</SelectItem>
           <SelectItem value={SortingOptions.DATE_ASC}>{`${t("Date")} ${t("Sorting.Ascending")}`}</SelectItem>

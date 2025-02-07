@@ -4,8 +4,9 @@ namespace Api.Infrastructure.Translations;
 
 public static class Culture
 {
-  public static CultureInfo Dutch => new CultureInfo("nl");
   public static CultureInfo German => new CultureInfo("de");
+  public static CultureInfo English => new CultureInfo("en");
+  public static CultureInfo Polish => new CultureInfo("pl");
 
   /// <summary>
   /// The default culture
@@ -17,7 +18,8 @@ public static class Culture
   /// </summary>
   public static IList<CultureInfo> SupportedCultures => new List<CultureInfo>
   {
-    Dutch,
-    German
+    German,
+    English,
+    Polish,
   };
 }

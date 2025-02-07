@@ -25,15 +25,27 @@
   "SelectedItems": "Selected items",
   "ShowPreview": "Show preview",
   "Sorting": {
+    "Title": "Sorting",
+    "None": "No selection",
     "Ascending": "Ascending",
-    "Descending": "Descending",
-    "Title": "Title"
+    "Descending": "Descending"
   },
   "StartDate": "Startdate",
-  "Test": "test but in german",
   "Title": "Title",
   "Total": "total",
   "Yes": "Ja",
   "ComingSoon": "Coming soon",
-  "PaginationText": "Page {{page}} of {{pageCount}}, total: {{total}}"
+  "PaginationText": "Page {{page}} of {{pageCount}}, total: {{total}}",
+  "All": "All",
+  "Dates": {
+    "Always": "Always",
+    "Today": "Today",
+    "Tomorrow": "Tomorrow",
+    "ThisWeek": "This week",
+    "NextWeek": "Next week",
+    "ThisMonth": "This month",
+    "NextMonth": "Next month",
+    "ThisYear": "This year",
+    "DateInput": "Date input"
+  }
 }

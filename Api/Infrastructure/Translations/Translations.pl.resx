@@ -123,78 +123,78 @@ value   : The object must be serialized into a byte array
     </value>
   </resheader>
   <data name="FromCannotBeGreaterThanUntilHour" xml:space="preserve">
-    <value>Endstunde kann nicht größer sein als die Startstunde</value>
-  </data>
+    <value>Godzina zakończenia nie może być większa niż godzina rozpoczęcia</value>
+</data>
   <data name="FromCannotBeGreaterThanUntilDay" xml:space="preserve">
-    <value>Enddatum kann nicht größer sein als das Startdatum</value>
-  </data>
+    <value>Data zakończenia nie może być późniejsza niż data rozpoczęcia</value>
+</data>
   <data name="LengthCannotBeMoreThan" xml:space="preserve">
-    <value>Länge darf nicht mehr als {0} Zeichen betragen</value>
-  </data>
+    <value>Długość nie może przekraczać {0} znaków</value>
+</data>
   <data name="LengthCannotBeLessThan" xml:space="preserve">
-    <value>Länge darf nicht weniger als {0} Zeichen betragen</value>
-  </data>
+    <value>Długość nie może być mniejsza niż {0} znaków</value>
+</data>
   <data name="NameAlreadyExists" xml:space="preserve">
-    <value>Der Name {0} existiert bereits</value>
-  </data>
+    <value>Nazwa {0} już istnieje</value>
+</data>
   <data name="AnErrorOccured" xml:space="preserve">
-    <value>Ein Fehler ist aufgetreten</value>
-  </data>
+    <value>Wystąpił błąd</value>
+</data>
   <data name="ProjectNotFound" xml:space="preserve">
-    <value>Projekt nicht gefunden</value>
-  </data>
+    <value>Projekt nie znaleziony</value>
+</data>
   <data name="NameCannotBeEmpty" xml:space="preserve">
-    <value>Name darf nicht leer sein</value>
-  </data>
+    <value>Nazwa nie może być pusta</value>
+</data>
   <data name="UserNotFound" xml:space="preserve">
-    <value>Benutzer nicht gefunden</value>
-  </data>
+    <value>Użytkownik nie znaleziony</value>
+</data>
   <data name="CreatingUserFailed" xml:space="preserve">
-    <value>Erstellen des Benutzers fehlgeschlagen</value>
-  </data>
+    <value>Nie udało się utworzyć użytkownika</value>
+</data>
   <data name="LocationNotFound" xml:space="preserve">
-    <value>Standort nicht gefunden</value>
-  </data>
+    <value>Lokalizacja nie znaleziona</value>
+</data>
   <data name="DashboardTabNotFound" xml:space="preserve">
-    <value>Dashboard-Tab nicht gefunden</value>
+    <value>Karta pulpitu nie została znaleziona</value>
 </data>
   <data name="DescriptionCannotBeEmpty" xml:space="preserve">
-    <value>Die Beschreibung darf nicht leer sein</value>
+    <value>Opis nie może być pusty</value>
 </data>
   <data name="FromCannotBeGreaterThanUntilDateTime" xml:space="preserve">
-    <value>Enddatum und -zeit dürfen nicht größer sein als das Startdatum und die Startzeit</value>
+    <value>Data i godzina zakończenia nie mogą być większe niż data i godzina rozpoczęcia</value>
 </data>
   <data name="InformationCardNotFound" xml:space="preserve">
-    <value>Informationskarte nicht gefunden</value>
+    <value>Karta informacyjna nie została znaleziona</value>
 </data>
   <data name="LatitudeOutOfBounds" xml:space="preserve">
-    <value>Breitengrad liegt außerhalb des gültigen Bereichs</value>
+    <value>Szerokość geograficzna jest poza dozwolonym zakresem</value>
 </data>
   <data name="LinkCannotBeEmpty" xml:space="preserve">
-    <value>Der Link darf nicht leer sein</value>
+    <value>Link nie może być pusty</value>
 </data>
   <data name="LongitudeOutOfBounds" xml:space="preserve">
-    <value>Längengrad liegt außerhalb des gültigen Bereichs</value>
+    <value>Długość geograficzna jest poza dozwolonym zakresem</value>
 </data>
   <data name="NoDashboardTabsFound" xml:space="preserve">
-    <value>Keine Dashboard-Tabs gefunden</value>
+    <value>Nie znaleziono żadnych kart pulpitu</value>
 </data>
   <data name="PageNotFound" xml:space="preserve">
-    <value>Seite nicht gefunden</value>
+    <value>Strona nie została znaleziona</value>
 </data>
   <data name="ProjectNotOwnedByUser" xml:space="preserve">
-    <value>Das Projekt gehört nicht dem Benutzer</value>
+    <value>Projekt nie należy do użytkownika</value>
 </data>
   <data name="SequenceInterrupted" xml:space="preserve">
-    <value>Die Sequenz wurde unterbrochen</value>
+    <value>Sekwencja została przerwana</value>
 </data>
   <data name="SequenceNotFoundForTab" xml:space="preserve">
-    <value>Keine Sequenz für den angegebenen Tab gefunden</value>
+    <value>Nie znaleziono sekwencji dla podanej karty</value>
 </data>
   <data name="TitleCannotBeEmpty" xml:space="preserve">
-    <value>Der Titel darf nicht leer sein</value>
+    <value>Tytuł nie może być pusty</value>
 </data>
   <data name="UserNotLoggedIn" xml:space="preserve">
-    <value>Der Benutzer ist nicht eingeloggt</value>
+    <value>Użytkownik nie jest zalogowany</value>
 </data>
 </root>

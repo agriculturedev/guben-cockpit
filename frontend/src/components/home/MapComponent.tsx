@@ -6,7 +6,7 @@ interface Props extends WithClassName {
 }
 
 export const MapComponent = ({src, className}: Props) => {
-    return <div className={cn("w-screen h-auto flex-1", className)}>
+    return <div className={cn("h-auto w-full flex-1", className)}>
       <iframe
           className="overflow-hidden border-none h-full w-full"
           src={src}

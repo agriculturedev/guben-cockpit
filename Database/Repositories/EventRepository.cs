@@ -18,6 +18,9 @@ public class EventRepository
   public Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId)
   {
     return Set
+      .Include(e => e.Location)
+      .Include(e => e.Urls)
+      .Include(e => e.Categories)
       .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
   }
 
