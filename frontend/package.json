@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "dev": "npm run translations && vite --port=3000",
-    "build": "vite build",
+    "dev": "npm run translations && npm run check-translations && vite --port=3000",
+    "build": "npm run check-translations && vite build",
     "serve": "vite preview",
     "start": "vite",
     "codegen": "npx openapi-codegen gen guben",
-    "translations": "i18next-resources-for-ts interface -i ./src/assets/locales/de -o ./src/utilities/i18n/@types/resources.d.ts"
+    "translations": "i18next-resources-for-ts interface -i ./src/assets/locales/de -o ./src/utilities/i18n/@types/resources.d.ts",
+    "check-translations": "node src/utilities/i18n/CheckTranslations.cjs"
   },
   "devDependencies": {
     "@openapi-codegen/cli": "^2.0.2",
