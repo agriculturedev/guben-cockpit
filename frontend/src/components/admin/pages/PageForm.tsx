@@ -3,7 +3,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { pageFormType } from "@/components/pages/usePageFormSchema";
+import { pageFormType } from "@/components/admin/pages/usePageFormSchema";
 import { Textarea } from "@/components/ui/textarea";
 
 interface PageFormProps {
