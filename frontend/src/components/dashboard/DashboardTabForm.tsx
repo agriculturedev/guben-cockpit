@@ -25,7 +25,7 @@ export const DashboardTabForm = ({ form, onSubmit, className }: DashboardFormPro
         className={cn('flex flex-col gap-4', className)}
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className='flex gap-4 w-1/2'>
+        <div className='flex gap-4 min-w-[20rem] w-fit'>
           <FormField
             control={form.control}
             name="title"
@@ -34,6 +34,7 @@ export const DashboardTabForm = ({ form, onSubmit, className }: DashboardFormPro
                 <FormLabel>{t("common:Title")}</FormLabel>
                 <FormControl>
                   <Input
+                    className={"min-w-[10rem]"}
                     placeholder={t("common:Title")}
                     {...field}
                     value={field.value ?? undefined}
@@ -50,7 +51,7 @@ export const DashboardTabForm = ({ form, onSubmit, className }: DashboardFormPro
               <FormItem className="flex-1">
                 <FormLabel>{t("dashboard:MapUrl")}</FormLabel>
                 <FormControl>
-                  <div className={"flex gap-2"}>
+                  <div className={"flex gap-2 min-w-[20rem]"}>
                     <Input
                       placeholder={t("dashboard:MapUrl")}
                       {...field}
@@ -91,8 +92,8 @@ export const MapPreviewDialog = ({mapUrl}: MapPreviewProps) => {
           {t("ShowPreview")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-3/4 max-w-full h-3/4 p-1 pt-12">
-        <MapComponent src={mapUrl} className={"w-auto"} />
+      <DialogContent className="w-5/6 max-w-full h-5/6 p-1 pt-12">
+        <MapComponent src={mapUrl} className={"h-full"} />
       </DialogContent>
     </Dialog>
   )

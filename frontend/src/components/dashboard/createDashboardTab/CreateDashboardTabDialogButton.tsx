@@ -43,7 +43,7 @@ export const CreateDashboardTabDialogButton = ({onSuccess}: Props) => {
   return (
     <Dialog open={open} onOpenChange={toggleDialog}>
       <AddIconButton tooltip={t("Add")} dialogTrigger={true}/>
-      <DialogContent>
+      <DialogContent className={"min-w-fit"}>
         <DialogHeader>
           <DialogTitle>{t("Add")}</DialogTitle>
         </DialogHeader>

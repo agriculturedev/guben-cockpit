@@ -68,7 +68,7 @@ function EventComponent() {
               </a>
             </DialogTrigger>
             <DialogContent className="w-5/6 max-w-full h-5/6 p-1 pt-12">
-              <MapComponent src={"https://www.sessionnet.guben.de/buergerinfo"} className={"w-auto"} />
+              <MapComponent src={"https://www.sessionnet.guben.de/buergerinfo"} className={"h-full"} />
             </DialogContent>
           </Dialog>
         </div>
