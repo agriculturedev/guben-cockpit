@@ -64,17 +64,3 @@ jobs:
           push: true
           tags: ${{ steps.meta-api.outputs.tags }}
           labels: ${{ steps.meta-api.outputs.labels }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta-strapi
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-strapi
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./strapi
-          push: true
-          tags: ${{ steps.meta-strapi.outputs.tags }}
-          labels: ${{ steps.meta-strapi.outputs.labels }}
