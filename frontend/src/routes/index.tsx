@@ -1,14 +1,13 @@
-import * as React from 'react'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { InfoCard } from "@/components/home/InfoCard/InfoCard";
+import { MapComponent } from "@/components/home/MapComponent";
 import { View } from "@/components/layout/View";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDashboardGetAll } from "@/endpoints/gubenComponents";
 import { Pages } from "@/routes/admin/_layout/pages";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MapComponent } from "@/components/home/MapComponent";
-import { InfoCard } from "@/components/home/InfoCard/InfoCard";
-import { useCallback, useState } from "react";
-import { z } from "zod";
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { zodValidator } from "@tanstack/zod-adapter";
+import { useCallback } from "react";
+import { z } from "zod";
 
 const SelectedTabSchema = z.object({
   selectedTabId: z.string().optional(),

@@ -1,15 +1,15 @@
-import { useTranslation } from "react-i18next";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
-import { useProjectsUpdateProject } from "@/endpoints/gubenComponents";
-import { useErrorToast } from "@/hooks/useErrorToast";
-import { ProjectResponse, UpdateProjectQuery } from "@/endpoints/gubenSchemas";
 import { EditIconButton } from "@/components/iconButtons/EditIconButton";
-import { z } from "zod";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useProjectsUpdateProject } from "@/endpoints/gubenComponents";
+import { ProjectResponse, UpdateProjectQuery } from "@/endpoints/gubenSchemas";
 import { useDialogFormToggle } from "@/hooks/useDialogFormToggle";
-import { useProjectFormSchema } from "@/components/projects/useProjectFormSchema";
-import { ProjectForm } from "@/components/projects/ProjectForm";
+import { useErrorToast } from "@/hooks/useErrorToast";
 import { WithClassName } from "@/types/WithClassName";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { z } from "zod";
+import { useProjectFormSchema } from "./useProjectFormSchema";
+import { ProjectForm } from "./ProjectForm";
 
 interface EditProjectButtonProps extends WithClassName {
   project: ProjectResponse;

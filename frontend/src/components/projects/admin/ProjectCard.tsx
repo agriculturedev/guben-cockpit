@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardHeaderImage, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardHeaderImage, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ProjectResponse } from "@/endpoints/gubenSchemas";
 import { isNullOrUndefinedOrWhiteSpace } from "@/utilities/nullabilityUtils";

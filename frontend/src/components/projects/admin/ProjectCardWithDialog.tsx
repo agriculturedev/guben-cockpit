@@ -6,10 +6,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { ProjectCard } from "@/components/projects/ProjectCard";
 import { ProjectResponse } from "@/endpoints/gubenSchemas";
 import { isNullOrUndefinedOrWhiteSpace } from "@/utilities/nullabilityUtils";
 import { BaseImgTag } from "@/components/ui/BaseImgTag";
+import { ProjectCard } from "./ProjectCard";
 
 interface Props {
   project: ProjectResponse;

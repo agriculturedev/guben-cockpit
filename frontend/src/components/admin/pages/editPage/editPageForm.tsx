@@ -2,10 +2,9 @@ import { usePagesGet, usePagesUpdate } from "@/endpoints/gubenComponents";
 import { LoadingIndicator } from "@/components/loadingIndicator/loadingIndicator";
 import { PageResponse, UpdatePageQuery } from "@/endpoints/gubenSchemas";
 import { useErrorToast } from "@/hooks/useErrorToast";
-import { usePageFormSchema } from "@/components/pages/usePageFormSchema";
+import { usePageFormSchema } from "@/components/admin/pages/usePageFormSchema";
 import { z } from "zod";
-import { PageForm } from "@/components/pages/PageForm";
-import * as React from "react";
+import { PageForm } from "@/components/admin/pages/PageForm";
 
 interface EditPageFormProps {
   pageId: string
