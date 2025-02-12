@@ -1,6 +1,7 @@
 interface Resources {
   "common": {
     "Category": "Kategorie",
+    "Credits": "Bildnachweis",
     "Date": "Datum",
     "Description": "Beschreibung",
     "Email": "E-Mail",
