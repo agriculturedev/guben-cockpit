@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.Projects.CreateProject;
 using Api.Controllers.Projects.GetAllProjects;
+using Api.Controllers.Projects.GetHighlightedProjects;
 using Api.Controllers.Projects.GetMyProjects;
 using Api.Controllers.Projects.PublishProjects;
 using Api.Controllers.Projects.UpdateProject;
@@ -31,9 +32,19 @@ public class ProjectController : ControllerBase
   [EndpointName("ProjectsGetAll")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllProjectsResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> GetAll()
+  public async Task<IResult> GetAll([FromQuery] GetAllProjectsQuery query)
   {
-    var result = await _mediator.Send(new GetAllProjectsQuery());
+    var result = await _mediator.Send(query);
+    return Results.Ok(result);
+  }
+
+  [HttpGet("highlighted")]
+  [EndpointName("ProjectsGetHighlighted")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetHighlightedProjectsResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> GetAllHighlighted()
+  {
+    var result = await _mediator.Send(new GetHighlightedProjectsQuery());
     return Results.Ok(result);
   }
 

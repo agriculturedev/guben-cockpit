@@ -4,7 +4,7 @@ using Shared.Api;
 
 namespace Api.Controllers.Projects.GetAllProjects;
 
-public class GetAllProjectsHandler : ApiRequestHandler<GetAllProjectsQuery, GetAllProjectsResponse>
+public class GetAllProjectsHandler : ApiPagedRequestHandler<GetAllProjectsQuery, GetAllProjectsResponse, ProjectResponse>
 {
   private readonly IProjectRepository _projectRepository;
 
@@ -16,11 +16,15 @@ public class GetAllProjectsHandler : ApiRequestHandler<GetAllProjectsQuery, GetA
   public override async Task<GetAllProjectsResponse> Handle(GetAllProjectsQuery request, CancellationToken
       cancellationToken)
   {
-    var projects = await _projectRepository.GetAll();
+    var pagedResult = await _projectRepository.GetAllPaged(request);
 
-    return new GetAllProjectsResponse()
+    return new GetAllProjectsResponse
     {
-      Projects = projects.Select(ProjectResponse.Map)
+      PageNumber = pagedResult.PageNumber,
+      PageCount = pagedResult.PageCount,
+      PageSize = pagedResult.PageSize,
+      TotalCount = pagedResult.TotalCount,
+      Results = pagedResult.Results.Select(ProjectResponse.Map)
     };
   }
 }

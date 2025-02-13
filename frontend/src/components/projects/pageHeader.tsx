@@ -1,8 +1,12 @@
-import { PageResponse, ProjectResponse } from "@/endpoints/gubenSchemas";
-import PageHeaderLink from "./pageHeader.link";
+import { usePagesGet, useProjectsGetHighlighted } from "@/endpoints/gubenComponents";
 import PageHeaderCarousel from "./pageHeader.carousel";
+import PageHeaderLink from "./pageHeader.link";
+import { Pages } from "@/routes/admin/_layout/pages";
 
-export default function PageHeader(props: { info?: PageResponse, projects?: ProjectResponse[] }) {
+export default function PageHeader() {
+  const { data: pageInfo } = usePagesGet({ pathParams: { id: Pages.Projects } });
+  const { data: projectsResponse } = useProjectsGetHighlighted({});
+
   return (
     <div className='w-full h-[70svh] rounded-xl relative overflow-hidden'>
       <img src="/images/stadt-guben.jpg" className='absolute left-0 top-0 w-full h-full object-cover' />
@@ -10,9 +14,9 @@ export default function PageHeader(props: { info?: PageResponse, projects?: Proj
 
       <div className='absolute left-0 top-1/2 translate-y-[-50%] w-full h-full p-16 grid grid-cols-2 gap-16 items-center justify-center'>
         <div className='flex flex-col gap-8 text-lg text-white'>
-          <h1 className='white text-5xl'>{props.info?.title}</h1>
+          <h1 className='white text-5xl'>{pageInfo?.title}</h1>
           <p className='text-xl'>
-            {props.info?.description}
+            {pageInfo?.description}
           </p>
           <div className='flex flex-col gap-4'>
             <PageHeaderLink
@@ -33,7 +37,7 @@ export default function PageHeader(props: { info?: PageResponse, projects?: Proj
           </div>
         </div>
 
-        {props.projects && <PageHeaderCarousel projects={props.projects} />}
+        {projectsResponse && <PageHeaderCarousel projects={projectsResponse.projects} />}
       </div>
 
     </div>

@@ -1,8 +1,8 @@
 using Api.Controllers.Projects.Shared;
+using Shared.Api.Pagination;
 
 namespace Api.Controllers.Projects.GetAllProjects;
 
-public struct GetAllProjectsResponse
+public class GetAllProjectsResponse : PagedResponse<ProjectResponse>
 {
-  public required IEnumerable<ProjectResponse> Projects { get; set; }
 }

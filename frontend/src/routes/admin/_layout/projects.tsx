@@ -1,5 +1,5 @@
 import { PaginationContainer } from "@/components/DataDisplay/PaginationContainer";
-import { AddProjectDialogButton, EditProjectButton, ProjectCard } from "@/components/projects/admin";
+import { AddProjectDialogButton, EditProjectButton, ProjectCard } from "@/components/admin/projects";
 import { Label } from "@/components/ui/label";
 import { useProjectsGetMyProjects } from "@/endpoints/gubenComponents";
 import { defaultPaginationProps, usePagination } from "@/hooks/usePagination";
