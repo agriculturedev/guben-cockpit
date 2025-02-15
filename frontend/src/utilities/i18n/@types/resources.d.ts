@@ -49,7 +49,8 @@ interface Resources {
       "NextMonth": "Nächsten Monat",
       "ThisYear": "Dieses Jahr",
       "DateInput": "Datumseingabe"
-    }
+    },
+    "Marktplatz": "Gubener Marktplatz"
   },
   "dashboard": {
     "Title": "Dashboard",

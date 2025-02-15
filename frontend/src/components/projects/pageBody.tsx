@@ -3,8 +3,10 @@ import { usePagination } from "@/hooks/usePagination";
 import { PaginationContainer } from "../DataDisplay/PaginationContainer";
 import { ExternalLinkIcon } from "lucide-react";
 import ProjectDialog from "./projectDialog";
+import { useTranslation } from "react-i18next";
 
 export default function PageBody() {
+  const {t} = useTranslation('common');
   const pagination = usePagination();
 
   console.log(pagination.pageSize)
@@ -15,11 +17,9 @@ export default function PageBody() {
     }
   });
 
-
-
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-4xl text-black">Alle projekte</h1>
+      <h1 className="text-4xl text-black">{t("Marktplatz")}</h1>
       <PaginationContainer
         nextPage={pagination.nextPage}
         previousPage={pagination.previousPage}
