@@ -1,12 +1,10 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.Events.CreateEvent;
 using Api.Controllers.Events.GetAllEvents;
-using Api.Controllers.Events.Shared;
-using Api.Shared;
+using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Api.Pagination;
 
 namespace Api.Controllers.Events;
 
@@ -50,7 +48,7 @@ public class EventController : ControllerBase
   // }
 
   [HttpPost]
-  [Authorize]
+  [Authorize(KeycloakPolicies.EventContributor)]
   [EndpointName("EventsCreateEvent")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateEventResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
