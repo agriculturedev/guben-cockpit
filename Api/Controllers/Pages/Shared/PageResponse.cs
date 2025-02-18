@@ -13,6 +13,7 @@ public struct PageResponse
 
   public static PageResponse Map(Page page, CultureInfo culture)
   {
+    Console.WriteLine(CultureInfo.CurrentCulture);
     var i18NData = page.Translations.GetTranslation(culture.TwoLetterISOLanguageName);
     if (i18NData is null)
       throw new NullReferenceException(TranslationKeys.NoValidTranslationsFound);
@@ -22,21 +23,6 @@ public struct PageResponse
       Id = page.Id,
       Title = i18NData.Title,
       Description = i18NData.Description
-    };
-  }
-}
-
-public class PageI18NDataResponse : IPageI18NData
-{
-  public required string Title { get; set; }
-  public required string Description { get; set; }
-
-  public static PageI18NDataResponse Map<T>(T data) where T : IPageI18NData
-  {
-    return new PageI18NDataResponse()
-    {
-      Title = data.Title,
-      Description = data.Description
     };
   }
 }

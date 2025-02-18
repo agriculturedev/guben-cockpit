@@ -8,14 +8,13 @@ public static class TranslationExtensions
   /// </summary>
   public static T? GetTranslation<T>(
     this Dictionary<string, T> translations,
-    string language,
-    string fallbackLanguage = "en")
+    string language)
     where T : class
   {
     if (translations.TryGetValue(language, out var translation))
       return translation;
 
-    if (translations.TryGetValue(fallbackLanguage, out translation))
+    if (translations.TryGetValue(Culture.DefaultLanguage, out translation))
       return translation;
 
     return null;
