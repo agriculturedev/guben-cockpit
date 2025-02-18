@@ -16,6 +16,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
   public DateTime EndDate { get; private set; }
   public Location Location { get; private set; } = null!;
   public Coordinates.Coordinates? Coordinates { get; private set; }
+  public bool Published { get; private set; }
 
   private readonly List<Url> _urls = [];
   public IReadOnlyCollection<Url> Urls => _urls.AsReadOnly();
@@ -34,6 +35,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     StartDate = startDate.SetKindUtc();
     EndDate = endDate.SetKindUtc();
     Coordinates = coordinates;
+    Published = false;
     _urls = [];
     _categories = [];
   }
@@ -50,6 +52,11 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     // TODO: use UpdateTitle
 
     return Result.Ok(_event);
+  }
+
+  public void SetPublishedState(bool publish)
+  {
+    Published = publish;
   }
 
   public Result UpdateTitle(string newTitle)
@@ -143,14 +150,21 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     if (this.Equals(@event))
       return Result.Ok();
 
-    var updateTitleResult = UpdateTitle(@event.Title);
-    var updateDescriptionResult = UpdateDescription(@event.Description);
-    var updateStartDateResult = UpdateStartDate(@event.StartDate);
-    var updateEndDateResult = UpdateEndDate(@event.EndDate);
-    var updateCoordinatesResult = UpdateCoordinates(@event.Coordinates);
-    var updateLocationResult = UpdateLocation(@event.Location);
-    var updateCategoriesResult = UpdateCategories(@event.Categories);
-    var updateUrlsResult = UpdateUrls(@event.Urls);
+    return Update(@event.Title, @event.Description, @event.StartDate, @event.EndDate,
+      @event.Coordinates, @event.Location, @event.Categories.ToList(), @event.Urls.ToList());
+  }
+
+  public Result Update(string title, string description, DateTime startDate, DateTime endDate,
+    Coordinates.Coordinates? coordinates, Location location, IList<Category.Category> categories, IList<Url> urls)
+  {
+    var updateTitleResult = UpdateTitle(title);
+    var updateDescriptionResult = UpdateDescription(description);
+    var updateStartDateResult = UpdateStartDate(startDate);
+    var updateEndDateResult = UpdateEndDate(endDate);
+    var updateCoordinatesResult = UpdateCoordinates(coordinates);
+    var updateLocationResult = UpdateLocation(location);
+    var updateCategoriesResult = UpdateCategories(categories);
+    var updateUrlsResult = UpdateUrls(urls);
 
     List<Result> results =
     [

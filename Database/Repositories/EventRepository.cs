@@ -13,18 +13,18 @@ public class EventRepository
   public EventRepository(ICustomDbContextFactory<GubenDbContext> dbContextFactory)
     : base(dbContextFactory)
   {
+    ModifiedSet = Set.Where(p => p.Published);
   }
 
-  public Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId)
+  public Task<Event?> GetIncludingUnpublished(Guid id)
   {
     return Set
-      .Include(e => e.Location)
-      .Include(e => e.Urls)
-      .Include(e => e.Categories)
-      .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
+      .TagWith(GetType().Name + '.' + nameof(GetIncludingUnpublished))
+      .IgnoreAutoIncludes()
+      .FirstOrDefaultAsync(a => a.Id.Equals(id));
   }
 
-  public IEnumerable<Event> GetAllEvents()
+  public IEnumerable<Event> GetAllIncludingUnpublished()
   {
     return Set
       .AsNoTracking()
@@ -36,9 +36,51 @@ public class EventRepository
       .AsEnumerable();
   }
 
-  public Task<PagedResult<Event>> GetAllEventsPaged(PagedCriteria pagination, EventFilterCriteria filter)
+  public IEnumerable<Event> GetAllByIdsIncludingUnpublished(IList<Guid> ids)
   {
     return Set
+      .TagWith(nameof(EventRepository) + "." + nameof(GetAllByIdsIncludingUnpublished))
+      .Where(p => ids.Contains(p.Id))
+      .AsEnumerable();
+  }
+
+  public Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId)
+  {
+    return ModifiedSet
+      .AsSplitQuery()
+      .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminId))
+      .Include(e => e.Location)
+      .Include(e => e.Urls)
+      .Include(e => e.Categories)
+      .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
+  }
+
+  public Task<Event?> GetByEventIdAndTerminIdIncludingUnpublished(string eventId, string terminId)
+  {
+    return Set
+      .AsSplitQuery()
+      .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminIdIncludingUnpublished))
+      .Include(e => e.Location)
+      .Include(e => e.Urls)
+      .Include(e => e.Categories)
+      .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
+  }
+
+  public IEnumerable<Event> GetAllEvents()
+  {
+    return ModifiedSet
+      .AsNoTracking()
+      .AsSplitQuery()
+      .TagWith(nameof(EventRepository) + "." + nameof(GetAllEvents))
+      .Include(e => e.Location)
+      .Include(e => e.Urls)
+      .Include(e => e.Categories)
+      .AsEnumerable();
+  }
+
+  public Task<PagedResult<Event>> GetAllEventsPaged(PagedCriteria pagination, EventFilterCriteria filter)
+  {
+    return ModifiedSet
       .AsNoTracking()
       .AsSplitQuery()
       .TagWith(nameof(EventRepository) + "." + nameof(GetAllEvents))
@@ -55,7 +97,6 @@ internal static class EventRepositoryExtensions
 {
   internal static IQueryable<Event> ApplyGetAllFilters(this IQueryable<Event> query, EventFilterCriteria filter)
   {
-
     if (!string.IsNullOrWhiteSpace(filter.TitleQuery))
       query = query.Where(w => EF.Functions.Like(w.Title.ToLower(), "%" + filter.TitleQuery.ToLower() + "%"));
 
@@ -63,7 +104,8 @@ internal static class EventRepositoryExtensions
     {
       var startDate = filter.StartDateQuery.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
       var endDate = filter.EndDateQuery.Value.ToDateTime(TimeOnly.MaxValue, DateTimeKind.Utc);
-      query = query.Where(w => w.StartDate <= endDate && w.EndDate >= startDate); // any overlap will result in the item being returned
+      query = query.Where(w =>
+        w.StartDate <= endDate && w.EndDate >= startDate); // any overlap will result in the item being returned
     }
 
     if (filter.CategoryIdQuery.HasValue)
@@ -96,6 +138,7 @@ internal static class EventRepositoryExtensions
             query = query.OrderByDescending(w => w.Title);
             break;
         }
+
         break;
 
       case EventSortOption.StartDate:
@@ -108,6 +151,7 @@ internal static class EventRepositoryExtensions
             query = query.OrderByDescending(w => w.StartDate);
             break;
         }
+
         break;
     }
 

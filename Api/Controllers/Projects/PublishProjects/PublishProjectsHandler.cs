@@ -15,7 +15,7 @@ public class PublishProjectsHandler : ApiRequestHandler<PublishProjectsQuery, Pu
   public override async Task<PublishProjectsResponse> Handle(PublishProjectsQuery request,
     CancellationToken cancellationToken)
   {
-    var projects = await _projectRepository.GetAllByIds(request.ProjectIds);
+    var projects = await _projectRepository.GetAllByIdsIncludingUnpublished(request.ProjectIds);
 
     foreach (var project in projects)
     {
