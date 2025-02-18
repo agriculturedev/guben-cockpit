@@ -1,4 +1,6 @@
+using System.Globalization;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using Database;
 using Domain.Category;
 using Domain.Category.repository;
@@ -14,6 +16,8 @@ namespace Jobs.EventImporter;
 
 public class EventImporter
 {
+  private static CultureInfo German = new CultureInfo("de");
+
   private readonly IEventRepository _eventRepository;
   private readonly ILocationRepository _locationRepository;
   private readonly ICategoryRepository _categoryRepository;
@@ -42,9 +46,19 @@ public class EventImporter
       Console.WriteLine("Starting Event importer...");
 
       var events = await FetchEventsFromXml();
+      XmlSerializer serializer = new XmlSerializer(typeof(XmlEvent));
       foreach (var e in events)
       {
-        await ProcessEventAsync(e);
+        try
+        {
+          using StringReader reader = new StringReader(e.ToString());
+          var deserializedObject = (XmlEvent)serializer.Deserialize(reader)!;
+          await ProcessEventAsyncV2(deserializedObject);
+        }
+        catch (Exception ex)
+        {
+          Console.WriteLine(ex);
+        }
       }
 
       Console.WriteLine($"Event Import finished");
@@ -69,6 +83,18 @@ public class EventImporter
       await SaveLocationAsync(e);
       await SaveCategoriesAsync(e);
       await SaveEventAsync(e);
+    }
+    catch (Exception ex)
+    {
+      Console.Error.WriteLine($"Error processing event: {ex.Message}");
+    }
+  }
+
+  private async Task ProcessEventAsyncV2(XmlEvent e)
+  {
+    try
+    {
+      Console.WriteLine(e.GetTitle(German));
     }
     catch (Exception ex)
     {
