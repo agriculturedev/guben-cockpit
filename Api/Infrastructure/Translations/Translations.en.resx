@@ -203,4 +203,7 @@ value   : The object must be serialized into a byte array
   <data name="EventNotFound" xml:space="preserve">
     <value>Event not found</value>
   </data>
+  <data name="CategoryNotFound" xml:space="preserve">
+    <value>Category not found</value>
+  </data>
 </root>
