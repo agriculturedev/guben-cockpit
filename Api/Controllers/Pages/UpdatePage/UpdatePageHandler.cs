@@ -1,3 +1,4 @@
+using System.Globalization;
 using Api.Infrastructure.Extensions;
 using Domain.Pages;
 using Domain.Pages.repository;
@@ -22,14 +23,14 @@ public class UpdatePageHandler : ApiRequestHandler<UpdatePageQuery, UpdatePageRe
       var (pageResult, newPage) = Page.Create(request.Id);
       pageResult.ThrowIfFailure();
 
-      var updateTranslation = newPage.UpdateTranslation(request.LanguageKey, request.Title, request.Description);
+      var updateTranslation = newPage.UpdateTranslation(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, request.Title, request.Description);
       updateTranslation.ThrowIfFailure();
 
       await _pageRepository.SaveAsync(newPage);
     }
     else
     {
-      page.UpdateTranslation(request.LanguageKey, request.Title, request.Description);
+      page.UpdateTranslation(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, request.Title, request.Description);
     }
 
     return new UpdatePageResponse();

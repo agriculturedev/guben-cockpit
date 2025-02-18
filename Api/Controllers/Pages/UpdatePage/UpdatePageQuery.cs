@@ -6,7 +6,6 @@ namespace Api.Controllers.Pages.UpdatePage;
 public class UpdatePageQuery : IApiRequest<UpdatePageResponse>, IAuthenticatedApiRequest
 {
   public required string Id { get; set; }
-  public required string LanguageKey { get; set; }
   public required string Title { get; set; }
   public required string Description { get; set; }
 }

@@ -1,4 +1,3 @@
-using System.Globalization;
 using Api.Controllers.Pages.Shared;
 using Domain.Pages.repository;
 using Shared.Api;
@@ -21,7 +20,7 @@ public class GetAllPagesHandler : ApiRequestHandler<GetAllPagesQuery, GetAllPage
 
     return new GetAllPagesResponse
     {
-      Pages = pages.Select(p => PageResponse.Map(p, CultureInfo.CurrentCulture)).ToList()
+      Pages = pages.Select(PageResponse.Map).ToList()
     };
   }
 }
