@@ -35,10 +35,12 @@ public static class DatabaseInstaller
     {
       options
         .UseNpgsql(connectionString,
-          options =>
+          builder =>
           {
-            options.MigrationsAssembly(typeof(GubenDbContextFactory).Assembly.FullName);
-            options.MigrationsHistoryTable("Migrations", GubenDbContext.DefaultSchema);
+            builder.SetPostgresVersion(17, 0);
+            builder.ConfigureDataSource(dataSourceBuilder => dataSourceBuilder.EnableDynamicJson());
+            builder.MigrationsAssembly(typeof(GubenDbContextFactory).Assembly.FullName);
+            builder.MigrationsHistoryTable("Migrations", GubenDbContext.DefaultSchema);
           })
         .EnableSensitiveDataLogging()
         .LogTo(Console.WriteLine, (eventId, logLevel) => logLevel >= LogLevel.Information
