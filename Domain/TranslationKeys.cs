@@ -27,4 +27,5 @@ public class TranslationKeys
   public const string TitleCannotBeEmpty = "TitleCannotBeEmpty";
   public const string UserNotFound = "UserNotFound";
   public const string UserNotLoggedIn = "UserNotLoggedIn";
+  public const string AtLeastOneLayerSourceIsRequired = "AtLeastOneLayerSourceIsRequired";
 }

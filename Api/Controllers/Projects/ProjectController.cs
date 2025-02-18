@@ -50,6 +50,7 @@ public class ProjectController : ControllerBase
 
   [HttpGet("owned")]
   [EndpointName("ProjectsGetMyProjects")]
+  [Authorize(KeycloakPolicies.ProjectContributor)]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMyProjectsResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> GetMyProjects([FromQuery] GetMyProjectsQuery query)
@@ -70,7 +71,7 @@ public class ProjectController : ControllerBase
   }
 
   [HttpPost]
-  [Authorize]
+  [Authorize(KeycloakPolicies.ProjectContributor)]
   [EndpointName("ProjectsCreateProject")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProjectResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -81,7 +82,7 @@ public class ProjectController : ControllerBase
   }
 
   [HttpPut("{id}")]
-  [Authorize]
+  [Authorize(KeycloakPolicies.ProjectContributor)]
   [EndpointName("ProjectsUpdateProject")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProjectResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]

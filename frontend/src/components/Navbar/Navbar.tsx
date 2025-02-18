@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from 'react-oidc-context';
 import { ServicePortalIcon, SmartCityGubenLogoIcon } from "../icons";
 import i18next from "i18next";
-import { Language } from "@/utilities/i18n/Languages";
+import { getLocalizedLanguagename, Language } from "@/utilities/i18n/Languages";
 import { WithClassName } from "@/types/WithClassName";
 import { FetchInterceptor } from "@/utilities/fetchApiExtensions";
 
@@ -130,12 +130,16 @@ const LanguageSection = () => {
     await i18next.changeLanguage(language)
   }
 
+  var currentLanguage = i18next.language.split('-')[0];
+
+  let languageNames = new Intl.DisplayNames(['en'], {type: 'language'});
+
   return (
     <div className="relative flex items-center justify-center">
       <div className="group">
         {/* Display current language */}
         <button className="p-2 rounded-lg text-[#cd1421] group-hover:bg-[#cd1421] group-hover:text-white">
-          {i18next.language.toUpperCase()}
+          {getLocalizedLanguagename(currentLanguage)}
         </button>
 
         {/* Dropdown Menu */}
@@ -146,7 +150,7 @@ const LanguageSection = () => {
               className="w-full text-left px-3 py-2 rounded-lg text-[#cd1421] hover:bg-[#cd1421] hover:text-white"
               onClick={async () => await updateLanguage(lang)}
             >
-              {lang === Language.de ? "DE" : "EN"}
+              {getLocalizedLanguagename(lang)}
             </button>
           ))}
         </div>

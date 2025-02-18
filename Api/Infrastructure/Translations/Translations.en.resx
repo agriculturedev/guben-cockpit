@@ -197,5 +197,7 @@ value   : The object must be serialized into a byte array
   <data name="UserNotLoggedIn" xml:space="preserve">
     <value>User is not logged in</value>
 </data>
-
+  <data name="AtLeastOneLayerSourceIsRequired" xml:space="preserve">
+    <value>At least one layer source is required</value>
+  </data>
 </root>
