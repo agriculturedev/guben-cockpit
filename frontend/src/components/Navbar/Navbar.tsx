@@ -11,7 +11,8 @@ import { ServicePortalIcon, SmartCityGubenLogoIcon } from "../icons";
 import i18next from "i18next";
 import { getLocalizedLanguagename, Language } from "@/utilities/i18n/Languages";
 import { WithClassName } from "@/types/WithClassName";
-import { FetchInterceptor } from "@/utilities/fetchApiExtensions";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { useLanguageUpdater } from "@/hooks/useLanguageUpdater";
 
 type TNavContext = { location: string }
 const NavContext = createContext<TNavContext>({ location: "/" });
@@ -123,16 +124,10 @@ export const Navbar = () => {
   )
 }
 
+
 const LanguageSection = () => {
-  const updateLanguage = async (language: string) => {
-    console.log(language);
-    FetchInterceptor.setHeader("Accept-Language", language);
-    await i18next.changeLanguage(language)
-  }
-
-  var currentLanguage = i18next.language.split('-')[0];
-
-  let languageNames = new Intl.DisplayNames(['en'], {type: 'language'});
+  const updateLanguage = useLanguageUpdater();
+  const currentLanguage = i18next.language.split('-')[0];
 
   return (
     <div className="relative flex items-center justify-center">

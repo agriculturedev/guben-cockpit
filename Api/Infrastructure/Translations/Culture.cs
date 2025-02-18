@@ -9,9 +9,11 @@ public static class Culture
   public static CultureInfo Polish => new CultureInfo("pl");
 
   /// <summary>
-  /// The default culture
+  /// The default culture and language string, language string is important for culture behaviour pipeline, needs compile time constant
   /// </summary>
   public static CultureInfo Default => German;
+  public const string DefaultLanguage = "de";
+
 
   /// <summary>
   /// All the supported cultures

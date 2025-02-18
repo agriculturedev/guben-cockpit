@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Shared.Database;
@@ -32,10 +31,12 @@ public class GubenDbContextFactory : ICustomDbContextFactory<GubenDbContext>
   {
     var dbOptions = new DbContextOptionsBuilder()
       .UseNpgsql(_connectionString,
-          options =>
+          builder =>
           {
-            options.MigrationsAssembly(typeof(GubenDbContextFactory).Assembly.FullName);
-            options.MigrationsHistoryTable("Migrations", GubenDbContext.DefaultSchema);
+            builder.SetPostgresVersion(17, 0);
+            builder.ConfigureDataSource(dataSourceBuilder => dataSourceBuilder.EnableDynamicJson());
+            builder.MigrationsAssembly(typeof(GubenDbContextFactory).Assembly.FullName);
+            builder.MigrationsHistoryTable("Migrations", GubenDbContext.DefaultSchema);
           })
       .EnableSensitiveDataLogging()
       .LogTo(Console.WriteLine, (eventId, logLevel) => logLevel >= LogLevel.Information

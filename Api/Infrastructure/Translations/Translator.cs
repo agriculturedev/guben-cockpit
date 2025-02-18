@@ -2,43 +2,42 @@
 using Microsoft.Extensions.Localization;
 using Shared.Api.Translations;
 
-namespace Api.Infrastructure.Translations
+namespace Api.Infrastructure.Translations;
+
+public class Translator : ITranslator
 {
-  public class Translator : ITranslator
+  private readonly IStringLocalizer<Translations> _localizer;
+
+  public Translator(IStringLocalizer<Translations> localizer)
   {
-    private readonly IStringLocalizer<Translations> _localizer;
+    _localizer = localizer;
+  }
 
-    public Translator(IStringLocalizer<Translations> localizer)
+  public string Translate(string key)
+  {
+    return Translate(key, string.Empty);
+  }
+
+  public string Translate(string key, params string[] parameters)
+  {
+    var result = _localizer.GetString(key, parameters);
+
+    if (result.ResourceNotFound)
     {
-      _localizer = localizer;
-    }
-
-    public string Translate(string key)
-    {
-      return Translate(key, string.Empty);
-    }
-
-    public string Translate(string key, params string[] parameters)
-    {
-      var result = _localizer.GetString(key, parameters);
-
-      if (result.ResourceNotFound)
+      var originalCulture = CultureInfo.CurrentUICulture;
+      try
       {
-        var originalCulture = CultureInfo.CurrentUICulture;
-        try
-        {
-          CultureInfo.CurrentUICulture = Culture.Default;
-          var fallbackResult = _localizer.GetString(key, parameters);
+        CultureInfo.CurrentUICulture = Culture.Default;
+        var fallbackResult = _localizer.GetString(key, parameters);
 
-          return fallbackResult.ResourceNotFound ? key : fallbackResult.Value;
-        }
-        finally
-        {
-          CultureInfo.CurrentUICulture = originalCulture;
-        }
+        return fallbackResult.ResourceNotFound ? key : fallbackResult.Value;
       }
-
-      return result.Value;
+      finally
+      {
+        CultureInfo.CurrentUICulture = originalCulture;
+      }
     }
+
+    return result.Value;
   }
 }

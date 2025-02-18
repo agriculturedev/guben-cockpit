@@ -1,5 +1,3 @@
-using Api.Controllers.Events.GetAllEvents;
-using Api.Controllers.Events.Shared;
 using Api.Controllers.Pages.Shared;
 using Domain.Pages.repository;
 using Shared.Api;
