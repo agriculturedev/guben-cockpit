@@ -200,4 +200,7 @@ value   : The object must be serialized into a byte array
   <data name="AtLeastOneLayerSourceIsRequired" xml:space="preserve">
     <value>At least one layer source is required</value>
   </data>
+  <data name="EventNotFound" xml:space="preserve">
+    <value>Event not found</value>
+  </data>
 </root>
