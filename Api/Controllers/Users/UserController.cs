@@ -56,6 +56,7 @@ public class UserController : ControllerBase
   /// <response code="200">Returns all users.</response>
   /// <response code="400">Server cannot/will not process the request due to perceiving a client error. (Bad Request)</response>
   [HttpGet("{keycloakId}")]
+  [Authorize(KeycloakPolicies.ViewUsers)]
   [EndpointName("UsersGet")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]

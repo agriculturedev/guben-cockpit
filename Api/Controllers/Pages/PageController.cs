@@ -3,6 +3,7 @@ using Api.Controllers.Events.GetAllEvents;
 using Api.Controllers.Pages.GetPage;
 using Api.Controllers.Pages.Shared;
 using Api.Controllers.Pages.UpdatePage;
+using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,7 @@ public class PageController : ControllerBase
 
   [HttpPut("${id}")]
   [EndpointName("PagesUpdate")]
-  [Authorize]
+  [Authorize(KeycloakPolicies.PageManager)]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdatePageResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> Update([FromBody] UpdatePageQuery query, [FromRoute] string id)
