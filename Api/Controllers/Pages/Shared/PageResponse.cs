@@ -1,7 +1,7 @@
-using System.Globalization;
 using Api.Infrastructure.Translations;
 using Domain;
 using Domain.Pages;
+using Shared.Api;
 
 namespace Api.Controllers.Pages.Shared;
 
@@ -11,12 +11,11 @@ public struct PageResponse
   public required string Title { get; set; }
   public required string Description { get; set; }
 
-  public static PageResponse Map(Page page, CultureInfo culture)
+  public static PageResponse Map(Page page)
   {
-    Console.WriteLine(CultureInfo.CurrentCulture);
-    var i18NData = page.Translations.GetTranslation(culture.TwoLetterISOLanguageName);
+    var i18NData = page.Translations.GetTranslation();
     if (i18NData is null)
-      throw new NullReferenceException(TranslationKeys.NoValidTranslationsFound);
+      throw new ProblemDetailsException(TranslationKeys.NoValidTranslationsFound);
 
     return new PageResponse
     {
