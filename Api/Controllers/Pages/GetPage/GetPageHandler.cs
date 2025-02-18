@@ -1,4 +1,4 @@
-using Api.Controllers.Pages.GetAllPages;
+using System.Globalization;
 using Api.Controllers.Pages.Shared;
 using Domain;
 using Domain.Pages.repository;
@@ -23,7 +23,6 @@ public class GetPageHandler : ApiRequestHandler<GetPageQuery, PageResponse>
     if (page is null)
       throw new ProblemDetailsException(TranslationKeys.PageNotFound);
 
-    return PageResponse.Map(page);
-
+    return PageResponse.Map(page, CultureInfo.CurrentCulture);
   }
 }
