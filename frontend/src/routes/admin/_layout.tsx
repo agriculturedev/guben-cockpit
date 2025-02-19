@@ -1,4 +1,4 @@
-import { View } from '@/components/layout/View'
+import { View, View2 } from '@/components/layout/View'
 import { AuthGuard } from '@/guards/authGuard'
 import { cn } from '@/lib/utils'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
@@ -14,21 +14,23 @@ function Layout() {
 
   return (
     <AuthGuard>
-      <View>
-        <div className="grid grid-cols-12 gap-4">
-          <Nav className="col-span-2 h-fit">
-            <Nav.Item href={"/admin/dashboard"} label={t("Title", {ns: "dashboard"})} />
-            <Nav.Item href={"/admin/users"} label={t("Title", {ns: "users"})} />
-            <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})} />
-            <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})} />
-            <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})} />
-          </Nav>
+      <View2>
+        <View2.Content>
+          <div className="grid grid-cols-12 gap-4">
+            <Nav className="col-span-2 h-fit">
+              <Nav.Item href={"/admin/dashboard"} label={t("Title", {ns: "dashboard"})} />
+              <Nav.Item href={"/admin/users"} label={t("Title", {ns: "users"})} />
+              <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})} />
+              <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})} />
+              <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})} />
+            </Nav>
 
-          <div className='col-span-10 p-6 bg-white rounded-lg'>
-            <Outlet />
+            <div className='col-span-10 p-6 bg-white rounded-lg'>
+              <Outlet />
+            </div>
           </div>
-        </div>
-      </View>
+        </View2.Content>
+      </View2>
     </AuthGuard>
   )
 }

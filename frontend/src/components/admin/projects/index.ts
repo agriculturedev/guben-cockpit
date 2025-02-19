@@ -1,4 +1,1 @@
-export * from "./ProjectCard";
-export * from "./ProjectCardWithDialog";
-export * from "./createProjectDialogButton";
-export * from "./editProjectButton";
+export {default} from "./projectDialog";

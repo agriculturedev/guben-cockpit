@@ -1,77 +1,58 @@
-import { PaginationContainer } from "@/components/DataDisplay/PaginationContainer";
-import { AddProjectDialogButton, EditProjectButton, ProjectCard } from "@/components/admin/projects";
-import { Label } from "@/components/ui/label";
+import ProjectDialog from "@/components/admin/projects";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useProjectsGetMyProjects } from "@/endpoints/gubenComponents";
-import { defaultPaginationProps, usePagination } from "@/hooks/usePagination";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { CheckIcon, EditIcon, XIcon } from "lucide-react";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
-  component: () =>{
-    const {t} = useTranslation();
-    return (<div className='text-5xl flex items-center justify-center h-full'>{t("ComingSoon")}...</div>);
-  },
+  component: Page
 })
 
-function ProjectAdminPanel() {
-  const {t} = useTranslation(["projects"]);
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex gap-2 justify-between items-center">
-        <Label className={"text-xl"}>{t("MyProjects")}</Label>
-        <AddProjectDialogButton />
-      </div>
+function Page() {
+  const {data: myProjects} = useProjectsGetMyProjects({});
 
-      <div>
-        <ProjectList />
-      </div>
+  return (
+    <div className="">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Title</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead>Highlighted</TableHead>
+            <TableHead>Published</TableHead>
+            <TableHead className="w-min">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>Title</TableCell>
+            <TableCell className="max-w-[20ch] truncate">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ab qui et fugiat quos porro in recusandae consequatur id fuga facilis ipsa incidunt non laboriosam placeat veniam excepturi, minima tenetur.
+            </TableCell>
+            <TableCell><CheckIcon className="size-sm" /></TableCell>
+            <TableCell><XIcon className="size-sm" /></TableCell>
+            <TableCell>
+              <ProjectDialog>
+                <EditIcon className="size-4" />
+              </ProjectDialog>
+            </TableCell>
+          </TableRow>
+
+          {myProjects?.results.map(p => (
+            <TableRow>
+              <TableCell>{p.title}</TableCell>
+              <TableCell className="overflow-ellipsis">{p.description}</TableCell>
+              <TableCell>{p.highlighted}</TableCell>
+              <TableCell>NEED TO IMPLEMENT (PUBLISHED FLAG)</TableCell>
+              <TableCell>
+                <ProjectDialog project={p}>
+                  <EditIcon className="size-4" />
+                </ProjectDialog>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   )
-}
-
-
-const ProjectList = () => {
-  const {
-    page,
-    pageCount,
-    total,
-    pageSize,
-    nextPage,
-    previousPage,
-    setPageIndex,
-    setPageSize,
-    setTotal,
-    setPageCount
-  } = usePagination();
-
-  const { data: projectData, refetch } = useProjectsGetMyProjects({
-    queryParams: {
-      pageSize,
-      pageNumber: page,
-    }
-  });
-
-  useEffect(() => {
-    setTotal(projectData?.totalCount ?? defaultPaginationProps.total);
-    setPageCount(projectData?.pageCount ?? defaultPaginationProps.pageCount);
-  }, [projectData]);
-
-  return (
-    <PaginationContainer
-      nextPage={nextPage} previousPage={previousPage} setPageIndex={setPageIndex}
-      setPageSize={setPageSize} total={total} pageCount={pageCount} pageSize={pageSize}
-      page={page}
-    >
-      <div className={"grid grid-cols-4 gap-2"}>
-        {projectData?.results &&
-          projectData.results.map((project, index) =>
-            <div className="relative w-full h-full">
-              <ProjectCard key={index} project={project} />
-              <EditProjectButton project={project} refetch={refetch} className="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md" />
-            </div>
-          )}
-      </div>
-    </PaginationContainer>
-  );
 }
