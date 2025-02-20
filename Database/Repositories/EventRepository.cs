@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using System.Globalization;
+using Domain;
 using Domain.Events;
 using Domain.Events.repository;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +12,7 @@ public class EventRepository
   : EntityFrameworkRepository<Event, Guid, GubenDbContext>, IEventRepository
 {
   public EventRepository(ICustomDbContextFactory<GubenDbContext> dbContextFactory)
-    : base(dbContextFactory)
-  {
-  }
+    : base(dbContextFactory) { }
 
   public Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId)
   {
@@ -36,7 +35,7 @@ public class EventRepository
       .AsEnumerable();
   }
 
-  public Task<PagedResult<Event>> GetAllEventsPaged(PagedCriteria pagination, EventFilterCriteria filter)
+  public Task<PagedResult<Event>> GetAllEventsPaged(PagedCriteria pagination, EventFilterCriteria filter, CultureInfo cultureInfo)
   {
     return Set
       .AsNoTracking()
@@ -45,25 +44,27 @@ public class EventRepository
       .Include(e => e.Location)
       .Include(e => e.Urls)
       .Include(e => e.Categories)
-      .ApplyGetAllFilters(filter)
-      .ApplySorting(filter)
+      .ApplyGetAllFilters(filter, cultureInfo)
+      .ApplySorting(filter, cultureInfo)
       .ToPagedResult(pagination);
   }
 }
 
 internal static class EventRepositoryExtensions
 {
-  internal static IQueryable<Event> ApplyGetAllFilters(this IQueryable<Event> query, EventFilterCriteria filter)
+  internal static IQueryable<Event> ApplyGetAllFilters(this IQueryable<Event> query, EventFilterCriteria filter,
+    CultureInfo cultureInfo)
   {
-
     if (!string.IsNullOrWhiteSpace(filter.TitleQuery))
-      query = query.Where(w => EF.Functions.Like(w.Title.ToLower(), "%" + filter.TitleQuery.ToLower() + "%"));
+      query = query.Where(w => EF.Functions.Like(w.Translations[cultureInfo.TwoLetterISOLanguageName].Title.ToLower(),
+        "%" + filter.TitleQuery.ToLower() + "%"));
 
     if (filter.StartDateQuery.HasValue && filter.EndDateQuery.HasValue)
     {
       var startDate = filter.StartDateQuery.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
       var endDate = filter.EndDateQuery.Value.ToDateTime(TimeOnly.MaxValue, DateTimeKind.Utc);
-      query = query.Where(w => w.StartDate <= endDate && w.EndDate >= startDate); // any overlap will result in the item being returned
+      query = query.Where(w =>
+        w.StartDate <= endDate && w.EndDate >= startDate); // any overlap will result in the item being returned
     }
 
     if (filter.CategoryIdQuery.HasValue)
@@ -79,7 +80,8 @@ internal static class EventRepositoryExtensions
     return query;
   }
 
-  internal static IQueryable<Event> ApplySorting(this IQueryable<Event> query, EventFilterCriteria filter)
+  internal static IQueryable<Event> ApplySorting(this IQueryable<Event> query, EventFilterCriteria filter,
+    CultureInfo cultureInfo)
   {
     if (!filter.SortBy.HasValue || !filter.SortDirection.HasValue)
       return query;
@@ -90,12 +92,13 @@ internal static class EventRepositoryExtensions
         switch (filter.SortDirection)
         {
           case SortDirection.Ascending:
-            query = query.OrderBy(w => w.Title);
+            query = query.OrderBy(w => w.Translations[cultureInfo.TwoLetterISOLanguageName].Title);
             break;
           case SortDirection.Descending:
-            query = query.OrderByDescending(w => w.Title);
+            query = query.OrderByDescending(w => w.Translations[cultureInfo.TwoLetterISOLanguageName].Title);
             break;
         }
+
         break;
 
       case EventSortOption.StartDate:
@@ -108,6 +111,7 @@ internal static class EventRepositoryExtensions
             query = query.OrderByDescending(w => w.StartDate);
             break;
         }
+
         break;
     }
 

@@ -66,9 +66,163 @@ public class XmlEvent {
     {
       "en" => Etitele,
       "pl" => Etitelpl,
-      "de" => Etitel,
       _ => Etitel,
     };
+
+  public string? GetDescription(CultureInfo culture)
+    => culture.TwoLetterISOLanguageName switch
+    {
+      "en" => Ebeschreibunge,
+      "pl" => Ebeschreibungpl,
+      _ => Ebeschreibung,
+    };
+
+  public string? GetLocationName(CultureInfo culture)
+    => culture.TwoLetterISOLanguageName switch
+    {
+      "en" => Elocnamee,
+      "pl" => Elocnamepl,
+      _ => Elocname,
+    };
+
+  public string? GetLocationCity(CultureInfo culture)
+    => culture.TwoLetterISOLanguageName switch
+    {
+      _ => Elocort,
+    };
+
+  public string? GetLocationStreet(CultureInfo culture)
+    => culture.TwoLetterISOLanguageName switch
+    {
+      _ => Elocstrasse,
+    };
+
+  public string? GetLocationTel(CultureInfo culture)
+    => culture.TwoLetterISOLanguageName switch
+    {
+      _ => Eloctel,
+    };
+
+  public string? GetLocationFax(CultureInfo culture)
+    => culture.TwoLetterISOLanguageName switch
+    {
+      _ => Elocfax,
+    };
+
+  public string? GetLocationEmail(CultureInfo culture)
+    => culture.TwoLetterISOLanguageName switch
+    {
+      _ => Elocemail,
+    };
+
+  public string? GetLocationWeb(CultureInfo culture)
+    => culture.TwoLetterISOLanguageName switch
+    {
+      _ => Elocweb,
+    };
+
+  public string? GetLocationZip(CultureInfo culture)
+    => culture.TwoLetterISOLanguageName switch
+    {
+      _ => Elocplz,
+    };
+
+  public DateTime GetStartDate()
+  {
+    var datumVon = DateOnly.FromDateTime(Edatumvon);
+    var zeitVon = Ezeitvon;
+
+    var parsedZeitVon = !string.IsNullOrWhiteSpace(zeitVon) ? $"{zeitVon}" : string.Empty;
+
+    return DateTime.Parse($"{datumVon} {parsedZeitVon}");
+  }
+
+  public DateTime GetEndDate()
+  {
+    var datumBis = DateOnly.FromDateTime(Edatumbis);
+    var zeitBis = Ezeitbis;
+
+    var parsedZeitBis = !string.IsNullOrWhiteSpace(zeitBis) ? $"{zeitBis}" : string.Empty;
+
+    return DateTime.Parse($"{datumBis} {parsedZeitBis}");
+  }
+
+  public string GetEventId() => Eventid;
+  public string GetTerminId() => Terminid;
+
+  public double? GetLatitude()
+  {
+    if (double.TryParse(Egeokoordlat, out var latitude))
+      return latitude;
+
+    return null;
+  }
+
+  public double? GetLongitude()
+  {
+    if (double.TryParse(Egeokoordlng, out var longitude))
+      return longitude;
+
+    return null;
+  }
+
+  public List<(int, string)> GetUserCategories(CultureInfo cultureInfo)
+  {
+    var categories = new List<(int, string)>();
+
+    var ids = new List<string?>()
+    {
+      Euserkategorieid, Euserkategorie2Id, Euserkategorie3Id, Euserkategorie4Id
+    };
+
+    var germanItems = new List<string?>()
+    {
+      Kategorienamed,
+      Euserkategorie2Name,
+      Euserkategorie3Name,
+      Euserkategorie4Name
+    };
+
+    var englishItems = new List<string?>()
+    {
+      Kategorienamee,
+      Euserkategorie2Namee,
+      Euserkategorie3Namee,
+      Euserkategorie4Namee
+    };
+
+    var polishItems = new List<string?>()
+    {
+      Kategorienamepl,
+      Euserkategorie2Namepl,
+      Euserkategorie3Namepl,
+      Euserkategorie4Namepl
+    };
+
+    switch (cultureInfo.TwoLetterISOLanguageName)
+    {
+      case "en":
+        AddParsedCategories(categories, ids, englishItems);
+        break;
+      case "pl":
+        AddParsedCategories(categories, ids, polishItems);
+        break;
+      default:
+        AddParsedCategories(categories, ids, germanItems);
+        break;
+    }
+
+    return categories;
+  }
+
+  private void AddParsedCategories(List<(int, string)> categories, List<string?> ids, List<string?> names)
+  {
+    for (var i = 0; i < ids.Count; i++)
+    {
+      if (int.TryParse(ids[i], out var parsedId) && !string.IsNullOrWhiteSpace(names[i]))
+        categories.Add((parsedId, names[i]!));
+    }
+  }
 
 	[XmlElement(ElementName="E_ID")]
 	public string? Eid { get; set; }

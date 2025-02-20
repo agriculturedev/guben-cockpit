@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Shared.Database;
 
@@ -11,11 +12,16 @@ namespace Database;
 public class GubenDbContextFactory : ICustomDbContextFactory<GubenDbContext>
 {
   private readonly string _connectionString;
+  private readonly bool _enableSensitiveDataLogging;
   private GubenDbContext? _dbContext;
 
-  public GubenDbContextFactory(string connectionString)
+  public GubenDbContextFactory(string connectionString, IConfiguration configuration)
   {
     _connectionString = connectionString;
+
+    var enableQueryLoggingString = configuration["Debugging:EnableQueryLogging"];
+    bool.TryParse(enableQueryLoggingString, out _enableSensitiveDataLogging);
+
     _dbContext = CreateDbContext();
   }
 
@@ -31,16 +37,22 @@ public class GubenDbContextFactory : ICustomDbContextFactory<GubenDbContext>
   {
     var dbOptions = new DbContextOptionsBuilder()
       .UseNpgsql(_connectionString,
-          builder =>
-          {
-            builder.SetPostgresVersion(17, 0);
-            builder.ConfigureDataSource(dataSourceBuilder => dataSourceBuilder.EnableDynamicJson());
-            builder.MigrationsAssembly(typeof(GubenDbContextFactory).Assembly.FullName);
-            builder.MigrationsHistoryTable("Migrations", GubenDbContext.DefaultSchema);
-          })
-      .EnableSensitiveDataLogging()
-      .LogTo(Console.WriteLine, (eventId, logLevel) => logLevel >= LogLevel.Information
-                                                       || eventId == RelationalEventId.DataReaderDisposing);
+        builder =>
+        {
+          builder.SetPostgresVersion(17, 0);
+          builder.ConfigureDataSource(dataSourceBuilder => dataSourceBuilder.EnableDynamicJson());
+          builder.MigrationsAssembly(typeof(GubenDbContextFactory).Assembly.FullName);
+          builder.MigrationsHistoryTable("Migrations", GubenDbContext.DefaultSchema);
+        });
+
+    if (_enableSensitiveDataLogging)
+      {
+        dbOptions
+          .EnableSensitiveDataLogging()
+          .LogTo(Console.WriteLine, (eventId, logLevel) => logLevel >= LogLevel.Information
+                                                           || eventId == RelationalEventId.DataReaderDisposing);
+      }
+
 
     _dbContext = new GubenDbContext(dbOptions.Options);
 

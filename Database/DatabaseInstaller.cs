@@ -29,7 +29,7 @@ public static class DatabaseInstaller
 
     services.AddRepositories();
     services.AddScoped<ICustomDbContextFactory<GubenDbContext>, GubenDbContextFactory>(_ =>
-      new GubenDbContextFactory(connectionString));
+      new GubenDbContextFactory(connectionString, configuration));
 
     services.AddDbContext<GubenDbContext>(options =>
     {
@@ -41,10 +41,16 @@ public static class DatabaseInstaller
             builder.ConfigureDataSource(dataSourceBuilder => dataSourceBuilder.EnableDynamicJson());
             builder.MigrationsAssembly(typeof(GubenDbContextFactory).Assembly.FullName);
             builder.MigrationsHistoryTable("Migrations", GubenDbContext.DefaultSchema);
-          })
-        .EnableSensitiveDataLogging()
-        .LogTo(Console.WriteLine, (eventId, logLevel) => logLevel >= LogLevel.Information
-                                                         || eventId == RelationalEventId.DataReaderDisposing);
+          });
+
+      var enableQueryLoggingString = configuration["Debugging:EnableQueryLogging"];
+      if (bool.TryParse(enableQueryLoggingString, out bool result) && result)
+      {
+        options
+          .EnableSensitiveDataLogging()
+          .LogTo(Console.WriteLine, (eventId, logLevel) => logLevel >= LogLevel.Information
+                                                           || eventId == RelationalEventId.DataReaderDisposing);
+      }
 
       new GubenDbContext(options.Options);
     });

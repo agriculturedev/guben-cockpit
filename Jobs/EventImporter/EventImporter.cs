@@ -16,12 +16,19 @@ namespace Jobs.EventImporter;
 
 public class EventImporter
 {
-  private static CultureInfo German = new CultureInfo("de");
+  private static readonly CultureInfo German = new CultureInfo("de");
+  private static readonly CultureInfo English = new CultureInfo("en");
+  private static readonly CultureInfo Polish = new CultureInfo("pl");
+
+  public static readonly List<CultureInfo> Cultures = [German, English, Polish];
 
   private readonly IEventRepository _eventRepository;
   private readonly ILocationRepository _locationRepository;
   private readonly ICategoryRepository _categoryRepository;
   private readonly ICustomDbContextFactory<GubenDbContext> _dbContextFactory;
+
+  private readonly LocationImporter _locationImporter;
+  private readonly CategoryImporter _categoryImporter;
 
   private readonly System.Net.Http.HttpClient _httpClient;
 
@@ -36,6 +43,9 @@ public class EventImporter
     _dbContextFactory = dbContextFactory;
     _categoryRepository = categoryRepository;
     _httpClient = new System.Net.Http.HttpClient();
+
+    _locationImporter = new LocationImporter(locationRepository, dbContextFactory);
+    _categoryImporter = new CategoryImporter(categoryRepository, dbContextFactory);
   }
 
   // TODO: batching, see csv importer zorgi
@@ -47,17 +57,20 @@ public class EventImporter
 
       var events = await FetchEventsFromXml();
       XmlSerializer serializer = new XmlSerializer(typeof(XmlEvent));
-      foreach (var e in events)
+      foreach (var e in events[new Range(0, 100)])
       {
-        try
+        foreach (var cultureInfo in Cultures)
         {
-          using StringReader reader = new StringReader(e.ToString());
-          var deserializedObject = (XmlEvent)serializer.Deserialize(reader)!;
-          await ProcessEventAsyncV2(deserializedObject);
-        }
-        catch (Exception ex)
-        {
-          Console.WriteLine(ex);
+          try
+          {
+            using StringReader reader = new StringReader(e.ToString());
+            var deserializedObject = (XmlEvent)serializer.Deserialize(reader)!;
+            await ProcessEventAsync(deserializedObject, cultureInfo);
+          }
+          catch (Exception ex)
+          {
+            Console.WriteLine(ex);
+          }
         }
       }
 
@@ -76,112 +89,50 @@ public class EventImporter
     return xml.Elements("EVENT").ToList();
   }
 
-  private async Task ProcessEventAsync(XElement e)
+  private async Task ProcessEventAsync(XmlEvent e, CultureInfo cultureInfo)
   {
-    try
-    {
-      await SaveLocationAsync(e);
-      await SaveCategoriesAsync(e);
-      await SaveEventAsync(e);
-    }
-    catch (Exception ex)
-    {
-      Console.Error.WriteLine($"Error processing event: {ex.Message}");
-    }
+    await _locationImporter.ImportLocation(e);
+    await _categoryImporter.ImportCategory(e);
+    await SaveEventAsync(e, cultureInfo);
   }
 
-  private async Task ProcessEventAsyncV2(XmlEvent e)
-  {
-    try
-    {
-      Console.WriteLine(e.GetTitle(German));
-    }
-    catch (Exception ex)
-    {
-      Console.Error.WriteLine($"Error processing event: {ex.Message}");
-    }
-  }
-
-  private async Task SaveEventAsync(XElement e)
+  private async Task SaveEventAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)
   {
     await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async dbContext =>
     {
-      var coords = ParseCoordinates(e);
-      var location = await GetLocationAsync(e);
+      var coords = ParseCoordinates(xmlEvent);
+      var location = await GetLocationAsync(xmlEvent, German);
       if (location == null)
       {
         Console.WriteLine("Failed to resolve location.");
         return;
       }
 
-      var categories = await GetCategoriesAsync(e);
-      var eventDetails = ParseEventDetails(e);
+      var categories = await GetCategoriesAsync(xmlEvent, German);
 
       var (eventResult, @event) = Event.Create(
-        eventDetails.EventId,
-        eventDetails.TerminId,
-        eventDetails.Title,
-        eventDetails.Description,
-        eventDetails.StartDate,
-        eventDetails.EndDate,
+        xmlEvent.GetEventId(),
+        xmlEvent.GetTerminId(),
+        xmlEvent.GetTitle(cultureInfo) ?? string.Empty,
+        xmlEvent.GetDescription(cultureInfo) ?? string.Empty,
+        xmlEvent.GetStartDate(),
+        xmlEvent.GetEndDate(),
         location,
         coords,
         new List<Url>(),
-        categories
+        categories,
+        cultureInfo
       );
 
       if (eventResult.IsSuccessful)
       {
-        await UpsertEventAsync(@event);
+        await UpsertEventAsync(@event, cultureInfo);
       }
       else
       {
         throw new Exception("failed to create event");
       }
     });
-  }
-
-  private async Task SaveLocationAsync(XElement xml)
-  {
-    var locationDetails = ParseLocationDetails(xml);
-    if (string.IsNullOrWhiteSpace(locationDetails.Name))
-    {
-      Console.WriteLine("Location name is empty.");
-      return;
-    }
-
-    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async dbContext =>
-    {
-      var (locationResult, location) = Location.Create(
-        locationDetails.Name,
-        locationDetails.City,
-        locationDetails.Street,
-        locationDetails.Tel,
-        locationDetails.Fax,
-        locationDetails.Email,
-        locationDetails.Web,
-        locationDetails.Zip
-      );
-
-      if (locationResult.IsFailure)
-      {
-        Console.WriteLine($"Creating location failed: {locationDetails}");
-        throw new Exception("Failed to create location");
-      }
-
-      await UpsertLocationAsync(location);
-    });
-  }
-
-  private async Task SaveCategoriesAsync(XElement xml)
-  {
-    var categories = ParseCategoryDetails(xml)
-      .Where(details => details.Id.HasValue && !string.IsNullOrWhiteSpace(details.Name))
-      .Select(details => Category.Create(details.Id.Value, details.Name))
-      .Where(result => result.IsSuccessful)
-      .Select(result => result.Value);
-
-    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async dbContext => { await UpsertCategoriesAsync(categories.ToList()); });
   }
 
   private Coordinates? ParseCoordinates(XElement xml)
@@ -199,18 +150,37 @@ public class EventImporter
     return coords;
   }
 
-  private async Task<Location?> GetLocationAsync(XElement xml)
+  private Coordinates? ParseCoordinates(XmlEvent xmlEvent)
   {
-    var name = (string?)xml.Element("E_LOC_NAME");
+    var latitude = xmlEvent.GetLatitude();
+    var longitude = xmlEvent.GetLongitude();
+
+    if (latitude.HasValue && longitude.HasValue)
+    {
+      var (coordsResult, coords) = Coordinates.Create(latitude.Value, longitude.Value);
+      if (coordsResult.IsFailure)
+      {
+        Console.WriteLine($"Creating coordinates failed with values: {latitude}, {longitude}");
+        return null;
+      }
+      return coords;
+    }
+
+    return null;
+  }
+
+  private async Task<Location?> GetLocationAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)
+  {
+    var name = xmlEvent.GetLocationName(cultureInfo);
     return !string.IsNullOrWhiteSpace(name)
       ? await _locationRepository.FindByName(name)
       : null;
   }
 
-  private async Task<List<Category>> GetCategoriesAsync(XElement xml)
+  private async Task<List<Category>> GetCategoriesAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)
   {
-    var categoryNames = ParseCategoryDetails(xml)
-      .Select(details => details.Name)
+    var categoryNames = xmlEvent.GetUserCategories(cultureInfo)
+      .Select(details => details.Item2)
       .Where(name => !string.IsNullOrWhiteSpace(name))
       .Distinct()
       .ToList();
@@ -228,108 +198,19 @@ public class EventImporter
     return categories;
   }
 
-  private async Task UpsertEventAsync(Event @event)
+  private async Task UpsertEventAsync(Event @event, CultureInfo cultureInfo)
   {
-    try
+    var existingEvent = await _eventRepository.GetByEventIdAndTerminId(@event.EventId, @event.TerminId);
+    if (existingEvent != null)
     {
-      var existingEvent = await _eventRepository.GetByEventIdAndTerminId(@event.EventId, @event.TerminId);
-      if (existingEvent != null)
-      {
-        Console.WriteLine($"Updating existing event: {@event.Id}");
-        existingEvent.Update(@event);
-        return;
-      }
-
-      Console.WriteLine($"Creating new event: {@event.Id}");
-      await _eventRepository.SaveAsync(@event);
-    }
-    catch (Exception ex)
-    {
-      Console.Error.WriteLine($"Error saving event {@event.Id}: {ex.Message}");
-      throw;
-    }
-  }
-
-  private async Task UpsertLocationAsync(Location location)
-  {
-    var existingLocation = _locationRepository.Find(location);
-    if (existingLocation != null)
-    {
-      Console.WriteLine($"Updating existing location: {location.Name}");
-      // TODO: Update logic
+      Console.WriteLine($"Updating existing event: {@event.Id}");
+      var updateResult = existingEvent.Update(@event, cultureInfo);
+      if (updateResult.IsFailure)
+        throw new Exception($"Failed to update existing event {updateResult.ValidationMessages}");
       return;
     }
 
-    Console.WriteLine($"Creating new location: {location.Id}");
-    await _locationRepository.SaveAsync(location);
-  }
-
-  private async Task UpsertCategoriesAsync(IEnumerable<Category> categories)
-  {
-    foreach (var category in categories)
-    {
-      await UpsertCategoryAsync(category);
-    }
-  }
-
-  private async Task UpsertCategoryAsync(Category category)
-  {
-    var existingCategory = await _categoryRepository.GetByCategoryId(category.CategoryId);
-    if (existingCategory != null)
-    {
-      Console.WriteLine($"Updating existing category: {category.Id}");
-      // TODO: Update logic
-      return;
-    }
-
-    Console.WriteLine($"Creating new category: {category.Id}");
-    await _categoryRepository.SaveAsync(category);
-  }
-
-  private (string EventId, string TerminId, string Title, string Description, DateTime StartDate, DateTime EndDate)
-    ParseEventDetails(XElement e)
-  {
-    var datumVon = (string?)e.Element("E_DATUM_VON");
-    var datumBis = (string?)e.Element("E_DATUM_BIS");
-
-    var zeitVon = (string?)e.Element("E_ZEIT_VON");
-    var zeitBis = (string?)e.Element("E_ZEIT_BIS");
-
-    var parsedZeitVon = !string.IsNullOrWhiteSpace(zeitVon) ? $"T{zeitVon}" : string.Empty;
-    var parsedZeitBis = !string.IsNullOrWhiteSpace(zeitBis) ? $"T{zeitBis}" : string.Empty;
-
-    return (
-      EventId: (string?)e.Element("EVENT_ID") ?? "",
-      TerminId: (string?)e.Element("TERMIN_ID") ?? "",
-      Title: (string?)e.Element("E_TITEL") ?? "",
-      Description: (string?)e.Element("E_BESCHREIBUNG") ?? "",
-      StartDate: DateTime.Parse($"{datumVon}{parsedZeitVon}"),
-      EndDate: DateTime.Parse($"{datumBis}{parsedZeitBis}")
-    );
-  }
-
-  private (string Name, string City, string Street, string Tel, string Fax, string Email, string Web, string Zip)
-    ParseLocationDetails(XElement xml)
-  {
-    return (
-      Name: (string?)xml.Element("E_LOC_NAME") ?? "",
-      City: (string?)xml.Element("E_LOC_ORT") ?? "",
-      Street: (string?)xml.Element("E_LOC_STRASSE") ?? "",
-      Tel: (string?)xml.Element("E_LOC_TEL") ?? "",
-      Fax: (string?)xml.Element("E_LOC_FAX") ?? "",
-      Email: (string?)xml.Element("E_LOC_EMAIL") ?? "",
-      Web: (string?)xml.Element("E_LOC_WEB") ?? "",
-      Zip: (string?)xml.Element("E_LOC_PLZ") ?? ""
-    );
-  }
-
-  private IEnumerable<(int? Id, string? Name)> ParseCategoryDetails(XElement xml)
-  {
-    yield return (xml.GetIntAttribute("E_USERKATEGORIE_ID"), (string?)xml.Element("KATEGORIE_NAME_D"));
-    var categoryElements = new[] { "E_USERKATEGORIE2", "E_USERKATEGORIE3", "E_USERKATEGORIE4" };
-    foreach (var element in categoryElements)
-    {
-      yield return (xml.GetIntAttribute(element + "_ID"), (string?)xml.Element(element + "_Name"));
-    }
+    Console.WriteLine($"Creating new event: {@event.Id}");
+    await _eventRepository.SaveAsync(@event);
   }
 }

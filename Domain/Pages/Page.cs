@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using System.Globalization;
 using Shared.Domain;
 using Shared.Domain.Validation;
 
@@ -23,31 +23,18 @@ public sealed class Page : Entity<string>
     return new Page(id);
   }
 
-  public Result UpdateTranslation(string languageKey, string title, string description)
+  public Result UpdateTranslation(string title, string description, CultureInfo cultureInfo)
   {
     var (result, pageI18NData) = PageI18NData.Create(title, description);
     if (result.IsFailure)
       return result;
 
-    Translations[languageKey] = pageI18NData;
+    Translations[cultureInfo.TwoLetterISOLanguageName] = pageI18NData;
     return Result.Ok();
   }
-}
 
-public sealed class PageI18NData
-{
-  public string Title { get; private set; }
-  public string Description { get; private set; }
-
-  [JsonConstructor]
-  private PageI18NData(string title, string description)
+  public void UpsertTranslation(PageI18NData data, CultureInfo cultureInfo)
   {
-    Title = title;
-    Description = description;
-  }
-
-  public static Result<PageI18NData> Create(string title, string description)
-  {
-    return new PageI18NData(title, description);
+    Translations[cultureInfo.TwoLetterISOLanguageName] = data;
   }
 }
