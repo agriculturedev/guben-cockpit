@@ -28,4 +28,6 @@ public class TranslationKeys
   public const string UserNotFound = "UserNotFound";
   public const string UserNotLoggedIn = "UserNotLoggedIn";
   public const string AtLeastOneLayerSourceIsRequired = "AtLeastOneLayerSourceIsRequired";
+  public const string EventNotFound = "EventNotFound";
+  public const string CategoryNotFound = "CategoryNotFound";
 }
