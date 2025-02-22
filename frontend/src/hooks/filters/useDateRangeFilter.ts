@@ -79,7 +79,7 @@ function getDatesFromPreset(dateFilter: Option<DateFilterPreset>): [Option<Date>
 
     case DateFilterPreset.THIS_WEEK:
       const startOfWeek = new Date(today);
-      startOfWeek.setDate(today.getDate() - today.getDay());
+      startOfWeek.setDate(today.getDate() - today.getDay() + 1 );
       const endOfWeek = new Date(startOfWeek);
       endOfWeek.setDate(startOfWeek.getDate() + 6);
       return [startOfWeek, endOfWeek];

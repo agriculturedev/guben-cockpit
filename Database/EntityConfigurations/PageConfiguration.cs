@@ -34,7 +34,6 @@ public class PageConfiguration : IEntityTypeConfiguration<Page>
         jsonOptions)! // Clone via JSON
     );
 
-
     // Apply the conversion and comparer to the Translations property
     builder.Property(p => p.Translations)
       .HasColumnType("jsonb")

@@ -23,7 +23,6 @@ public class EventImporter
   public static readonly List<CultureInfo> Cultures = [German, English, Polish];
 
   private readonly IEventRepository _eventRepository;
-  private readonly ILocationRepository _locationRepository;
   private readonly ICategoryRepository _categoryRepository;
   private readonly ICustomDbContextFactory<GubenDbContext> _dbContextFactory;
 
@@ -39,7 +38,6 @@ public class EventImporter
     ICustomDbContextFactory<GubenDbContext> dbContextFactory, ICategoryRepository categoryRepository)
   {
     _eventRepository = eventRepository;
-    _locationRepository = locationRepository;
     _dbContextFactory = dbContextFactory;
     _categoryRepository = categoryRepository;
     _httpClient = new System.Net.Http.HttpClient();
