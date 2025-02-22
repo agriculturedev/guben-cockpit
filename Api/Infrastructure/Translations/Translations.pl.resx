@@ -200,6 +200,12 @@ value   : The object must be serialized into a byte array
   <data name="AtLeastOneLayerSourceIsRequired" xml:space="preserve">
     <value>Wymagane jest co najmniej jedno źródło warstwy</value>
   </data>
+  <data name="EventNotFound" xml:space="preserve">
+    <value>Nie znaleziono wydarzenia</value>
+  </data>
+  <data name="CategoryNotFound" xml:space="preserve">
+    <value>Nie znaleziono kategorii</value>
+  </data>
   <data name="NoValidTranslationsFound" xml:space="preserve">
     <value>Nie znaleziono prawidłowych tłumaczeń</value>
   </data>

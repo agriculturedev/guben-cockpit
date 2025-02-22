@@ -1,6 +1,4 @@
-﻿using Domain.Events;
-using Domain.Events.repository;
-using Domain.Projects;
+﻿using Domain.Projects;
 using Domain.Projects.repository;
 using Microsoft.EntityFrameworkCore;
 using Shared.Database;
@@ -25,12 +23,12 @@ public class ProjectRepository
       .FirstOrDefaultAsync(a => a.Id.Equals(id));
   }
 
-  public IEnumerable<Project> GetAllncludingUnpublished()
+  public IEnumerable<Project> GetAllIncludingUnpublished()
   {
     return Set
       .AsNoTracking()
       .AsSplitQuery()
-      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllncludingUnpublished))
+      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllIncludingUnpublished))
       .AsEnumerable();
   }
 
@@ -47,6 +45,14 @@ public class ProjectRepository
   {
     return ModifiedSet
       .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllByIds))
+      .Where(p => ids.Contains(p.Id))
+      .ToListAsync();
+  }
+
+  public Task<List<Project>> GetAllByIdsIncludingUnpublished(IList<string> ids)
+  {
+    return Set
+      .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllByIdsIncludingUnpublished))
       .Where(p => ids.Contains(p.Id))
       .ToListAsync();
   }
