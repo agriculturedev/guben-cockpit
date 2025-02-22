@@ -27,7 +27,6 @@ namespace Database.Migrations
                 'Description', ""Description""
               )
             )
-            WHERE ""Title"" IS NOT NULL OR ""Description"" IS NOT NULL;
           ");
 
           migrationBuilder.AlterColumn<Dictionary<string, PageI18NData>>(

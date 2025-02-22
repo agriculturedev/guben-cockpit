@@ -92,4 +92,4 @@ Assigning “collections” & “data sets” per module (dashboard, map, events
 
 # extra questions
 
-- what do we do when an event only has german translations and the user is asking for english, do we not show these, do we show the german translation?
+- what do we do when an event only has german translations and the user is asking for english, do we not show these, do we show the german translation? -> `fallback to german`

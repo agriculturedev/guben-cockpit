@@ -73,7 +73,7 @@ internal static class EventRepositoryExtensions
     if (filter.LocationQuery?.Length > 0)
       query = query.Where(w =>
         filter.LocationQuery.Any(l =>
-          EF.Functions.Like(w.Location.Name, "%" + l + "%")
+          EF.Functions.Like(w.Location.Translations[cultureInfo.TwoLetterISOLanguageName].Name, "%" + l + "%")
           || (w.Location.City != null
               && EF.Functions.Like(w.Location.City, "%" + l + "%"))));
 

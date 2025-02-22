@@ -44,19 +44,19 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
       endDate, Location location, Coordinates.Coordinates? coordinates, List<Url> urls,
     List<Category.Category> categories, CultureInfo cultureInfo)
   {
-    var _event = new Event(eventId, terminId, startDate, endDate, coordinates);
+    var @event = new Event(eventId, terminId, startDate, endDate, coordinates);
 
     var (translationResult, translation) = EventI18NData.Create(title, description);
     if (translationResult.IsFailure)
       return translationResult;
 
-    _event.UpdateTranslation(translation, cultureInfo);
-    _event.UpdateLocation(location);
-    _event.AddUrls(urls);
-    _event.AddCategories(categories);
+    @event.UpdateTranslation(translation, cultureInfo);
+    @event.UpdateLocation(location);
+    @event.AddUrls(urls);
+    @event.AddCategories(categories);
     // TODO: use UpdateTitle
 
-    return Result.Ok(_event);
+    return Result.Ok(@event);
   }
 
   public void UpdateTranslation(EventI18NData data, CultureInfo cultureInfo)

@@ -1,8 +1,9 @@
-using System.Globalization;
 using Database;
+using Domain;
 using Domain.Locations;
 using Domain.Locations.repository;
 using Shared.Database;
+using Shared.Domain.Validation;
 
 namespace Jobs.EventImporter;
 
@@ -18,83 +19,114 @@ public class LocationImporter
     _dbContextFactory = dbContextFactory;
   }
 
-  public async Task ImportLocation(XmlEvent @event)
+  public async Task<Result<Location>> ImportLocation(XmlEvent @event)
   {
-    // foreach (var cultureInfo in EventImporter.Cultures)
-    // {
-      try
-      {
-        await SaveLocationAsync(@event, EventImporter.Cultures[0]); // TODO@JOREN: german only for now, but needs translations too
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine(ex);
-      }
-    // }
-  }
+    Location? finalLocation = null;
 
-  private async Task SaveLocationAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)
-  {
-    var locationDetails = ParseLocationDetails(xmlEvent, cultureInfo);
-    if (string.IsNullOrWhiteSpace(locationDetails.Name))
+    try
     {
-      Console.WriteLine("Location name is empty.");
-      return;
+      var (result, location) = await SaveLocationAsync(@event);
+      if (result.IsSuccessful)
+        finalLocation = location;
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine(ex);
     }
 
-    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async dbContext =>
+    if (finalLocation is not null)
+      return finalLocation;
+
+    return Result.Error("Something went wrong when importing location");
+  }
+
+  private async Task<Result<Location>> SaveLocationAsync(XmlEvent xmlEvent)
+  {
+    var (i18Nresult, locationI18NData) = GetI18NData(xmlEvent);
+    if (i18Nresult.IsFailure)
+      return i18Nresult;
+
+    Location? finalLocation = null;
+    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async (_) =>
     {
       var (locationResult, location) = Location.Create(
-        locationDetails.Name,
-        locationDetails.City,
-        locationDetails.Street,
-        locationDetails.Tel,
-        locationDetails.Fax,
-        locationDetails.Email,
-        locationDetails.Web,
-        locationDetails.Zip
+        xmlEvent.GetLocationCity(),
+        xmlEvent.GetLocationStreet(),
+        xmlEvent.GetLocationTel(),
+        xmlEvent.GetLocationFax(),
+        xmlEvent.GetLocationEmail(),
+        xmlEvent.GetLocationWeb(),
+        xmlEvent.GetLocationZip(),
+        locationI18NData
       );
 
       if (locationResult.IsFailure)
       {
-        Console.WriteLine($"Creating location failed: {locationDetails}");
+        Console.WriteLine($"Creating location failed {locationResult.ValidationMessages}");
         throw new Exception("Failed to create location");
       }
 
-      await UpsertLocationAsync(location);
+      finalLocation = await UpsertLocationAsync(location);
     });
+
+    if (finalLocation is not null)
+      return finalLocation;
+
+    return Result.Error("Something went wrong when upserting location.");
   }
 
-  private async Task UpsertLocationAsync(Location location)
+  private Result<Dictionary<string, LocationI18NData>> GetI18NData(XmlEvent xmlEvent)
   {
-    var existingLocation = _locationRepository.Find(location);
+    Dictionary<string, LocationI18NData> locationI18NData = new Dictionary<string, LocationI18NData>();
+
+    var englishName = xmlEvent.GetLocationName(EventImporter.English);
+    var germanName = xmlEvent.GetLocationName(EventImporter.German);
+    var polishName = xmlEvent.GetLocationName(EventImporter.Polish);
+
+    if (!string.IsNullOrWhiteSpace(germanName))
+    {
+      var (germanResult, germanData) = LocationI18NData.Create(germanName);
+      if (germanResult.IsFailure)
+        return germanResult;
+
+      locationI18NData[EventImporter.German.TwoLetterISOLanguageName] = germanData;
+    }
+    else
+    {
+      return Result.Error(TranslationKeys.NameCannotBeEmpty);
+    }
+
+    if (!string.IsNullOrWhiteSpace(englishName))
+    {
+      var (englishResult, englishData) = LocationI18NData.Create(englishName);
+      if (englishResult.IsSuccessful)
+        locationI18NData[EventImporter.English.TwoLetterISOLanguageName] = englishData;
+    }
+
+    if (!string.IsNullOrWhiteSpace(polishName))
+    {
+      var (polishResult, polishData) = LocationI18NData.Create(polishName);
+      if (polishResult.IsSuccessful)
+        locationI18NData[EventImporter.Polish.TwoLetterISOLanguageName] = polishData;
+    }
+
+    return locationI18NData;
+  }
+
+  private async Task<Location> UpsertLocationAsync(Location location)
+  {
+    var existingLocation = await _locationRepository.FindByNameAndAddress(
+      location.Translations[EventImporter.German.TwoLetterISOLanguageName].Name, location.City, location.Street,
+      location.Zip, EventImporter.German);
     if (existingLocation != null)
     {
-      Console.WriteLine($"Updating existing location: {location.Name}");
+      Console.WriteLine($"Updating existing location: {location.Id}");
       // TODO: Update logic
-      return;
+      return existingLocation;
     }
 
     Console.WriteLine($"Creating new location: {location.Id}");
     await _locationRepository.SaveAsync(location);
-  }
-
-  private (string Name, string? City, string? Street, string? Tel, string? Fax, string? Email, string? Web, string? Zip)
-    ParseLocationDetails(XmlEvent xmlEvent, CultureInfo cultureInfo)
-  {
-    var name = xmlEvent.GetLocationName(cultureInfo);
-    if (string.IsNullOrWhiteSpace(name))
-      throw new Exception("location has no name, this is required");
-
-    return (
-      Name: name,
-      City: xmlEvent.GetLocationCity(cultureInfo),
-      Street: xmlEvent.GetLocationStreet(cultureInfo),
-      Tel: xmlEvent.GetLocationTel(cultureInfo),
-      Fax: xmlEvent.GetLocationFax(cultureInfo),
-      Email: xmlEvent.GetLocationEmail(cultureInfo),
-      Web: xmlEvent.GetLocationWeb(cultureInfo),
-      Zip: xmlEvent.GetLocationZip(cultureInfo)
-    );
+    return location;
   }
 }

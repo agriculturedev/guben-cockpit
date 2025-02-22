@@ -85,47 +85,19 @@ public class XmlEvent {
       _ => Elocname,
     };
 
-  public string? GetLocationCity(CultureInfo culture)
-    => culture.TwoLetterISOLanguageName switch
-    {
-      _ => Elocort,
-    };
+  public string? GetLocationCity() => Elocort;
 
-  public string? GetLocationStreet(CultureInfo culture)
-    => culture.TwoLetterISOLanguageName switch
-    {
-      _ => Elocstrasse,
-    };
+  public string? GetLocationStreet() => Elocstrasse;
 
-  public string? GetLocationTel(CultureInfo culture)
-    => culture.TwoLetterISOLanguageName switch
-    {
-      _ => Eloctel,
-    };
+  public string? GetLocationTel() => Eloctel;
 
-  public string? GetLocationFax(CultureInfo culture)
-    => culture.TwoLetterISOLanguageName switch
-    {
-      _ => Elocfax,
-    };
+  public string? GetLocationFax() => Elocfax;
 
-  public string? GetLocationEmail(CultureInfo culture)
-    => culture.TwoLetterISOLanguageName switch
-    {
-      _ => Elocemail,
-    };
+  public string? GetLocationEmail() => Elocemail;
 
-  public string? GetLocationWeb(CultureInfo culture)
-    => culture.TwoLetterISOLanguageName switch
-    {
-      _ => Elocweb,
-    };
+  public string? GetLocationWeb() => Elocweb;
 
-  public string? GetLocationZip(CultureInfo culture)
-    => culture.TwoLetterISOLanguageName switch
-    {
-      _ => Elocplz,
-    };
+  public string? GetLocationZip() => Elocplz;
 
   public DateTime GetStartDate()
   {

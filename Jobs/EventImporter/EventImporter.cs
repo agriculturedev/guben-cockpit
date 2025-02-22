@@ -16,9 +16,9 @@ namespace Jobs.EventImporter;
 
 public class EventImporter
 {
-  private static readonly CultureInfo German = new CultureInfo("de");
-  private static readonly CultureInfo English = new CultureInfo("en");
-  private static readonly CultureInfo Polish = new CultureInfo("pl");
+  public static readonly CultureInfo German = new CultureInfo("de");
+  public static readonly CultureInfo English = new CultureInfo("en");
+  public static readonly CultureInfo Polish = new CultureInfo("pl");
 
   public static readonly List<CultureInfo> Cultures = [German, English, Polish];
 
@@ -57,7 +57,7 @@ public class EventImporter
 
       var events = await FetchEventsFromXml();
       XmlSerializer serializer = new XmlSerializer(typeof(XmlEvent));
-      foreach (var e in events[new Range(0, 100)])
+      foreach (var e in events)
       {
         foreach (var cultureInfo in Cultures)
         {
@@ -91,22 +91,27 @@ public class EventImporter
 
   private async Task ProcessEventAsync(XmlEvent e, CultureInfo cultureInfo)
   {
-    await _locationImporter.ImportLocation(e);
+    var (locationResult, location) = await _locationImporter.ImportLocation(e);
+    if (locationResult.IsFailure)
+      throw new Exception("Location import failed");
+
     await _categoryImporter.ImportCategory(e);
-    await SaveEventAsync(e, cultureInfo);
+    await SaveEventAsync(e, location, cultureInfo);
   }
 
-  private async Task SaveEventAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)
+  private async Task SaveEventAsync(XmlEvent xmlEvent, Location location, CultureInfo cultureInfo)
   {
-    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async dbContext =>
+    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async context =>
     {
+      // var location = await _locationRepository.Get(locationId);
+      // if (location is null)
+      //   throw new Exception(TranslationKeys.LocationNotFound);
+
+      // add location to context manually otherwise ef tried to re-insert the same location
+      // because getting it from the db created a newly tracked instance for some reason
+      var locationInContext = context.Set<Location>().Attach(location).Entity;
+
       var coords = ParseCoordinates(xmlEvent);
-      var location = await GetLocationAsync(xmlEvent, German);
-      if (location == null)
-      {
-        Console.WriteLine("Failed to resolve location.");
-        return;
-      }
 
       var categories = await GetCategoriesAsync(xmlEvent, German);
 
@@ -117,7 +122,7 @@ public class EventImporter
         xmlEvent.GetDescription(cultureInfo) ?? string.Empty,
         xmlEvent.GetStartDate(),
         xmlEvent.GetEndDate(),
-        location,
+        locationInContext,
         coords,
         new List<Url>(),
         categories,
@@ -135,21 +140,6 @@ public class EventImporter
     });
   }
 
-  private Coordinates? ParseCoordinates(XElement xml)
-  {
-    var latitude = (double)xml.Element("E_GEOKOORD_LAT");
-    var longitude = (double)xml.Element("E_GEOKOORD_LNG");
-
-    var (coordsResult, coords) = Coordinates.Create(latitude, longitude);
-    if (coordsResult.IsFailure)
-    {
-      Console.WriteLine($"Creating coordinates failed with values: {latitude}, {longitude}");
-      return null;
-    }
-
-    return coords;
-  }
-
   private Coordinates? ParseCoordinates(XmlEvent xmlEvent)
   {
     var latitude = xmlEvent.GetLatitude();
@@ -163,18 +153,11 @@ public class EventImporter
         Console.WriteLine($"Creating coordinates failed with values: {latitude}, {longitude}");
         return null;
       }
+
       return coords;
     }
 
     return null;
-  }
-
-  private async Task<Location?> GetLocationAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)
-  {
-    var name = xmlEvent.GetLocationName(cultureInfo);
-    return !string.IsNullOrWhiteSpace(name)
-      ? await _locationRepository.FindByName(name)
-      : null;
   }
 
   private async Task<List<Category>> GetCategoriesAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)

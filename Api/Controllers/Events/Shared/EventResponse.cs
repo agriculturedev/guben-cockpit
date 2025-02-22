@@ -37,7 +37,7 @@ public struct EventResponse
       Description = i18NData.Description,
       StartDate = @event.StartDate,
       EndDate = @event.EndDate,
-      Location = LocationResponse.Map(@event.Location),
+      Location = LocationResponse.Map(@event.Location, cultureInfo),
       Coordinates = @event.Coordinates is not null ? CoordinatesResponse.Map(@event.Coordinates) : null,
       Urls = @event.Urls.Select(UrlResponse.Map),
       Categories = @event.Categories.Select(CategoryResponse.Map)

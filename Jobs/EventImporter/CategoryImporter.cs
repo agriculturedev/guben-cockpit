@@ -40,7 +40,7 @@ public class CategoryImporter
       .Where(result => result.IsSuccessful)
       .Select(result => result.Value);
 
-    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async dbContext => { await UpsertCategoriesAsync(categories.ToList()); });
+    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async (_) => { await UpsertCategoriesAsync(categories.ToList()); });
   }
 
   private async Task UpsertCategoriesAsync(IEnumerable<Category> categories)
