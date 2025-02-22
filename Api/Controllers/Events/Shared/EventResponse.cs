@@ -14,6 +14,7 @@ public struct EventResponse
 {
   public required Guid Id { get; set; }
   public required string EventId { get; set; }
+  public required string TerminId { get; set; }
   public required string Title { get; set; }
   public required string Description { get; set; }
   public required DateTime StartDate { get; set; }
@@ -33,6 +34,7 @@ public struct EventResponse
     {
       Id = @event.Id,
       EventId = @event.EventId,
+      TerminId = @event.TerminId,
       Title = i18NData.Title,
       Description = i18NData.Description,
       StartDate = @event.StartDate,

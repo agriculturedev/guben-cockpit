@@ -24,6 +24,7 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
     builder.Property(e => e.StartDate);
     builder.Property(e => e.EndDate);
+    builder.Property(e => e.Published);
     builder.Property(e => e.Coordinates)
       .HasConversion(new CoordinatesConverter());
 

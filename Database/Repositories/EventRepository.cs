@@ -16,15 +16,61 @@ public class EventRepository
   : EntityFrameworkRepository<Event, Guid, GubenDbContext>, IEventRepository
 {
   public EventRepository(ICustomDbContextFactory<GubenDbContext> dbContextFactory)
-    : base(dbContextFactory) { }
+    : base(dbContextFactory)
+  {
+    ModifiedSet = Set.Where(p => p.Published);
+  }
+
+  public Task<Event?> GetIncludingUnpublished(Guid id)
+  {
+    return Set
+      .TagWith(GetType().Name + '.' + nameof(GetIncludingUnpublished))
+      .IgnoreAutoIncludes()
+      .FirstOrDefaultAsync(a => a.Id.Equals(id));
+  }
+
+  public IEnumerable<Event> GetAllIncludingUnpublished()
+  {
+    return Set
+      .AsNoTracking()
+      .AsSplitQuery()
+      .TagWith(nameof(EventRepository) + "." + nameof(GetAllEvents))
+      .Include(e => e.Location)
+      .Include(e => e.Urls)
+      .Include(e => e.Categories)
+      .AsEnumerable();
+  }
+
+  public IEnumerable<Event> GetAllByIdsIncludingUnpublished(IList<Guid> ids)
+  {
+    return Set
+      .TagWith(nameof(EventRepository) + "." + nameof(GetAllByIdsIncludingUnpublished))
+      .Where(p => ids.Contains(p.Id))
+      .AsEnumerable();
+  }
 
    public async Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId)
     {
+      // TODO@JOREN: modifiedSet or not?
         return await Set
+            .AsSplitQuery()
+            .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminId))
             .Include(e => e.Location)
             .Include(e => e.Urls)
             .Include(e => e.Categories)
             .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
+    }
+
+    public IEnumerable<Event> GetAllEvents()
+    {
+      return ModifiedSet
+        .AsNoTracking()
+        .AsSplitQuery()
+        .TagWith(nameof(EventRepository) + "." + nameof(GetAllEvents))
+        .Include(e => e.Location)
+        .Include(e => e.Urls)
+        .Include(e => e.Categories)
+        .AsEnumerable();
     }
 
      public async Task<PagedResult<Event>> GetAllEventsPaged(
@@ -32,6 +78,7 @@ public class EventRepository
         EventFilterCriteria filter,
         CultureInfo cultureInfo)
     {
+      // TODO@JOREN: published only?
         var languageKey = cultureInfo.TwoLetterISOLanguageName;
         var parameters = new List<NpgsqlParameter>();
         var whereConditions = new List<string>();

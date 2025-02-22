@@ -201,6 +201,12 @@ value   : The object must be serialized into a byte array
     <value>Es ist mindestens eine Layer-Quelle erforderlich
 </value>
   </data>
+  <data name="EventNotFound" xml:space="preserve">
+    <value>Veranstaltung nicht gefunden</value>
+  </data>
+  <data name="CategoryNotFound" xml:space="preserve">
+    <value>Kategorie nicht gefunden</value>
+  </data>
   <data name="NoValidTranslationsFound" xml:space="preserve">
     <value>Keine gültigen Übersetzungen gefunden</value>
   </data>

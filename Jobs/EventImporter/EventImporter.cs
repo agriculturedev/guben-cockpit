@@ -192,6 +192,7 @@ public class EventImporter
     }
 
     Console.WriteLine($"Creating new event: {@event.Id}");
+    @event.SetPublishedState(true);
     await _eventRepository.SaveAsync(@event);
   }
 }
