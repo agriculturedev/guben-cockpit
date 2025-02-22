@@ -10,6 +10,8 @@ using Shared.Domain;
 
 namespace Database.Repositories;
 
+// TODO@JOREN: simplify below, use EF where possible instead of raw sql
+
 public class EventRepository
   : EntityFrameworkRepository<Event, Guid, GubenDbContext>, IEventRepository
 {
