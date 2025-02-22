@@ -2,6 +2,9 @@ namespace Api.Infrastructure.Keycloak;
 
 public static class KeycloakPolicies
 {
+  public static string[] AllRoles =
+    [ViewUsers, ProjectContributor, PublishProjects, EventContributor, PublishEvents, DashboardManager, PageManager];
+
   #region Users
 
   public const string ViewUsers = "view_users";
