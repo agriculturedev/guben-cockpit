@@ -6,20 +6,24 @@ import ProjectDialog from "./projectDialog";
 import { useTranslation } from "react-i18next";
 
 export default function PageBody() {
-  const {t} = useTranslation('common');
+  const { t } = useTranslation('common');
   const pagination = usePagination();
 
-  console.log(pagination.pageSize)
-  const {data} = useProjectsGetAll({
+  const { data } = useProjectsGetAll({
     queryParams: {
       pageSize: pagination.pageSize,
       pageNumber: pagination.page
     }
   });
 
+  console.log(data?.results);
+
   return (
-    <div className="flex flex-col gap-8">
-      <h1 className="text-4xl text-black">{t("Marktplatz")}</h1>
+    <section className="mt-8 flex flex-col gap-4">
+      <h1 className="text-4xl text-black">
+        {t("Marktplatz")}
+      </h1>
+
       <PaginationContainer
         nextPage={pagination.nextPage}
         previousPage={pagination.previousPage}
@@ -30,26 +34,27 @@ export default function PageBody() {
         pageSize={pagination.pageSize}
         page={pagination.page}
       >
-        <div className="columns-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {data?.results.map(p => (
             <ProjectDialog project={p}>
-              <div className="my-2 rounded-lg shadow-lg overflow-hidden group">
+              <div className="relative h-full flex flex-col justify-between rounded-lg overflow-hidden group">
                 {p.imageUrl &&
-                  <div className="relative">
-                    <img className="h-full w-full object-cover group-hover:bg-neutral-500" src={p.imageUrl} alt="" />
-                    <div className="absolute top-0 left-0 w-full h-full group-hover:bg-gradient-to-tr from-[rgba(0,0,0,0.2)] to-transparent"></div>
-                  </div>
+                  <>
+                    <img src={p.imageUrl} className="object-cover w-full h-full" />
+                    <div className="absolute left-0 top-0 z-10 w-full h-full hidden group-hover:block bg-[rgba(0,0,0,.4)]" />
+                  </>
                 }
 
-                <div className="text-white bg-neutral-800 p-4 flex gap-4">
-                  <p className="text-lg text-left">{p.title}</p>
-                  <ExternalLinkIcon  />
+                <div className="absolute bottom-0 left-0 w-full flex gap-2 items-center p-2 z-20 bg-neutral-800 text-white" >
+                  <p className="text-left">{p.title}</p>
                 </div>
+
+                <ExternalLinkIcon className="absolute right-4 top-4 text-white z-20 group-hover:visible invisible size-sm" />
               </div>
             </ProjectDialog>
           ))}
         </div>
       </PaginationContainer>
-    </div>
+    </section>
   )
 }

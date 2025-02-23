@@ -8,7 +8,7 @@ export const Route = createLazyFileRoute('/projects')({
 
 function Component() {
   return (
-    <main className="p-8 bg-white h-full flex flex-col gap-12">
+    <main className="p-8">
       <PageHeader />
       <PageBody />
     </main>
