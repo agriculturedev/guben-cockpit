@@ -4,7 +4,6 @@ using Domain.Events;
 using Domain.Events.repository;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using NpgsqlTypes;
 using Shared.Database;
 using Shared.Domain;
 
@@ -111,18 +110,6 @@ public class EventRepository
                 )::text) LIKE @titleQuery");
         }
 
-        // Date range filter
-        if (filter.StartDateQuery.HasValue && filter.EndDateQuery.HasValue)
-        {
-            var startDate = filter.StartDateQuery.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
-            var endDate = filter.EndDateQuery.Value.ToDateTime(TimeOnly.MaxValue, DateTimeKind.Utc);
-
-            parameters.Add(new NpgsqlParameter("startDate", NpgsqlDbType.Date) { Value = startDate });
-            parameters.Add(new NpgsqlParameter("endDate", NpgsqlDbType.Date) { Value = endDate });
-
-            whereConditions.Add(@"e.""StartDate"" <= @endDate AND e.""EndDate"" >= @startDate");
-        }
-
         // Category filter
         if (filter.CategoryIdQuery.HasValue)
         {
@@ -205,14 +192,33 @@ public class EventRepository
         parameters.Add(new NpgsqlParameter("offset", (pagination.PageNumber - 1) * pagination.PageSize));
 
         // Execute data query
-        var events = await Set
-            .FromSqlRaw(sql, parameters.ToArray())
-            .Include(e => e.Location)
-            .Include(e => e.Urls)
-            .Include(e => e.Categories)
-            .AsSplitQuery()
-            .AsNoTracking()
-            .ToListAsync();
+        var eventsQuery = Set
+          .FromSqlRaw(sql, parameters.ToArray())
+          .Include(e => e.Location)
+          .Include(e => e.Urls)
+          .Include(e => e.Categories)
+          .AsSplitQuery()
+          .AsNoTracking();
+            // .ToListAsync();
+
+        // Date range filter
+        if (filter.StartDateQuery.HasValue && filter.EndDateQuery.HasValue)
+        {
+          var startDate = filter.StartDateQuery.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+          var endDate = filter.EndDateQuery.Value.ToDateTime(TimeOnly.MaxValue, DateTimeKind.Utc);
+          eventsQuery = eventsQuery.Where(w =>
+            w.StartDate <= endDate && w.EndDate >= startDate);
+
+          // var startDate = filter.StartDateQuery.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+          // var endDate = filter.EndDateQuery.Value.ToDateTime(TimeOnly.MaxValue, DateTimeKind.Utc);
+          //
+          // parameters.Add(new NpgsqlParameter("startDate", NpgsqlDbType.Date) { Value = startDate });
+          // parameters.Add(new NpgsqlParameter("endDate", NpgsqlDbType.Date) { Value = endDate });
+          //
+          // whereConditions.Add(@"e.""StartDate"" <= @endDate AND e.""EndDate"" >= @startDate");
+        }
+
+        var events = await eventsQuery.ToListAsync();
 
         // Execute count query
         var countQuery = $@"
