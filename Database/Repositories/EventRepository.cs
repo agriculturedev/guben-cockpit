@@ -49,16 +49,27 @@ public class EventRepository
       .AsEnumerable();
   }
 
-   public async Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId)
+   public Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId)
     {
       // TODO@JOREN: modifiedSet or not?
-        return await Set
-            .AsSplitQuery()
-            .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminId))
-            .Include(e => e.Location)
-            .Include(e => e.Urls)
-            .Include(e => e.Categories)
-            .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
+      return ModifiedSet
+          .AsSplitQuery()
+          .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminId))
+          .Include(e => e.Location)
+          .Include(e => e.Urls)
+          .Include(e => e.Categories)
+          .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
+    }
+
+    public Task<Event?> GetByEventIdAndTerminIdIncludingUnpublished(string eventId, string terminId)
+    {
+      return Set
+        .AsSplitQuery()
+        .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminId))
+        .Include(e => e.Location)
+        .Include(e => e.Urls)
+        .Include(e => e.Categories)
+        .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
     }
 
     public IEnumerable<Event> GetAllEvents()
@@ -128,7 +139,7 @@ public class EventRepository
             for (var i = 0; i < filter.LocationQuery.Length; i++)
             {
                 var paramName = $"location{i}";
-                parameters.Add(new NpgsqlParameter(paramName, $"%{filter.LocationQuery[i]}%"));
+                parameters.Add(new NpgsqlParameter(paramName, $"%{filter.LocationQuery[i].ToLowerInvariant()}%"));
 
                 locationConditions.Add($@"
                     LOWER(jsonb_path_query_first(
@@ -234,20 +245,20 @@ public class EventRepository
     private static string GetSortDirection(SortDirection direction) =>
         direction == SortDirection.Ascending ? "ASC" : "DESC";
 
-    public IEnumerable<Event> GetAllEvents()
-    {
-        return Set
-            .FromSqlRaw(@"
-                SELECT e.*
-                FROM ""Guben"".""Event"" e
-                LEFT JOIN ""Guben"".""Location"" l ON e.""LocationId"" = l.""Id""")
-            .Include(e => e.Location)
-            .Include(e => e.Urls)
-            .Include(e => e.Categories)
-            .AsNoTracking()
-            .AsSplitQuery()
-            .AsEnumerable();
-    }
+    // public IEnumerable<Event> GetAllEvents()
+    // {
+    //     return Set
+    //         .FromSqlRaw(@"
+    //             SELECT e.*
+    //             FROM ""Guben"".""Event"" e
+    //             LEFT JOIN ""Guben"".""Location"" l ON e.""LocationId"" = l.""Id""")
+    //         .Include(e => e.Location)
+    //         .Include(e => e.Urls)
+    //         .Include(e => e.Categories)
+    //         .AsNoTracking()
+    //         .AsSplitQuery()
+    //         .AsEnumerable();
+    // }
 //   public Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId)
 //   {
 //     return Set

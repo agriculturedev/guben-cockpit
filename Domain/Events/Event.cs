@@ -156,7 +156,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     if (this.Equals(@event))
       return Result.Ok();
 
-    return Update(@event.Translations, @event.StartDate, @event.EndDate,
+    return Update(@event.Translations[cultureInfo.TwoLetterISOLanguageName], @event.StartDate, @event.EndDate,
       @event.Coordinates, @event.Location, @event.Categories.ToList(), @event.Urls.ToList(), cultureInfo);
   }
 
