@@ -57,12 +57,12 @@ public class EventImporter
       XmlSerializer serializer = new XmlSerializer(typeof(XmlEvent));
       foreach (var e in events)
       {
+        using StringReader reader = new StringReader(e.ToString());
+        var deserializedObject = (XmlEvent)serializer.Deserialize(reader)!;
         foreach (var cultureInfo in Cultures)
         {
           try
           {
-            using StringReader reader = new StringReader(e.ToString());
-            var deserializedObject = (XmlEvent)serializer.Deserialize(reader)!;
             await ProcessEventAsync(deserializedObject, cultureInfo);
           }
           catch (Exception ex)
@@ -101,39 +101,46 @@ public class EventImporter
   {
     await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async context =>
     {
-      // var location = await _locationRepository.Get(locationId);
-      // if (location is null)
-      //   throw new Exception(TranslationKeys.LocationNotFound);
+      var title = xmlEvent.GetTitle(cultureInfo);
+      var description = xmlEvent.GetDescription(cultureInfo);
 
-      // add location to context manually otherwise ef tried to re-insert the same location
-      // because getting it from the db created a newly tracked instance for some reason
-      var locationInContext = context.Set<Location>().Attach(location).Entity;
-
-      var coords = ParseCoordinates(xmlEvent);
-
-      var categories = await GetCategoriesAsync(xmlEvent, German);
-
-      var (eventResult, @event) = Event.Create(
-        xmlEvent.GetEventId(),
-        xmlEvent.GetTerminId(),
-        xmlEvent.GetTitle(cultureInfo) ?? string.Empty,
-        xmlEvent.GetDescription(cultureInfo) ?? string.Empty,
-        xmlEvent.GetStartDate(),
-        xmlEvent.GetEndDate(),
-        locationInContext,
-        coords,
-        new List<Url>(),
-        categories,
-        cultureInfo
-      );
-
-      if (eventResult.IsSuccessful)
+      if (!string.IsNullOrWhiteSpace(title) && title.ToLower().Contains("school"))
       {
-        await UpsertEventAsync(@event, cultureInfo);
+        var test = 1;
       }
-      else
+
+      if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrEmpty(description))
       {
-        throw new Exception("failed to create event");
+        // add location to context manually otherwise ef tried to re-insert the same location
+        // because getting it from the db created a newly tracked instance for some reason
+        var locationInContext = context.Set<Location>().Attach(location).Entity;
+
+        var coords = ParseCoordinates(xmlEvent);
+
+        var categories = await GetCategoriesAsync(xmlEvent, German);
+
+        var (eventResult, @event) = Event.Create(
+          xmlEvent.GetEventId(),
+          xmlEvent.GetTerminId(),
+          title,
+          description,
+          xmlEvent.GetStartDate(),
+          xmlEvent.GetEndDate(),
+          locationInContext,
+          coords,
+          new List<Url>(),
+          categories,
+          cultureInfo
+        );
+
+        if (eventResult.IsSuccessful)
+        {
+          await UpsertEventAsync(@event, cultureInfo);
+        }
+        else
+        {
+          throw new Exception("failed to create event");
+        }
       }
     });
   }
@@ -181,7 +188,7 @@ public class EventImporter
 
   private async Task UpsertEventAsync(Event @event, CultureInfo cultureInfo)
   {
-    var existingEvent = await _eventRepository.GetByEventIdAndTerminId(@event.EventId, @event.TerminId);
+    var existingEvent = await _eventRepository.GetByEventIdAndTerminIdIncludingUnpublished(@event.EventId, @event.TerminId);
     if (existingEvent != null)
     {
       Console.WriteLine($"Updating existing event: {@event.Id}");

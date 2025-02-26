@@ -64,7 +64,7 @@ public class EventRepository
   {
     return Set
       .AsSplitQuery()
-      .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminId))
+      .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminIdIncludingUnpublished))
       .Include(e => e.Location)
       .Include(e => e.Urls)
       .Include(e => e.Categories)
