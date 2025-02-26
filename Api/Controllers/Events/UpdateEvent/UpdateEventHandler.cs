@@ -1,5 +1,5 @@
-using System.Globalization;
 using Api.Infrastructure.Extensions;
+using Api.Infrastructure.Translations;
 using Domain;
 using Domain.Category.repository;
 using Domain.Coordinates;
@@ -17,15 +17,15 @@ public class UpdateEventHandler : ApiRequestHandler<UpdateEventQuery, UpdateEven
   private readonly IEventRepository _eventRepository;
   private readonly ILocationRepository _locationRepository;
   private readonly ICategoryRepository _categoryRepository;
-  private readonly CultureInfo _culture;
+  private readonly ICultureProvider _cultureProvider;
 
   public UpdateEventHandler(IEventRepository eventRepository, ICategoryRepository categoryRepository,
-    ILocationRepository locationRepository, CultureInfo culture)
+    ILocationRepository locationRepository, ICultureProvider cultureProvider)
   {
     _eventRepository = eventRepository;
     _categoryRepository = categoryRepository;
     _locationRepository = locationRepository;
-    _culture = culture;
+    _cultureProvider = cultureProvider;
   }
 
   public override async Task<UpdateEventResponse> Handle(UpdateEventQuery request, CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ public class UpdateEventHandler : ApiRequestHandler<UpdateEventQuery, UpdateEven
     i18NResult.ThrowIfFailure();
 
     var updateResult = eventToUpdate.Update(i18NData, request.StartDate, request.EndDate, coords, location, categories,
-      urls, _culture);
+      urls, _cultureProvider.GetCulture());
 
     updateResult.ThrowIfFailure();
 

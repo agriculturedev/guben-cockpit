@@ -5,6 +5,7 @@ using Api.Infrastructure.JsonConverters;
 using Api.Infrastructure.Keycloak;
 using Api.Infrastructure.MediatR;
 using Api.Infrastructure.OpenApi;
+using Api.Infrastructure.Translations;
 using Database;
 using Domain;
 using Hangfire;
@@ -53,6 +54,8 @@ public class Startup(IConfiguration configuration)
     services.AddCustomCors(MappedConfiguration);
     services.AddCustomHangfire();
     services.AddCustomMediatR();
+    services.AddSingleton<ICultureProvider, CultureProvider>();
+
 
     services.AddDatabase(Configuration, true);
     services.AddEndpointsApiExplorer();
@@ -72,8 +75,8 @@ public class Startup(IConfiguration configuration)
     RecurringJob.AddOrUpdate<ProjectImporter>("ProjectImporter", (importer) => importer.Import(), Cron.Daily);
 
     // Run the jobs immediately on startup, TODO@JOREN: add api endpoints to trigger importer from ui
-    BackgroundJob.Enqueue<EventImporter>(importer => importer.Import());
-    BackgroundJob.Enqueue<ProjectImporter>(importer => importer.Import());
+    // BackgroundJob.Enqueue<EventImporter>(importer => importer.Import());
+    // BackgroundJob.Enqueue<ProjectImporter>(importer => importer.Import());
   }
 
   /// <summary>
