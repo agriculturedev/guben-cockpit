@@ -18,15 +18,20 @@ namespace Database.Migrations
                 type: "jsonb",
                 nullable: true);
 
+            // migrationBuilder.Sql(@"
+            //   UPDATE ""Guben"".""Event""
+            //   SET ""Translations"" = jsonb_build_object(
+            //     'de',
+            //     jsonb_build_object(
+            //       'Title', ""Title"",
+            //       'Description', ""Description""
+            //     )
+            //   )
+            // ");
+            // the above would be better if we actually wanted to keep any old or user added data, just yeet old stuff for now
+
             migrationBuilder.Sql(@"
-              UPDATE ""Guben"".""Event""
-              SET ""Translations"" = jsonb_build_object(
-                'de',
-                jsonb_build_object(
-                  'Title', ""Title"",
-                  'Description', ""Description""
-                )
-              )
+              DELETE FROM ""Guben"".""Event""
             ");
 
             migrationBuilder.AlterColumn<Dictionary<string, EventI18NData>>(
