@@ -18,11 +18,11 @@ export default function PageHeader() {
 
   return (
     <div className="relative rounded-lg overflow-hidden">
-      <img className="hidden lg:block absolute top-0 left-0 w-full h-full aspect-auto object-cover" src={imgLink} />
-      <div className="hidden lg:block absolute left-0 top-0 w-full h-full bg-[rgba(0,0,0,0.7)]" />
+      <img className="block absolute top-0 left-0 w-full h-full aspect-auto object-cover" src={imgLink} />
+      <div className="block absolute left-0 top-0 w-full h-full bg-[rgba(0,0,0,0.7)]" />
 
-      <div className="w-full grid grid-cols-12 lg:p-8 gap-12">
-        <div className="col-span-12 lg:col-span-6 flex flex-col h-full gap-8 lg:text-white z-10">
+      <div className="w-full grid grid-cols-12 p-8 gap-12">
+        <div className="col-span-12 lg:col-span-6 flex flex-col h-full gap-8 text-white z-10">
           <h1 className="text-2xl" >{pageInfo?.title}</h1>
           <p className="text-md whitespace-pre-wrap" >{pageInfo?.description}</p>
           <div className="flex flex-col gap-2">
