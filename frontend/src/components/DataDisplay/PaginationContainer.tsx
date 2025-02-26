@@ -35,9 +35,7 @@ export const PaginationContainer = ({
 
   return (
     <>
-      <section>
-        {children}
-      </section>
+      {children}
 
       <Pagination>
         <PageIndicator>{t("PaginationText", {page: page, pageCount: pageCount, total: total})}</PageIndicator>
