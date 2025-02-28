@@ -163,7 +163,23 @@ export type GetAllLocationsResponse = {
 };
 
 export type GetAllProjectsResponse = {
-  projects: ProjectResponse[];
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
+  results: ProjectResponse[];
 };
 
 export type GetAllUsersResponse = {
@@ -184,6 +200,10 @@ export type GetAllUsersResponse = {
    */
   pageCount: number;
   results: UserResponse[];
+};
+
+export type GetHighlightedProjectsResponse = {
+  projects: ProjectResponse[];
 };
 
 export type GetMyProjectsResponse = {

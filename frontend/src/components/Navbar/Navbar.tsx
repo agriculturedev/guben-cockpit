@@ -9,9 +9,10 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from 'react-oidc-context';
 import { ServicePortalIcon, SmartCityGubenLogoIcon } from "../icons";
 import i18next from "i18next";
-import { Language } from "@/utilities/i18n/Languages";
+import { getLocalizedLanguagename, Language } from "@/utilities/i18n/Languages";
 import { WithClassName } from "@/types/WithClassName";
-import { FetchInterceptor } from "@/utilities/fetchApiExtensions";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { useLanguageUpdater } from "@/hooks/useLanguageUpdater";
 
 type TNavContext = { location: string }
 const NavContext = createContext<TNavContext>({ location: "/" });
@@ -72,7 +73,7 @@ export const Navbar = () => {
 
   return (
     <NavContext.Provider value={{ location: location.pathname }}>
-      <div className="w-full h-20 bg-white sticky top-0 z-10 shadow p-0 pr-2 rounded-b flex items-center justify-between">
+      <div className="w-full h-20 bg-white sticky top-0 shadow p-0 pr-2 rounded-b flex items-center justify-between z-50">
         <div id="logo" className="flex-1 flex justify-start items-center h-full pl-5">
           <Link to="/" className="h-full flex justify-center items-center">
             <BaseImgTag src="/images/guben-logo.jpg" alt="logo" className={"h-2/3"} />
@@ -123,19 +124,17 @@ export const Navbar = () => {
   )
 }
 
+
 const LanguageSection = () => {
-  const updateLanguage = async (language: string) => {
-    console.log(language);
-    FetchInterceptor.setHeader("Accept-Language", language);
-    await i18next.changeLanguage(language)
-  }
+  const updateLanguage = useLanguageUpdater();
+  const currentLanguage = i18next.language.split('-')[0];
 
   return (
     <div className="relative flex items-center justify-center">
       <div className="group">
         {/* Display current language */}
         <button className="p-2 rounded-lg text-[#cd1421] group-hover:bg-[#cd1421] group-hover:text-white">
-          {i18next.language.toUpperCase()}
+          {getLocalizedLanguagename(currentLanguage)}
         </button>
 
         {/* Dropdown Menu */}
@@ -146,7 +145,7 @@ const LanguageSection = () => {
               className="w-full text-left px-3 py-2 rounded-lg text-[#cd1421] hover:bg-[#cd1421] hover:text-white"
               onClick={async () => await updateLanguage(lang)}
             >
-              {lang === Language.de ? "DE" : "EN"}
+              {getLocalizedLanguagename(lang)}
             </button>
           ))}
         </div>

@@ -13,6 +13,7 @@ public static class MediatRInstaller
 
     services.AddTransient(typeof(IPipelineBehavior<,>), typeof(EnsureUserExistsBehavior<,>));
     services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
+    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CultureBehavior<,>));
 
     return services;
   }

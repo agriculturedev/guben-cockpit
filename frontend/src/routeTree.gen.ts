@@ -13,7 +13,6 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as ProjectsImport } from './routes/projects'
 import { Route as MapImport } from './routes/map'
 import { Route as EventsImport } from './routes/events'
 import { Route as IndexImport } from './routes/index'
@@ -28,6 +27,7 @@ import { Route as AdminLayoutDashboardImport } from './routes/admin/_layout/dash
 // Create Virtual Routes
 
 const AdminImport = createFileRoute('/admin')()
+const ProjectsLazyImport = createFileRoute('/projects')()
 
 // Create/Update Routes
 
@@ -36,10 +36,10 @@ const AdminRoute = AdminImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ProjectsRoute = ProjectsImport.update({
+const ProjectsLazyRoute = ProjectsLazyImport.update({
   path: '/projects',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/projects.lazy').then((d) => d.Route))
 
 const MapRoute = MapImport.update({
   path: '/map',
@@ -120,7 +120,7 @@ declare module '@tanstack/react-router' {
       id: '/projects'
       path: '/projects'
       fullPath: '/projects'
-      preLoaderRoute: typeof ProjectsImport
+      preLoaderRoute: typeof ProjectsLazyImport
       parentRoute: typeof rootRoute
     }
     '/admin': {
@@ -220,7 +220,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/events': typeof EventsRoute
   '/map': typeof MapRoute
-  '/projects': typeof ProjectsRoute
+  '/projects': typeof ProjectsLazyRoute
   '/admin': typeof AdminLayoutRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
@@ -234,7 +234,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/events': typeof EventsRoute
   '/map': typeof MapRoute
-  '/projects': typeof ProjectsRoute
+  '/projects': typeof ProjectsLazyRoute
   '/admin': typeof AdminIndexRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
@@ -248,7 +248,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/events': typeof EventsRoute
   '/map': typeof MapRoute
-  '/projects': typeof ProjectsRoute
+  '/projects': typeof ProjectsLazyRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/_layout': typeof AdminLayoutRouteWithChildren
   '/admin/': typeof AdminIndexRoute
@@ -306,7 +306,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EventsRoute: typeof EventsRoute
   MapRoute: typeof MapRoute
-  ProjectsRoute: typeof ProjectsRoute
+  ProjectsLazyRoute: typeof ProjectsLazyRoute
   AdminRoute: typeof AdminRouteWithChildren
 }
 
@@ -314,7 +314,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EventsRoute: EventsRoute,
   MapRoute: MapRoute,
-  ProjectsRoute: ProjectsRoute,
+  ProjectsLazyRoute: ProjectsLazyRoute,
   AdminRoute: AdminRouteWithChildren,
 }
 
@@ -347,7 +347,7 @@ export const routeTree = rootRoute
       "filePath": "map.tsx"
     },
     "/projects": {
-      "filePath": "projects.tsx"
+      "filePath": "projects.lazy.tsx"
     },
     "/admin": {
       "filePath": "admin",

@@ -1,5 +1,6 @@
 {
   "Category": "Category",
+  "Credits": "Credits",
   "Date": "Date",
   "Description": "Description",
   "Email": "Email",
@@ -47,5 +48,6 @@
     "NextMonth": "Next month",
     "ThisYear": "This year",
     "DateInput": "Date input"
-  }
+  },
+  "Marktplatz": "Gubener Marktplatz"
 }

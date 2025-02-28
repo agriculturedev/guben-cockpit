@@ -1,9 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { Label } from '@/components/ui/label'
-import * as React from 'react'
 import { Combobox } from "@/components/ui/comboBox";
-import { EditPageForm } from "@/components/pages/editPage/editPageForm";
+import { EditPageForm } from "@/components/admin/pages/editPage/editPageForm";
 import { z } from "zod";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { useCallback } from "react";

@@ -1,8 +1,9 @@
 ﻿using System.Net.Mime;
-using Api.Controllers.Events.GetAllEvents;
+using Api.Controllers.Pages.GetAllPages;
 using Api.Controllers.Pages.GetPage;
 using Api.Controllers.Pages.Shared;
 using Api.Controllers.Pages.UpdatePage;
+using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +28,11 @@ public class PageController : ControllerBase
 
   [HttpGet]
   [EndpointName("PagesGetAll")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllEventsResponse))]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllPagesResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> GetAll()
   {
-    var result = await _mediator.Send(new GetAllEventsQuery());
+    var result = await _mediator.Send(new GetAllPagesQuery());
     return Results.Ok(result);
   }
 
@@ -50,7 +51,7 @@ public class PageController : ControllerBase
 
   [HttpPut("${id}")]
   [EndpointName("PagesUpdate")]
-  [Authorize]
+  [Authorize(KeycloakPolicies.PageManager)]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdatePageResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> Update([FromBody] UpdatePageQuery query, [FromRoute] string id)

@@ -20,15 +20,13 @@ public static class KeycloakInstaller
 
   public static AuthorizationBuilder AddAuthorizationPolicies(this AuthorizationBuilder authBuilder)
   {
-    authBuilder.AddPolicy(
-      KeycloakPolicies.ViewUsers,
-      policy => policy.RequireRealmRoles(KeycloakPolicies.ViewUsers)
-    );
-
-    authBuilder.AddPolicy(
-      KeycloakPolicies.PublishProjects,
-      policy => policy.RequireRealmRoles(KeycloakPolicies.PublishProjects)
-    );
+    foreach (var role in KeycloakPolicies.AllRoles)
+    {
+      authBuilder.AddPolicy(
+        role,
+        policy => policy.RequireRealmRoles(role)
+      );
+    }
 
     return authBuilder;
   }

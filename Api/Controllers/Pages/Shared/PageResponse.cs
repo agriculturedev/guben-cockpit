@@ -1,4 +1,7 @@
+using Api.Infrastructure.Translations;
+using Domain;
 using Domain.Pages;
+using Shared.Api;
 
 namespace Api.Controllers.Pages.Shared;
 
@@ -10,12 +13,15 @@ public struct PageResponse
 
   public static PageResponse Map(Page page)
   {
+    var i18NData = page.Translations.GetTranslation();
+    if (i18NData is null)
+      throw new ProblemDetailsException(TranslationKeys.NoValidTranslationsFound);
+
     return new PageResponse
     {
       Id = page.Id,
-      Title = page.Title,
-      Description = page.Description
+      Title = i18NData.Title,
+      Description = i18NData.Description
     };
   }
-
 }

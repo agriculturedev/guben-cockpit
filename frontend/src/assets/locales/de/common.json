@@ -1,5 +1,6 @@
 {
   "Category": "Kategorie",
+  "Credits": "Bildnachweis",
   "Date": "Datum",
   "Description": "Beschreibung",
   "Email": "E-Mail",
@@ -47,6 +48,6 @@
     "NextMonth": "Nächsten Monat",
     "ThisYear": "Dieses Jahr",
     "DateInput": "Datumseingabe"
-  }
-
+  },
+  "Marktplatz": "Gubener Marktplatz"
 }

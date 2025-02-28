@@ -1,14 +1,11 @@
-import { AddProjectDialogButton } from '@/components/projects/createProject/CreateProjectDialogButton'
-import { createFileRoute } from '@tanstack/react-router'
-import { useTranslation } from "react-i18next";
-import { Label } from "@/components/ui/label";
-import { defaultPaginationProps, usePagination } from "@/hooks/usePagination";
-import { useProjectsGetMyProjects } from "@/endpoints/gubenComponents";
-import { useEffect } from "react";
 import { PaginationContainer } from "@/components/DataDisplay/PaginationContainer";
-import { ProjectCard } from "@/components/projects/ProjectCard";
-import { EditProjectButton } from "@/components/projects/editProject.tsx/editProjectButton";
-import * as React from "react";
+import { AddProjectDialogButton, EditProjectButton, ProjectCard } from "@/components/admin/projects";
+import { Label } from "@/components/ui/label";
+import { useProjectsGetMyProjects } from "@/endpoints/gubenComponents";
+import { defaultPaginationProps, usePagination } from "@/hooks/usePagination";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   component: () =>{

@@ -197,5 +197,16 @@ value   : The object must be serialized into a byte array
   <data name="UserNotLoggedIn" xml:space="preserve">
     <value>User is not logged in</value>
 </data>
-
+  <data name="AtLeastOneLayerSourceIsRequired" xml:space="preserve">
+    <value>At least one layer source is required</value>
+  </data>
+  <data name="EventNotFound" xml:space="preserve">
+    <value>Event not found</value>
+  </data>
+  <data name="CategoryNotFound" xml:space="preserve">
+    <value>Category not found</value>
+  </data>
+  <data name="NoValidTranslationsFound" xml:space="preserve">
+    <value>No valid translations found</value>
+  </data>
 </root>

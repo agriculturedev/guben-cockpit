@@ -1,6 +1,7 @@
 interface Resources {
   "common": {
     "Category": "Kategorie",
+    "Credits": "Bildnachweis",
     "Date": "Datum",
     "Description": "Beschreibung",
     "Email": "E-Mail",
@@ -48,7 +49,8 @@ interface Resources {
       "NextMonth": "Nächsten Monat",
       "ThisYear": "Dieses Jahr",
       "DateInput": "Datumseingabe"
-    }
+    },
+    "Marktplatz": "Gubener Marktplatz"
   },
   "dashboard": {
     "Title": "Dashboard",
