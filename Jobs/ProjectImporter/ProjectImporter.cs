@@ -83,7 +83,7 @@ public class ProjectImporter
 
     var (result, project) = Project.Create(
       rawProject.Id, rawProject.Title, rawProject.Introtext, rawProject.Fulltext,
-      rawProject.ImageCaption, rawProject.ImageUrl, rawProject.ImageCredits, User.SystemUserId);
+      rawProject.ImageCaption, rawProject.ImageUrl, rawProject.ImageCredits, User.SystemUserId, false);
 
     if (result.IsSuccessful)
     {

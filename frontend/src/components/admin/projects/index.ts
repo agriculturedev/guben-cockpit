@@ -1,1 +1,1 @@
-export {default} from "./projectDialog";
+export {default} from "./addProjectDialog";

@@ -1,54 +1,48 @@
-import ProjectDialog from "@/components/admin/projects";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useProjectsGetMyProjects } from "@/endpoints/gubenComponents";
-import { createFileRoute } from "@tanstack/react-router";
-import { CheckIcon, EditIcon, XIcon } from "lucide-react";
+import AddProjectDialog from "@/components/admin/projects";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {useProjectsGetMyProjects} from "@/endpoints/gubenComponents";
+import {createFileRoute} from "@tanstack/react-router";
+import {EditIcon, XIcon, CheckIcon} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {useTranslation} from "react-i18next";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   component: Page
 })
 
 function Page() {
-  const {data: myProjects} = useProjectsGetMyProjects({});
+  const {t} = useTranslation(["common", "projects"]);
+  const {data: myProjects, refetch} = useProjectsGetMyProjects({});
+
+  const onAddSuccess = async () => {
+    await refetch();
+  }
 
   return (
-    <div className="">
+    <div className="w-ful">
+      <div className={"mb-4 flex justify-end"}>
+        <AddProjectDialog onCreateSuccess={onAddSuccess}>
+          <Button>{t("projects:Add")}</Button>
+        </AddProjectDialog>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Highlighted</TableHead>
-            <TableHead>Published</TableHead>
-            <TableHead className="w-min">Actions</TableHead>
+            <TableHead>{t("Title")}</TableHead>
+            <TableHead>{t("Description")}</TableHead>
+            <TableHead>{t("projects:Highlighted")}</TableHead>
+            <TableHead>{t("projects:Published")}</TableHead>
+            <TableHead className="w-min">{t("Actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell className="max-w-[20ch] truncate">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestiae ab qui et fugiat quos porro in recusandae consequatur id fuga facilis ipsa incidunt non laboriosam placeat veniam excepturi, minima tenetur.
-            </TableCell>
-            <TableCell><CheckIcon className="size-sm" /></TableCell>
-            <TableCell><XIcon className="size-sm" /></TableCell>
-            <TableCell>
-              <ProjectDialog>
-                <EditIcon className="size-4" />
-              </ProjectDialog>
-            </TableCell>
-          </TableRow>
-
           {myProjects?.results.map(p => (
             <TableRow>
               <TableCell>{p.title}</TableCell>
               <TableCell className="overflow-ellipsis">{p.description}</TableCell>
-              <TableCell>{p.highlighted}</TableCell>
-              <TableCell>NEED TO IMPLEMENT (PUBLISHED FLAG)</TableCell>
-              <TableCell>
-                <ProjectDialog project={p}>
-                  <EditIcon className="size-4" />
-                </ProjectDialog>
-              </TableCell>
+              <TableCell className={"text-neutral-500"}>{p.highlighted ? <CheckIcon /> : <XIcon />}</TableCell>
+              <TableCell className={"text-neutral-500"}>{p.published ? <CheckIcon /> : <XIcon />}</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,6 +1,8 @@
 interface Resources {
   "common": {
+    "Actions": "Aktionen",
     "Category": "Kategorie",
+    "Cancel": "Stornieren",
     "Credits": "Bildnachweis",
     "Date": "Datum",
     "Description": "Beschreibung",
@@ -100,7 +102,9 @@ interface Resources {
     "Title": "Projekte",
     "Add": "Projekt hinzufügen",
     "Edit": "Projekt bearbeiten",
-    "MyProjects": "Meine Projekte"
+    "Highlighted": "Hervorgehoben",
+    "MyProjects": "Meine Projekte",
+    "Published": "Veröffentlicht"
   },
   "users": {
     "Title": "Benutzer"

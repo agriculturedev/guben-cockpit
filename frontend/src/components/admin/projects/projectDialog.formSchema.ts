@@ -7,6 +7,7 @@ export const formSchema = z.object({
   imageCaption: z.string().nullable(),
   imageUrl: z.string().nullable(),
   imageCredits: z.string().nullable(),
+  highlighted: z.boolean().default(false)
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
@@ -17,5 +18,6 @@ export const formDefaults: FormSchema = {
   fullText: null,
   imageCaption: null,
   imageUrl: null,
-  imageCredits: null
+  imageCredits: null,
+  highlighted: false,
 }
