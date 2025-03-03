@@ -125,7 +125,6 @@ public class EventRepository
       {
         parameters.Add(new NpgsqlParameter("titleQuery", $"%{filter.TitleQuery.ToLowerInvariant()}%"));
 
-        // TODO: this entire sql statement is very similar to other locations, extract it later
         whereConditions.Add($@"
           LOWER(
               jsonb_path_query_first(
@@ -155,15 +154,7 @@ public class EventRepository
           locationConditions.Add($@"
                     LOWER(jsonb_path_query_first(
                         l.""Translations"",
-                        'CONCAT(
-                          '$.',
-                          CASE
-                              WHEN jsonb_path_exists(e.""Translations"", '$.{languageKey}')
-                              THEN '{languageKey}'
-                              ELSE 'de'
-                          END,
-                          '.Name'
-                      )
+                        '$.{languageKey}.Name'
                     )::text) LIKE @{paramName}
                     OR LOWER(l.""City"") LIKE @{paramName}");
         }
