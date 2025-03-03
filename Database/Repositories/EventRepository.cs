@@ -124,11 +124,22 @@ public class EventRepository
       if (!string.IsNullOrWhiteSpace(filter.TitleQuery))
       {
         parameters.Add(new NpgsqlParameter("titleQuery", $"%{filter.TitleQuery.ToLowerInvariant()}%"));
+
         whereConditions.Add($@"
-                LOWER(jsonb_path_query_first(
-                    e.""Translations"",
-                    '$.{languageKey}.Title'
-                )::text) LIKE @titleQuery");
+          LOWER(
+              jsonb_path_query_first(
+                  ""e"".""Translations"",
+                  CONCAT(
+                      '$.',
+                      CASE
+                          WHEN jsonb_path_exists(""e"".""Translations"", '$.{languageKey}')
+                          THEN '{languageKey}'
+                          ELSE 'de'
+                      END,
+                      '.Title'
+                  )::jsonpath
+              )::text
+          ) LIKE LOWER(@titleQuery)");
       }
 
       // Location filter
@@ -141,11 +152,17 @@ public class EventRepository
           parameters.Add(new NpgsqlParameter(paramName, $"%{filter.LocationQuery[i].ToLowerInvariant()}%"));
 
           locationConditions.Add($@"
-                    LOWER(jsonb_path_query_first(
-                        l.""Translations"",
-                        '$.{languageKey}.Name'
-                    )::text) LIKE @{paramName}
-                    OR LOWER(l.""City"") LIKE @{paramName}");
+            LOWER(
+                jsonb_path_query_first(
+                    l.""Translations"",
+                    CONCAT(
+                        '$.',
+                        '{languageKey}',
+                        '.Name'
+                    )::jsonpath
+                )::text
+            ) LIKE @{paramName}
+            OR LOWER(l.""City"") LIKE @{paramName}");
         }
 
         whereConditions.Add($"({string.Join(" OR ", locationConditions)})");
