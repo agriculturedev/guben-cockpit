@@ -1,4 +1,4 @@
-import AddProjectDialog from "@/components/admin/projects";
+import AddProjectDialog from "@/components/admin/projects/addProjectDialog";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {useProjectsGetMyProjects} from "@/endpoints/gubenComponents";
 import {createFileRoute} from "@tanstack/react-router";
