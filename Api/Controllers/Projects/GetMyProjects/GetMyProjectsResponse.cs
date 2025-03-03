@@ -3,6 +3,7 @@ using Shared.Api.Pagination;
 
 namespace Api.Controllers.Projects.GetMyProjects;
 
-public class GetMyProjectsResponse : PagedResponse<ProjectResponse>
+public struct GetMyProjectsResponse
 {
+  public required IEnumerable<ProjectResponse> Results {get; init;}
 }

@@ -36,6 +36,7 @@ services:
     environment:
       POSTGRES_USER: guben
       POSTGRES_PASSWORD: VeryStrongPassword123
+      POSTGRES_DB: Guben
     volumes:
       - guben_cockpit:/var/lib/postgresql/data
     networks:
