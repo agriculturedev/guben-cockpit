@@ -220,22 +220,6 @@ export type GetHighlightedProjectsResponse = {
 };
 
 export type GetMyProjectsResponse = {
-  /**
-   * @format int32
-   */
-  pageNumber: number;
-  /**
-   * @format int32
-   */
-  pageSize: number;
-  /**
-   * @format int32
-   */
-  totalCount: number;
-  /**
-   * @format int32
-   */
-  pageCount: number;
   results: ProjectResponse[];
 };
 

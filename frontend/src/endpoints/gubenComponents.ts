@@ -317,14 +317,7 @@ export const useProjectsGetHighlighted = <
 };
 
 export type ProjectsGetMyProjectsQueryParams = {
-  /**
-   * @format int32
-   */
-  pageNumber?: number;
-  /**
-   * @format int32
-   */
-  pageSize?: number;
+  query?: Record<string, any>;
 };
 
 export type ProjectsGetMyProjectsError = Fetcher.ErrorWrapper<{
