@@ -515,3 +515,5 @@ build/
 
 # IDE
 frontend/.env
+
+.qodo

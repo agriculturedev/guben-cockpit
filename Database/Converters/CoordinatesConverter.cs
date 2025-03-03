@@ -1,3 +1,4 @@
+using System.Globalization;
 using Domain.Coordinates;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -28,8 +29,8 @@ public class CoordinatesConverter : ValueConverter<Coordinates?, string?>
 
     var parts = value.Split(Separator);
     var (coordsResult, coords) = Coordinates.Create(
-      double.Parse(parts[0]),
-      double.Parse(parts[1])
+      double.Parse(parts[0], CultureInfo.InvariantCulture),
+      double.Parse(parts[1], CultureInfo.InvariantCulture)
     );
 
     if (coordsResult.IsFailure)

@@ -1,8 +1,12 @@
+using System.Globalization;
 using Api.Controllers.Categories.Shared;
 using Api.Controllers.Locations.Shared;
+using Api.Infrastructure.Translations;
+using Domain;
 using Domain.Coordinates;
 using Domain.Events;
 using Domain.Urls;
+using Shared.Api;
 
 namespace Api.Controllers.Events.Shared;
 
@@ -20,18 +24,22 @@ public struct EventResponse
   public required IEnumerable<UrlResponse> Urls { get; set; }
   public required IEnumerable<CategoryResponse> Categories { get; set; }
 
-  public static EventResponse Map(Event @event)
+  public static EventResponse Map(Event @event, CultureInfo cultureInfo)
   {
+    var i18NData = @event.Translations.GetTranslation(cultureInfo);
+    if (i18NData is null)
+      throw new ProblemDetailsException(TranslationKeys.NoValidTranslationsFound);
+
     return new EventResponse()
     {
       Id = @event.Id,
       EventId = @event.EventId,
       TerminId = @event.TerminId,
-      Title = @event.Title,
-      Description = @event.Description,
+      Title = i18NData.Title,
+      Description = i18NData.Description,
       StartDate = @event.StartDate,
       EndDate = @event.EndDate,
-      Location = LocationResponse.Map(@event.Location),
+      Location = LocationResponse.Map(@event.Location, cultureInfo),
       Coordinates = @event.Coordinates is not null ? CoordinatesResponse.Map(@event.Coordinates) : null,
       Urls = @event.Urls.Select(UrlResponse.Map),
       Categories = @event.Categories.Select(CategoryResponse.Map)

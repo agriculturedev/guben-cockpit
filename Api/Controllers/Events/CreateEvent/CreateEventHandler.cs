@@ -1,10 +1,10 @@
+using System.Globalization;
 using Api.Infrastructure.Extensions;
 using Domain;
 using Domain.Category.repository;
 using Domain.Coordinates;
 using Domain.Events;
 using Domain.Events.repository;
-using Domain.Locations;
 using Domain.Locations.repository;
 using Domain.Urls;
 using Shared.Api;
@@ -17,12 +17,15 @@ public class CreateEventHandler : ApiRequestHandler<CreateEventQuery, CreateEven
   private readonly IEventRepository _eventRepository;
   private readonly ILocationRepository _locationRepository;
   private readonly ICategoryRepository _categoryRepository;
+  private readonly CultureInfo _culture;
 
-  public CreateEventHandler(IEventRepository eventRepository, ILocationRepository locationRepository, ICategoryRepository categoryRepository)
+  public CreateEventHandler(IEventRepository eventRepository, ILocationRepository locationRepository,
+    ICategoryRepository categoryRepository)
   {
     _eventRepository = eventRepository;
     _locationRepository = locationRepository;
     _categoryRepository = categoryRepository;
+    _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<CreateEventResponse> Handle(CreateEventQuery request, CancellationToken cancellationToken)
@@ -38,8 +41,8 @@ public class CreateEventHandler : ApiRequestHandler<CreateEventQuery, CreateEven
       throw new ProblemDetailsException(TranslationKeys.LocationNotFound);
     var categories = _categoryRepository.GetByIds(request.CategoryIds).ToList();
 
-    var (eventResult, @event) = Event.Create(request.EventId, request.TerminId, request.Title, request.Description, request.StartDate, request.EndDate,
-      location, coords, urls, categories);
+    var (eventResult, @event) = Event.Create(request.EventId, request.TerminId, request.Title, request.Description,
+      request.StartDate, request.EndDate, location, coords, urls, categories, _culture);
     eventResult.ThrowIfFailure();
 
     await _eventRepository.SaveAsync(@event);

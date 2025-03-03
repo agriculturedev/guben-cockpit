@@ -1,3 +1,4 @@
+using System.Globalization;
 using Domain.Locations;
 using Domain.Time.Extensions;
 using Domain.Urls;
@@ -6,15 +7,17 @@ using Shared.Domain.Validation;
 
 namespace Domain.Events;
 
+
+
 public sealed class Event : Entity<Guid>, IEquatable<Event>
 {
   public string EventId { get; private set; }
   public string TerminId { get; private set; }
-  public string Title { get; private set; }
-  public string Description { get; private set; }
   public DateTime StartDate { get; private set; }
   public DateTime EndDate { get; private set; }
   public Location Location { get; private set; } = null!;
+
+  public Dictionary<string, EventI18NData> Translations { get; private set; } = new();
   public Coordinates.Coordinates? Coordinates { get; private set; }
   public bool Published { get; private set; }
 
@@ -24,14 +27,12 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
   private readonly List<Category.Category> _categories = [];
   public IReadOnlyCollection<Category.Category> Categories => _categories.AsReadOnly();
 
-  private Event(string eventId, string terminId, string title, string description, DateTime startDate, DateTime
+  private Event(string eventId, string terminId, DateTime startDate, DateTime
     endDate, Coordinates.Coordinates? coordinates)
   {
     Id = Guid.CreateVersion7();
     EventId = eventId;
     TerminId = terminId;
-    Title = title;
-    Description = description;
     StartDate = startDate.SetKindUtc();
     EndDate = endDate.SetKindUtc();
     Coordinates = coordinates;
@@ -43,15 +44,21 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
   public static Result<Event> Create(string eventId, string terminId, string title, string description,
     DateTime startDate, DateTime
       endDate, Location location, Coordinates.Coordinates? coordinates, List<Url> urls,
-    List<Category.Category> categories)
+    List<Category.Category> categories, CultureInfo cultureInfo)
   {
-    var _event = new Event(eventId, terminId, title, description, startDate, endDate, coordinates);
-    _event.UpdateLocation(location);
-    _event.AddUrls(urls);
-    _event.AddCategories(categories);
+    var @event = new Event(eventId, terminId, startDate, endDate, coordinates);
+
+    var (translationResult, translation) = EventI18NData.Create(title, description);
+    if (translationResult.IsFailure)
+      return translationResult;
+
+    @event.UpdateTranslation(translation, cultureInfo);
+    @event.UpdateLocation(location);
+    @event.AddUrls(urls);
+    @event.AddCategories(categories);
     // TODO: use UpdateTitle
 
-    return Result.Ok(_event);
+    return Result.Ok(@event);
   }
 
   public void SetPublishedState(bool publish)
@@ -59,21 +66,18 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     Published = publish;
   }
 
-  public Result UpdateTitle(string newTitle)
+  public void UpdateTranslation(EventI18NData data, CultureInfo cultureInfo)
   {
-    if (string.IsNullOrWhiteSpace(newTitle))
-      return Result.Error(TranslationKeys.TitleCannotBeEmpty);
-
-    Title = newTitle;
-    return Result.Ok();
+    Translations[cultureInfo.TwoLetterISOLanguageName] = data;
   }
 
-  public Result UpdateDescription(string newDescription)
+  public Result UpsertTranslation(string title, string description, CultureInfo cultureInfo)
   {
-    if (string.IsNullOrWhiteSpace(newDescription))
-      return Result.Error(TranslationKeys.DescriptionCannotBeEmpty);
+    var (result, eventI18NData) = EventI18NData.Create(title, description);
+    if (result.IsFailure)
+      return result;
 
-    Description = newDescription;
+    Translations[cultureInfo.TwoLetterISOLanguageName] = eventI18NData;
     return Result.Ok();
   }
 
@@ -103,12 +107,13 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
 
   private Result AddUrls(IEnumerable<Url> urls)
   {
+    List<Result> results = new();
     foreach (var url in urls)
     {
-      AddUrl(url);
+      results.Add(AddUrl(url));
     }
 
-    return Result.Ok();
+    return results.MergeResults();
   }
 
   private Result AddUrl(Url url)
@@ -131,12 +136,13 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
 
   private Result AddCategories(IEnumerable<Category.Category> categories)
   {
+    List<Result> results = new();
     foreach (var category in categories)
     {
-      AddCategory(category);
+      results.Add(AddCategory(category));
     }
 
-    return Result.Ok();
+    return results.MergeResults();
   }
 
   private Result AddCategory(Category.Category category)
@@ -145,20 +151,19 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     return Result.Ok();
   }
 
-  public Result Update(Event @event)
+  public Result Update(Event @event, CultureInfo cultureInfo)
   {
     if (this.Equals(@event))
       return Result.Ok();
 
-    return Update(@event.Title, @event.Description, @event.StartDate, @event.EndDate,
-      @event.Coordinates, @event.Location, @event.Categories.ToList(), @event.Urls.ToList());
+    return Update(@event.Translations[cultureInfo.TwoLetterISOLanguageName], @event.StartDate, @event.EndDate,
+      @event.Coordinates, @event.Location, @event.Categories.ToList(), @event.Urls.ToList(), cultureInfo);
   }
 
-  public Result Update(string title, string description, DateTime startDate, DateTime endDate,
-    Coordinates.Coordinates? coordinates, Location location, IList<Category.Category> categories, IList<Url> urls)
+  public Result Update(EventI18NData translations, DateTime startDate, DateTime endDate,
+    Coordinates.Coordinates? coordinates, Location location, IList<Category.Category> categories, IList<Url> urls, CultureInfo cultureInfo)
   {
-    var updateTitleResult = UpdateTitle(title);
-    var updateDescriptionResult = UpdateDescription(description);
+    UpdateTranslation(translations, cultureInfo);
     var updateStartDateResult = UpdateStartDate(startDate);
     var updateEndDateResult = UpdateEndDate(endDate);
     var updateCoordinatesResult = UpdateCoordinates(coordinates);
@@ -168,9 +173,8 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
 
     List<Result> results =
     [
-      updateTitleResult, updateDescriptionResult, updateStartDateResult, updateEndDateResult, updateCoordinatesResult,
-      updateLocationResult,
-      updateCategoriesResult, updateUrlsResult
+      updateStartDateResult, updateEndDateResult, updateCoordinatesResult,
+      updateLocationResult, updateCategoriesResult, updateUrlsResult
     ];
 
     return results.MergeResults();
@@ -184,8 +188,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
            && _categories.Equals(other._categories)
            && EventId == other.EventId
            && TerminId == other.TerminId
-           && Title == other.Title
-           && Description == other.Description
+           && Translations == other.Translations
            && StartDate.Equals(other.StartDate)
            && EndDate.Equals(other.EndDate)
            && Location.Equals(other.Location)
@@ -204,8 +207,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     hashCode.Add(_categories);
     hashCode.Add(EventId);
     hashCode.Add(TerminId);
-    hashCode.Add(Title);
-    hashCode.Add(Description);
+    hashCode.Add(Translations);
     hashCode.Add(StartDate);
     hashCode.Add(EndDate);
     hashCode.Add(Location);
@@ -213,3 +215,4 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     return hashCode.ToHashCode();
   }
 }
+
