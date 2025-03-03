@@ -21,13 +21,12 @@ namespace Database.Migrations
           migrationBuilder.Sql(@"
             UPDATE ""Guben"".""Page""
             SET ""Translations"" = jsonb_build_object(
-              'DE',
+              'de',
               jsonb_build_object(
                 'Title', ""Title"",
                 'Description', ""Description""
               )
             )
-            WHERE ""Title"" IS NOT NULL OR ""Description"" IS NOT NULL;
           ");
 
           migrationBuilder.AlterColumn<Dictionary<string, PageI18NData>>(

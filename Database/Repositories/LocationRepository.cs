@@ -1,6 +1,8 @@
-﻿using Domain.Locations;
+﻿using System.Globalization;
+using Domain.Locations;
 using Domain.Locations.repository;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Shared.Database;
 
 namespace Database.Repositories;
@@ -13,24 +15,44 @@ public class LocationRepository
   {
   }
 
-  public Location? Find(Location location)
+  public Task<Location?> FindByName(string name, CultureInfo cultureInfo)
   {
-    return Set
-      .FirstOrDefault(l =>
-        l.Name == location.Name &&
-        l.City == location.City &&
-        l.Street == location.Street &&
-        l.TelephoneNumber == location.TelephoneNumber &&
-        l.Fax == location.Fax &&
-        l.Email == location.Email &&
-        l.Website == location.Website &&
-        l.Zip == location.Zip);
+    var languageKey = cultureInfo.TwoLetterISOLanguageName;
+
+    var sql = $@"
+      SELECT * FROM ""Guben"".""Location""
+      WHERE jsonb_path_query_first(
+          ""Location"".""Translations"",
+          '$.""{languageKey}""?(@.Name == $name)',
+          jsonb_build_object('name', :name)
+      ) IS NOT NULL";
+
+    return Set.FromSqlRaw(sql,
+      new NpgsqlParameter("name", name)
+    ).FirstOrDefaultAsync();
   }
 
-  public Task<Location?> FindByName(string name)
+  public Task<Location?> FindByNameAndAddress(string name, string city, string street, string zipcode, CultureInfo cultureInfo)
   {
+    // Get the language key from the culture info, using its two-letter ISO code
+    string languageKey = cultureInfo.TwoLetterISOLanguageName;
+
+    var sql = $@"
+        SELECT * FROM ""Guben"".""Location""
+        WHERE jsonb_path_query_first(
+                ""Location"".""Translations"",
+                '$.""{languageKey}""?(@.Name == $name)',
+                jsonb_build_object('name', :name)
+            ) IS NOT NULL";
+
     return Set
-      .FirstOrDefaultAsync(l =>
-        l.Name == name);
+      .FromSqlRaw(sql,
+        new NpgsqlParameter("name", name),
+        new NpgsqlParameter("city", city),
+        new NpgsqlParameter("street", street),
+        new NpgsqlParameter("zipcode", zipcode)
+      )
+      .Where(l => l.City == city && l.Street == street && l.Zip == zipcode)
+      .FirstOrDefaultAsync();
   }
 }
