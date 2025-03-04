@@ -44,7 +44,7 @@ public class UpdateEventHandler : ApiRequestHandler<UpdateEventQuery, UpdateEven
     if (location is null)
       throw new ProblemDetailsException(TranslationKeys.LocationNotFound);
 
-    var categories = _categoryRepository.GetByIds(request.CategoryIds).ToList();
+    var categories = _categoryRepository.GetByIdsNoTracking(request.CategoryIds).ToList();
     if (categories is null)
       throw new ProblemDetailsException(TranslationKeys.CategoryNotFound);
 

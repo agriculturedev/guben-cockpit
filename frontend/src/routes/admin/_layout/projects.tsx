@@ -1,10 +1,10 @@
 import AddProjectDialog from "@/components/admin/projects/addProjectDialog";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {useProjectsGetMyProjects} from "@/endpoints/gubenComponents";
-import {createFileRoute} from "@tanstack/react-router";
-import {EditIcon, XIcon, CheckIcon} from "lucide-react";
-import {Button} from "@/components/ui/button";
-import {useTranslation} from "react-i18next";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useProjectsGetMyProjects } from "@/endpoints/gubenComponents";
+import { createFileRoute } from "@tanstack/react-router";
+import { CheckIcon, XIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   component: Page

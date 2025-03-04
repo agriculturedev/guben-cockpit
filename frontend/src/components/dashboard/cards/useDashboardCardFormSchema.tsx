@@ -1,11 +1,11 @@
-import { boolean, string, z } from "zod";
+import { z } from "zod";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ButtonResponse, DashboardTabResponse, InformationCardResponse } from "@/endpoints/gubenSchemas";
+import { InformationCardResponse } from "@/endpoints/gubenSchemas";
 import { useEffect } from "react";
 
 export const useDashboardCardFormSchema = (card?: InformationCardResponse) => {
-  const objectFormSchema = z.object({
+  const buttonFormSchema = z.object({
     title: z.string(),
     url: z.string(),
     openInNewTab: z.boolean().default(false),
@@ -14,7 +14,7 @@ export const useDashboardCardFormSchema = (card?: InformationCardResponse) => {
   const formSchema = z.object({
     title: z.string().nullable(),
     description: z.string().nullable(),
-    button: objectFormSchema.nullable(),
+    button: buttonFormSchema.nullable(),
     imageUrl: z.string().nullable(),
     imageAlt: z.string().nullable(),
   })

@@ -23,6 +23,7 @@ public struct EventResponse
   public CoordinatesResponse? Coordinates { get; set; }
   public required IEnumerable<UrlResponse> Urls { get; set; }
   public required IEnumerable<CategoryResponse> Categories { get; set; }
+  public required bool Published { get; set; }
 
   public static EventResponse Map(Event @event, CultureInfo cultureInfo)
   {
@@ -42,7 +43,8 @@ public struct EventResponse
       Location = LocationResponse.Map(@event.Location, cultureInfo),
       Coordinates = @event.Coordinates is not null ? CoordinatesResponse.Map(@event.Coordinates) : null,
       Urls = @event.Urls.Select(UrlResponse.Map),
-      Categories = @event.Categories.Select(CategoryResponse.Map)
+      Categories = @event.Categories.Select(CategoryResponse.Map),
+      Published = @event.Published
     };
   }
 }

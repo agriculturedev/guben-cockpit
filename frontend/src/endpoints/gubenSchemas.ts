@@ -44,8 +44,6 @@ export type CreateDashboardTabQuery = {
 export type CreateDashboardTabResponse = Record<string, any>;
 
 export type CreateEventQuery = {
-  eventId: string;
-  terminId: string;
   title: string;
   description: string;
   /**
@@ -137,6 +135,7 @@ export type EventResponse = {
   coordinates?: CoordinatesResponse;
   urls: UrlResponse[];
   categories: CategoryResponse[];
+  published: boolean;
 };
 
 export type GetAllCategoriesResponse = {
@@ -219,6 +218,10 @@ export type GetHighlightedProjectsResponse = {
   projects: ProjectResponse[];
 };
 
+export type GetMyEventsResponse = {
+  results: EventResponse[];
+};
+
 export type GetMyProjectsResponse = {
   results: ProjectResponse[];
 };
@@ -279,8 +282,8 @@ export type ProjectResponse = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  highlighted?: boolean;
-  published?: boolean;
+  highlighted: boolean;
+  published: boolean;
 };
 
 export type PublishProjectsQuery = {

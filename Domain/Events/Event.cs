@@ -16,10 +16,10 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
   public DateTime StartDate { get; private set; }
   public DateTime EndDate { get; private set; }
   public Location Location { get; private set; } = null!;
-
+  public bool Published { get; private set; }
+  public Guid CreatedBy { get; private set; }
   public Dictionary<string, EventI18NData> Translations { get; private set; } = new();
   public Coordinates.Coordinates? Coordinates { get; private set; }
-  public bool Published { get; private set; }
 
   private readonly List<Url> _urls = [];
   public IReadOnlyCollection<Url> Urls => _urls.AsReadOnly();
@@ -28,7 +28,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
   public IReadOnlyCollection<Category.Category> Categories => _categories.AsReadOnly();
 
   private Event(string eventId, string terminId, DateTime startDate, DateTime
-    endDate, Coordinates.Coordinates? coordinates)
+    endDate, Coordinates.Coordinates? coordinates, Guid createdBy)
   {
     Id = Guid.CreateVersion7();
     EventId = eventId;
@@ -37,6 +37,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     EndDate = endDate.SetKindUtc();
     Coordinates = coordinates;
     Published = false;
+    CreatedBy = createdBy;
     _urls = [];
     _categories = [];
   }
@@ -44,9 +45,9 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
   public static Result<Event> Create(string eventId, string terminId, string title, string description,
     DateTime startDate, DateTime
       endDate, Location location, Coordinates.Coordinates? coordinates, List<Url> urls,
-    List<Category.Category> categories, CultureInfo cultureInfo)
+    List<Category.Category> categories, CultureInfo cultureInfo, Guid createdBy)
   {
-    var @event = new Event(eventId, terminId, startDate, endDate, coordinates);
+    var @event = new Event(eventId, terminId, startDate, endDate, coordinates, createdBy);
 
     var (translationResult, translation) = EventI18NData.Create(title, description);
     if (translationResult.IsFailure)
@@ -56,9 +57,16 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     @event.UpdateLocation(location);
     @event.AddUrls(urls);
     @event.AddCategories(categories);
-    // TODO: use UpdateTitle
-
     return Result.Ok(@event);
+  }
+
+  public static Result<Event> CreateWithGeneratedIds(string title, string description,
+    DateTime startDate, DateTime
+      endDate, Location location, Coordinates.Coordinates? coordinates, List<Url> urls,
+    List<Category.Category> categories, CultureInfo cultureInfo, Guid createdBy)
+  {
+    return Create(Guid.CreateVersion7().ToString(), Guid.CreateVersion7().ToString(), title,
+      description, startDate, endDate, location, coordinates, urls, categories, cultureInfo, createdBy);
   }
 
   public void SetPublishedState(bool publish)

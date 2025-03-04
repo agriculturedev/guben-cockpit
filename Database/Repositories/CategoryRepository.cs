@@ -17,12 +17,19 @@ public class CategoryRepository
   {
   }
 
-  public IEnumerable<Category> GetByIds(IEnumerable<Guid> ids)
+  public IEnumerable<Category> GetByIdsNoTracking(IEnumerable<Guid> ids)
   {
     return Set
       .AsNoTracking()
       .Where(x => ids.Contains(x.Id));
   }
+
+  public IEnumerable<Category> GetByIds(IEnumerable<Guid> ids)
+  {
+    return Set
+      .Where(x => ids.Contains(x.Id));
+  }
+
 
   public Task<Category?> GetByName(string name)
   {

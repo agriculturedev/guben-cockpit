@@ -10,6 +10,7 @@ using Domain.Events.repository;
 using Domain.Locations;
 using Domain.Locations.repository;
 using Domain.Urls;
+using Domain.Users;
 using Shared.Database;
 
 namespace Jobs.EventImporter;
@@ -130,7 +131,8 @@ public class EventImporter
           coords,
           new List<Url>(),
           categories,
-          cultureInfo
+          cultureInfo,
+          User.SystemUserId
         );
 
         if (eventResult.IsSuccessful)

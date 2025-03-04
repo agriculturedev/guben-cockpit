@@ -22,4 +22,50 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = "Input"
 
-export { Input }
+const FloatInput = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
+  ({onChange, ...props}, ref) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (onChange) {
+        let value = e.currentTarget.value;
+
+        // Replace comma with a dot for consistency
+        value = value.replace(",", ".");
+
+        // Allow empty input (null) to support clearing the field
+        if (value === "" || value === "-") {
+          onChange(null as any);
+          return;
+        }
+
+        // Validate input: Allow only numbers and a single decimal point
+        if (/^-?\d*\.?\d*$/.test(value)) {
+          onChange(value as any); // Pass string to allow incomplete numbers like "10."
+        }
+      }
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      if (onChange) {
+        let value = e.target.value.replace(",", ".");
+
+        // Convert to a number only if it's valid
+        const numericValue = value === "" ? null : parseFloat(value);
+        onChange(numericValue as any);
+      }
+    };
+
+    return (
+      <Input
+        type="text" // `type="text"` prevents auto-correction that blocks incomplete decimals
+        inputMode="decimal" // Helps on mobile devices
+        ref={ref}
+        {...props}
+        onChange={handleChange}
+        onBlur={handleBlur} // Ensures conversion to number when leaving the input
+      />
+    );
+  }
+);
+FloatInput.displayName = "FloatInput";
+
+export { Input, FloatInput }

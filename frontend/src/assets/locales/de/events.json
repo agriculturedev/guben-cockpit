@@ -1,5 +1,9 @@
 {
   "Title": "Veranstaltungen",
   "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
-  "ClickHere": "Klicken Sie hier"
+  "ClickHere": "Klicken Sie hier",
+  "Add": "Veranstaltung hinzufügen",
+  "Edit": "Veranstaltung bearbeiten",
+  "MyEvents": "Meine Veranstaltungen",
+  "Published": "Veröffentlicht"
 }
