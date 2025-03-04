@@ -6,8 +6,6 @@ namespace Api.Controllers.Events.CreateEvent;
 // TODO: this will probably not be correct, was just to test out the creation of events. we will probably not be passing an EventId and TerminId from the frontend i suppose.
 public class CreateEventQuery : IApiRequest<CreateEventResponse>
 {
-  public required string EventId { get; set; }
-  public required string TerminId { get; set; }
   public required string Title { get; set; }
   public required string Description { get; set; }
   public DateTime StartDate { get; set; }

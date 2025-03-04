@@ -4,7 +4,7 @@
  * @version 1.0.0
  */
 import * as reactQuery from "@tanstack/react-query";
-import { useGubenContext, GubenContext } from "./gubenContext";
+import { GubenContext, useGubenContext } from "./gubenContext";
 import type * as Fetcher from "./gubenFetcher";
 import { gubenFetch } from "./gubenFetcher";
 import type * as Schemas from "./gubenSchemas";
@@ -818,6 +818,61 @@ export const useEventsCreateEvent = (
   });
 };
 
+export type EventsGetMyEventsQueryParams = {
+  query?: Record<string, any>;
+};
+
+export type EventsGetMyEventsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsGetMyEventsVariables = {
+  queryParams?: EventsGetMyEventsQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsGetMyEvents = (
+  variables: EventsGetMyEventsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetMyEventsResponse,
+    EventsGetMyEventsError,
+    undefined,
+    {},
+    EventsGetMyEventsQueryParams,
+    {}
+  >({ url: "/events/owned", method: "get", ...variables, signal });
+
+export const useEventsGetMyEvents = <TData = Schemas.GetMyEventsResponse,>(
+  variables: EventsGetMyEventsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetMyEventsResponse,
+      EventsGetMyEventsError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetMyEventsResponse,
+    EventsGetMyEventsError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/events/owned",
+      operationId: "eventsGetMyEvents",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchEventsGetMyEvents({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type DashboardGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -1285,6 +1340,11 @@ export type QueryOperation =
       path: "/events";
       operationId: "eventsGetAll";
       variables: EventsGetAllVariables;
+    }
+  | {
+      path: "/events/owned";
+      operationId: "eventsGetMyEvents";
+      variables: EventsGetMyEventsVariables;
     }
   | {
       path: "/dashboard";

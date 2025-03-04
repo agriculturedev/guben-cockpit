@@ -83,6 +83,19 @@ public class EventRepository
       .AsEnumerable();
   }
 
+  public IEnumerable<Event> GetAllOwnedBy(Guid userId)
+  {
+    return Set
+      .AsNoTracking()
+      .AsSplitQuery()
+      .TagWith(nameof(EventRepository) + "." + nameof(GetAllOwnedBy))
+      .Include(e => e.Location)
+      .Include(e => e.Urls)
+      .Include(e => e.Categories)
+      .Where(e => e.CreatedBy == userId)
+      .AsEnumerable();
+  }
+
   public async Task<PagedResult<Event>> GetAllEventsPaged(
     PagedCriteria pagination,
     EventFilterCriteria filter,

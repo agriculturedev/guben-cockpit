@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -7,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { LoadingIndicator } from "@/components/loadingIndicator/loadingIndicator";
 import { cn } from "@/lib/utils";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { WithClassName } from "@/types/WithClassName";
 
 export interface ComboboxOption {
   label: string;
@@ -14,7 +14,7 @@ export interface ComboboxOption {
   hasPriority?: boolean;
 }
 
-interface ComboboxProps {
+interface ComboboxProps extends WithClassName {
   options: ComboboxOption[];
   placeholder: string;
   onSelect: (value: string | null) => void;
@@ -31,7 +31,8 @@ export const Combobox = ({
                            value,
                            defaultOpen = false,
                            isLoading = false,
-                           disabled = false
+                           disabled = false,
+                           className,
                          }: ComboboxProps) => {
   const {t} = useTranslation();
   const [open, setOpen] = React.useState(defaultOpen);
@@ -48,7 +49,7 @@ export const Combobox = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-fit min-w-[200px] justify-between overflow-visible px-1 gap-1"
+          className="min-w-[12rem] justify-between overflow-hidden bg-white"
         >
           {value
             ? options.find((option) => option.value === value)?.label
@@ -57,7 +58,7 @@ export const Combobox = ({
         </Button>
       </PopoverTrigger>
       {!disabled &&
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-fit p-0">
           <Command filter={(value, search) => {
             const lowerCaseSearch = search.toLowerCase();
 

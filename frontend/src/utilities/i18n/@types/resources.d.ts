@@ -1,8 +1,13 @@
 interface Resources {
   "common": {
     "Actions": "Aktionen",
+    "Add": "Hinzufügen",
+    "Delete": "Löschen",
     "Category": "Kategorie",
+    "Categories": "Kategorien",
     "Cancel": "Stornieren",
+    "Url": "Url",
+    "Urls": "Urls",
     "Credits": "Bildnachweis",
     "Date": "Datum",
     "Description": "Beschreibung",
@@ -41,6 +46,8 @@ interface Resources {
     "ComingSoon": "Demnächst verfügbar",
     "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}",
     "All": "Alle",
+    "Latitude": "Latitude",
+    "Longitude": "Longitude",
     "Dates": {
       "Always": "Immer",
       "Today": "Heute",
@@ -82,7 +89,11 @@ interface Resources {
   "events": {
     "Title": "Veranstaltungen",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
-    "ClickHere": "Klicken Sie hier"
+    "ClickHere": "Klicken Sie hier",
+    "Add": "Veranstaltung hinzufügen",
+    "Edit": "Veranstaltung bearbeiten",
+    "MyEvents": "Meine Veranstaltungen",
+    "Published": "Veröffentlicht"
   },
   "navigation": {
     "Dashboard": "Dashboard",
