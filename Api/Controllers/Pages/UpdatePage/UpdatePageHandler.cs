@@ -9,10 +9,13 @@ namespace Api.Controllers.Pages.UpdatePage;
 public class UpdatePageHandler : ApiRequestHandler<UpdatePageQuery, UpdatePageResponse>
 {
   private readonly IPageRepository _pageRepository;
+  private readonly CultureInfo _culture;
 
   public UpdatePageHandler(IPageRepository pageRepository)
   {
     _pageRepository = pageRepository;
+    _culture = CultureInfo.CurrentCulture;
+
   }
 
   public override async Task<UpdatePageResponse> Handle(UpdatePageQuery request, CancellationToken cancellationToken)
@@ -23,14 +26,14 @@ public class UpdatePageHandler : ApiRequestHandler<UpdatePageQuery, UpdatePageRe
       var (pageResult, newPage) = Page.Create(request.Id);
       pageResult.ThrowIfFailure();
 
-      var updateTranslation = newPage.UpdateTranslation(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, request.Title, request.Description);
+      var updateTranslation = newPage.UpdateTranslation(request.Title, request.Description, _culture);
       updateTranslation.ThrowIfFailure();
 
       await _pageRepository.SaveAsync(newPage);
     }
     else
     {
-      page.UpdateTranslation(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, request.Title, request.Description);
+      page.UpdateTranslation(request.Title, request.Description, _culture);
     }
 
     return new UpdatePageResponse();

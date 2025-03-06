@@ -69,10 +69,6 @@ namespace Database.Migrations
                     b.Property<string>("Coordinates")
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -93,9 +89,9 @@ namespace Database.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Translations")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.HasKey("Id");
 
@@ -120,15 +116,15 @@ namespace Database.Migrations
                     b.Property<string>("Fax")
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Street")
                         .HasColumnType("text");
 
                     b.Property<string>("TelephoneNumber")
                         .HasColumnType("text");
+
+                    b.Property<string>("Translations")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
 
                     b.Property<string>("Website")
                         .HasColumnType("text");
@@ -168,6 +164,9 @@ namespace Database.Migrations
 
                     b.Property<string>("FullText")
                         .HasColumnType("text");
+
+                    b.Property<bool>("Highlighted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("ImageCaption")
                         .HasColumnType("text");

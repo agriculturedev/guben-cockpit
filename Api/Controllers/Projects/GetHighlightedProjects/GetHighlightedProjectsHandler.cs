@@ -21,7 +21,9 @@ public class GetHighlightedProjectsHandler : ApiRequestHandler<GetHighlightedPro
 
     return new GetHighlightedProjectsResponse()
     {
-      Projects = result.Select(ProjectResponse.Map) ?? []
+      Projects = result
+        .Where(p => p.Highlighted)
+        .Select(ProjectResponse.Map) ?? []
     };
   }
 }

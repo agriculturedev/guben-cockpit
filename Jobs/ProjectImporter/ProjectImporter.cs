@@ -1,5 +1,4 @@
 using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -43,7 +42,7 @@ public class ProjectImporter
         try
         {
           await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory,
-            async dbContext => { await UpsertProjectAsync(project); });
+            async (_) => { await UpsertProjectAsync(project); });
         }
         catch
         {
@@ -84,7 +83,7 @@ public class ProjectImporter
 
     var (result, project) = Project.Create(
       rawProject.Id, rawProject.Title, rawProject.Introtext, rawProject.Fulltext,
-      rawProject.ImageCaption, rawProject.ImageUrl, rawProject.ImageCredits, User.SystemUserId);
+      rawProject.ImageCaption, rawProject.ImageUrl, rawProject.ImageCredits, User.SystemUserId, false);
 
     if (result.IsSuccessful)
     {

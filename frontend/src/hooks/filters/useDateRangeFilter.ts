@@ -1,5 +1,5 @@
-import {Option} from "@/types/common.types";
-import {useState} from "react";
+import { Option } from "@/types/common.types";
+import { useState } from "react";
 
 type DateRange = { startDate: Option<Date>, endDate: Option<Date> };
 type ValueType = DateRange | DateFilterPreset;
@@ -63,12 +63,12 @@ function getDatesFromPreset(dateFilter: Option<DateFilterPreset>): [Option<Date>
   const today = new Date();
   switch (dateFilter) {
     case DateFilterPreset.TODAY:
-      return [today, null];
+      return [today, today];
 
     case DateFilterPreset.TOMORROW:
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
-      return [tomorrow, null];
+      return [tomorrow, tomorrow];
 
     case DateFilterPreset.NEXT_WEEK:
       const startOfNextWeek = new Date(today);
@@ -79,7 +79,7 @@ function getDatesFromPreset(dateFilter: Option<DateFilterPreset>): [Option<Date>
 
     case DateFilterPreset.THIS_WEEK:
       const startOfWeek = new Date(today);
-      startOfWeek.setDate(today.getDate() - today.getDay());
+      startOfWeek.setDate(today.getDate() - today.getDay() + 1 );
       const endOfWeek = new Date(startOfWeek);
       endOfWeek.setDate(startOfWeek.getDate() + 6);
       return [startOfWeek, endOfWeek];

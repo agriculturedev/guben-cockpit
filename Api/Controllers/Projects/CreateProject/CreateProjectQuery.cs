@@ -10,4 +10,5 @@ public class CreateProjectQuery : IAuthenticatedApiRequest, IApiRequest<CreatePr
   public string? ImageCaption { get; set; }
   public string? ImageUrl { get; set; }
   public string? ImageCredits { get; set; }
+  public bool? Highlighted { get; set; } = false;
 }

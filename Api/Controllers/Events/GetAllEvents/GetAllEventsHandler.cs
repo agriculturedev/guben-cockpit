@@ -1,22 +1,26 @@
+using System.Globalization;
 using Api.Controllers.Events.Shared;
+using Api.Shared;
 using Domain.Events.repository;
 using Shared.Api;
-using Api.Shared;
 
 namespace Api.Controllers.Events.GetAllEvents;
 
 public class GetAllEventsHandler : ApiPagedRequestHandler<GetAllEventsQuery, GetAllEventsResponse, EventResponse>
 {
   private readonly IEventRepository _eventRepository;
+  private readonly CultureInfo _culture;
 
   public GetAllEventsHandler(IEventRepository eventRepository)
   {
     _eventRepository = eventRepository;
+    _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<GetAllEventsResponse> Handle(GetAllEventsQuery request, CancellationToken
       cancellationToken)
   {
+
     var filter = new EventFilterCriteria
     {
       TitleQuery = request.TitleSearch,
@@ -28,7 +32,7 @@ public class GetAllEventsHandler : ApiPagedRequestHandler<GetAllEventsQuery, Get
       SortDirection = request.SortDirection?.MapToDomain(),
     };
 
-    var pagedResult = await _eventRepository.GetAllEventsPaged(request, filter);
+    var pagedResult = await _eventRepository.GetAllEventsPaged(request, filter, _culture);
 
     return new GetAllEventsResponse
     {
@@ -36,7 +40,7 @@ public class GetAllEventsHandler : ApiPagedRequestHandler<GetAllEventsQuery, Get
       PageSize = pagedResult.PageSize,
       TotalCount = pagedResult.TotalCount,
       PageCount = pagedResult.PageCount,
-      Results = pagedResult.Results.Select(EventResponse.Map)
+      Results = pagedResult.Results.Select(e => EventResponse.Map(e, _culture))
     };
   }
 }

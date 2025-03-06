@@ -1,3 +1,4 @@
+using System.Globalization;
 using Api.Infrastructure.Translations;
 using Domain;
 using Domain.Pages;
@@ -11,9 +12,9 @@ public struct PageResponse
   public required string Title { get; set; }
   public required string Description { get; set; }
 
-  public static PageResponse Map(Page page)
+  public static PageResponse Map(Page page, CultureInfo cultureInfo)
   {
-    var i18NData = page.Translations.GetTranslation();
+    var i18NData = page.Translations.GetTranslation(cultureInfo);
     if (i18NData is null)
       throw new ProblemDetailsException(TranslationKeys.NoValidTranslationsFound);
 

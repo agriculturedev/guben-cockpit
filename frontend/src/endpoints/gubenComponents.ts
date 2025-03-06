@@ -159,12 +159,25 @@ export const useUsersGetMe = <TData = Schemas.UserResponse,>(
   });
 };
 
+export type ProjectsGetAllQueryParams = {
+  /**
+   * @format int32
+   */
+  pageNumber?: number;
+  /**
+   * @format int32
+   */
+  pageSize?: number;
+};
+
 export type ProjectsGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type ProjectsGetAllVariables = GubenContext["fetcherOptions"];
+export type ProjectsGetAllVariables = {
+  queryParams?: ProjectsGetAllQueryParams;
+} & GubenContext["fetcherOptions"];
 
 export const fetchProjectsGetAll = (
   variables: ProjectsGetAllVariables,
@@ -175,7 +188,7 @@ export const fetchProjectsGetAll = (
     ProjectsGetAllError,
     undefined,
     {},
-    {},
+    ProjectsGetAllQueryParams,
     {}
   >({ url: "/projects", method: "get", ...variables, signal });
 
@@ -252,15 +265,59 @@ export const useProjectsCreateProject = (
   });
 };
 
+export type ProjectsGetHighlightedError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsGetHighlightedVariables = GubenContext["fetcherOptions"];
+
+export const fetchProjectsGetHighlighted = (
+  variables: ProjectsGetHighlightedVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetHighlightedProjectsResponse,
+    ProjectsGetHighlightedError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/projects/highlighted", method: "get", ...variables, signal });
+
+export const useProjectsGetHighlighted = <
+  TData = Schemas.GetHighlightedProjectsResponse,
+>(
+  variables: ProjectsGetHighlightedVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetHighlightedProjectsResponse,
+      ProjectsGetHighlightedError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetHighlightedProjectsResponse,
+    ProjectsGetHighlightedError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/projects/highlighted",
+      operationId: "projectsGetHighlighted",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchProjectsGetHighlighted({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type ProjectsGetMyProjectsQueryParams = {
-  /**
-   * @format int32
-   */
-  pageNumber?: number;
-  /**
-   * @format int32
-   */
-  pageSize?: number;
+  query?: Record<string, any>;
 };
 
 export type ProjectsGetMyProjectsError = Fetcher.ErrorWrapper<{
@@ -409,57 +466,6 @@ export const useProjectsUpdateProject = (
   });
 };
 
-export type ProjectsGetHighlightedError = Fetcher.ErrorWrapper<{
-  status: 400;
-  payload: Schemas.ProblemDetails;
-}>;
-
-export type ProjectsGetHighlightedVariables = GubenContext["fetcherOptions"];
-
-export const fetchProjectsGetHighlighted = (
-  variables: ProjectsGetHighlightedVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<
-    Schemas.GetHighlightedProjectsResponse,
-    ProjectsGetHighlightedError,
-    undefined,
-    {},
-    {},
-    {}
-  >({ url: "/projects/highlighted", method: "get", ...variables, signal });
-
-export const useProjectsGetHighlighted = <
-  TData = Schemas.GetHighlightedProjectsResponse,
->(
-  variables: ProjectsGetHighlightedVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<
-      Schemas.GetHighlightedProjectsResponse,
-      ProjectsGetHighlightedError,
-      TData
-    >,
-    "queryKey" | "queryFn" | "initialData"
-  >,
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<
-    Schemas.GetHighlightedProjectsResponse,
-    ProjectsGetHighlightedError,
-    TData
-  >({
-    queryKey: queryKeyFn({
-      path: "/projects/highlighted",
-      operationId: "projectsGetHighlighted",
-      variables,
-    }),
-    queryFn: ({ signal }) =>
-      fetchProjectsGetHighlighted({ ...fetcherOptions, ...variables }, signal),
-    ...options,
-    ...queryOptions,
-  });
-};
-
 export type PagesGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -472,7 +478,7 @@ export const fetchPagesGetAll = (
   signal?: AbortSignal,
 ) =>
   gubenFetch<
-    Schemas.GetAllEventsResponse,
+    Schemas.GetAllPagesResponse,
     PagesGetAllError,
     undefined,
     {},
@@ -480,11 +486,11 @@ export const fetchPagesGetAll = (
     {}
   >({ url: "/pages", method: "get", ...variables, signal });
 
-export const usePagesGetAll = <TData = Schemas.GetAllEventsResponse,>(
+export const usePagesGetAll = <TData = Schemas.GetAllPagesResponse,>(
   variables: PagesGetAllVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
-      Schemas.GetAllEventsResponse,
+      Schemas.GetAllPagesResponse,
       PagesGetAllError,
       TData
     >,
@@ -493,7 +499,7 @@ export const usePagesGetAll = <TData = Schemas.GetAllEventsResponse,>(
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
   return reactQuery.useQuery<
-    Schemas.GetAllEventsResponse,
+    Schemas.GetAllPagesResponse,
     PagesGetAllError,
     TData
   >({
@@ -649,6 +655,42 @@ export const useLocationsGetAll = <TData = Schemas.GetAllLocationsResponse,>(
     }),
     queryFn: ({ signal }) =>
       fetchLocationsGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type TopicsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type TopicsVariables = GubenContext["fetcherOptions"];
+
+export const fetchTopics = (variables: TopicsVariables, signal?: AbortSignal) =>
+  gubenFetch<Schemas.GetTopicsResponse, TopicsError, undefined, {}, {}, {}>({
+    url: "/geo/topics",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useTopics = <TData = Schemas.GetTopicsResponse,>(
+  variables: TopicsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<Schemas.GetTopicsResponse, TopicsError, TData>,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<Schemas.GetTopicsResponse, TopicsError, TData>({
+    queryKey: queryKeyFn({
+      path: "/geo/topics",
+      operationId: "topics",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchTopics({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
   });
@@ -1210,14 +1252,14 @@ export type QueryOperation =
       variables: ProjectsGetAllVariables;
     }
   | {
-      path: "/projects/owned";
-      operationId: "projectsGetMyProjects";
-      variables: ProjectsGetMyProjectsVariables;
-    }
-  | {
       path: "/projects/highlighted";
       operationId: "projectsGetHighlighted";
       variables: ProjectsGetHighlightedVariables;
+    }
+  | {
+      path: "/projects/owned";
+      operationId: "projectsGetMyProjects";
+      variables: ProjectsGetMyProjectsVariables;
     }
   | {
       path: "/pages";
@@ -1233,6 +1275,11 @@ export type QueryOperation =
       path: "/locations";
       operationId: "locationsGetAll";
       variables: LocationsGetAllVariables;
+    }
+  | {
+      path: "/geo/topics";
+      operationId: "topics";
+      variables: TopicsVariables;
     }
   | {
       path: "/events";

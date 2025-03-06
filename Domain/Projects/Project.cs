@@ -13,9 +13,10 @@ public sealed class Project : Entity<string>
   public string? ImageCredits { get; private set; }
   public bool Published { get; private set; }
   public Guid CreatedBy { get; private set; }
+  public bool Highlighted { get; private set; }
 
   private Project(string id, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
-    imageCredits, Guid createdBy)
+    imageCredits, Guid createdBy, bool highlighted)
   {
     Id = id;
     Title = title;
@@ -26,18 +27,39 @@ public sealed class Project : Entity<string>
     ImageCredits = imageCredits;
     Published = false;
     CreatedBy = createdBy;
+    Highlighted = highlighted;
   }
 
   public static Result<Project> Create(string id, string title, string? description, string? fullText, string? imageCaption,
-    string? imageUrl, string? imageCredits, Guid createdBy)
+    string? imageUrl, string? imageCredits, Guid createdBy, bool highlighted = false)
   {
-    return new Project(id, title, description, fullText, imageCaption, imageUrl, imageCredits, createdBy);
+    return new Project(
+      id,
+      title,
+      description,
+      fullText,
+      imageCaption,
+      imageUrl,
+      imageCredits,
+      createdBy,
+      highlighted
+    );
   }
 
   public static Result<Project> CreateWithGeneratedId(string title, string? description, string? fullText, string? imageCaption,
-    string? imageUrl, string? imageCredits, Guid createdBy)
+    string? imageUrl, string? imageCredits, Guid createdBy, bool highlighted = false)
   {
-    return new Project(Guid.CreateVersion7().ToString(), title, description, fullText, imageCaption, imageUrl, imageCredits, createdBy);
+    return new Project(
+      Guid.CreateVersion7().ToString(),
+      title,
+      description,
+      fullText,
+      imageCaption,
+      imageUrl,
+      imageCredits,
+      createdBy,
+      highlighted
+    );
   }
 
   public void Update(string title, string? description, string? fullText, string? imageCaption, string? imageUrl,

@@ -81,6 +81,7 @@ export type CreateProjectQuery = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
+  highlighted?: boolean | null;
 };
 
 export type CreateProjectResponse = Record<string, any>;
@@ -104,6 +105,13 @@ export type DashboardTabResponse = {
   informationCards?: InformationCardResponse[];
 };
 
+export type DataSourceResponse = {
+  id: string;
+  name: string;
+  wms?: SourceResponse;
+  wfs?: SourceResponse;
+};
+
 export type DeleteCardFromTabResponse = Record<string, any>;
 
 export type DeleteDashboardTabResponse = Record<string, any>;
@@ -114,6 +122,7 @@ export type EventResponse = {
    */
   id: string;
   eventId: string;
+  terminId: string;
   title: string;
   description: string;
   /**
@@ -162,6 +171,10 @@ export type GetAllLocationsResponse = {
   locations: LocationResponse[];
 };
 
+export type GetAllPagesResponse = {
+  pages: PageResponse[];
+};
+
 export type GetAllProjectsResponse = {
   /**
    * @format int32
@@ -207,23 +220,11 @@ export type GetHighlightedProjectsResponse = {
 };
 
 export type GetMyProjectsResponse = {
-  /**
-   * @format int32
-   */
-  pageNumber: number;
-  /**
-   * @format int32
-   */
-  pageSize: number;
-  /**
-   * @format int32
-   */
-  totalCount: number;
-  /**
-   * @format int32
-   */
-  pageCount: number;
   results: ProjectResponse[];
+};
+
+export type GetTopicsResponse = {
+  topics: TopicResponse[];
 };
 
 export type InformationCardResponse = {
@@ -279,6 +280,7 @@ export type ProjectResponse = {
   imageUrl?: string | null;
   imageCredits?: string | null;
   highlighted?: boolean;
+  published?: boolean;
 };
 
 export type PublishProjectsQuery = {
@@ -287,6 +289,17 @@ export type PublishProjectsQuery = {
 };
 
 export type PublishProjectsResponse = Record<string, any>;
+
+export type SourceResponse = {
+  name: string;
+  url: string;
+} | null;
+
+export type TopicResponse = {
+  id: string;
+  name: string;
+  dataSources: DataSourceResponse[];
+};
 
 export type UpdateCardOnTabQuery = {
   /**

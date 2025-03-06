@@ -30,7 +30,17 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
     if (user is null)
       throw new ProblemDetailsException(TranslationKeys.UserNotFound);
 
-    var (projectResult, project) = Project.CreateWithGeneratedId(request.Title, request.Description,  request.FullText, request.ImageCaption, request.ImageUrl, request.ImageCredits, user.Id);
+    var (projectResult, project) = Project.CreateWithGeneratedId(
+      request.Title,
+      request.Description,
+      request.FullText,
+      request.ImageCaption,
+      request.ImageUrl,
+      request.ImageCredits,
+      user.Id,
+      request.Highlighted ?? false
+    );
+
     projectResult.ThrowIfFailure();
 
     await _projectRepository.SaveAsync(project);

@@ -11,7 +11,8 @@ public struct ProjectResponse
   public string? ImageCaption { get; set; }
   public string? ImageUrl { get; set; }
   public string? ImageCredits { get; set; }
-  public bool Highlighted { get; set; } // TODO: this is used for the weird 'project carousel' and gubener marktplatz, needs to be clarified if they want more of a list view or whatever
+  public bool Highlighted { get; set; }
+  public bool Published { get; set; }
 
   public static ProjectResponse Map(Project project)
   {
@@ -24,7 +25,8 @@ public struct ProjectResponse
       ImageCaption = project.ImageCaption,
       ImageUrl = project.ImageUrl,
       ImageCredits = project.ImageCredits,
-      Highlighted = true
+      Highlighted = project.Highlighted,
+      Published = project.Published
     };
   }
 }

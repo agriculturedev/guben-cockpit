@@ -7,7 +7,7 @@ using Shared.Api;
 
 namespace Api.Controllers.Projects.GetMyProjects;
 
-public class GetMyProjectsHandler : ApiPagedRequestHandler<GetMyProjectsQuery, GetMyProjectsResponse, ProjectResponse>
+public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyProjectsResponse>
 {
   private readonly IProjectRepository _projectRepository;
   private readonly IHttpContextAccessor _httpContextAccessor;
@@ -31,15 +31,11 @@ public class GetMyProjectsHandler : ApiPagedRequestHandler<GetMyProjectsQuery, G
     if (user is null)
       throw new UnauthorizedAccessException(TranslationKeys.UserNotFound);
 
-    var pagedResult = await _projectRepository.GetAllOwnedByUserPaged(user.Id, request);
+    var projects = _projectRepository.GetAllOwnedBy(user.Id);
 
     return new GetMyProjectsResponse()
     {
-      PageNumber = pagedResult.PageNumber,
-      PageSize = pagedResult.PageSize,
-      TotalCount = pagedResult.TotalCount,
-      PageCount = pagedResult.PageCount,
-      Results = pagedResult.Results.Select(ProjectResponse.Map)
+      Results = projects.Select(ProjectResponse.Map)
     };
   }
 }
