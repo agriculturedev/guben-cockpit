@@ -466,57 +466,6 @@ export const useProjectsUpdateProject = (
   });
 };
 
-export type ProjectsGetHighlightedError = Fetcher.ErrorWrapper<{
-  status: 400;
-  payload: Schemas.ProblemDetails;
-}>;
-
-export type ProjectsGetHighlightedVariables = GubenContext["fetcherOptions"];
-
-export const fetchProjectsGetHighlighted = (
-  variables: ProjectsGetHighlightedVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<
-    Schemas.GetHighlightedProjectsResponse,
-    ProjectsGetHighlightedError,
-    undefined,
-    {},
-    {},
-    {}
-  >({ url: "/projects/highlighted", method: "get", ...variables, signal });
-
-export const useProjectsGetHighlighted = <
-  TData = Schemas.GetHighlightedProjectsResponse,
->(
-  variables: ProjectsGetHighlightedVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<
-      Schemas.GetHighlightedProjectsResponse,
-      ProjectsGetHighlightedError,
-      TData
-    >,
-    "queryKey" | "queryFn" | "initialData"
-  >,
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<
-    Schemas.GetHighlightedProjectsResponse,
-    ProjectsGetHighlightedError,
-    TData
-  >({
-    queryKey: queryKeyFn({
-      path: "/projects/highlighted",
-      operationId: "projectsGetHighlighted",
-      variables,
-    }),
-    queryFn: ({ signal }) =>
-      fetchProjectsGetHighlighted({ ...fetcherOptions, ...variables }, signal),
-    ...options,
-    ...queryOptions,
-  });
-};
-
 export type PagesGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -1311,11 +1260,6 @@ export type QueryOperation =
       path: "/projects/owned";
       operationId: "projectsGetMyProjects";
       variables: ProjectsGetMyProjectsVariables;
-    }
-  | {
-      path: "/projects/highlighted";
-      operationId: "projectsGetHighlighted";
-      variables: ProjectsGetHighlightedVariables;
     }
   | {
       path: "/pages";
