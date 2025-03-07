@@ -1,5 +1,5 @@
 import { Option } from "@/types/common.types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type DateRange = { startDate: Option<Date>, endDate: Option<Date> };
 type ValueType = DateRange | DateFilterPreset;
@@ -12,6 +12,7 @@ export enum DateFilterPreset {
   THIS_MONTH = 'this_month',
   NEXT_MONTH = 'next_month',
   THIS_YEAR = 'this_year',
+  FUTURE = 'future',
   CUSTOM = 'custom'
 }
 
@@ -22,6 +23,10 @@ export function useDateRangeFilter(defaultPreset?: DateFilterPreset) {
 
   const [startDate, setStartDate] = useState<Option<Date>>(null);
   const [endDate, setEndDate] = useState<Option<Date>>(null);
+
+  useEffect(() => { // otherwise defaultPreset is not applied on load
+    setFilter(defaultPreset);
+  }, [defaultPreset])
 
   function setFilter(value?: ValueType) {
     if(value === undefined) return clearFilter();
@@ -98,6 +103,10 @@ function getDatesFromPreset(dateFilter: Option<DateFilterPreset>): [Option<Date>
       const startOfYear = new Date(today.getFullYear(), 0, 1);
       const endOfYear = new Date(today.getFullYear(), 11, 31);
       return [startOfYear, endOfYear];
+
+    case DateFilterPreset.FUTURE:
+      const tenYearsAhead = new Date(today.getFullYear()+10, today.getMonth(), today.getDate());
+      return [today, tenYearsAhead];
 
     default:
       return [null, null];
