@@ -1,13 +1,9 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext, useMemo,
-} from "react";
-import {EventsGetAllQueryParams} from "@/endpoints/gubenComponents";
-import {useTextFilter, UseTextFilterHook} from "@/hooks/filters/useTextFilter";
-import {useDateRangeFilter, UseDateRangeFilterHook} from "@/hooks/filters/useDateRangeFilter";
-import {useSortingFilter, UseSortingFilterHook} from "@/hooks/filters/useSortingFilter";
-import {useMultiComboFilter, UseMultiComboFilterHook} from "@/hooks/filters/useMultiComboFilter";
+import { createContext, PropsWithChildren, useContext, useMemo, } from "react";
+import { EventsGetAllQueryParams } from "@/endpoints/gubenComponents";
+import { useTextFilter, UseTextFilterHook } from "@/hooks/filters/useTextFilter";
+import { DateFilterPreset, useDateRangeFilter, UseDateRangeFilterHook } from "@/hooks/filters/useDateRangeFilter";
+import { useSortingFilter, UseSortingFilterHook } from "@/hooks/filters/useSortingFilter";
+import { useMultiComboFilter, UseMultiComboFilterHook } from "@/hooks/filters/useMultiComboFilter";
 
 interface EventFilterControllers {
   title: UseTextFilterHook;
@@ -27,7 +23,7 @@ const EventFiltersContext = createContext<EventFiltersContext | undefined>(undef
 export function EventFiltersProvider({children}: PropsWithChildren) {
   const controllers = {
     title: useTextFilter(),
-    dateRange: useDateRangeFilter(),
+    dateRange: useDateRangeFilter(DateFilterPreset.FUTURE),
     sorting: useSortingFilter(),
     location: useMultiComboFilter(["Guben"]),
     category: useTextFilter(),

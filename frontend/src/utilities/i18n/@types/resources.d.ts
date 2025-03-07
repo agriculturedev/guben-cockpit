@@ -43,6 +43,7 @@ interface Resources {
     "All": "Alle",
     "Dates": {
       "Always": "Immer",
+      "Future": "Kommend",
       "Today": "Heute",
       "Tomorrow": "Morgen",
       "ThisWeek": "Diese Woche",

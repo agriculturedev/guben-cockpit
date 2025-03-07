@@ -42,6 +42,7 @@
   "All": "All",
   "Dates": {
     "Always": "Always",
+    "Future": "Upcoming",
     "Today": "Today",
     "Tomorrow": "Tomorrow",
     "ThisWeek": "This week",
