@@ -16,7 +16,7 @@ public class GetAllProjectsHandler : ApiPagedRequestHandler<GetAllProjectsQuery,
   public override async Task<GetAllProjectsResponse> Handle(GetAllProjectsQuery request, CancellationToken
       cancellationToken)
   {
-    var pagedResult = await _projectRepository.GetAllPaged(request);
+    var pagedResult = await _projectRepository.GetAllPagedBusinesses(request);
 
     return new GetAllProjectsResponse
     {

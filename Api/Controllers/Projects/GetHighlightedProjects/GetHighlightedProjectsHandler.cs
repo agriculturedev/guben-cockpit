@@ -22,7 +22,7 @@ public class GetHighlightedProjectsHandler : ApiRequestHandler<GetHighlightedPro
     return new GetHighlightedProjectsResponse()
     {
       Projects = result
-        .Where(p => p.Highlighted)
+        .Where(p => p.Highlighted && !p.IsBusiness) // TODO: filter on db
         .Select(ProjectResponse.Map) ?? []
     };
   }
