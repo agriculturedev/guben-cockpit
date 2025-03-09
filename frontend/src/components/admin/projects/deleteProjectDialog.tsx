@@ -16,7 +16,6 @@ export default function DeleteProjectDialog({projectId, onDeleteSuccess, childre
   const {t} = useTranslation(["common", "projects"])
   const [open, setOpen] = useState(false);
 
-  console.log(projectId);
 
   const mutation = useProjectsDeleteProject({
     onSuccess: async () => {
