@@ -50,6 +50,7 @@ interface Resources {
     "Longitude": "Longitude",
     "Dates": {
       "Always": "Immer",
+      "Future": "Kommend",
       "Today": "Heute",
       "Tomorrow": "Morgen",
       "ThisWeek": "Diese Woche",

@@ -15,6 +15,16 @@ public class ProjectRepository
     ModifiedSet = Set.Where(p => p.Published);
   }
 
+  public Task<PagedResult<Project>> GetAllPagedBusinesses(PagedCriteria criteria)
+  {
+    return ModifiedSet
+      .TagWith(GetType().Name + '.' + nameof(GetAllPagedBusinesses))
+      .AsNoTracking()
+      .IgnoreAutoIncludes()
+      .Where(p => p.IsBusiness)
+      .ToPagedResult(criteria);
+  }
+
   public Task<Project?> GetIncludingUnpublished(string id)
   {
     return Set
