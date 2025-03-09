@@ -21,7 +21,9 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
 
   public override async Task<UpdateProjectResponse> Handle(UpdateProjectQuery request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(request.Id);
+    if(request.Id == null) {
+      throw new ProblemDetailsException(TranslationKeys.MissingProjectId);
+    }
 
     var keycloakId = _httpContextAccessor.HttpContext?.User.GetKeycloakId();
     if (string.IsNullOrEmpty(keycloakId))

@@ -210,4 +210,7 @@ value   : The object must be serialized into a byte array
   <data name="NoValidTranslationsFound" xml:space="preserve">
     <value>Keine gültigen Übersetzungen gefunden</value>
   </data>
+  <data name="MissingProjectId" xml:space="preserve">
+    <value>Fehlende Projekt-ID</value>
+  </data>
 </root>
