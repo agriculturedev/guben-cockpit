@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.Projects.CreateProject;
+using Api.Controllers.Projects.DeleteProject;
 using Api.Controllers.Projects.GetAllProjects;
 using Api.Controllers.Projects.GetHighlightedProjects;
 using Api.Controllers.Projects.GetMyProjects;
@@ -86,9 +87,21 @@ public class ProjectController : ControllerBase
   [EndpointName("ProjectsUpdateProject")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProjectResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> UpdateProjects([FromBody] UpdateProjectQuery query, [FromRoute] string id)
+  public async Task<IResult> UpdateProjects([FromRoute] string id, [FromBody] UpdateProjectQuery query)
   {
-    query.Id = id;
+    query.SetId(id);
+    var result = await _mediator.Send(query);
+    return Results.Ok(result);
+  }
+
+  [HttpDelete("{id}")]
+  [Authorize(KeycloakPolicies.ProjectContributor)]
+  [EndpointName("ProjectsDeleteProject")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteProjectResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> DeleteProject([FromRoute] string id)
+  {
+    var query = new DeleteProjectQuery { Id = id };
     var result = await _mediator.Send(query);
     return Results.Ok(result);
   }
