@@ -95,6 +95,17 @@ interface Resources {
     "MyEvents": "Meine Veranstaltungen",
     "Published": "Veröffentlicht"
   },
+  "locations": {
+    "Title": "Orte",
+    "Add": "Ort hinzufügen",
+    "Edit": "Ort bearbeiten",
+    "City": "Stadt",
+    "Zip": "Zip",
+    "Street": "Strase",
+    "TelephoneNumber": "Telephone number",
+    "Email": "Email",
+    "Fax": "fax"
+  },
   "navigation": {
     "Dashboard": "Dashboard",
     "Projects": "Projekte",

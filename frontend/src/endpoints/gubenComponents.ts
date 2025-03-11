@@ -4,7 +4,7 @@
  * @version 1.0.0
  */
 import * as reactQuery from "@tanstack/react-query";
-import { GubenContext, useGubenContext } from "./gubenContext";
+import { useGubenContext, GubenContext } from "./gubenContext";
 import type * as Fetcher from "./gubenFetcher";
 import { gubenFetch } from "./gubenFetcher";
 import type * as Schemas from "./gubenSchemas";
@@ -655,6 +655,114 @@ export const useLocationsGetAll = <TData = Schemas.GetAllLocationsResponse,>(
     }),
     queryFn: ({ signal }) =>
       fetchLocationsGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type LocationsCreateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type LocationsCreateVariables = {
+  body: Schemas.CreateLocationQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchLocationsCreate = (
+  variables: LocationsCreateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateLocationResponse,
+    LocationsCreateError,
+    Schemas.CreateLocationQuery,
+    {},
+    {},
+    {}
+  >({ url: "/locations", method: "post", ...variables, signal });
+
+export const useLocationsCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateLocationResponse,
+      LocationsCreateError,
+      LocationsCreateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateLocationResponse,
+    LocationsCreateError,
+    LocationsCreateVariables
+  >({
+    mutationFn: (variables: LocationsCreateVariables) =>
+      fetchLocationsCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type LocationsGetAllPagedQueryParams = {
+  /**
+   * @format int32
+   */
+  pageNumber?: number;
+  /**
+   * @format int32
+   */
+  pageSize?: number;
+};
+
+export type LocationsGetAllPagedError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type LocationsGetAllPagedVariables = {
+  queryParams?: LocationsGetAllPagedQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchLocationsGetAllPaged = (
+  variables: LocationsGetAllPagedVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllLocationsPagedResponse,
+    LocationsGetAllPagedError,
+    undefined,
+    {},
+    LocationsGetAllPagedQueryParams,
+    {}
+  >({ url: "/locations/paged", method: "get", ...variables, signal });
+
+export const useLocationsGetAllPaged = <
+  TData = Schemas.GetAllLocationsPagedResponse,
+>(
+  variables: LocationsGetAllPagedVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllLocationsPagedResponse,
+      LocationsGetAllPagedError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllLocationsPagedResponse,
+    LocationsGetAllPagedError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/locations/paged",
+      operationId: "locationsGetAllPaged",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchLocationsGetAllPaged({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
   });
@@ -1330,6 +1438,11 @@ export type QueryOperation =
       path: "/locations";
       operationId: "locationsGetAll";
       variables: LocationsGetAllVariables;
+    }
+  | {
+      path: "/locations/paged";
+      operationId: "locationsGetAllPaged";
+      variables: LocationsGetAllPagedVariables;
     }
   | {
       path: "/geo/topics";

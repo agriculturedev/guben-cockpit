@@ -10,7 +10,7 @@ export const Route = createFileRoute('/admin/_layout')({
 })
 
 function Layout() {
-  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages"]);
+  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations"]);
 
   return (
     <AuthGuard>
@@ -23,6 +23,7 @@ function Layout() {
               <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})} />
               <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})} />
               <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})} />
+              <Nav.Item href={"/admin/locations"} label={t("Title", {ns: "locations"})} />
             </Nav>
 
             <div className='col-span-10 p-6 bg-white rounded-lg'>

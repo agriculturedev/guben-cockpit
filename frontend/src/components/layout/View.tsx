@@ -55,7 +55,7 @@ export const View = ({children, pageKey}: Props) => {
 
 export const View2 = ({children}: PropsWithChildren) => {
   return (
-    <main className={"w-full h-full flex flex-1 pl-20 pt-5 pr-20 pb-4 flex-col items-center"}>
+    <main className={"w-full h-full flex flex-1 pl-10 pt-5 pr-10 pb-4 flex-col items-center"}>
       {children}
     </main>
   );

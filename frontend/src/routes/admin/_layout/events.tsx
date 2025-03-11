@@ -16,14 +16,10 @@ function Page() {
   const {t} = useTranslation(["common", "events"]);
   const {data: myEvents, refetch} = useEventsGetMyEvents({});
 
-  const onAddSuccess = async () => {
-    await refetch();
-  }
-
   return (
     <div className="w-ful">
       <div className={"mb-4 flex justify-end"}>
-        <AddEventDialog onCreateSuccess={onAddSuccess}>
+        <AddEventDialog onCreateSuccess={refetch}>
           <Button>{t("events:Add")}</Button>
         </AddEventDialog>
       </div>
