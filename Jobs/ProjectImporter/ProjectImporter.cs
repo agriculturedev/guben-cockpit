@@ -82,8 +82,16 @@ public class ProjectImporter
       throw new NullReferenceException("id and title are required");
 
     var (result, project) = Project.Create(
-      rawProject.Id, rawProject.Title, rawProject.Introtext, rawProject.Fulltext,
-      rawProject.ImageCaption, rawProject.ImageUrl, rawProject.ImageCredits, User.SystemUserId, false);
+      rawProject.Id,
+      rawProject.Title,
+      rawProject.Introtext,
+      rawProject.Fulltext,
+      rawProject.ImageCaption,
+      rawProject.ImageUrl,
+      rawProject.ImageCredits,
+      User.SystemUserId,
+      false
+    );
 
     if (result.IsSuccessful)
     {
@@ -91,7 +99,15 @@ public class ProjectImporter
 
       if (existingProject is not null)
       {
-        existingProject.Update(project.Title, project.Description, project.FullText, project.ImageCaption, project.ImageUrl, project.ImageCredits);
+        existingProject.Update(
+          project.Title,
+          project.Description,
+          project.FullText,
+          project.ImageCaption,
+          project.ImageUrl,
+          project.ImageCredits,
+          project.Highlighted
+        );
         return;
       }
 

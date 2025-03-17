@@ -10,6 +10,7 @@ interface Resources {
     "Urls": "Urls",
     "Credits": "Bildnachweis",
     "Date": "Datum",
+    "Delete": "Löschen",
     "Description": "Beschreibung",
     "Email": "E-Mail",
     "EndDate": "Enddatum",
@@ -111,6 +112,7 @@ interface Resources {
     "Edit": "Seite bearbeiten"
   },
   "projects": {
+    "DeletedSuccess": "Projekt erfolgreich gelöscht",
     "Title": "Projekte",
     "Add": "Projekt hinzufügen",
     "Edit": "Projekt bearbeiten",

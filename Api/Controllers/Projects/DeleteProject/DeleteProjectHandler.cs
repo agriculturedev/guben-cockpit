@@ -29,7 +29,7 @@ public class DeleteProjectHandler : ApiRequestHandler<DeleteProjectQuery, Delete
     if (user is null)
       throw new ProblemDetailsException(TranslationKeys.UserNotFound);
 
-    var projectToDelete = await _projectRepository.Get(request.Id);
+    var projectToDelete = await _projectRepository.GetIncludingUnpublished(request.Id);
     if(projectToDelete is null)
       throw new ProblemDetailsException(TranslationKeys.ProjectNotFound);
 

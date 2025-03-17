@@ -70,7 +70,7 @@ public sealed class Project : Entity<string>
   }
 
   public void Update(string title, string? description, string? fullText, string? imageCaption, string? imageUrl,
-    string? imageCredits)
+    string? imageCredits, bool? highlighted)
   {
     Title = title;
     Description = description;
@@ -78,6 +78,7 @@ public sealed class Project : Entity<string>
     ImageCaption = imageCaption;
     ImageUrl = imageUrl;
     ImageCredits = imageCredits;
+    Highlighted = highlighted ?? false;
   }
 
   public void SetPublishedState(bool publish)

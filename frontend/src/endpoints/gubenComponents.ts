@@ -466,6 +466,54 @@ export const useProjectsUpdateProject = (
   });
 };
 
+export type ProjectsDeleteProjectPathParams = {
+  id: string;
+};
+
+export type ProjectsDeleteProjectError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsDeleteProjectVariables = {
+  pathParams: ProjectsDeleteProjectPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchProjectsDeleteProject = (
+  variables: ProjectsDeleteProjectVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteProjectResponse,
+    ProjectsDeleteProjectError,
+    undefined,
+    {},
+    {},
+    ProjectsDeleteProjectPathParams
+  >({ url: "/projects/{id}", method: "delete", ...variables, signal });
+
+export const useProjectsDeleteProject = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteProjectResponse,
+      ProjectsDeleteProjectError,
+      ProjectsDeleteProjectVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteProjectResponse,
+    ProjectsDeleteProjectError,
+    ProjectsDeleteProjectVariables
+  >({
+    mutationFn: (variables: ProjectsDeleteProjectVariables) =>
+      fetchProjectsDeleteProject({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type PagesGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
