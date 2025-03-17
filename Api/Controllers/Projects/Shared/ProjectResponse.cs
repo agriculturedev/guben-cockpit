@@ -11,8 +11,8 @@ public struct ProjectResponse
   public string? ImageCaption { get; set; }
   public string? ImageUrl { get; set; }
   public string? ImageCredits { get; set; }
-  public bool Highlighted { get; set; }
-  public bool Published { get; set; }
+  public required bool Highlighted { get; set; }
+  public required bool Published { get; set; }
 
   public static ProjectResponse Map(Project project)
   {

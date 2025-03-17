@@ -2,6 +2,7 @@
 using Database.Converters;
 using Domain.Category;
 using Domain.Events;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -27,6 +28,11 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
     builder.Property(e => e.Published);
     builder.Property(e => e.Coordinates)
       .HasConversion(new CoordinatesConverter());
+
+    builder.HasOne<User>()
+      .WithMany()
+      .HasForeignKey(p => p.CreatedBy)
+      .OnDelete(DeleteBehavior.Restrict);
 
     var jsonOptions = new JsonSerializerOptions();
 

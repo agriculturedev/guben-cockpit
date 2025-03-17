@@ -12,5 +12,6 @@ public interface IEventRepository : IRepository<Event, Guid>
   Task<Event?> GetByEventIdAndTerminIdIncludingUnpublished(string eventId, string terminId);
 
   IEnumerable<Event> GetAllEvents();
+  IEnumerable<Event> GetAllOwnedBy(Guid userId);
   Task<PagedResult<Event>> GetAllEventsPaged(PagedCriteria pagination, EventFilterCriteria filter, CultureInfo cultureInfo);
 }

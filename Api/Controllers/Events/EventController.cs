@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.Events.CreateEvent;
 using Api.Controllers.Events.GetAllEvents;
+using Api.Controllers.Events.GetMyEvents;
 using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -46,6 +47,17 @@ public class EventController : ControllerBase
   //   });
   //   return Results.Ok(result);
   // }
+
+  [HttpGet("owned")]
+  [EndpointName("EventsGetMyEvents")]
+  [Authorize(KeycloakPolicies.EventContributor)]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMyEventsResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> GetMyEvents([FromQuery] GetMyEventsQuery query)
+  {
+    var result = await _mediator.Send(query);
+    return Results.Ok(result);
+  }
 
   [HttpPost]
   [Authorize(KeycloakPolicies.EventContributor)]

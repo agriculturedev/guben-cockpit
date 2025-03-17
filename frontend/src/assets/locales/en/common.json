@@ -1,7 +1,12 @@
 {
   "Actions": "Actions",
+  "Add": "Add",
+  "Delete": "Delete",
   "Cancel": "Cancel",
   "Category": "Category",
+  "Categories": "Categories",
+  "Url": "Url",
+  "Urls": "Urls",
   "Credits": "Credits",
   "Date": "Date",
   "Delete": "Delete",
@@ -41,6 +46,8 @@
   "ComingSoon": "Coming soon",
   "PaginationText": "Page {{page}} of {{pageCount}}, total: {{total}}",
   "All": "All",
+  "Latitude": "Latitude",
+  "Longitude": "Longitude",
   "Dates": {
     "Always": "Always",
     "Future": "Upcoming",
