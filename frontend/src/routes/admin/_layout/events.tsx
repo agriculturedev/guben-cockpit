@@ -1,18 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import AddEventDialog from "@/components/admin/events/addEventDialog";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
+import { useEventsGetMyEvents } from "@/endpoints/gubenComponents";
+import { createFileRoute } from '@tanstack/react-router';
+import { CheckIcon, XIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CheckIcon, XIcon } from "lucide-react";
-import { useEventsGetMyEvents } from "@/endpoints/gubenComponents";
-import AddEventDialog from "@/components/admin/events/addEventDialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CheckIcon, XIcon } from "lucide-react";
-import { useEventsGetMyEvents } from "@/endpoints/gubenComponents";
-import AddEventDialog from "@/components/admin/events/addEventDialog";
-import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute('/admin/_layout/events')({
   component: Page
@@ -26,7 +19,6 @@ function Page() {
     <div className="w-ful">
       <div className={"mb-4 flex justify-end"}>
         <AddEventDialog onCreateSuccess={refetch}>
-
           <Button>{t("events:Add")}</Button>
         </AddEventDialog>
       </div>

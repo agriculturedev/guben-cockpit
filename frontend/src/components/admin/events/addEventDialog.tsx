@@ -9,7 +9,7 @@ import { EventForm } from "./eventDialog.form";
 
 interface IProps {
   children: ReactNode;
-  onCreateSuccess: (data: CreateEventResponse) => Promise<void>;
+  onCreateSuccess: (data: CreateEventResponse) => Promise<unknown>;
 }
 
 //TODO: move to compound component design to prevent prop drilling
