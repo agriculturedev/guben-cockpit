@@ -72,6 +72,19 @@ export type CreateEventQuery = {
 
 export type CreateEventResponse = Record<string, any>;
 
+export type CreateLocationQuery = {
+  name: string;
+  city?: string | null;
+  street?: string | null;
+  telephoneNumber?: string | null;
+  fax?: string | null;
+  email?: string | null;
+  website?: string | null;
+  zip?: string | null;
+};
+
+export type CreateLocationResponse = Record<string, any>;
+
 export type CreateProjectQuery = {
   title: string;
   description?: string | null;
@@ -168,6 +181,26 @@ export type GetAllEventsResponse = {
   results: EventResponse[];
 };
 
+export type GetAllLocationsPagedResponse = {
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
+  results: LocationResponse[];
+};
+
 export type GetAllLocationsResponse = {
   locations: LocationResponse[];
 };
@@ -251,6 +284,12 @@ export type LocationResponse = {
   id: string;
   name: string;
   city?: string | null;
+  street?: string | null;
+  telephoneNumber?: string | null;
+  fax?: string | null;
+  email?: string | null;
+  website?: string | null;
+  zip?: string | null;
 };
 
 export type NullableOfButtonResponse = {

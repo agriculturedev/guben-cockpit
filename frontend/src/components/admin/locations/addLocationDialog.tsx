@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ReactNode, useState } from "react";
-import { useEventsCreateEvent } from "@/endpoints/gubenComponents";
+import { useLocationsCreate } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useTranslation } from "react-i18next";
-import { EventFormSchema } from "@/components/admin/events/eventDialog.formSchema";
-import { CreateEventQuery, CreateEventResponse } from "@/endpoints/gubenSchemas";
-import { EventForm } from "./eventDialog.form";
+import { CreateEventResponse, CreateLocationQuery } from "@/endpoints/gubenSchemas";
+import { LocationForm } from "@/components/admin/locations/locationDialog.form";
+import { LocationFormSchema } from "@/components/admin/locations/locationDialog.formSchema";
 
 interface IProps {
   children: ReactNode;
@@ -13,11 +13,11 @@ interface IProps {
 }
 
 //TODO: move to compound component design to prevent prop drilling
-export default function AddEventDialog({children, ...props}: IProps) {
-  const {t} = useTranslation("events");
+export default function AddLocationDialog({children, ...props}: IProps) {
+  const {t} = useTranslation("locations");
   const [isOpen, setOpen] = useState<boolean>(false);
 
-  const {mutateAsync} = useEventsCreateEvent({
+  const {mutateAsync} = useLocationsCreate({
     onSuccess: async (data) => {
       setOpen(false);
       await props.onCreateSuccess(data);
@@ -27,9 +27,9 @@ export default function AddEventDialog({children, ...props}: IProps) {
     }
   })
 
-  const handleSubmit = async (form: EventFormSchema) => {
+  const handleSubmit = async (form: LocationFormSchema) => {
     await mutateAsync({
-      body: mapFormToCreateEventQuery(form)
+      body: mapFormToCreateLocationQuery(form)
     });
   }
 
@@ -40,7 +40,7 @@ export default function AddEventDialog({children, ...props}: IProps) {
       </DialogTrigger>
       <DialogContent className={"bg-white px-4 py-8"}>
         <h1>{t("Add")}</h1>
-        <EventForm
+        <LocationForm
           onSubmit={handleSubmit}
           onClose={() => setOpen(false)}
         />
@@ -49,21 +49,14 @@ export default function AddEventDialog({children, ...props}: IProps) {
   )
 }
 
-function mapFormToCreateEventQuery(form: EventFormSchema): CreateEventQuery {
+function mapFormToCreateLocationQuery(form: LocationFormSchema): CreateLocationQuery {
   return {
-    title: form.title,
-    description: form.description,
-    startDate: form.startDate,
-    endDate: form.endDate,
-    latitude: form.latitude,
-    longitude: form.longitude,
-    urls: form.urls.map(u => {
-      return {
-        link: u.url,
-        description: u.title
-      }
-    }),
-    categoryIds: form.categoryIds,
-    locationId: form.locationId,
+    name: form.name,
+    city: form.city,
+    zip: form.zip,
+    street: form.street,
+    telephoneNumber: form.telephoneNumber,
+    email: form.email,
+    fax: form.fax
   }
 }
