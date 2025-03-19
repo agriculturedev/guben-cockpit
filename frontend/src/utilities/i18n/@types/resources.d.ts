@@ -10,6 +10,7 @@ interface Resources {
     "Urls": "Urls",
     "Credits": "Bildnachweis",
     "Date": "Datum",
+    "Delete": "Löschen",
     "Description": "Beschreibung",
     "Email": "E-Mail",
     "EndDate": "Enddatum",
@@ -50,6 +51,7 @@ interface Resources {
     "Longitude": "Longitude",
     "Dates": {
       "Always": "Immer",
+      "Future": "Kommend",
       "Today": "Heute",
       "Tomorrow": "Morgen",
       "ThisWeek": "Diese Woche",
@@ -95,17 +97,6 @@ interface Resources {
     "MyEvents": "Meine Veranstaltungen",
     "Published": "Veröffentlicht"
   },
-  "locations": {
-    "Title": "Orte",
-    "Add": "Ort hinzufügen",
-    "Edit": "Ort bearbeiten",
-    "City": "Stadt",
-    "Zip": "Zip",
-    "Street": "Strase",
-    "TelephoneNumber": "Telephone number",
-    "Email": "Email",
-    "Fax": "fax"
-  },
   "navigation": {
     "Dashboard": "Dashboard",
     "Projects": "Projekte",
@@ -121,6 +112,7 @@ interface Resources {
     "Edit": "Seite bearbeiten"
   },
   "projects": {
+    "DeletedSuccess": "Projekt erfolgreich gelöscht",
     "Title": "Projekte",
     "Add": "Projekt hinzufügen",
     "Edit": "Projekt bearbeiten",

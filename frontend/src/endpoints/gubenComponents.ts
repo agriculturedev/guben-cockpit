@@ -4,7 +4,7 @@
  * @version 1.0.0
  */
 import * as reactQuery from "@tanstack/react-query";
-import { useGubenContext, GubenContext } from "./gubenContext";
+import { GubenContext, useGubenContext } from "./gubenContext";
 import type * as Fetcher from "./gubenFetcher";
 import { gubenFetch } from "./gubenFetcher";
 import type * as Schemas from "./gubenSchemas";
@@ -462,6 +462,54 @@ export const useProjectsUpdateProject = (
   >({
     mutationFn: (variables: ProjectsUpdateProjectVariables) =>
       fetchProjectsUpdateProject({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type ProjectsDeleteProjectPathParams = {
+  id: string;
+};
+
+export type ProjectsDeleteProjectError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsDeleteProjectVariables = {
+  pathParams: ProjectsDeleteProjectPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchProjectsDeleteProject = (
+  variables: ProjectsDeleteProjectVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteProjectResponse,
+    ProjectsDeleteProjectError,
+    undefined,
+    {},
+    {},
+    ProjectsDeleteProjectPathParams
+  >({ url: "/projects/{id}", method: "delete", ...variables, signal });
+
+export const useProjectsDeleteProject = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteProjectResponse,
+      ProjectsDeleteProjectError,
+      ProjectsDeleteProjectVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteProjectResponse,
+    ProjectsDeleteProjectError,
+    ProjectsDeleteProjectVariables
+  >({
+    mutationFn: (variables: ProjectsDeleteProjectVariables) =>
+      fetchProjectsDeleteProject({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };

@@ -127,6 +127,8 @@ export type DeleteCardFromTabResponse = Record<string, any>;
 
 export type DeleteDashboardTabResponse = Record<string, any>;
 
+export type DeleteProjectResponse = Record<string, any>;
+
 export type EventResponse = {
   /**
    * @format uuid
@@ -381,13 +383,14 @@ export type UpdatePageQuery = {
 export type UpdatePageResponse = Record<string, any>;
 
 export type UpdateProjectQuery = {
-  id: string;
+  id?: string | null;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
+  highlighted?: boolean | null;
 };
 
 export type UpsertButtonQuery = {

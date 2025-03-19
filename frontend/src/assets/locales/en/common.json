@@ -9,6 +9,7 @@
   "Urls": "Urls",
   "Credits": "Credits",
   "Date": "Date",
+  "Delete": "Delete",
   "Description": "Description",
   "Email": "Email",
   "EndDate": "Enddate",
@@ -49,6 +50,7 @@
   "Longitude": "Longitude",
   "Dates": {
     "Always": "Always",
+    "Future": "Upcoming",
     "Today": "Today",
     "Tomorrow": "Tomorrow",
     "ThisWeek": "This week",

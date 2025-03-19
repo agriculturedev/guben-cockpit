@@ -3,6 +3,7 @@ using System;
 using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Database.Migrations
 {
     [DbContext(typeof(GubenDbContext))]
-    partial class GubenDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250307123628_ProjectIsBusinessProperty")]
+    partial class ProjectIsBusinessProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,9 +72,6 @@ namespace Database.Migrations
                     b.Property<string>("Coordinates")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -97,8 +97,6 @@ namespace Database.Migrations
                         .HasColumnType("jsonb");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("LocationId");
 
@@ -319,12 +317,6 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Domain.Events.Event", b =>
                 {
-                    b.HasOne("Domain.Users.User", null)
-                        .WithMany()
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Domain.Locations.Location", "Location")
                         .WithMany("Events")
                         .HasForeignKey("LocationId")
