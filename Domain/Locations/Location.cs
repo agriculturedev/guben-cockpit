@@ -6,8 +6,6 @@ using Shared.Domain.Validation;
 
 namespace Domain.Locations;
 
-
-
 public sealed class Location : Entity<Guid>, IEquatable<Location>
 {
   public Dictionary<string, LocationI18NData> Translations { get; private set; } = new();

@@ -10,7 +10,6 @@ interface Resources {
     "Urls": "Urls",
     "Credits": "Bildnachweis",
     "Date": "Datum",
-    "Delete": "Löschen",
     "Description": "Beschreibung",
     "Email": "E-Mail",
     "EndDate": "Enddatum",
@@ -96,6 +95,17 @@ interface Resources {
     "Edit": "Veranstaltung bearbeiten",
     "MyEvents": "Meine Veranstaltungen",
     "Published": "Veröffentlicht"
+  },
+  "locations": {
+    "Title": "Orte",
+    "Add": "Ort hinzufügen",
+    "Edit": "Ort bearbeiten",
+    "City": "Stadt",
+    "Zip": "Postleitzahl",
+    "Street": "Straße",
+    "TelephoneNumber": "Telefonnummer",
+    "Email": "E-Mail",
+    "Fax": "Fax"
   },
   "navigation": {
     "Dashboard": "Dashboard",
