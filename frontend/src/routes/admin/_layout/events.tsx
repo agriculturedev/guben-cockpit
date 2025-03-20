@@ -4,10 +4,22 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { useEventsGetMyEvents } from "@/endpoints/gubenComponents";
 import { createFileRoute } from '@tanstack/react-router';
-import { CheckIcon, XIcon } from "lucide-react";
+import { CheckIcon, TrashIcon, XIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import DeleteEventDialog from "@/components/admin/events/deleteEventDialog";
+import { Permissions } from "@/auth/permissions";
+import { redirect } from '@tanstack/react-router'
+import { getUserFromAuth, userHasPermission } from "@/utilities/userUtils";
 
 export const Route = createFileRoute('/admin/_layout/events')({
+  beforeLoad: async ({context, location}) => {
+    const user = getUserFromAuth(context.auth);
+    if (!user || !userHasPermission(user, Permissions.EventContributor)){
+      throw redirect({
+        to: '/'
+      });
+    }
+  },
   component: Page
 })
 
@@ -36,20 +48,24 @@ function Page() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {myEvents?.results.map(p => (
+          {myEvents?.results.map(e => (
             <TableRow>
-              <TableCell>{p.title}</TableCell>
+              <TableCell>{e.title}</TableCell>
               <TableCell className="overflow-ellipsis">
                 <Textarea>
-                  {p.description}
+                  {e.description}
                 </Textarea>
               </TableCell>
-              <TableCell className="overflow-ellipsis">{new Date(p.startDate).formatDateTime(false)}</TableCell>
-              <TableCell className="overflow-ellipsis">{new Date(p.endDate).formatDateTime(false)}</TableCell>
-              <TableCell className="overflow-ellipsis">{p.location.name} - {p.location.city}</TableCell>
-              <TableCell className="overflow-ellipsis">{p.categories.map(c => c.name).join(", ")}</TableCell>
-              <TableCell className={"text-neutral-500"}>{p.published ? <CheckIcon /> : <XIcon />}</TableCell>
-              <TableCell></TableCell>
+              <TableCell className="overflow-ellipsis">{new Date(e.startDate).formatDateTime(false)}</TableCell>
+              <TableCell className="overflow-ellipsis">{new Date(e.endDate).formatDateTime(false)}</TableCell>
+              <TableCell className="overflow-ellipsis">{e.location.name} - {e.location.city}</TableCell>
+              <TableCell className="overflow-ellipsis">{e.categories.map(c => c.name).join(", ")}</TableCell>
+              <TableCell className={"text-neutral-500"}>{e.published ? <CheckIcon /> : <XIcon />}</TableCell>
+              <TableCell>
+                  <DeleteEventDialog eventId={e.id} onDeleteSuccess={refetch}>
+                    <TrashIcon className="size-4 hover:text-red-500"/>
+                  </DeleteEventDialog>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

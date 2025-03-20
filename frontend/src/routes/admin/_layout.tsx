@@ -1,9 +1,11 @@
-import { View, View2 } from '@/components/layout/View'
+import { View2 } from '@/components/layout/View'
 import { AuthGuard } from '@/guards/authGuard'
 import { cn } from '@/lib/utils'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
+import { PermissionGuard } from "@/guards/permissionGuard";
+import { Permissions } from "@/auth/permissions";
 
 export const Route = createFileRoute('/admin/_layout')({
   component: Layout,
@@ -22,7 +24,9 @@ function Layout() {
               <Nav.Item href={"/admin/users"} label={t("Title", {ns: "users"})} />
               <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})} />
               <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})} />
-              <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})} />
+              <PermissionGuard permissions={[Permissions.EventContributor]}>
+                <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})} />
+              </PermissionGuard>
               <Nav.Item href={"/admin/locations"} label={t("Title", {ns: "locations"})} />
             </Nav>
 
