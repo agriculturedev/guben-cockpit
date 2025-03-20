@@ -9,12 +9,17 @@ import { useTranslation } from 'react-i18next'
 import { Label } from "@/components/ui/label";
 import { z } from "zod";
 import {zodValidator} from "@tanstack/zod-adapter";
+import { routePermissionCheck } from "@/guards/routeGuardChecks";
+import { Permissions } from "@/auth/permissions";
 
 const SelectedTabSchema = z.object({
   selectedTabId: z.string().optional(),
 })
 
 export const Route = createFileRoute('/admin/_layout/dashboard')({
+  beforeLoad: async ({context, location}) => {
+    routePermissionCheck(context.auth, [Permissions.DashboardManager])
+  },
   component: AdminDashboard,
   validateSearch: zodValidator(SelectedTabSchema),
 })

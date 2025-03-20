@@ -20,18 +20,33 @@ function Layout() {
         <View2.Content>
           <div className="grid grid-cols-12 gap-4">
             <Nav className="col-span-2 h-fit">
-              <Nav.Item href={"/admin/dashboard"} label={t("Title", {ns: "dashboard"})} />
-              <Nav.Item href={"/admin/users"} label={t("Title", {ns: "users"})} />
-              <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})} />
-              <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})} />
-              <PermissionGuard permissions={[Permissions.EventContributor]}>
-                <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})} />
+              <PermissionGuard permissions={[Permissions.DashboardManager]}>
+                <Nav.Item href={"/admin/dashboard"} label={t("Title", {ns: "dashboard"})}/>
               </PermissionGuard>
-              <Nav.Item href={"/admin/locations"} label={t("Title", {ns: "locations"})} />
+
+              <PermissionGuard permissions={[Permissions.ViewUsers]}>
+                <Nav.Item href={"/admin/users"} label={t("Title", {ns: "users"})}/>
+              </PermissionGuard>
+
+              <PermissionGuard permissions={[Permissions.PageManager]}>
+                <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})}/>
+              </PermissionGuard>
+
+              <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.PublishProjects]}>
+                <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})}/>
+              </PermissionGuard>
+
+              <PermissionGuard permissions={[Permissions.EventContributor, Permissions.PublishEvents]}>
+                <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})}/>
+              </PermissionGuard>
+
+              <PermissionGuard permissions={[Permissions.LocationManager]}>
+                <Nav.Item href={"/admin/locations"} label={t("Title", {ns: "locations"})}/>
+              </PermissionGuard>
             </Nav>
 
             <div className='col-span-10 p-6 bg-white rounded-lg'>
-              <Outlet />
+              <Outlet/>
             </div>
           </div>
         </View2.Content>
@@ -44,7 +59,7 @@ type NavProps = {
   className?: string;
 } & PropsWithChildren;
 
-function Nav({ children, ...props }: NavProps) {
+function Nav({children, ...props}: NavProps) {
   return (
     <div className={cn("bg-white rounded-lg p-4 flex flex-col max-h-fit", props.className ?? "")}>
       <ul className='flex flex-col gap-2'>

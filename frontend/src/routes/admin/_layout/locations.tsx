@@ -8,8 +8,13 @@ import { useTranslation } from 'react-i18next'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AddLocationDialog from "@/components/admin/locations/addLocationDialog";
 import { Button } from "@/components/ui/button";
+import { routePermissionCheck } from "@/guards/routeGuardChecks";
+import { Permissions } from "@/auth/permissions";
 
 export const Route = createFileRoute('/admin/_layout/locations')({
+  beforeLoad: async ({context, location}) => {
+    routePermissionCheck(context.auth, [Permissions.LocationManager])
+  },
   component: WrappedComponent,
 })
 
