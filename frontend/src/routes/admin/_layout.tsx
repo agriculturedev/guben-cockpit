@@ -4,8 +4,7 @@ import { cn } from '@/lib/utils'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PermissionGuard } from "@/guards/permissionGuard";
-import { Permissions } from "@/auth/permissions";
+import { AdminNavigation } from "@/components/admin/AdminNavigation";
 
 export const Route = createFileRoute('/admin/_layout')({
   component: Layout,
@@ -19,31 +18,7 @@ function Layout() {
       <View2>
         <View2.Content>
           <div className="grid grid-cols-12 gap-4">
-            <Nav className="col-span-2 h-fit">
-              <PermissionGuard permissions={[Permissions.DashboardManager]}>
-                <Nav.Item href={"/admin/dashboard"} label={t("Title", {ns: "dashboard"})}/>
-              </PermissionGuard>
-
-              <PermissionGuard permissions={[Permissions.ViewUsers]}>
-                <Nav.Item href={"/admin/users"} label={t("Title", {ns: "users"})}/>
-              </PermissionGuard>
-
-              <PermissionGuard permissions={[Permissions.PageManager]}>
-                <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})}/>
-              </PermissionGuard>
-
-              <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.PublishProjects]}>
-                <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})}/>
-              </PermissionGuard>
-
-              <PermissionGuard permissions={[Permissions.EventContributor, Permissions.PublishEvents]}>
-                <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})}/>
-              </PermissionGuard>
-
-              <PermissionGuard permissions={[Permissions.LocationManager]}>
-                <Nav.Item href={"/admin/locations"} label={t("Title", {ns: "locations"})}/>
-              </PermissionGuard>
-            </Nav>
+            <AdminNavigation/>
 
             <div className='col-span-10 p-6 bg-white rounded-lg'>
               <Outlet/>
