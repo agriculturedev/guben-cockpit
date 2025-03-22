@@ -105,8 +105,7 @@ public class ProjectImporter
           project.FullText,
           project.ImageCaption,
           project.ImageUrl,
-          project.ImageCredits,
-          project.Highlighted
+          project.ImageCredits
         );
         return;
       }

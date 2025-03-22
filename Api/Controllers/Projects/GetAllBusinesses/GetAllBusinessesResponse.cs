@@ -3,6 +3,6 @@ using Shared.Api.Pagination;
 
 namespace Api.Controllers.Projects.GetAllProjects;
 
-public class GetAllProjectsResponse : PagedResponse<ProjectResponse>
+public class GetAllBusinessesResponse : PagedResponse<ProjectResponse>
 {
 }

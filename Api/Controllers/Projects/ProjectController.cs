@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.Projects.CreateProject;
 using Api.Controllers.Projects.DeleteProject;
+using Api.Controllers.Projects.GetAllNonBusinesses;
 using Api.Controllers.Projects.GetAllProjects;
-using Api.Controllers.Projects.GetHighlightedProjects;
 using Api.Controllers.Projects.GetMyProjects;
 using Api.Controllers.Projects.PublishProjects;
 using Api.Controllers.Projects.UpdateProject;
@@ -29,23 +29,23 @@ public class ProjectController : ControllerBase
     _mediator = mediator;
   }
 
-  [HttpGet]
-  [EndpointName("ProjectsGetAll")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllProjectsResponse))]
+  [HttpGet("businsesses")]
+  [EndpointName("ProjectsGetAllBusinesses")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllBusinessesResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> GetAll([FromQuery] GetAllProjectsQuery query)
+  public async Task<IResult> GetAll([FromQuery] GetallBusinessesQuery query)
   {
     var result = await _mediator.Send(query);
     return Results.Ok(result);
   }
 
-  [HttpGet("highlighted")]
-  [EndpointName("ProjectsGetHighlighted")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetHighlightedProjectsResponse))]
+  [HttpGet("projects")]
+  [EndpointName("ProjectsGetAllNonBusinesses")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllNonBusinessesResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> GetAllHighlighted()
   {
-    var result = await _mediator.Send(new GetHighlightedProjectsQuery());
+    var result = await _mediator.Send(new GetAllNonBusinessesQuery());
     return Results.Ok(result);
   }
 

@@ -25,6 +25,16 @@ public class ProjectRepository
       .ToPagedResult(criteria);
   }
 
+  public IEnumerable<Project> GetAllNonBusinesses()
+  {
+    return ModifiedSet
+      .TagWith(GetType().Name + '.' + nameof(GetAllNonBusinesses))
+      .AsNoTracking()
+      .IgnoreAutoIncludes()
+      .Where(p => !p.IsBusiness)
+      .AsEnumerable();
+  }
+
   public Task<Project?> GetIncludingUnpublished(string id)
   {
     return Set

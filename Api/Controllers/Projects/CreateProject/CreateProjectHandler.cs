@@ -38,7 +38,7 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
       request.ImageUrl,
       request.ImageCredits,
       user.Id,
-      request.Highlighted ?? false
+      request.IsBusiness
     );
 
     projectResult.ThrowIfFailure();
