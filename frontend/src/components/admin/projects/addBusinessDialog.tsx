@@ -14,7 +14,7 @@ interface IProps {
 }
 
 //TODO: move to compound component design to prevent prop drilling
-export default function AddProjectDialog({children, ...props}: IProps) {
+export default function AddBusinessDialog({children, ...props}: IProps) {
   const {t} = useTranslation("projects");
   const [isOpen, setOpen] = useState<boolean>(false);
 
@@ -40,7 +40,7 @@ export default function AddProjectDialog({children, ...props}: IProps) {
         {children}
       </DialogTrigger>
       <DialogContent className={"bg-white px-4 py-8"}>
-        <h1>{t("Add")}</h1>
+        <h1>{t("AddBusiness")}</h1>
         <ProjectDialogForm
           onSubmit={handleSubmit}
           onClose={() => setOpen(false)}
@@ -58,6 +58,6 @@ function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
     imageCaption: form.imageCaption,
     imageCredits: form.imageCredits,
     imageUrl: form.imageUrl,
-    isBusiness: false
+    isBusiness: true
   }
 }

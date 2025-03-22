@@ -128,7 +128,9 @@ interface Resources {
     "Edit": "Projekt bearbeiten",
     "Highlighted": "Hervorgehoben",
     "MyProjects": "Meine Projekte",
-    "Published": "Veröffentlicht"
+    "Published": "Veröffentlicht",
+    "AddBusiness": "Geschäft hinzufügen",
+    "IsBusiness": "ist ein Geschäft"
   },
   "users": {
     "Title": "Benutzer"

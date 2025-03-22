@@ -118,20 +118,6 @@ export default function ProjectDialogForm(props: IProps) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="highlighted"
-          render={({field}) => (
-            <FormItem className={"flex gap-2 items-center"}>
-              <FormControl>
-                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-              </FormControl>
-              <FormLabel>{t("projects:Highlighted")}</FormLabel>
-              <FormMessage/>
-            </FormItem>
-          )}
-        />
-
         <div className={"flex justify-end gap-2"}>
           <Button className={"bg-transparent text-foreground"} onClick={props.onClose}>{t("Cancel")}</Button>
           <Button className={"bg-gubenAccent text-gubenAccent-foreground"}>{t("Save")}</Button>
