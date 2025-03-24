@@ -4,7 +4,7 @@
  * @version 1.0.0
  */
 import * as reactQuery from "@tanstack/react-query";
-import { GubenContext, useGubenContext } from "./gubenContext";
+import { useGubenContext, GubenContext } from "./gubenContext";
 import type * as Fetcher from "./gubenFetcher";
 import { gubenFetch } from "./gubenFetcher";
 import type * as Schemas from "./gubenSchemas";
@@ -1026,6 +1026,57 @@ export const useEventsGetMyEvents = <TData = Schemas.GetMyEventsResponse,>(
       fetchEventsGetMyEvents({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
+  });
+};
+
+export type EventsDeleteEventPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type EventsDeleteEventError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsDeleteEventVariables = {
+  pathParams: EventsDeleteEventPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsDeleteEvent = (
+  variables: EventsDeleteEventVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteEventResponse,
+    EventsDeleteEventError,
+    undefined,
+    {},
+    {},
+    EventsDeleteEventPathParams
+  >({ url: "/events/{id}", method: "delete", ...variables, signal });
+
+export const useEventsDeleteEvent = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteEventResponse,
+      EventsDeleteEventError,
+      EventsDeleteEventVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteEventResponse,
+    EventsDeleteEventError,
+    EventsDeleteEventVariables
+  >({
+    mutationFn: (variables: EventsDeleteEventVariables) =>
+      fetchEventsDeleteEvent({ ...fetcherOptions, ...variables }),
+    ...options,
   });
 };
 

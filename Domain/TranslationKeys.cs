@@ -32,4 +32,5 @@ public class TranslationKeys
   public const string EventNotFound = "EventNotFound";
   public const string CategoryNotFound = "CategoryNotFound";
   public const string NoValidTranslationsFound = "NoValidTranslationsFound";
+  public const string EventNotOwnedByUser = "EventNotOwnedByUser";
 }

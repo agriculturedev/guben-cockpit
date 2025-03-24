@@ -127,6 +127,8 @@ export type DeleteCardFromTabResponse = Record<string, any>;
 
 export type DeleteDashboardTabResponse = Record<string, any>;
 
+export type DeleteEventResponse = Record<string, any>;
+
 export type DeleteProjectResponse = Record<string, any>;
 
 export type EventResponse = {

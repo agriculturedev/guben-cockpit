@@ -4,7 +4,7 @@ import { routeTree } from './routeTree.gen'
 import "./utilities"
 import "./index.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "react-oidc-context";
+import { AuthContextProps, AuthProvider, AuthState, useAuth } from "react-oidc-context";
 import { User } from "oidc-client-ts";
 
 import "./utilities/i18n/initializeTranslations.ts";
@@ -14,11 +14,18 @@ FetchInterceptor.register();
 
 const queryClient = new QueryClient();
 
+export interface RouterContext {
+  queryClient: QueryClient;
+  // The ReturnType of your useAuth hook or the value of your AuthContext
+  auth: AuthContextProps;
+}
+
 // Set  up a Router instance
 const router = createRouter({
   routeTree,
   context: {
-    queryClient,
+    queryClient: queryClient,
+    auth: undefined!
   },
   defaultPreload: 'intent',
 })
@@ -45,9 +52,16 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <AuthProvider onSigninCallback={(user: User | undefined) => console.log(user)} {...oidcConfig}>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router}/>
-      </QueryClientProvider>
+      <App/>
     </AuthProvider>
-      )
+  )
+}
+
+function App() {
+  const auth = useAuth();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} context={{queryClient, auth}}/>
+    </QueryClientProvider>
+  )
 }

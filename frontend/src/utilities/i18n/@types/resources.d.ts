@@ -92,6 +92,8 @@ interface Resources {
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
     "ClickHere": "Klicken Sie hier",
     "Add": "Veranstaltung hinzufügen",
+    "Delete": "Veranstaltung löschen",
+    "DeletedSuccess": "Veranstaltung erfolgreich gelöscht",
     "Edit": "Veranstaltung bearbeiten",
     "MyEvents": "Meine Veranstaltungen",
     "Published": "Veröffentlicht"
