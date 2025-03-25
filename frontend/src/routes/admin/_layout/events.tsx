@@ -8,17 +8,11 @@ import { CheckIcon, TrashIcon, XIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import DeleteEventDialog from "@/components/admin/events/deleteEventDialog";
 import { Permissions } from "@/auth/permissions";
-import { redirect } from '@tanstack/react-router'
-import { getUserFromAuth, userHasPermission } from "@/utilities/userUtils";
+import { routePermissionCheck } from "@/guards/routeGuardChecks";
 
 export const Route = createFileRoute('/admin/_layout/events')({
   beforeLoad: async ({context, location}) => {
-    const user = getUserFromAuth(context.auth);
-    if (!user || !userHasPermission(user, Permissions.EventContributor)){
-      throw redirect({
-        to: '/'
-      });
-    }
+    routePermissionCheck(context.auth, [Permissions.EventContributor, Permissions.PublishEvents])
   },
   component: Page
 })

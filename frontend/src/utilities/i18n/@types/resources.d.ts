@@ -1,6 +1,7 @@
 interface Resources {
   "common": {
     "Actions": "Aktionen",
+    "SelectNavItem": "Wählen Sie ein Navigationselement aus",
     "Add": "Hinzufügen",
     "Delete": "Löschen",
     "Category": "Kategorie",
