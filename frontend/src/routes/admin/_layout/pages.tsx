@@ -6,12 +6,17 @@ import { EditPageForm } from "@/components/admin/pages/editPage/editPageForm";
 import { z } from "zod";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { useCallback } from "react";
+import { routePermissionCheck } from "@/guards/routeGuardChecks";
+import { Permissions } from "@/auth/permissions";
 
 const SelectedPageSchema = z.object({
   selectedPageId: z.string().optional(),
 })
 
 export const Route = createFileRoute('/admin/_layout/pages')({
+  beforeLoad: async ({context, location}) => {
+    routePermissionCheck(context.auth, [Permissions.PageManager])
+  },
   component: PagesAdminPanel,
   validateSearch: zodValidator(SelectedPageSchema),
 })

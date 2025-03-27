@@ -1038,6 +1038,57 @@ export const useEventsGetMyEvents = <TData = Schemas.GetMyEventsResponse,>(
   });
 };
 
+export type EventsDeleteEventPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type EventsDeleteEventError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsDeleteEventVariables = {
+  pathParams: EventsDeleteEventPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsDeleteEvent = (
+  variables: EventsDeleteEventVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteEventResponse,
+    EventsDeleteEventError,
+    undefined,
+    {},
+    {},
+    EventsDeleteEventPathParams
+  >({ url: "/events/{id}", method: "delete", ...variables, signal });
+
+export const useEventsDeleteEvent = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteEventResponse,
+      EventsDeleteEventError,
+      EventsDeleteEventVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteEventResponse,
+    EventsDeleteEventError,
+    EventsDeleteEventVariables
+  >({
+    mutationFn: (variables: EventsDeleteEventVariables) =>
+      fetchEventsDeleteEvent({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type DashboardGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;

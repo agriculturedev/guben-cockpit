@@ -1,5 +1,6 @@
 using System.Globalization;
 using Api.Infrastructure.Extensions;
+using Api.Services;
 using Domain;
 using Domain.Category.repository;
 using Domain.Coordinates;
@@ -7,7 +8,6 @@ using Domain.Events;
 using Domain.Events.repository;
 using Domain.Locations.repository;
 using Domain.Urls;
-using Domain.Users.repository;
 using Shared.Api;
 using Shared.Domain.Validation;
 
@@ -19,29 +19,21 @@ public class CreateEventHandler : ApiRequestHandler<CreateEventQuery, CreateEven
   private readonly ILocationRepository _locationRepository;
   private readonly ICategoryRepository _categoryRepository;
   private readonly CultureInfo _culture;
-  private readonly IUserRepository _userRepository;
-  private readonly IHttpContextAccessor _httpContextAccessor;
+  private readonly UserValidationService _userValidationService;
 
   public CreateEventHandler(IEventRepository eventRepository, ILocationRepository locationRepository,
-    ICategoryRepository categoryRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+    ICategoryRepository categoryRepository, UserValidationService userValidationService)
   {
     _eventRepository = eventRepository;
     _locationRepository = locationRepository;
     _categoryRepository = categoryRepository;
-    _userRepository = userRepository;
-    _httpContextAccessor = httpContextAccessor;
+    _userValidationService = userValidationService;
     _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<CreateEventResponse> Handle(CreateEventQuery request, CancellationToken cancellationToken)
   {
-    var keycloakId = _httpContextAccessor.HttpContext?.User.GetKeycloakId();
-    if (keycloakId == null)
-      throw new UnauthorizedAccessException(TranslationKeys.UserNotLoggedIn);
-
-    var user = await _userRepository.GetByKeycloakId(keycloakId);
-    if (user is null)
-      throw new ProblemDetailsException(TranslationKeys.UserNotFound);
+    var user = await _userValidationService.ValidateUserAsync();
 
     var (coordsResult, coords) = Coordinates.Create(request.Latitude, request.Longitude);
     coordsResult.ThrowIfFailure();

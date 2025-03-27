@@ -9,8 +9,13 @@ import { useProjectsGetMyProjects } from "@/endpoints/gubenComponents";
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckIcon, EditIcon, PlusIcon, TrashIcon, XIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { routePermissionCheck } from "@/guards/routeGuardChecks";
+import { Permissions } from "@/auth/permissions";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
+  beforeLoad: async ({context, location}) => {
+    routePermissionCheck(context.auth, [Permissions.ProjectContributor, Permissions.PublishProjects])
+  },
   component: Page
 })
 

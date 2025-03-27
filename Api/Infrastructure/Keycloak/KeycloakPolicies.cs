@@ -3,7 +3,10 @@ namespace Api.Infrastructure.Keycloak;
 public static class KeycloakPolicies
 {
   public static string[] AllRoles =
-    [ViewUsers, ProjectContributor, PublishProjects, EventContributor, PublishEvents, DashboardManager, PageManager];
+  [
+    ViewUsers, ProjectContributor, PublishProjects, EventContributor, PublishEvents, DashboardManager, PageManager,
+    LocationManager
+  ];
 
   #region Users
 
@@ -22,6 +25,12 @@ public static class KeycloakPolicies
 
   public const string EventContributor = "event_contributor";
   public const string PublishEvents = "publish_events";
+
+  #endregion
+
+  #region Locations
+
+  public const string LocationManager = "location_manager";
 
   #endregion
 
