@@ -2,7 +2,7 @@ using Api.Controllers.Projects.Shared;
 using Domain.Projects.repository;
 using Shared.Api;
 
-namespace Api.Controllers.Projects.GetAllProjects;
+namespace Api.Controllers.Projects.GetAllBusinesses;
 
 public class GetAllBusinessesHandler : ApiPagedRequestHandler<GetallBusinessesQuery, GetAllBusinessesResponse, ProjectResponse>
 {

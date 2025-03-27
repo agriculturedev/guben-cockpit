@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.Projects.CreateProject;
 using Api.Controllers.Projects.DeleteProject;
+using Api.Controllers.Projects.GetAllBusinesses;
 using Api.Controllers.Projects.GetAllNonBusinesses;
-using Api.Controllers.Projects.GetAllProjects;
 using Api.Controllers.Projects.GetMyProjects;
 using Api.Controllers.Projects.PublishProjects;
 using Api.Controllers.Projects.UpdateProject;

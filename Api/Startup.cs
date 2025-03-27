@@ -1,6 +1,6 @@
 using Api.Infrastructure.Cors;
 using Api.Infrastructure.ExceptionHandlers;
-using Api.Infrastructure.HangFire;
+using Api.Infrastructure.Hangfire;
 using Api.Infrastructure.JsonConverters;
 using Api.Infrastructure.Keycloak;
 using Api.Infrastructure.MediatR;
