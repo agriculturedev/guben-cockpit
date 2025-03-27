@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CreateProjectQuery, CreateProjectResponse } from "@/endpoints/gubenSchemas";
 import { ReactNode, useState } from "react";
 import { FormSchema } from "./projectDialog.formSchema";
@@ -36,11 +36,13 @@ export default function AddBusinessDialog({children, ...props}: IProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className={"bg-white px-4 py-8"}>
-        <h1>{t("AddBusiness")}</h1>
+      <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2"}>
+        <DialogHeader>
+          <DialogTitle>{t("AddBusiness")}</DialogTitle>
+        </DialogHeader>
         <ProjectDialogForm
           onSubmit={handleSubmit}
           onClose={() => setOpen(false)}

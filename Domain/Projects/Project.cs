@@ -66,7 +66,7 @@ public sealed class Project : Entity<string>
   }
 
   public void Update(string title, string? description, string? fullText, string? imageCaption, string? imageUrl,
-    string? imageCredits)
+    string? imageCredits, bool isBusiness = false)
   {
     Title = title;
     Description = description;
@@ -74,6 +74,7 @@ public sealed class Project : Entity<string>
     ImageCaption = imageCaption;
     ImageUrl = imageUrl;
     ImageCredits = imageCredits;
+    IsBusiness = isBusiness;
   }
 
   public void SetPublishedState(bool publish)

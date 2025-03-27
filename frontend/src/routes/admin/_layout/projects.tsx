@@ -57,7 +57,7 @@ function Page() {
         </TableHeader>
         <TableBody>
           {myProjects?.results.map(p => (
-            <TableRow>
+            <TableRow key={p.id}>
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[20ch]">{p.title}</TableCell>
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[50ch]">{p.description}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.published ? <CheckIcon /> : <XIcon />}</TableCell>

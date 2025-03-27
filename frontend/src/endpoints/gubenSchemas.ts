@@ -392,7 +392,7 @@ export type UpdateProjectQuery = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  highlighted?: boolean | null;
+  isBusiness: boolean;
 };
 
 export type UpsertButtonQuery = {

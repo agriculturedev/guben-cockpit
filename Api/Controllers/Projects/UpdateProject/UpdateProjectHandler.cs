@@ -46,7 +46,8 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
       request.FullText,
       request.ImageCaption,
       request.ImageUrl,
-      request.ImageCredits
+      request.ImageCredits,
+      request.IsBusiness
     );
 
     return new UpdateProjectResponse();

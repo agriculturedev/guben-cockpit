@@ -1,12 +1,12 @@
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CreateProjectResponse, ProjectResponse, UpdateProjectQuery } from "@/endpoints/gubenSchemas";
 import { ReactNode, useState } from "react";
-import { FormSchema } from "./projectDialog.formSchema";
+import { FormSchema } from "./editProjectDialog.formSchema";
 
 import { useProjectsUpdateProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useTranslation } from "react-i18next";
-import ProjectDialogForm from "./projectDialog.form";
+import EditProjectDialogForm from "./editProjectDialog.form";
 
 interface IProps {
   children: ReactNode;
@@ -40,9 +40,11 @@ export default function EditProjectDialog({children, project, ...props}: IProps)
       <DialogTrigger>
         {children}
       </DialogTrigger>
-      <DialogContent className={"bg-white px-4 py-8"}>
-        <h1>{t("Edit")}</h1>
-        <ProjectDialogForm
+      <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2"}>
+        <DialogHeader>
+          <DialogTitle>{t("Edit")}</DialogTitle>
+        </DialogHeader>
+        <EditProjectDialogForm
           defaultData={mapProjectToForm(project)}
           onSubmit={handleSubmit}
           onClose={() => setOpen(false)}
@@ -60,7 +62,7 @@ function mapProjectToForm(project: ProjectResponse): FormSchema {
     imageCaption: project.imageCaption ?? null,
     imageUrl: project.imageUrl ?? null,
     imageCredits: project.imageCredits ?? null,
-    highlighted: project.highlighted ?? false,
+    isBusiness: project.isBusiness ?? false,
   }
 }
 
@@ -72,6 +74,6 @@ function mapFormToEditProjectQuery(form: FormSchema): UpdateProjectQuery {
     imageCaption: form.imageCaption,
     imageCredits: form.imageCredits,
     imageUrl: form.imageUrl,
-    highlighted: form.highlighted
+    isBusiness: form.isBusiness
   }
 }
