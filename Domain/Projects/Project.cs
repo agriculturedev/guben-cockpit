@@ -13,14 +13,13 @@ public sealed class Project : Entity<string>
   public string? ImageCredits { get; private set; }
   public bool Published { get; private set; }
   public Guid CreatedBy { get; private set; }
-  public bool Highlighted { get; private set; }
 
   // TODO: this should only be temporary, force frank and guben to fix their data source so we get this info or have 2 different sources.
   // don't bother putting in a ui for them to edit it, they should fix their shit. we will set it right ONCE in database
   public bool IsBusiness { get; private set; }
 
   private Project(string id, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
-    imageCredits, Guid createdBy, bool highlighted, bool isBusiness)
+    imageCredits, Guid createdBy, bool isBusiness)
   {
     Id = id;
     Title = title;
@@ -31,12 +30,11 @@ public sealed class Project : Entity<string>
     ImageCredits = imageCredits;
     Published = false;
     CreatedBy = createdBy;
-    Highlighted = highlighted;
     IsBusiness = isBusiness;
   }
 
   public static Result<Project> Create(string id, string title, string? description, string? fullText, string? imageCaption,
-    string? imageUrl, string? imageCredits, Guid createdBy, bool highlighted = false, bool isBusiness = false)
+    string? imageUrl, string? imageCredits, Guid createdBy, bool isBusiness = false)
   {
     return new Project(
       id,
@@ -47,13 +45,12 @@ public sealed class Project : Entity<string>
       imageUrl,
       imageCredits,
       createdBy,
-      highlighted,
       isBusiness
     );
   }
 
   public static Result<Project> CreateWithGeneratedId(string title, string? description, string? fullText, string? imageCaption,
-    string? imageUrl, string? imageCredits, Guid createdBy, bool highlighted = false, bool isBusiness = false)
+    string? imageUrl, string? imageCredits, Guid createdBy, bool isBusiness = false)
   {
     return new Project(
       Guid.CreateVersion7().ToString(),
@@ -64,13 +61,12 @@ public sealed class Project : Entity<string>
       imageUrl,
       imageCredits,
       createdBy,
-      highlighted,
       isBusiness
     );
   }
 
   public void Update(string title, string? description, string? fullText, string? imageCaption, string? imageUrl,
-    string? imageCredits, bool? highlighted)
+    string? imageCredits, bool isBusiness = false)
   {
     Title = title;
     Description = description;
@@ -78,7 +74,7 @@ public sealed class Project : Entity<string>
     ImageCaption = imageCaption;
     ImageUrl = imageUrl;
     ImageCredits = imageCredits;
-    Highlighted = highlighted ?? false;
+    IsBusiness = isBusiness;
   }
 
   public void SetPublishedState(bool publish)

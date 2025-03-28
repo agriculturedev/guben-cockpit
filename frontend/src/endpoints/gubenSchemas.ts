@@ -92,7 +92,7 @@ export type CreateProjectQuery = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  highlighted?: boolean | null;
+  isBusiness: boolean;
 };
 
 export type CreateProjectResponse = Record<string, any>;
@@ -155,6 +155,26 @@ export type EventResponse = {
   published: boolean;
 };
 
+export type GetAllBusinessesResponse = {
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
+  results: ProjectResponse[];
+};
+
 export type GetAllCategoriesResponse = {
   categories: CategoryResponse[];
 };
@@ -207,28 +227,12 @@ export type GetAllLocationsResponse = {
   locations: LocationResponse[];
 };
 
-export type GetAllPagesResponse = {
-  pages: PageResponse[];
+export type GetAllNonBusinessesResponse = {
+  projects: ProjectResponse[];
 };
 
-export type GetAllProjectsResponse = {
-  /**
-   * @format int32
-   */
-  pageNumber: number;
-  /**
-   * @format int32
-   */
-  pageSize: number;
-  /**
-   * @format int32
-   */
-  totalCount: number;
-  /**
-   * @format int32
-   */
-  pageCount: number;
-  results: ProjectResponse[];
+export type GetAllPagesResponse = {
+  pages: PageResponse[];
 };
 
 export type GetAllUsersResponse = {
@@ -249,10 +253,6 @@ export type GetAllUsersResponse = {
    */
   pageCount: number;
   results: UserResponse[];
-};
-
-export type GetHighlightedProjectsResponse = {
-  projects: ProjectResponse[];
 };
 
 export type GetMyEventsResponse = {
@@ -325,7 +325,7 @@ export type ProjectResponse = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  highlighted: boolean;
+  isBusiness: boolean;
   published: boolean;
 };
 
@@ -392,7 +392,7 @@ export type UpdateProjectQuery = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  highlighted?: boolean | null;
+  isBusiness: boolean;
 };
 
 export type UpsertButtonQuery = {

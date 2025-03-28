@@ -26,12 +26,12 @@ public class ProjectHandlerTests
 
       // Act
       var handler = new CreateProjectHandler(projectRepository, userRepository, httpContextAccessor);
-      var query = new CreateProjectQuery() { Title = "Test project" };
+      var query = new CreateProjectQuery() { Title = "Test project", IsBusiness = false};
 
       // Act & Assert
       await Should.NotThrowAsync(async () =>
       {
-        var response = await handler.Handle(query, CancellationToken.None);
+        await handler.Handle(query, CancellationToken.None);
         await context.SaveChangesAsync(); // instead of transaction behaviour, save manually
       });
 
@@ -56,12 +56,12 @@ public class ProjectHandlerTests
 
       // Act
       var handler = new CreateProjectHandler(projectRepository, userRepository, httpContextAccessor);
-      var query = new CreateProjectQuery() { Title = "Test project" };
+      var query = new CreateProjectQuery() { Title = "Test project", IsBusiness = false};
 
       // Act & Assert
       await Should.ThrowAsync(async () =>
       {
-        var response = await handler.Handle(query, CancellationToken.None);
+        await handler.Handle(query, CancellationToken.None);
         await context.SaveChangesAsync(); // instead of transaction behaviour, save manually
       }, typeof(UnauthorizedAccessException));
 

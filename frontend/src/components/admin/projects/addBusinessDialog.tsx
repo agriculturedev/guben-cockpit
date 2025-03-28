@@ -1,24 +1,24 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { CreateProjectResponse, ProjectResponse, UpdateProjectQuery } from "@/endpoints/gubenSchemas";
+import { CreateProjectQuery, CreateProjectResponse } from "@/endpoints/gubenSchemas";
 import { ReactNode, useState } from "react";
-import { FormSchema } from "./editProjectDialog.formSchema";
+import { FormSchema } from "./projectDialog.formSchema";
 
-import { useProjectsUpdateProject } from "@/endpoints/gubenComponents";
+import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useTranslation } from "react-i18next";
-import EditProjectDialogForm from "./editProjectDialog.form";
+import ProjectDialogForm from "./projectDialog.form";
 
 interface IProps {
   children: ReactNode;
-  project: ProjectResponse;
   onCreateSuccess: (data: CreateProjectResponse) => Promise<void>;
 }
 
-export default function EditProjectDialog({children, project, ...props}: IProps) {
+//TODO: move to compound component design to prevent prop drilling
+export default function AddBusinessDialog({children, ...props}: IProps) {
   const {t} = useTranslation("projects");
   const [isOpen, setOpen] = useState<boolean>(false);
 
-  const {mutateAsync} = useProjectsUpdateProject({
+  const {mutateAsync} = useProjectsCreateProject({
     onSuccess: async (data) => {
       setOpen(false);
       await props.onCreateSuccess(data);
@@ -30,22 +30,20 @@ export default function EditProjectDialog({children, project, ...props}: IProps)
 
   const handleSubmit = async (form: FormSchema) => {
     await mutateAsync({
-      pathParams: { id: project.id },
-      body: mapFormToEditProjectQuery(form)
+      body: mapFormToCreateProjectQuery(form)
     });
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         {children}
       </DialogTrigger>
       <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2"}>
         <DialogHeader>
-          <DialogTitle>{t("Edit")}</DialogTitle>
+          <DialogTitle>{t("AddBusiness")}</DialogTitle>
         </DialogHeader>
-        <EditProjectDialogForm
-          defaultData={mapProjectToForm(project)}
+        <ProjectDialogForm
           onSubmit={handleSubmit}
           onClose={() => setOpen(false)}
         />
@@ -54,19 +52,7 @@ export default function EditProjectDialog({children, project, ...props}: IProps)
   )
 }
 
-function mapProjectToForm(project: ProjectResponse): FormSchema {
-  return {
-    title: project.title,
-    description: project.description ?? null,
-    fullText: project.fullText ?? null,
-    imageCaption: project.imageCaption ?? null,
-    imageUrl: project.imageUrl ?? null,
-    imageCredits: project.imageCredits ?? null,
-    isBusiness: project.isBusiness ?? false,
-  }
-}
-
-function mapFormToEditProjectQuery(form: FormSchema): UpdateProjectQuery {
+function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
   return {
     title: form.title,
     description: form.description,
@@ -74,6 +60,6 @@ function mapFormToEditProjectQuery(form: FormSchema): UpdateProjectQuery {
     imageCaption: form.imageCaption,
     imageCredits: form.imageCredits,
     imageUrl: form.imageUrl,
-    isBusiness: form.isBusiness
+    isBusiness: true
   }
 }

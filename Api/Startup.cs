@@ -1,11 +1,12 @@
 using Api.Infrastructure.Cors;
 using Api.Infrastructure.ExceptionHandlers;
-using Api.Infrastructure.HangFire;
+using Api.Infrastructure.Hangfire;
 using Api.Infrastructure.JsonConverters;
 using Api.Infrastructure.Keycloak;
 using Api.Infrastructure.MediatR;
 using Api.Infrastructure.OpenApi;
 using Api.Infrastructure.Translations;
+using Api.Services;
 using Database;
 using Domain;
 using Hangfire;
@@ -45,6 +46,7 @@ public class Startup(IConfiguration configuration)
 
     services
       .AddDomain()
+      .AddServices()
       .AddApi();
 
     services.AddControllers()
@@ -55,7 +57,6 @@ public class Startup(IConfiguration configuration)
     services.AddCustomHangfire();
     services.AddCustomMediatR();
     services.AddSingleton<ICultureProvider, CultureProvider>();
-
 
     services.AddDatabase(Configuration, true);
     services.AddEndpointsApiExplorer();

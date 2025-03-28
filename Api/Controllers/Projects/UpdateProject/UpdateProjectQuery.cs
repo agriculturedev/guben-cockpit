@@ -12,7 +12,7 @@ public class UpdateProjectQuery : IAuthenticatedApiRequest, IApiRequest<UpdatePr
   public string? ImageCaption { get; set; }
   public string? ImageUrl { get; set; }
   public string? ImageCredits { get; set; }
-  public bool? Highlighted { get; set; }
+  public required bool IsBusiness { get; set; }
 
   public void SetId(string id) => Id = id;
 }

@@ -5,6 +5,7 @@ namespace Domain.Projects.repository;
 public interface IProjectRepository : IRepository<Project, string>
 {
   Task<PagedResult<Project>> GetAllPagedBusinesses(PagedCriteria criteria);
+  IEnumerable<Project> GetAllNonBusinesses();
 
   Task<Project?> GetIncludingUnpublished(string id);
   IEnumerable<Project> GetAllIncludingUnpublished();
