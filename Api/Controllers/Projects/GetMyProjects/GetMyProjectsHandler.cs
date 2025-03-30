@@ -1,6 +1,9 @@
+using System.Security.Claims;
 using Api.Controllers.Projects.Shared;
 using Api.Infrastructure.Extensions;
+using Api.Infrastructure.Keycloak;
 using Domain;
+using Domain.Projects;
 using Domain.Projects.repository;
 using Domain.Users.repository;
 using Shared.Api;
@@ -31,7 +34,12 @@ public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyP
     if (user is null)
       throw new UnauthorizedAccessException(TranslationKeys.UserNotFound);
 
-    var projects = _projectRepository.GetAllOwnedBy(user.Id);
+    var isPublisher = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.PublishProjects) ?? false;
+
+    // if the user is a publisher, allow access to all projects
+    IEnumerable<Project> projects = [];
+    if(isPublisher) projects = await _projectRepository.GetAll();
+    else projects = _projectRepository.GetAllOwnedBy(user.Id);
 
     return new GetMyProjectsResponse()
     {
