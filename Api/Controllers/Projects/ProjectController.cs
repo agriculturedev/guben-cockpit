@@ -39,7 +39,7 @@ public class ProjectController : ControllerBase
     return Results.Ok(result);
   }
 
-  [HttpGet("projects")]
+  [HttpGet]
   [EndpointName("ProjectsGetAllNonBusinesses")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllNonBusinessesResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]

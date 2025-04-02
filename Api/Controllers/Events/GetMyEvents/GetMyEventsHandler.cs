@@ -1,7 +1,10 @@
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using Api.Controllers.Events.Shared;
 using Api.Infrastructure.Extensions;
+using Api.Infrastructure.Keycloak;
 using Domain;
+using Domain.Events;
 using Domain.Events.repository;
 using Domain.Users.repository;
 using Shared.Api;
@@ -34,7 +37,12 @@ public class GetMyEventsHandler : ApiRequestHandler<GetMyEventsQuery, GetMyEvent
     if (user is null)
       throw new UnauthorizedAccessException(TranslationKeys.UserNotFound);
 
-    var events = _eventRepository.GetAllOwnedBy(user.Id);
+    var isPublisher = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.PublishEvents) ?? false;
+
+    // if the user is a publisher, allow access to all events
+    IEnumerable<Event> events = [];
+    if(isPublisher) events = await _eventRepository.GetAll();
+    else events = _eventRepository.GetAllOwnedBy(user.Id);
 
     return new GetMyEventsResponse
     {
