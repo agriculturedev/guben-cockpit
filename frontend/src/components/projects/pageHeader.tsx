@@ -1,4 +1,4 @@
-import { usePagesGet, useProjectsGetHighlighted } from "@/endpoints/gubenComponents";
+import { usePagesGet, useProjectsGetAllNonBusinesses } from "@/endpoints/gubenComponents";
 import PageHeaderLink from "./pageHeader.link";
 import { Pages } from "@/routes/admin/_layout/pages";
 import { useMemo, useState } from "react";
@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight, ExternalLinkIcon } from "lucide-react";
 
 export default function PageHeader() {
   const { data: pageInfo } = usePagesGet({ pathParams: { id: Pages.Projects } });
-  const { data: projectsData } = useProjectsGetHighlighted({});
+  const { data: projectsData } = useProjectsGetAllNonBusinesses({});
   const projects = useMemo(() => projectsData?.projects ?? [], [projectsData]);
   const imgLink = "/images/stadt-guben.jpg";
 

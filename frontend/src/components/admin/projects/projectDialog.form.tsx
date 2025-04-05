@@ -7,7 +7,6 @@ import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {EditableImage} from "@/components/ui/editableImage";
-import {Checkbox} from "@/components/ui/checkbox";
 import {useTranslation} from "react-i18next";
 
 interface IProps {
@@ -113,20 +112,6 @@ export default function ProjectDialogForm(props: IProps) {
               <FormControl>
                 <Textarea placeholder={t("FullText")} {...field} value={field.value ?? undefined}/>
               </FormControl>
-              <FormMessage/>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="highlighted"
-          render={({field}) => (
-            <FormItem className={"flex gap-2 items-center"}>
-              <FormControl>
-                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-              </FormControl>
-              <FormLabel>{t("projects:Highlighted")}</FormLabel>
               <FormMessage/>
             </FormItem>
           )}

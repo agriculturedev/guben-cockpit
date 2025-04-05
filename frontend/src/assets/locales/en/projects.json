@@ -1,8 +1,11 @@
 {
+  "DeletedSuccess": "Project successfully deleted",
   "Title": "Projects",
   "Add": "Add project",
   "Edit": "Edit project",
   "Highlighted": "Highlighted",
   "MyProjects": "My projects",
-  "Published": "Published"
+  "Published": "Published",
+  "AddBusiness": "Add business",
+  "IsBusiness": "Is business"
 }

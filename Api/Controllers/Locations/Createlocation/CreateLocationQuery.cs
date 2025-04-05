@@ -1,8 +1,8 @@
 using Shared.Api;
 
-namespace Api.Controllers.Locations.GetOrCreatelocation;
+namespace Api.Controllers.Locations.Createlocation;
 
-public class GetOrCreateLocationQuery : IApiRequest<GetOrCreateLocationResponse>
+public class CreateLocationQuery : IApiRequest<CreateLocationResponse>
 {
   public required string Name { get; set; }
   public string? City { get; set; }

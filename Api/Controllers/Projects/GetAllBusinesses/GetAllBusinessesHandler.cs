@@ -2,23 +2,23 @@ using Api.Controllers.Projects.Shared;
 using Domain.Projects.repository;
 using Shared.Api;
 
-namespace Api.Controllers.Projects.GetAllProjects;
+namespace Api.Controllers.Projects.GetAllBusinesses;
 
-public class GetAllProjectsHandler : ApiPagedRequestHandler<GetAllProjectsQuery, GetAllProjectsResponse, ProjectResponse>
+public class GetAllBusinessesHandler : ApiPagedRequestHandler<GetallBusinessesQuery, GetAllBusinessesResponse, ProjectResponse>
 {
   private readonly IProjectRepository _projectRepository;
 
-  public GetAllProjectsHandler(IProjectRepository projectRepository)
+  public GetAllBusinessesHandler(IProjectRepository projectRepository)
   {
     _projectRepository = projectRepository;
   }
 
-  public override async Task<GetAllProjectsResponse> Handle(GetAllProjectsQuery request, CancellationToken
+  public override async Task<GetAllBusinessesResponse> Handle(GetallBusinessesQuery request, CancellationToken
       cancellationToken)
   {
-    var pagedResult = await _projectRepository.GetAllPaged(request);
+    var pagedResult = await _projectRepository.GetAllPagedBusinesses(request);
 
-    return new GetAllProjectsResponse
+    return new GetAllBusinessesResponse
     {
       PageNumber = pagedResult.PageNumber,
       PageCount = pagedResult.PageCount,

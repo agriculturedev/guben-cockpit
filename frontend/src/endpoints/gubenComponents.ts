@@ -159,7 +159,7 @@ export const useUsersGetMe = <TData = Schemas.UserResponse,>(
   });
 };
 
-export type ProjectsGetAllQueryParams = {
+export type ProjectsGetAllBusinessesQueryParams = {
   /**
    * @format int32
    */
@@ -170,34 +170,36 @@ export type ProjectsGetAllQueryParams = {
   pageSize?: number;
 };
 
-export type ProjectsGetAllError = Fetcher.ErrorWrapper<{
+export type ProjectsGetAllBusinessesError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type ProjectsGetAllVariables = {
-  queryParams?: ProjectsGetAllQueryParams;
+export type ProjectsGetAllBusinessesVariables = {
+  queryParams?: ProjectsGetAllBusinessesQueryParams;
 } & GubenContext["fetcherOptions"];
 
-export const fetchProjectsGetAll = (
-  variables: ProjectsGetAllVariables,
+export const fetchProjectsGetAllBusinesses = (
+  variables: ProjectsGetAllBusinessesVariables,
   signal?: AbortSignal,
 ) =>
   gubenFetch<
-    Schemas.GetAllProjectsResponse,
-    ProjectsGetAllError,
+    Schemas.GetAllBusinessesResponse,
+    ProjectsGetAllBusinessesError,
     undefined,
     {},
-    ProjectsGetAllQueryParams,
+    ProjectsGetAllBusinessesQueryParams,
     {}
-  >({ url: "/projects", method: "get", ...variables, signal });
+  >({ url: "/projects/businsesses", method: "get", ...variables, signal });
 
-export const useProjectsGetAll = <TData = Schemas.GetAllProjectsResponse,>(
-  variables: ProjectsGetAllVariables,
+export const useProjectsGetAllBusinesses = <
+  TData = Schemas.GetAllBusinessesResponse,
+>(
+  variables: ProjectsGetAllBusinessesVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<
-      Schemas.GetAllProjectsResponse,
-      ProjectsGetAllError,
+      Schemas.GetAllBusinessesResponse,
+      ProjectsGetAllBusinessesError,
       TData
     >,
     "queryKey" | "queryFn" | "initialData"
@@ -205,17 +207,75 @@ export const useProjectsGetAll = <TData = Schemas.GetAllProjectsResponse,>(
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
   return reactQuery.useQuery<
-    Schemas.GetAllProjectsResponse,
-    ProjectsGetAllError,
+    Schemas.GetAllBusinessesResponse,
+    ProjectsGetAllBusinessesError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/projects/businsesses",
+      operationId: "projectsGetAllBusinesses",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchProjectsGetAllBusinesses(
+        { ...fetcherOptions, ...variables },
+        signal,
+      ),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type ProjectsGetAllNonBusinessesError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsGetAllNonBusinessesVariables =
+  GubenContext["fetcherOptions"];
+
+export const fetchProjectsGetAllNonBusinesses = (
+  variables: ProjectsGetAllNonBusinessesVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllNonBusinessesResponse,
+    ProjectsGetAllNonBusinessesError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/projects", method: "get", ...variables, signal });
+
+export const useProjectsGetAllNonBusinesses = <
+  TData = Schemas.GetAllNonBusinessesResponse,
+>(
+  variables: ProjectsGetAllNonBusinessesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllNonBusinessesResponse,
+      ProjectsGetAllNonBusinessesError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllNonBusinessesResponse,
+    ProjectsGetAllNonBusinessesError,
     TData
   >({
     queryKey: queryKeyFn({
       path: "/projects",
-      operationId: "projectsGetAll",
+      operationId: "projectsGetAllNonBusinesses",
       variables,
     }),
     queryFn: ({ signal }) =>
-      fetchProjectsGetAll({ ...fetcherOptions, ...variables }, signal),
+      fetchProjectsGetAllNonBusinesses(
+        { ...fetcherOptions, ...variables },
+        signal,
+      ),
     ...options,
     ...queryOptions,
   });
@@ -262,57 +322,6 @@ export const useProjectsCreateProject = (
     mutationFn: (variables: ProjectsCreateProjectVariables) =>
       fetchProjectsCreateProject({ ...fetcherOptions, ...variables }),
     ...options,
-  });
-};
-
-export type ProjectsGetHighlightedError = Fetcher.ErrorWrapper<{
-  status: 400;
-  payload: Schemas.ProblemDetails;
-}>;
-
-export type ProjectsGetHighlightedVariables = GubenContext["fetcherOptions"];
-
-export const fetchProjectsGetHighlighted = (
-  variables: ProjectsGetHighlightedVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<
-    Schemas.GetHighlightedProjectsResponse,
-    ProjectsGetHighlightedError,
-    undefined,
-    {},
-    {},
-    {}
-  >({ url: "/projects/highlighted", method: "get", ...variables, signal });
-
-export const useProjectsGetHighlighted = <
-  TData = Schemas.GetHighlightedProjectsResponse,
->(
-  variables: ProjectsGetHighlightedVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<
-      Schemas.GetHighlightedProjectsResponse,
-      ProjectsGetHighlightedError,
-      TData
-    >,
-    "queryKey" | "queryFn" | "initialData"
-  >,
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<
-    Schemas.GetHighlightedProjectsResponse,
-    ProjectsGetHighlightedError,
-    TData
-  >({
-    queryKey: queryKeyFn({
-      path: "/projects/highlighted",
-      operationId: "projectsGetHighlighted",
-      variables,
-    }),
-    queryFn: ({ signal }) =>
-      fetchProjectsGetHighlighted({ ...fetcherOptions, ...variables }, signal),
-    ...options,
-    ...queryOptions,
   });
 };
 
@@ -462,6 +471,54 @@ export const useProjectsUpdateProject = (
   >({
     mutationFn: (variables: ProjectsUpdateProjectVariables) =>
       fetchProjectsUpdateProject({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type ProjectsDeleteProjectPathParams = {
+  id: string;
+};
+
+export type ProjectsDeleteProjectError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsDeleteProjectVariables = {
+  pathParams: ProjectsDeleteProjectPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchProjectsDeleteProject = (
+  variables: ProjectsDeleteProjectVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteProjectResponse,
+    ProjectsDeleteProjectError,
+    undefined,
+    {},
+    {},
+    ProjectsDeleteProjectPathParams
+  >({ url: "/projects/{id}", method: "delete", ...variables, signal });
+
+export const useProjectsDeleteProject = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteProjectResponse,
+      ProjectsDeleteProjectError,
+      ProjectsDeleteProjectVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteProjectResponse,
+    ProjectsDeleteProjectError,
+    ProjectsDeleteProjectVariables
+  >({
+    mutationFn: (variables: ProjectsDeleteProjectVariables) =>
+      fetchProjectsDeleteProject({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -660,6 +717,114 @@ export const useLocationsGetAll = <TData = Schemas.GetAllLocationsResponse,>(
   });
 };
 
+export type LocationsCreateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type LocationsCreateVariables = {
+  body: Schemas.CreateLocationQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchLocationsCreate = (
+  variables: LocationsCreateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateLocationResponse,
+    LocationsCreateError,
+    Schemas.CreateLocationQuery,
+    {},
+    {},
+    {}
+  >({ url: "/locations", method: "post", ...variables, signal });
+
+export const useLocationsCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateLocationResponse,
+      LocationsCreateError,
+      LocationsCreateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateLocationResponse,
+    LocationsCreateError,
+    LocationsCreateVariables
+  >({
+    mutationFn: (variables: LocationsCreateVariables) =>
+      fetchLocationsCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type LocationsGetAllPagedQueryParams = {
+  /**
+   * @format int32
+   */
+  pageNumber?: number;
+  /**
+   * @format int32
+   */
+  pageSize?: number;
+};
+
+export type LocationsGetAllPagedError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type LocationsGetAllPagedVariables = {
+  queryParams?: LocationsGetAllPagedQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchLocationsGetAllPaged = (
+  variables: LocationsGetAllPagedVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllLocationsPagedResponse,
+    LocationsGetAllPagedError,
+    undefined,
+    {},
+    LocationsGetAllPagedQueryParams,
+    {}
+  >({ url: "/locations/paged", method: "get", ...variables, signal });
+
+export const useLocationsGetAllPaged = <
+  TData = Schemas.GetAllLocationsPagedResponse,
+>(
+  variables: LocationsGetAllPagedVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllLocationsPagedResponse,
+      LocationsGetAllPagedError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllLocationsPagedResponse,
+    LocationsGetAllPagedError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/locations/paged",
+      operationId: "locationsGetAllPaged",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchLocationsGetAllPaged({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type TopicsError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -814,6 +979,112 @@ export const useEventsCreateEvent = (
   >({
     mutationFn: (variables: EventsCreateEventVariables) =>
       fetchEventsCreateEvent({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type EventsGetMyEventsQueryParams = {
+  query?: Record<string, any>;
+};
+
+export type EventsGetMyEventsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsGetMyEventsVariables = {
+  queryParams?: EventsGetMyEventsQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsGetMyEvents = (
+  variables: EventsGetMyEventsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetMyEventsResponse,
+    EventsGetMyEventsError,
+    undefined,
+    {},
+    EventsGetMyEventsQueryParams,
+    {}
+  >({ url: "/events/owned", method: "get", ...variables, signal });
+
+export const useEventsGetMyEvents = <TData = Schemas.GetMyEventsResponse,>(
+  variables: EventsGetMyEventsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetMyEventsResponse,
+      EventsGetMyEventsError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetMyEventsResponse,
+    EventsGetMyEventsError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/events/owned",
+      operationId: "eventsGetMyEvents",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchEventsGetMyEvents({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type EventsDeleteEventPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type EventsDeleteEventError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsDeleteEventVariables = {
+  pathParams: EventsDeleteEventPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsDeleteEvent = (
+  variables: EventsDeleteEventVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteEventResponse,
+    EventsDeleteEventError,
+    undefined,
+    {},
+    {},
+    EventsDeleteEventPathParams
+  >({ url: "/events/{id}", method: "delete", ...variables, signal });
+
+export const useEventsDeleteEvent = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteEventResponse,
+      EventsDeleteEventError,
+      EventsDeleteEventVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteEventResponse,
+    EventsDeleteEventError,
+    EventsDeleteEventVariables
+  >({
+    mutationFn: (variables: EventsDeleteEventVariables) =>
+      fetchEventsDeleteEvent({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -1247,14 +1518,14 @@ export type QueryOperation =
       variables: UsersGetMeVariables;
     }
   | {
-      path: "/projects";
-      operationId: "projectsGetAll";
-      variables: ProjectsGetAllVariables;
+      path: "/projects/businsesses";
+      operationId: "projectsGetAllBusinesses";
+      variables: ProjectsGetAllBusinessesVariables;
     }
   | {
-      path: "/projects/highlighted";
-      operationId: "projectsGetHighlighted";
-      variables: ProjectsGetHighlightedVariables;
+      path: "/projects";
+      operationId: "projectsGetAllNonBusinesses";
+      variables: ProjectsGetAllNonBusinessesVariables;
     }
   | {
       path: "/projects/owned";
@@ -1277,6 +1548,11 @@ export type QueryOperation =
       variables: LocationsGetAllVariables;
     }
   | {
+      path: "/locations/paged";
+      operationId: "locationsGetAllPaged";
+      variables: LocationsGetAllPagedVariables;
+    }
+  | {
       path: "/geo/topics";
       operationId: "topics";
       variables: TopicsVariables;
@@ -1285,6 +1561,11 @@ export type QueryOperation =
       path: "/events";
       operationId: "eventsGetAll";
       variables: EventsGetAllVariables;
+    }
+  | {
+      path: "/events/owned";
+      operationId: "eventsGetMyEvents";
+      variables: EventsGetMyEventsVariables;
     }
   | {
       path: "/dashboard";

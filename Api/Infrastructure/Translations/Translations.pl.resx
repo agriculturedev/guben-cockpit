@@ -209,4 +209,10 @@ value   : The object must be serialized into a byte array
   <data name="NoValidTranslationsFound" xml:space="preserve">
     <value>Nie znaleziono prawidłowych tłumaczeń</value>
   </data>
+  <data name="MissingProjectId" xml:space="preserve">
+    <value>Brakujący identyfikator projektu</value>
+  </data>
+  <data name="EventNotOwnedByUser" xml:space="preserve">
+    <value>Wydarzenie nie będące własnością użytkownika</value>
+  </data>
 </root>

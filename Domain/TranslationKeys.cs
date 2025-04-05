@@ -2,6 +2,7 @@
 
 public class TranslationKeys
 {
+  public const string MissingProjectId = "MissingProjectId";
   public const string AnErrorOccured = "AnErrorOccured";
   public const string CreatingUserFailed = "CreatingUserFailed";
   public const string DashboardTabNotFound = "DashboardTabNotFound";
@@ -31,4 +32,5 @@ public class TranslationKeys
   public const string EventNotFound = "EventNotFound";
   public const string CategoryNotFound = "CategoryNotFound";
   public const string NoValidTranslationsFound = "NoValidTranslationsFound";
+  public const string EventNotOwnedByUser = "EventNotOwnedByUser";
 }

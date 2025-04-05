@@ -1,32 +1,27 @@
-import { View, View2 } from '@/components/layout/View'
+import { View2 } from '@/components/layout/View'
 import { AuthGuard } from '@/guards/authGuard'
 import { cn } from '@/lib/utils'
 import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router'
 import { PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
+import { AdminNavigation } from "@/components/admin/AdminNavigation";
 
 export const Route = createFileRoute('/admin/_layout')({
   component: Layout,
 })
 
 function Layout() {
-  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages"]);
+  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations"]);
 
   return (
     <AuthGuard>
       <View2>
         <View2.Content>
           <div className="grid grid-cols-12 gap-4">
-            <Nav className="col-span-2 h-fit">
-              <Nav.Item href={"/admin/dashboard"} label={t("Title", {ns: "dashboard"})} />
-              <Nav.Item href={"/admin/users"} label={t("Title", {ns: "users"})} />
-              <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})} />
-              <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})} />
-              <Nav.Item href={"/admin/events"} label={t("Title", {ns: "events"})} />
-            </Nav>
+            <AdminNavigation/>
 
             <div className='col-span-10 p-6 bg-white rounded-lg'>
-              <Outlet />
+              <Outlet/>
             </div>
           </div>
         </View2.Content>
@@ -39,7 +34,7 @@ type NavProps = {
   className?: string;
 } & PropsWithChildren;
 
-function Nav({ children, ...props }: NavProps) {
+function Nav({children, ...props}: NavProps) {
   return (
     <div className={cn("bg-white rounded-lg p-4 flex flex-col max-h-fit", props.className ?? "")}>
       <ul className='flex flex-col gap-2'>

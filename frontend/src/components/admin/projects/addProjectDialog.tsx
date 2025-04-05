@@ -1,12 +1,12 @@
-import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
-import {CreateProjectQuery, CreateProjectResponse, ProjectResponse} from "@/endpoints/gubenSchemas";
-import {ReactNode, useState} from "react";
-import {formDefaults, FormSchema} from "./projectDialog.formSchema";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { CreateProjectQuery, CreateProjectResponse } from "@/endpoints/gubenSchemas";
+import { ReactNode, useState } from "react";
+import { FormSchema } from "./projectDialog.formSchema";
 
+import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
+import { useErrorToast } from "@/hooks/useErrorToast";
+import { useTranslation } from "react-i18next";
 import ProjectDialogForm from "./projectDialog.form";
-import {useProjectsCreateProject} from "@/endpoints/gubenComponents";
-import {useErrorToast} from "@/hooks/useErrorToast";
-import {useTranslation} from "react-i18next";
 
 interface IProps {
   children: ReactNode;
@@ -36,11 +36,13 @@ export default function AddProjectDialog({children, ...props}: IProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className={"bg-white px-4 py-8"}>
-        <h1>{t("Add")}</h1>
+      <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2"}>
+        <DialogHeader>
+          <DialogTitle>{t("Add")}</DialogTitle>
+        </DialogHeader>
         <ProjectDialogForm
           onSubmit={handleSubmit}
           onClose={() => setOpen(false)}
@@ -58,6 +60,6 @@ function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
     imageCaption: form.imageCaption,
     imageCredits: form.imageCredits,
     imageUrl: form.imageUrl,
-    highlighted: form.highlighted
+    isBusiness: false
   }
 }

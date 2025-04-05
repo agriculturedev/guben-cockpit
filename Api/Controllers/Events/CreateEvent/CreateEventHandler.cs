@@ -1,5 +1,6 @@
 using System.Globalization;
 using Api.Infrastructure.Extensions;
+using Api.Services;
 using Domain;
 using Domain.Category.repository;
 using Domain.Coordinates;
@@ -18,18 +19,22 @@ public class CreateEventHandler : ApiRequestHandler<CreateEventQuery, CreateEven
   private readonly ILocationRepository _locationRepository;
   private readonly ICategoryRepository _categoryRepository;
   private readonly CultureInfo _culture;
+  private readonly UserValidationService _userValidationService;
 
   public CreateEventHandler(IEventRepository eventRepository, ILocationRepository locationRepository,
-    ICategoryRepository categoryRepository)
+    ICategoryRepository categoryRepository, UserValidationService userValidationService)
   {
     _eventRepository = eventRepository;
     _locationRepository = locationRepository;
     _categoryRepository = categoryRepository;
+    _userValidationService = userValidationService;
     _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<CreateEventResponse> Handle(CreateEventQuery request, CancellationToken cancellationToken)
   {
+    var user = await _userValidationService.ValidateUserAsync();
+
     var (coordsResult, coords) = Coordinates.Create(request.Latitude, request.Longitude);
     coordsResult.ThrowIfFailure();
 
@@ -41,8 +46,8 @@ public class CreateEventHandler : ApiRequestHandler<CreateEventQuery, CreateEven
       throw new ProblemDetailsException(TranslationKeys.LocationNotFound);
     var categories = _categoryRepository.GetByIds(request.CategoryIds).ToList();
 
-    var (eventResult, @event) = Event.Create(request.EventId, request.TerminId, request.Title, request.Description,
-      request.StartDate, request.EndDate, location, coords, urls, categories, _culture);
+    var (eventResult, @event) = Event.CreateWithGeneratedIds(request.Title, request.Description,
+      request.StartDate, request.EndDate, location, coords, urls, categories, _culture, user.Id);
     eventResult.ThrowIfFailure();
 
     await _eventRepository.SaveAsync(@event);

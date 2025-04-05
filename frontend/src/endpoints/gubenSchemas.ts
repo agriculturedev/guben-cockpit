@@ -44,8 +44,6 @@ export type CreateDashboardTabQuery = {
 export type CreateDashboardTabResponse = Record<string, any>;
 
 export type CreateEventQuery = {
-  eventId: string;
-  terminId: string;
   title: string;
   description: string;
   /**
@@ -74,6 +72,19 @@ export type CreateEventQuery = {
 
 export type CreateEventResponse = Record<string, any>;
 
+export type CreateLocationQuery = {
+  name: string;
+  city?: string | null;
+  street?: string | null;
+  telephoneNumber?: string | null;
+  fax?: string | null;
+  email?: string | null;
+  website?: string | null;
+  zip?: string | null;
+};
+
+export type CreateLocationResponse = Record<string, any>;
+
 export type CreateProjectQuery = {
   title: string;
   description?: string | null;
@@ -81,7 +92,7 @@ export type CreateProjectQuery = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  highlighted?: boolean | null;
+  isBusiness: boolean;
 };
 
 export type CreateProjectResponse = Record<string, any>;
@@ -116,6 +127,10 @@ export type DeleteCardFromTabResponse = Record<string, any>;
 
 export type DeleteDashboardTabResponse = Record<string, any>;
 
+export type DeleteEventResponse = Record<string, any>;
+
+export type DeleteProjectResponse = Record<string, any>;
+
 export type EventResponse = {
   /**
    * @format uuid
@@ -137,6 +152,27 @@ export type EventResponse = {
   coordinates?: CoordinatesResponse;
   urls: UrlResponse[];
   categories: CategoryResponse[];
+  published: boolean;
+};
+
+export type GetAllBusinessesResponse = {
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
+  results: ProjectResponse[];
 };
 
 export type GetAllCategoriesResponse = {
@@ -167,15 +203,7 @@ export type GetAllEventsResponse = {
   results: EventResponse[];
 };
 
-export type GetAllLocationsResponse = {
-  locations: LocationResponse[];
-};
-
-export type GetAllPagesResponse = {
-  pages: PageResponse[];
-};
-
-export type GetAllProjectsResponse = {
+export type GetAllLocationsPagedResponse = {
   /**
    * @format int32
    */
@@ -192,7 +220,19 @@ export type GetAllProjectsResponse = {
    * @format int32
    */
   pageCount: number;
-  results: ProjectResponse[];
+  results: LocationResponse[];
+};
+
+export type GetAllLocationsResponse = {
+  locations: LocationResponse[];
+};
+
+export type GetAllNonBusinessesResponse = {
+  projects: ProjectResponse[];
+};
+
+export type GetAllPagesResponse = {
+  pages: PageResponse[];
 };
 
 export type GetAllUsersResponse = {
@@ -215,8 +255,8 @@ export type GetAllUsersResponse = {
   results: UserResponse[];
 };
 
-export type GetHighlightedProjectsResponse = {
-  projects: ProjectResponse[];
+export type GetMyEventsResponse = {
+  results: EventResponse[];
 };
 
 export type GetMyProjectsResponse = {
@@ -246,6 +286,12 @@ export type LocationResponse = {
   id: string;
   name: string;
   city?: string | null;
+  street?: string | null;
+  telephoneNumber?: string | null;
+  fax?: string | null;
+  email?: string | null;
+  website?: string | null;
+  zip?: string | null;
 };
 
 export type NullableOfButtonResponse = {
@@ -279,8 +325,8 @@ export type ProjectResponse = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  highlighted?: boolean;
-  published?: boolean;
+  isBusiness: boolean;
+  published: boolean;
 };
 
 export type PublishProjectsQuery = {
@@ -339,13 +385,14 @@ export type UpdatePageQuery = {
 export type UpdatePageResponse = Record<string, any>;
 
 export type UpdateProjectQuery = {
-  id: string;
+  id?: string | null;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
+  isBusiness: boolean;
 };
 
 export type UpsertButtonQuery = {

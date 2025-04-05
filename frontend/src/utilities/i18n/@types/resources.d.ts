@@ -1,8 +1,14 @@
 interface Resources {
   "common": {
     "Actions": "Aktionen",
+    "SelectNavItem": "Wählen Sie ein Navigationselement aus",
+    "Add": "Hinzufügen",
+    "Delete": "Löschen",
     "Category": "Kategorie",
+    "Categories": "Kategorien",
     "Cancel": "Stornieren",
+    "Url": "Url",
+    "Urls": "Urls",
     "Credits": "Bildnachweis",
     "Date": "Datum",
     "Description": "Beschreibung",
@@ -41,8 +47,11 @@ interface Resources {
     "ComingSoon": "Demnächst verfügbar",
     "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}",
     "All": "Alle",
+    "Latitude": "Latitude",
+    "Longitude": "Longitude",
     "Dates": {
       "Always": "Immer",
+      "Future": "Kommend",
       "Today": "Heute",
       "Tomorrow": "Morgen",
       "ThisWeek": "Diese Woche",
@@ -82,7 +91,24 @@ interface Resources {
   "events": {
     "Title": "Veranstaltungen",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
-    "ClickHere": "Klicken Sie hier"
+    "ClickHere": "Klicken Sie hier",
+    "Add": "Veranstaltung hinzufügen",
+    "Delete": "Veranstaltung löschen",
+    "DeletedSuccess": "Veranstaltung erfolgreich gelöscht",
+    "Edit": "Veranstaltung bearbeiten",
+    "MyEvents": "Meine Veranstaltungen",
+    "Published": "Veröffentlicht"
+  },
+  "locations": {
+    "Title": "Orte",
+    "Add": "Ort hinzufügen",
+    "Edit": "Ort bearbeiten",
+    "City": "Stadt",
+    "Zip": "Postleitzahl",
+    "Street": "Straße",
+    "TelephoneNumber": "Telefonnummer",
+    "Email": "E-Mail",
+    "Fax": "Fax"
   },
   "navigation": {
     "Dashboard": "Dashboard",
@@ -99,12 +125,15 @@ interface Resources {
     "Edit": "Seite bearbeiten"
   },
   "projects": {
+    "DeletedSuccess": "Projekt erfolgreich gelöscht",
     "Title": "Projekte",
     "Add": "Projekt hinzufügen",
     "Edit": "Projekt bearbeiten",
     "Highlighted": "Hervorgehoben",
     "MyProjects": "Meine Projekte",
-    "Published": "Veröffentlicht"
+    "Published": "Veröffentlicht",
+    "AddBusiness": "Geschäft hinzufügen",
+    "IsBusiness": "ist ein Geschäft"
   },
   "users": {
     "Title": "Benutzer"

@@ -69,6 +69,9 @@ namespace Database.Migrations
                     b.Property<string>("Coordinates")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -94,6 +97,8 @@ namespace Database.Migrations
                         .HasColumnType("jsonb");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("LocationId");
 
@@ -165,9 +170,6 @@ namespace Database.Migrations
                     b.Property<string>("FullText")
                         .HasColumnType("text");
 
-                    b.Property<bool>("Highlighted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("ImageCaption")
                         .HasColumnType("text");
 
@@ -176,6 +178,9 @@ namespace Database.Migrations
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsBusiness")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("Published")
                         .HasColumnType("boolean");
@@ -311,6 +316,12 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Domain.Events.Event", b =>
                 {
+                    b.HasOne("Domain.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Domain.Locations.Location", "Location")
                         .WithMany("Events")
                         .HasForeignKey("LocationId")

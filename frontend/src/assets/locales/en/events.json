@@ -1,5 +1,11 @@
 {
   "Title": "Events",
   "CitizenInformationText": "If you are looking for Citizen Information system",
-  "ClickHere": "Click here"
+  "ClickHere": "Click here",
+  "Add": "Add event",
+  "Delete": "Delete event",
+  "DeletedSuccess": "Event Succesfully deleted",
+  "Edit": "Edit event",
+  "MyEvents": "My events",
+  "Published": "Published"
 }
