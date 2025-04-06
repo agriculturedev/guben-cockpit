@@ -61,7 +61,8 @@ interface Resources {
       "ThisYear": "Dieses Jahr",
       "DateInput": "Datumseingabe"
     },
-    "Marktplatz": "Gubener Marktplatz"
+    "Marktplatz": "Gubener Marktplatz",
+    "MoreInformation": "Weitere Informationen"
   },
   "dashboard": {
     "Title": "Dashboard",

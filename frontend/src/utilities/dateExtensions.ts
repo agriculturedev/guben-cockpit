@@ -27,13 +27,13 @@ declare global {
      * format to dd/MM/yyyy HH:mm or dd/MM/yyyy HH:mm:ss
      * @param includeSeconds boolean
      */
-    formatDateTime(includeSeconds: boolean): string;
+    formatDateTime(includeSeconds?: boolean): string;
 
     /**
      * format to HH:mm or HH:mm:ss
      * @param includeSeconds boolean
      */
-    formatTime(includeSeconds: boolean): string;
+    formatTime(includeSeconds?: boolean): string;
 
     /**
      * Add minutes
@@ -105,14 +105,14 @@ Date.prototype.formatDate = function (): string {
   return format(this, "dd.MM.yyyy");
 };
 
-Date.prototype.formatDateTime = function (includeSeconds: boolean): string {
+Date.prototype.formatDateTime = function (includeSeconds: boolean = false): string {
   if (includeSeconds) {
     return format(this, "dd.MM.yyyy HH:mm:ss");
   }
   return format(this, "dd.MM.yyyy HH:mm");
 };
 
-Date.prototype.formatTime = function (includeSeconds: boolean): string {
+Date.prototype.formatTime = function (includeSeconds: boolean = false): string {
   if (includeSeconds) {
     return format(this, "HH:mm:ss");
   }

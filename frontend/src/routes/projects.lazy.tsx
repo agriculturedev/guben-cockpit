@@ -8,7 +8,7 @@ export const Route = createLazyFileRoute('/projects')({
 
 function Component() {
   return (
-    <main className="p-6 flex flex-col items-center">
+    <main className="p-6 flex flex-col items-center bg-white h-full">
       <div className={"max-w-[120rem]"}>
         <PageHeader />
         <PageBody />

@@ -16,6 +16,7 @@
   "devDependencies": {
     "@openapi-codegen/cli": "^2.0.2",
     "@openapi-codegen/typescript": "^8.0.2",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tanstack/eslint-plugin-query": "^5.58.1",
     "@tanstack/router-plugin": "^1.58.12",
     "@types/node": "^22.7.4",
