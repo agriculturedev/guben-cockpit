@@ -23,17 +23,15 @@ public class DataSourceResponse
 {
   public required string Id { get; set; }
   public required string Name { get; set; }
-  public SourceResponse? Wms { get; set; }
-  public SourceResponse? Wfs { get; set; }
+  public required IEnumerable<SourceResponse> Sources { get; set; }
 
-  public static DataSourceResponse Map(DataSource source)
+  public static DataSourceResponse Map(DataSource dataSource)
   {
     return new DataSourceResponse()
     {
-      Id = source.Id,
-      Name = source.Name,
-      Wms = source.Wms is not null ? SourceResponse.Map(source.Wms) : null,
-      Wfs = source.Wfs is not null ? SourceResponse.Map(source.Wfs) : null
+      Id = dataSource.Id,
+      Name = dataSource.Name,
+      Sources = dataSource.Sources.Select(SourceResponse.Map)
     };
   }
 }
@@ -42,13 +40,15 @@ public class SourceResponse
 {
   public required string Name { get; set; }
   public required string Url { get; set; }
+  public required string Type { get; set; }
 
   public static SourceResponse Map(Source source)
   {
     return new SourceResponse()
     {
       Name = source.Name,
-      Url = source.Url
+      Url = source.Url,
+      Type = source.Type.Name
     };
   }
 }
