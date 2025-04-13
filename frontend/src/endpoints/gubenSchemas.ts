@@ -155,6 +155,11 @@ export type EventResponse = {
   published: boolean;
 };
 
+export type FooterItemResponse = {
+  name?: string;
+  content?: string;
+};
+
 export type GetAllBusinessesResponse = {
   /**
    * @format int32
@@ -201,6 +206,10 @@ export type GetAllEventsResponse = {
    */
   pageCount: number;
   results: EventResponse[];
+};
+
+export type GetAllFooterItemsResponse = {
+  footerItems?: FooterItemResponse[];
 };
 
 export type GetAllLocationsPagedResponse = {

@@ -861,6 +861,57 @@ export const useTopics = <TData = Schemas.GetTopicsResponse,>(
   });
 };
 
+export type FooterItemsGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type FooterItemsGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchFooterItemsGetAll = (
+  variables: FooterItemsGetAllVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllFooterItemsResponse,
+    FooterItemsGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/footeritem", method: "get", ...variables, signal });
+
+export const useFooterItemsGetAll = <
+  TData = Schemas.GetAllFooterItemsResponse,
+>(
+  variables: FooterItemsGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllFooterItemsResponse,
+      FooterItemsGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllFooterItemsResponse,
+    FooterItemsGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/footeritem",
+      operationId: "footerItemsGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchFooterItemsGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type EventsGetAllQueryParams = {
   title?: string;
   location?: string;
@@ -1556,6 +1607,11 @@ export type QueryOperation =
       path: "/geo/topics";
       operationId: "topics";
       variables: TopicsVariables;
+    }
+  | {
+      path: "/footeritem";
+      operationId: "footerItemsGetAll";
+      variables: FooterItemsGetAllVariables;
     }
   | {
       path: "/events";
