@@ -6,7 +6,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 export const AdminNavigation = () => {
-  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations"]);
+  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations", "footer"]);
 
   return (
     <Nav className="col-span-2 h-fit">
@@ -32,6 +32,10 @@ export const AdminNavigation = () => {
 
       <PermissionGuard permissions={[Permissions.LocationManager]}>
         <Nav.Item href={"/admin/locations"} label={t("Title", {ns: "locations"})}/>
+      </PermissionGuard>
+
+      <PermissionGuard permissions={[Permissions.FooterManager]}>
+        <Nav.Item href={"/admin/footer"} label={t("Title", {ns: "footer"})}/>
       </PermissionGuard>
     </Nav>
   )

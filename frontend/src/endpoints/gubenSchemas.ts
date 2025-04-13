@@ -156,8 +156,12 @@ export type EventResponse = {
 };
 
 export type FooterItemResponse = {
-  name?: string;
-  content?: string;
+  /**
+   * @format uuid
+   */
+  id: string;
+  name: string;
+  content: string;
 };
 
 export type GetAllBusinessesResponse = {
@@ -209,7 +213,7 @@ export type GetAllEventsResponse = {
 };
 
 export type GetAllFooterItemsResponse = {
-  footerItems?: FooterItemResponse[];
+  footerItems: FooterItemResponse[];
 };
 
 export type GetAllLocationsPagedResponse = {
@@ -264,9 +268,13 @@ export type GetAllUsersResponse = {
   results: UserResponse[];
 };
 
+export type GetMyEventsQuery = Record<string, any>;
+
 export type GetMyEventsResponse = {
   results: EventResponse[];
 };
+
+export type GetMyProjectsQuery = Record<string, any>;
 
 export type GetMyProjectsResponse = {
   results: ProjectResponse[];
@@ -409,6 +417,17 @@ export type UpsertButtonQuery = {
   url: string;
   openInNewTab: boolean;
 } | null;
+
+export type UpsertFooterItemQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  name: string;
+  content: string;
+};
+
+export type UpsertFooterItemResponse = Record<string, any>;
 
 export type UrlResponse = {
   link: string;

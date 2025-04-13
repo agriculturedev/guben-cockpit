@@ -1,6 +1,9 @@
 ﻿using System.Net.Mime;
 using Api.Controllers.FooterItems.GetAllFooterItems;
+using Api.Controllers.FooterItems.UpsertFooterItem;
+using Api.Infrastructure.Keycloak;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.FooterItems;
@@ -30,4 +33,16 @@ public class FooterItemController : ControllerBase
     var result = await _mediator.Send(new GetAllFooterItemsQuery());
     return Results.Ok(result);
   }
+
+  [HttpPost]
+  [Authorize(KeycloakPolicies.FooterManager)]
+  [EndpointName("FooterUpsertItem")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpsertFooterItemResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> UpsertItem([FromBody] UpsertFooterItemQuery request)
+  {
+    var result = await _mediator.Send(request);
+    return Results.Ok(result);
+  }
+
 }

@@ -7,4 +7,5 @@ export enum Permissions {
   ProjectContributor = "project_contributor",
   PublishProjects = "publish_projects",
   ViewUsers = "view_users",
+  FooterManager = "footer_manager",
 }

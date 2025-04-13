@@ -20,4 +20,16 @@ public sealed class FooterItem : Entity<Guid>
   {
     return new FooterItem(name, content);
   }
+
+  public Result UpdateName(string name)
+  {
+    Name = name;
+    return Result.Ok();
+  }
+
+  public Result UpdateContent(string content)
+  {
+    Content = content;
+    return Result.Ok();
+  }
 }

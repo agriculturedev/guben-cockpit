@@ -99,6 +99,12 @@ interface Resources {
     "MyEvents": "Meine Veranstaltungen",
     "Published": "Veröffentlicht"
   },
+  "footer": {
+    "Title": "Fußzeile",
+    "Add": "Fußzeilenelement Hinzufügen",
+    "Delete": "Fußzeilenelement löschen",
+    "Content": "Inhalt"
+  },
   "locations": {
     "Title": "Orte",
     "Add": "Ort hinzufügen",

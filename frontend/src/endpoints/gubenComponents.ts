@@ -326,7 +326,7 @@ export const useProjectsCreateProject = (
 };
 
 export type ProjectsGetMyProjectsQueryParams = {
-  query?: Record<string, any>;
+  query?: Schemas.GetMyProjectsQuery;
 };
 
 export type ProjectsGetMyProjectsError = Fetcher.ErrorWrapper<{
@@ -912,6 +912,50 @@ export const useFooterItemsGetAll = <
   });
 };
 
+export type FooterUpsertItemError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type FooterUpsertItemVariables = {
+  body: Schemas.UpsertFooterItemQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchFooterUpsertItem = (
+  variables: FooterUpsertItemVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpsertFooterItemResponse,
+    FooterUpsertItemError,
+    Schemas.UpsertFooterItemQuery,
+    {},
+    {},
+    {}
+  >({ url: "/footeritem", method: "post", ...variables, signal });
+
+export const useFooterUpsertItem = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpsertFooterItemResponse,
+      FooterUpsertItemError,
+      FooterUpsertItemVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpsertFooterItemResponse,
+    FooterUpsertItemError,
+    FooterUpsertItemVariables
+  >({
+    mutationFn: (variables: FooterUpsertItemVariables) =>
+      fetchFooterUpsertItem({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type EventsGetAllQueryParams = {
   title?: string;
   location?: string;
@@ -1035,7 +1079,7 @@ export const useEventsCreateEvent = (
 };
 
 export type EventsGetMyEventsQueryParams = {
-  query?: Record<string, any>;
+  query?: Schemas.GetMyEventsQuery;
 };
 
 export type EventsGetMyEventsError = Fetcher.ErrorWrapper<{
