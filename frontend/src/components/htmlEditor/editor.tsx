@@ -310,28 +310,28 @@ const MenuBar = ({ editor }: MenuProps) => {
       {/*    onClick={() => editor.chain().focus().toggleCodeBlock().run()}*/}
       {/*  />*/}
 
-      {/*  <MenuButton*/}
-      {/*    icon={LinkIcon}*/}
-      {/*    label="Link"*/}
-      {/*    isActive={editor.isActive('link')}*/}
-      {/*    onClick={() => {*/}
-      {/*      const previousUrl = editor.isActive('link') ? editor.getAttributes('link').href : '';*/}
-      {/*      const url = window.prompt('Enter URL', previousUrl);*/}
+        <MenuButton
+          icon={LinkIcon}
+          label="Link"
+          isActive={editor.isActive('link')}
+          onClick={() => {
+            const previousUrl = editor.isActive('link') ? editor.getAttributes('link').href : '';
+            const url = window.prompt('Enter URL', previousUrl);
 
-      {/*      if (url === null) {*/}
-      {/*        return; // User canceled the prompt*/}
-      {/*      }*/}
+            if (url === null) {
+              return; // User canceled the prompt
+            }
 
-      {/*      if (url === '') {*/}
-      {/*        editor.chain().focus().extendMarkRange('link').unsetLink().run();*/}
-      {/*        return;*/}
-      {/*      }*/}
+            if (url === '') {
+              editor.chain().focus().extendMarkRange('link').unsetLink().run();
+              return;
+            }
 
-      {/*      // Ensure URL has protocol*/}
-      {/*      const finalUrl = url.startsWith('http') ? url : `https://${url}`;*/}
-      {/*      editor.chain().focus().extendMarkRange('link').setLink({ href: finalUrl }).run();*/}
-      {/*    }}*/}
-      {/*  />*/}
+            // Ensure URL has protocol
+            const finalUrl = url.startsWith('http') ? url : `https://${url}`;
+            editor.chain().focus().extendMarkRange('link').setLink({ href: finalUrl }).run();
+          }}
+        />
 
       {/*  <MenuButton*/}
       {/*    icon={ImageIcon}*/}
@@ -363,6 +363,7 @@ interface EditorProps {
 const HtmlEditor = ({ content, onChange, placeholder = 'Start writing...' }: EditorProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
+  console.log(content);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -400,7 +401,7 @@ const HtmlEditor = ({ content, onChange, placeholder = 'Start writing...' }: Edi
       Color,
       Typography,
     ],
-    content,
+    content: content,
     editorProps: {
       attributes: {
         class: `prose prose-sm sm:prose p-3 min-h-[200px] border rounded-lg bg-white focus:outline-none ${
@@ -414,6 +415,16 @@ const HtmlEditor = ({ content, onChange, placeholder = 'Start writing...' }: Edi
     onFocus: () => setIsFocused(true),
     onBlur: () => setIsFocused(false),
   });
+
+  useEffect(() => {
+    if (!editor) return;
+    let {from, to} = editor.state.selection;
+    editor.commands.setContent(content,
+      false, {
+        preserveWhitespace: "full"
+      });
+    editor.commands.setTextSelection({from, to});
+  }, [editor, content]);
 
   return (
     <div className="w-full">

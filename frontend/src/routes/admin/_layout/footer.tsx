@@ -7,6 +7,11 @@ import {Button} from '@/components/ui/button'
 import {routePermissionCheck} from '@/guards/routeGuardChecks'
 import {Permissions} from '@/auth/permissions'
 import UpsertFooterItemDialog from '@/components/admin/footer/upsertFooterItemDialog'
+import { TooltipProvider } from "@/components/ui/tooltip";
+import EditProjectDialog from "@/components/admin/projects/editProjectDialog";
+import { EditIcon, TrashIcon } from "lucide-react";
+import DeleteProjectDialog from "@/components/admin/projects/deleteProjectDialog";
+import DeleteFooterItemDialog from '@/components/admin/footer/deleteFooterItemDialog'
 
 export const Route = createFileRoute('/admin/_layout/footer')({
   beforeLoad: async ({context, location}) => {
@@ -43,8 +48,22 @@ function FooterComponent() {
           {footerItemsResponse?.footerItems?.map((l) => (
             <TableRow key={l.id}>
               <TableCell>{l.name}</TableCell>
-              <TableCell>{l.content}</TableCell>
-              <TableCell>todo: actions</TableCell>
+              <TableCell>
+                <div className="text-neutral-800" dangerouslySetInnerHTML={{ __html: l.content }} />
+              </TableCell>
+              <TableCell>
+                <TooltipProvider>
+                  <div className="h-full flex items-center gap-2">
+                    <UpsertFooterItemDialog footerItem={l} onCreateSuccess={refetch}>
+                      <EditIcon className="size-4 hover:text-red-500"/>
+                    </UpsertFooterItemDialog>
+
+                    <DeleteFooterItemDialog footerItemId={l.id} onDeleteSuccess={refetch}>
+                      <TrashIcon className="size-4 hover:text-red-500"/>
+                    </DeleteFooterItemDialog>
+                  </div>
+                </TooltipProvider>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

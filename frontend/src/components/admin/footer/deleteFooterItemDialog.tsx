@@ -1,23 +1,22 @@
 import { ConfirmationDialogContent } from "@/components/confirmationDialog/confirmationDialogContent";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { useProjectsDeleteProject } from "@/endpoints/gubenComponents";
+import { useFooterDeleteItem, useProjectsDeleteProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 interface IProps {
-  projectId: string;
-  onDeleteSuccess: () => Promise<void>;
+  footerItemId: string;
+  onDeleteSuccess: () => Promise<any>;
   children: React.ReactNode;
 }
 
-export default function DeleteFooterItemDialog({projectId, onDeleteSuccess, children}: IProps) {
+export default function DeleteFooterItemDialog({footerItemId, onDeleteSuccess, children}: IProps) {
   const {t} = useTranslation(["common", "footer"])
   const [open, setOpen] = useState(false);
 
-
-  const mutation = useProjectsDeleteProject({
+  const mutation = useFooterDeleteItem({
     onSuccess: async () => {
       setOpen(false);
       toast(t("footer:DeletedSuccess"));
@@ -28,9 +27,9 @@ export default function DeleteFooterItemDialog({projectId, onDeleteSuccess, chil
 
   const onSubmit = useCallback(() => mutation.mutate({
     pathParams: {
-      id: projectId
+      id: footerItemId
     }
-  }), [mutation, projectId]);
+  }), [mutation, footerItemId]);
 
   return (
   <Dialog open={open} onOpenChange={setOpen}>
