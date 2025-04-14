@@ -129,6 +129,8 @@ export type DeleteDashboardTabResponse = Record<string, any>;
 
 export type DeleteEventResponse = Record<string, any>;
 
+export type DeleteFooterItemResponse = Record<string, any>;
+
 export type DeleteProjectResponse = Record<string, any>;
 
 export type EventResponse = {
@@ -268,13 +270,9 @@ export type GetAllUsersResponse = {
   results: UserResponse[];
 };
 
-export type GetMyEventsQuery = Record<string, any>;
-
 export type GetMyEventsResponse = {
   results: EventResponse[];
 };
-
-export type GetMyProjectsQuery = Record<string, any>;
 
 export type GetMyProjectsResponse = {
   results: ProjectResponse[];

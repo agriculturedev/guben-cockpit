@@ -1,22 +1,12 @@
 import * as React from 'react'
-import { useEffect } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
-import { PaginationContainer } from '@/components/DataDisplay/PaginationContainer'
-import { defaultPaginationProps, usePagination } from '@/hooks/usePagination'
-import { useFooterItemsGetAll, useLocationsGetAllPaged } from '@/endpoints/gubenComponents'
-import { useTranslation } from 'react-i18next'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import AddLocationDialog from '@/components/admin/locations/addLocationDialog'
-import { Button } from '@/components/ui/button'
-import { routePermissionCheck } from '@/guards/routeGuardChecks'
-import { Permissions } from '@/auth/permissions'
+import {createFileRoute} from '@tanstack/react-router'
+import {useFooterItemsGetAll} from '@/endpoints/gubenComponents'
+import {useTranslation} from 'react-i18next'
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from '@/components/ui/table'
+import {Button} from '@/components/ui/button'
+import {routePermissionCheck} from '@/guards/routeGuardChecks'
+import {Permissions} from '@/auth/permissions'
+import UpsertFooterItemDialog from '@/components/admin/footer/upsertFooterItemDialog'
 
 export const Route = createFileRoute('/admin/_layout/footer')({
   beforeLoad: async ({context, location}) => {
@@ -37,9 +27,9 @@ function FooterComponent() {
   return (
     <div className="w-ful">
       <div className={'mb-4 flex justify-end'}>
-        <AddFooterDialog onCreateSuccess={refetch}>
+        <UpsertFooterItemDialog onCreateSuccess={refetch}>
           <Button>{t('footer:Add')}</Button>
-        </AddFooterDialog>
+        </UpsertFooterItemDialog>
       </div>
       <Table>
         <TableHeader>
@@ -51,10 +41,10 @@ function FooterComponent() {
         </TableHeader>
         <TableBody>
           {footerItemsResponse?.footerItems?.map((l) => (
-            <TableRow key={l.name}>
+            <TableRow key={l.id}>
               <TableCell>{l.name}</TableCell>
               <TableCell>{l.content}</TableCell>
-              <TableCell></TableCell>
+              <TableCell>todo: actions</TableCell>
             </TableRow>
           ))}
         </TableBody>

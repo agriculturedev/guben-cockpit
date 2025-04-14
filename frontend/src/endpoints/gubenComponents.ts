@@ -326,7 +326,7 @@ export const useProjectsCreateProject = (
 };
 
 export type ProjectsGetMyProjectsQueryParams = {
-  query?: Schemas.GetMyProjectsQuery;
+  query?: Record<string, any>;
 };
 
 export type ProjectsGetMyProjectsError = Fetcher.ErrorWrapper<{
@@ -956,6 +956,57 @@ export const useFooterUpsertItem = (
   });
 };
 
+export type FooterDeleteItemPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type FooterDeleteItemError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type FooterDeleteItemVariables = {
+  pathParams: FooterDeleteItemPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchFooterDeleteItem = (
+  variables: FooterDeleteItemVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteFooterItemResponse,
+    FooterDeleteItemError,
+    undefined,
+    {},
+    {},
+    FooterDeleteItemPathParams
+  >({ url: "/footeritem/{id}", method: "delete", ...variables, signal });
+
+export const useFooterDeleteItem = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteFooterItemResponse,
+      FooterDeleteItemError,
+      FooterDeleteItemVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteFooterItemResponse,
+    FooterDeleteItemError,
+    FooterDeleteItemVariables
+  >({
+    mutationFn: (variables: FooterDeleteItemVariables) =>
+      fetchFooterDeleteItem({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type EventsGetAllQueryParams = {
   title?: string;
   location?: string;
@@ -1079,7 +1130,7 @@ export const useEventsCreateEvent = (
 };
 
 export type EventsGetMyEventsQueryParams = {
-  query?: Schemas.GetMyEventsQuery;
+  query?: Record<string, any>;
 };
 
 export type EventsGetMyEventsError = Fetcher.ErrorWrapper<{

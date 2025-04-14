@@ -103,7 +103,9 @@ interface Resources {
     "Title": "Fußzeile",
     "Add": "Fußzeilenelement Hinzufügen",
     "Delete": "Fußzeilenelement löschen",
-    "Content": "Inhalt"
+    "Edit": "Fußzeilenelement bearbeiten",
+    "Content": "Inhalt",
+    "DeletedSuccess": "Fußzeilenelement erfolgreich gelöscht"
   },
   "locations": {
     "Title": "Orte",

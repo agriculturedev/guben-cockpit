@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using Api.Controllers.FooterItems.DeleteFooterItem;
 using Api.Controllers.FooterItems.GetAllFooterItems;
 using Api.Controllers.FooterItems.UpsertFooterItem;
 using Api.Infrastructure.Keycloak;
@@ -42,6 +43,21 @@ public class FooterItemController : ControllerBase
   public async Task<IResult> UpsertItem([FromBody] UpsertFooterItemQuery request)
   {
     var result = await _mediator.Send(request);
+    return Results.Ok(result);
+  }
+
+  [HttpDelete("{id:guid}")]
+
+[Authorize(KeycloakPolicies.FooterManager)]
+  [EndpointName("FooterDeleteItem")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteFooterItemResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> UpsertItem([FromRoute] Guid id)
+  {
+    var result = await _mediator.Send(new DeleteFooterItemQuery()
+      {
+        Id = id
+      });
     return Results.Ok(result);
   }
 
