@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {formDefaults, formSchema, FormSchema } from "./footerItemDialog.formSchema";
+import HtmlEditor from "@/components/htmlEditor/editor";
 
 interface IProps {
   defaultData?: FormSchema;
@@ -49,7 +50,7 @@ export default function UpsertFooterItemDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("footer:Content")}</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("footer:Content")} {...field} value={field.value ?? undefined} />
+                <HtmlEditor {...field} content={field.value ?? ""} />
               </FormControl>
               <FormMessage />
             </FormItem>

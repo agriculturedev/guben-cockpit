@@ -30,6 +30,7 @@ interface FooterItemDialogProps {
   footerItem: FooterItemResponse;
 }
 
+// TODO: customize the sanitize html so it allows for inline styling for colored text, images etc
 export default function FooterItemDialog({ footerItem }: FooterItemDialogProps) {
   return (
     <Dialog>
@@ -45,7 +46,8 @@ export default function FooterItemDialog({ footerItem }: FooterItemDialogProps) 
 
         {!isNullOrUndefinedOrWhiteSpace(footerItem.content) &&
           <DialogDescription>
-            <div className="text-neutral-800" dangerouslySetInnerHTML={{ __html: sanitizeHtml(footerItem.content!) }} />
+            {/*<div className="text-neutral-800" dangerouslySetInnerHTML={{ __html: sanitizeHtml(footerItem.content!) }} />*/}
+            <div className="text-neutral-800" dangerouslySetInnerHTML={{ __html: footerItem.content! }} />
           </DialogDescription>
         }
       </DialogContent>
