@@ -215,4 +215,7 @@ value   : The object must be serialized into a byte array
   <data name="EventNotOwnedByUser" xml:space="preserve">
     <value>Event not owned by user</value>
   </data>
+  <data name="FooterItemNotFound" xml:space="preserve">
+    <value>Footer items not found</value>
+  </data>
 </root>
