@@ -9,7 +9,6 @@ export function useDebouncedCallback<T extends (...args: any[]) => void>(
   return useCallback(
     (...args: Parameters<T>) => {
       const later = () => {
-        clearTimeout(timeout.current);
         func(...args);
       };
 

@@ -1,4 +1,4 @@
-﻿import { useEditor, EditorContent, Editor } from '@tiptap/react'
+﻿import {useEditor, EditorContent, Editor, EditorEvents} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
@@ -11,12 +11,11 @@ import { Image } from "@tiptap/extension-image"
 import {Level} from "@tiptap/extension-heading"
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
-  List, ListOrdered, Quote, Code, Heading1, Heading2, Eraser,
-  Link as LinkIcon, Image as ImageIcon, AlignLeft, AlignCenter,
-  AlignRight, AlignJustify, Palette, Type, Undo, Redo, LucideIcon,
+  Link as LinkIcon, AlignLeft, AlignCenter,
+  AlignRight, AlignJustify, Palette, Undo, Redo, LucideIcon,
   Heading as HeadingIcon
 } from 'lucide-react'
-import {useCallback, useEffect, useRef, useState} from 'react'
+import { useEffect, useRef, useState} from 'react'
 import {useDebouncedCallback} from "@/hooks/useDebouncedCallback";
 
 interface MenuButtonProps {
@@ -409,7 +408,7 @@ const HtmlEditor = ({ content, onChange, placeholder = 'Start writing...' }: Edi
         }`,
       },
     },
-    onUpdate: ({ editor }) => {
+    onUpdate: ({ editor }: EditorEvents["update"]) => {
       onChange?.(editor.getHTML());
     },
     onFocus: () => setIsFocused(true),
