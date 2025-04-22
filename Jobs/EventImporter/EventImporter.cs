@@ -228,15 +228,14 @@ public class EventImporter
   {
     var existingEvent = await _eventRepository.GetByEventIdAndTerminIdIncludingUnpublished(@event.EventId, @event.TerminId);
     if (existingEvent != null)
-    { // TODO@JOREN: Update seems to be buggy, it is not properly adding new translations on update, perhaps ef comparison of json
-      Console.WriteLine($"Updating existing event: {@event.Id}");
+    {
+      // TODO@JOREN: Update seems to be buggy, it is not properly adding new translations on update, perhaps ef comparison of json
       var updateResult = existingEvent.Update(@event, cultureInfo);
       if (updateResult.IsFailure)
         throw new Exception($"Failed to update existing event {updateResult.ValidationMessages}");
       return;
     }
 
-    Console.WriteLine($"Creating new event: {@event.Id}");
     @event.SetPublishedState(true);
     await _eventRepository.SaveAsync(@event);
   }

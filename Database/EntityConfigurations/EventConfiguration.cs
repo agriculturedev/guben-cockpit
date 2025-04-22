@@ -72,6 +72,19 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
       urlBuilder.Property(u => u.Description).IsRequired();
     });
 
+    builder.OwnsMany(e => e.Images, imagesBuilder => {
+      imagesBuilder.WithOwner().HasForeignKey("EventId");
+
+      imagesBuilder.Property(e => e.ThumbnailUrl);
+      imagesBuilder.Property(e => e.PreviewUrl);
+      imagesBuilder.Property(e => e.OriginalUrl);
+      imagesBuilder.Property(e => e.Width);
+      imagesBuilder.Property(e => e.Height);
+
+      imagesBuilder.HasKey("EventId", "OriginalUrl"); //composite key to link url + event together
+      imagesBuilder.ToTable("EventImages");
+    });
+
     builder.HasMany(e => e.Categories)
       .WithMany(c => c.Events)
       .UsingEntity<Dictionary<string, object>>(

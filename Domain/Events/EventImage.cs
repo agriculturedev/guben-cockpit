@@ -10,13 +10,18 @@ public class EventImage
   public int? Width { get; private set; }
   public int? Height { get; private set; }
 
-  public EventImage(string thumbnail, string preview, string original, (int width, int height)? dimensions)
+  public EventImage(
+    string thumbnailUrl,
+    string previewUrl,
+    string originalUrl,
+    int? width,
+    int? height)
   {
-    ThumbnailUrl = thumbnail;
-    PreviewUrl = preview;
-    OriginalUrl = original;
-    Width = dimensions?.width;
-    Height = dimensions?.height;
+    ThumbnailUrl = thumbnailUrl;
+    PreviewUrl = previewUrl;
+    OriginalUrl = originalUrl;
+    Width = width;
+    Height = height;
   }
 
   public static Result<EventImage> Create(
@@ -31,10 +36,9 @@ public class EventImage
     if (string.IsNullOrEmpty(preview)) return Result.Error(TranslationKeys.MissingPreviewImage);
     if (string.IsNullOrEmpty(original)) return Result.Error(TranslationKeys.MissingOriginalImage);
 
-    if (!int.TryParse(width ?? "", out var imWidth) ||
-        !int.TryParse(height, out var imHeight)
-      ) return new EventImage(thumbnail, preview, original, null);
+    int.TryParse(width ?? "", out var imWidth);
+    int.TryParse(height, out var imHeight);
 
-    return new EventImage(thumbnail, preview, original, (imWidth, imHeight));
+    return new EventImage(thumbnail, preview, original, imWidth, imHeight);
   }
 }
