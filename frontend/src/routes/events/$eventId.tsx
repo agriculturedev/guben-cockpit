@@ -7,5 +7,9 @@ export const Route = createFileRoute('/events/$eventId')({
 function RouteComponent() {
   const { eventId } = Route.useParams()
 
-  return <div>{eventId}</div>
+  return (
+    <main>
+      {eventId}
+    </main>
+  )
 }

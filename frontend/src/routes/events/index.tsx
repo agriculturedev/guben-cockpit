@@ -1,13 +1,17 @@
 import CitizenInformationSystemBanner from '@/components/events/citizenInformationSystemBanner'
 import EventCard from '@/components/events/eventCard'
+import EventsFilterSection from '@/components/events/eventsFilterSection'
 import { useEventsGetAll } from '@/endpoints/gubenComponents'
 import { createFileRoute } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 
 export const Route = createFileRoute('/events/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const {t} = useTranslation("events")
+
   const { data } = useEventsGetAll({
     queryParams: {
       pageSize: 20,
@@ -15,15 +19,16 @@ function RouteComponent() {
   })
 
   return (
-    <main className="h-full bg-neutral-50 relative">
+    <main className="h-full bg-white relative">
       <CitizenInformationSystemBanner />
 
-      <section className='relative h-[50svh] overflow-hidden bg-neutral-900 p-8'>
-        <h1 className='text-white text-7xl text-center'>Events in stadt guben</h1>
+      <section className='relative h-[50svh] overflow-hidden p-8'>
+        <h1 className='text-7xl text-center'>{t("Title")}</h1>
+        <EventsFilterSection />
       </section>
 
       <section className="flex flex-col max-w-7xl mx-auto gap-4 p-4">
-        {data?.results.map((r) => <EventCard key={r.id} event={r} />)}
+        {data?.results.map(r => <EventCard key={r.id} event={r} />)}
       </section>
     </main>
   )

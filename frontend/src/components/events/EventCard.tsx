@@ -1,13 +1,136 @@
 import { EventResponse } from "@/endpoints/gubenSchemas";
+import { CaretLeftIcon, CaretRightIcon } from "@radix-ui/react-icons";
 import { Link } from "@tanstack/react-router";
-import { ArrowRightIcon, CalendarIcon, ClockIcon, MapPinIcon, PenLine } from "lucide-react";
-import { useMemo } from "react";
+import { ArrowRightIcon, ClockIcon, MapPinIcon } from "lucide-react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-function EventCard({
-  event
-}: { event: EventResponse }) {
-  const { t } = useTranslation("common");
+type TEventCardContext = { event: EventResponse }
+const EventCardContext = createContext<TEventCardContext | undefined>(undefined);
+
+const useEventCard = () => {
+  const context = useContext(EventCardContext);
+  if (!context) throw new Error("Component must be used within an EventCard");
+  return context;
+}
+
+function EventCard({ event }: { event: EventResponse }) {
+  return (
+    <EventCardContext.Provider value={{ event }}>
+      {
+        event.images.length > 0
+          ? <EventCardWithImageLayout />
+          : <EventCardWithoutImageLayout />
+      }
+    </EventCardContext.Provider>
+  )
+}
+
+function EventCardWithImageLayout() {
+  const { event } = useEventCard();
+
+  return (
+    <div className="bg-white rounded-2xl shadow-md h-80 p-8 space-y-4 w-full grid grid-cols-3 gap-8">
+      <EventCard.ImageBox />
+
+      <div className="space-y-2">
+        <EventCard.CategoryTags />
+        <EventCard.Title />
+        <EventCard.Description />
+        <EventCard.MoreInfoButton />
+      </div>
+
+      <div className="space-y-2">
+        <EventCard.Location />
+        <EventCard.Dates />
+      </div>
+    </div>
+  )
+}
+
+function EventCardWithoutImageLayout() {
+  const { event } = useEventCard();
+
+  return (
+    <div className="bg-white rounded-2xl shadow-md h-80 p-8 space-y-4 w-full grid grid-cols-2 gap-8">
+      <div className="space-y-2">
+        <EventCard.CategoryTags />
+        <EventCard.Title />
+        <EventCard.Description />
+      </div>
+
+      <div className="space-y-2">
+        <EventCard.Location />
+        <EventCard.Dates />
+        <EventCard.MoreInfoButton />
+      </div>
+    </div>
+  )
+}
+
+EventCard.Title = () => {
+  const { event } = useEventCard();
+  return (
+    <h2>{event.title}</h2>
+  )
+}
+
+EventCard.Description = () => {
+  const { event } = useEventCard();
+  return (
+    <p className="text-muted-foreground line-clamp-2">{event.description}</p>
+  )
+}
+
+EventCard.ImageBox = () => {
+  const { event } = useEventCard();
+  const [selectedImage, setSelectedImage] = useState(0);
+
+  const adjustIndex = useCallback((toAdd: number) => setSelectedImage(
+    curr => Math.max(event.images.length - 1, Math.min(0, curr + toAdd))
+  ), []);
+
+  return event.images[selectedImage] && (
+    <div className="text-white relative max-h-full rounded-lg overflow-hidden group">
+      {(selectedImage > 0 && event.images.length > 1) && (
+        <span
+          onClick={() => adjustIndex(-1)}
+          className="absolute left-0 top-0 opacity-0 flex items-center h-full px-1 animate-in duration-150 bg-black bg-opacity-25 hover:cursor-pointer group-hover:opacity-100 transition-opacity"
+        >
+          <CaretLeftIcon className="size-10" />
+        </span>
+      )}
+
+      <img
+        className="h-full object-center object-cover m-auto rounded-lg"
+        src={event.images[selectedImage].previewUrl}
+      />
+      {(event.images.length > 1 && selectedImage < event.images.length - 1) && (
+        <span
+          onClick={() => adjustIndex(1)}
+          className="absolute right-0 top-0 opacity-0 flex items-center h-full px-1 animate-in duration-150 bg-black bg-opacity-25 hover:cursor-pointer group-hover:opacity-100 transition-opacity"
+        >
+          <CaretRightIcon className="size-10" />
+        </span>
+      )}
+    </div>
+  )
+}
+
+EventCard.CategoryTags = () => {
+  const { event } = useEventCard();
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {event.categories.map(c => (
+        <span key={c.id} className="border text-sm text-muted-foreground rounded-full py-1 px-2">{c.name}</span>
+      ))}
+    </div>
+  )
+}
+
+EventCard.Dates = () => {
+  const { event } = useEventCard();
 
   const [startDate, endDate] = useMemo(() => [
     new Date(event.startDate),
@@ -15,65 +138,34 @@ function EventCard({
   ], [event]);
 
   return (
-    <div className="bg-white rounded-2xl shadow-md h-80 p-8 space-y-4 w-full grid grid-cols-2 gap-8">
-      <div className="space-y-2">
-        <h2>{event.title}</h2>
-        <p className="text-muted-foreground line-clamp-3">{event.description}</p>
-        <Link to={"/events/" + event.id} className={"flex flex-nowrap gap-2 items-center border w-min rounded-md px-2 py-1 text-muted-foreground hover:text-red-500 hover:bg-red-50"}>
-          <p className="text-nowrap">{t("MoreInformation")}</p>
-          <ArrowRightIcon className="size-4" />
-        </Link>
-      </div>
-
-      <div className="space-y-4">
-        <div className="flex flex-wrap gap-2">
-          {event.categories.map(c => (
-            <span key={c.id} className="border text-sm text-muted-foreground rounded-full py-1 px-2">{c.name}</span>
-          ))}
-        </div>
-
-        <div className="flex gap-1 items-center text-muted-foreground">
-          <MapPinIcon className="size-4" />
-          <p className="">{event.location.street}, {event.location.zip} {event.location.city}</p>
-        </div>
-
-        <div className="flex items-center gap-4 text-muted-foreground">
-          <ClockIcon className={"size-4"} />
-          <p className="">{startDate.formatDateTime().replaceAll(".", "/")} - {endDate.formatDateTime().replaceAll(".", "/")}</p>
-        </div>
-      </div>
+    <div className="flex items-center gap-2 text-muted-foreground">
+      <ClockIcon className={"size-4"} />
+      <p className="">{startDate.formatDateTime().replaceAll(".", "/")} - {endDate.formatDateTime().replaceAll(".", "/")}</p>
     </div>
   )
 }
 
-function useDateFormatting() {
-  const { i18n } = useTranslation();
-  const { format: intlFormatDate } = Intl.DateTimeFormat(i18n.language, {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric"
-  });
+EventCard.Location = () => {
+  const { event } = useEventCard();
 
-  const { format: IntlFormatTime } = Intl.DateTimeFormat(i18n.language, {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
+  return (
+    <div className="flex gap-2 items-center text-muted-foreground">
+      <MapPinIcon className="size-4" />
+      <p className="">{event.location.street}, {event.location.zip} {event.location.city}</p>
+    </div>
+  )
+}
 
-  const formatDate = (value: string) => {
-    const date = new Date(value);
-    const formatted = intlFormatDate(date);
-    return formatted.replaceAll(".", "/");
-  }
+EventCard.MoreInfoButton = () => {
+  const { event } = useEventCard();
+  const { t } = useTranslation("common");
 
-  const formatTime = (value: string) => {
-    const date = new Date(value);
-    return IntlFormatTime(date);
-  }
-
-  return {
-    formatDate,
-    formatTime
-  };
+  return (
+    <Link to={"/events/" + event.id} className={"flex flex-nowrap gap-2 items-center border w-min rounded-md px-2 py-1 text-muted-foreground hover:text-red-500 hover:bg-red-50"}>
+      <p className="text-nowrap">{t("MoreInformation")}</p>
+      <ArrowRightIcon className="size-4" />
+    </Link>
+  )
 }
 
 export default EventCard;
