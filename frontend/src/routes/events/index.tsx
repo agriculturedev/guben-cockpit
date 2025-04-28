@@ -19,12 +19,14 @@ function RouteComponent() {
   })
 
   return (
-    <main className="h-full bg-white relative">
+    <main className="h-full bg-neutral-25 relative">
       <CitizenInformationSystemBanner />
 
       <section className='relative h-[50svh] overflow-hidden p-8'>
         <h1 className='text-7xl text-center'>{t("Title")}</h1>
-        <EventsFilterSection />
+        <div>
+          <EventsFilterSection />
+        </div>
       </section>
 
       <section className="flex flex-col max-w-7xl mx-auto gap-4 p-4">

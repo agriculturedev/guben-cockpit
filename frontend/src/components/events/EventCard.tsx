@@ -17,54 +17,26 @@ const useEventCard = () => {
 function EventCard({ event }: { event: EventResponse }) {
   return (
     <EventCardContext.Provider value={{ event }}>
-      {
-        event.images.length > 0
-          ? <EventCardWithImageLayout />
-          : <EventCardWithoutImageLayout />
-      }
+      <div className="flex justify-between gap-8 p-8 w-full rounded-2xl h-80 space-y-4 shadow-md bg-white">
+        {event.images.length > 0 && (
+          <div className="flex-1">
+            <EventCard.ImageBox />
+          </div>
+        )}
+
+        <div className="flex-1 space-y-2">
+          <EventCard.CategoryTags />
+          <EventCard.Title />
+          <EventCard.Description />
+          <EventCard.MoreInfoButton />
+        </div>
+
+        <div className="flex-1 space-y-2">
+          <EventCard.Location />
+          <EventCard.Dates />
+        </div>
+      </div>
     </EventCardContext.Provider>
-  )
-}
-
-function EventCardWithImageLayout() {
-  const { event } = useEventCard();
-
-  return (
-    <div className="bg-white rounded-2xl shadow-md h-80 p-8 space-y-4 w-full grid grid-cols-3 gap-8">
-      <EventCard.ImageBox />
-
-      <div className="space-y-2">
-        <EventCard.CategoryTags />
-        <EventCard.Title />
-        <EventCard.Description />
-        <EventCard.MoreInfoButton />
-      </div>
-
-      <div className="space-y-2">
-        <EventCard.Location />
-        <EventCard.Dates />
-      </div>
-    </div>
-  )
-}
-
-function EventCardWithoutImageLayout() {
-  const { event } = useEventCard();
-
-  return (
-    <div className="bg-white rounded-2xl shadow-md h-80 p-8 space-y-4 w-full grid grid-cols-2 gap-8">
-      <div className="space-y-2">
-        <EventCard.CategoryTags />
-        <EventCard.Title />
-        <EventCard.Description />
-      </div>
-
-      <div className="space-y-2">
-        <EventCard.Location />
-        <EventCard.Dates />
-        <EventCard.MoreInfoButton />
-      </div>
-    </div>
   )
 }
 

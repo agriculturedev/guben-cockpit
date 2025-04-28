@@ -90,7 +90,7 @@ interface Resources {
     }
   },
   "events": {
-    "Title": "Veranstaltungen",
+    "Title": "veranstaltungen in der stadt Guben",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
     "ClickHere": "Klicken Sie hier",
     "Add": "Veranstaltung hinzufügen",
