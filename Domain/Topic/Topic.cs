@@ -59,21 +59,21 @@ public sealed class DataSource : Entity<string>
 
 public sealed class Source : Entity<Guid>
 {
-  public string Name { get; set; }
+  public string LayerName { get; set; }
   public string Url { get; set; }
 
   public SourceType Type { get; set; }
 
-  private Source(string name, string url)
+  private Source(string layerName, string url)
   {
     Id = Guid.CreateVersion7();
-    Name = name;
+    LayerName = layerName;
     Url = url;
   }
 
-  public static Result<Source> Create(string name, string url, SourceType type)
+  public static Result<Source> Create(string layerName, string url, SourceType type)
   {
-    var source = new Source(name, url);
+    var source = new Source(layerName, url);
     source.Type = type;
 
     return source;

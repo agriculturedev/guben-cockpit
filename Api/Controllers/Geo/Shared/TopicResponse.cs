@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Domain.Topic;
 
 namespace Api.Controllers.Geo.Shared;
@@ -38,7 +39,8 @@ public class DataSourceResponse
 
 public class SourceResponse
 {
-  public required string Name { get; set; }
+  [JsonPropertyName("layer_name")]
+  public required string LayerName { get; set; }
   public required string Url { get; set; }
   public required string Type { get; set; }
 
@@ -46,7 +48,7 @@ public class SourceResponse
   {
     return new SourceResponse()
     {
-      Name = source.Name,
+      LayerName = source.LayerName,
       Url = source.Url,
       Type = source.Type.Name
     };
