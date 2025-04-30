@@ -14,7 +14,7 @@ public class SourceConfiguration : IEntityTypeConfiguration<Source>
     builder.Property(e => e.Id).ValueGeneratedNever();
 
     builder.Property(e => e.Url);
-    builder.Property(e => e.Name);
+    builder.Property(e => e.LayerName);
     builder.Property(e => e.Type)
       .HasConversion(
       p => p.Value,
