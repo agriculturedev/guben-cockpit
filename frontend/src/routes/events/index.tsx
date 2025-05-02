@@ -3,7 +3,7 @@ import CitizenInformationSystemBanner from '@/components/events/citizenInformati
 import EventCard from '@/components/events/eventCard'
 import { CategoryFilter } from '@/components/filters/categoryFilter'
 import { LocationsFilter } from '@/components/filters/locationsFilter'
-import { DateRangeFilter } from '@/components/filters/rangeFilter'
+import { DateRangeFilter } from '@/components/filters/dateRangeFilter'
 import { SearchFilter } from '@/components/filters/searchFilter'
 import { useEventsGetAll } from '@/endpoints/gubenComponents'
 import { defaultPaginationProps, usePagination } from '@/hooks/usePagination'
