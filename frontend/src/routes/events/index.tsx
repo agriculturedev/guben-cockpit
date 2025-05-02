@@ -1,6 +1,6 @@
 import CitizenInformationSystemBanner from '@/components/events/citizenInformationSystemBanner'
 import EventCard from '@/components/events/eventCard'
-import EventsFilterSection from '@/components/events/eventsFilterSection'
+import EventsFilterSection from '@/components/events/eventFilters'
 import { useEventsGetAll } from '@/endpoints/gubenComponents'
 import { createFileRoute } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
@@ -22,8 +22,8 @@ function RouteComponent() {
     <main className="h-full bg-neutral-25 relative">
       <CitizenInformationSystemBanner />
 
-      <section className='relative h-[50svh] overflow-hidden p-8'>
-        <h1 className='text-7xl text-center'>{t("Title")}</h1>
+      <section className='relative overflow-hidden p-8'>
+        <h1 className='text-7xl text-center'>{t("PageTitle")}</h1>
         <div>
           <EventsFilterSection />
         </div>
