@@ -84,6 +84,15 @@ public abstract class EntityFrameworkRepository<TEntity, TKey, TContext> : IRepo
       .ToListAsync();
   }
 
+  public Task<List<TEntity>> GetAllNonTracking()
+  {
+    return ModifiedSet
+      .TagWith(GetType().Name + '.' + nameof(GetAll))
+      .IgnoreAutoIncludes()
+      .AsNoTracking()
+      .ToListAsync();
+  }
+
   public Task<PagedResult<TEntity>> GetAllPaged(PagedCriteria criteria)
   {
     return ModifiedSet

@@ -136,6 +136,8 @@ export type DeleteDashboardTabResponse = Record<string, any>;
 
 export type DeleteEventResponse = Record<string, any>;
 
+export type DeleteFooterItemResponse = Record<string, any>;
+
 export type DeleteProjectResponse = Record<string, any>;
 
 export type EventImageResponse = {
@@ -167,6 +169,15 @@ export type EventResponse = {
   categories: CategoryResponse[];
   images: EventImageResponse[];
   published: boolean;
+};
+
+export type FooterItemResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  name: string;
+  content: string;
 };
 
 export type GetAllBusinessesResponse = {
@@ -215,6 +226,10 @@ export type GetAllEventsResponse = {
    */
   pageCount: number;
   results: EventResponse[];
+};
+
+export type GetAllFooterItemsResponse = {
+  footerItems: FooterItemResponse[];
 };
 
 export type GetAllLocationsPagedResponse = {
@@ -414,6 +429,17 @@ export type UpsertButtonQuery = {
   url: string;
   openInNewTab: boolean;
 } | null;
+
+export type UpsertFooterItemQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  name: string;
+  content: string;
+};
+
+export type UpsertFooterItemResponse = Record<string, any>;
 
 export type UrlResponse = {
   link: string;

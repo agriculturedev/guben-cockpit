@@ -107,6 +107,24 @@ namespace Database.Migrations
                     b.ToTable("Event", "Guben");
                 });
 
+            modelBuilder.Entity("Domain.FooterItems.FooterItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FooterItem", "Guben");
+                });
+
             modelBuilder.Entity("Domain.Locations.Location", b =>
                 {
                     b.Property<Guid>("Id")
@@ -194,6 +212,65 @@ namespace Database.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.ToTable("Project", "Guben");
+                });
+
+            modelBuilder.Entity("Domain.Topic.DataSource", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TopicId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("DataSource", "Guben");
+                });
+
+            modelBuilder.Entity("Domain.Topic.Source", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DataSourceId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LayerName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DataSourceId");
+
+                    b.ToTable("Source", "Guben");
+                });
+
+            modelBuilder.Entity("Domain.Topic.Topic", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Topic", "Guben");
                 });
 
             modelBuilder.Entity("Domain.Users.User", b =>
@@ -401,6 +478,20 @@ namespace Database.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Topic.DataSource", b =>
+                {
+                    b.HasOne("Domain.Topic.Topic", null)
+                        .WithMany("DataSources")
+                        .HasForeignKey("TopicId");
+                });
+
+            modelBuilder.Entity("Domain.Topic.Source", b =>
+                {
+                    b.HasOne("Domain.Topic.DataSource", null)
+                        .WithMany("Sources")
+                        .HasForeignKey("DataSourceId");
+                });
+
             modelBuilder.Entity("EventCategory", b =>
                 {
                     b.HasOne("Domain.Category.Category", null)
@@ -419,6 +510,16 @@ namespace Database.Migrations
             modelBuilder.Entity("Domain.Locations.Location", b =>
                 {
                     b.Navigation("Events");
+                });
+
+            modelBuilder.Entity("Domain.Topic.DataSource", b =>
+                {
+                    b.Navigation("Sources");
+                });
+
+            modelBuilder.Entity("Domain.Topic.Topic", b =>
+                {
+                    b.Navigation("DataSources");
                 });
 #pragma warning restore 612, 618
         }

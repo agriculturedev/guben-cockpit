@@ -34,6 +34,7 @@ public class TranslationKeys
   public const string AtLeastOneLayerSourceIsRequired = "AtLeastOneLayerSourceIsRequired";
   public const string EventNotFound = "EventNotFound";
   public const string CategoryNotFound = "CategoryNotFound";
+  public const string FooterItemNotFound = "FooterItemNotFound";
   public const string NoValidTranslationsFound = "NoValidTranslationsFound";
   public const string EventNotOwnedByUser = "EventNotOwnedByUser";
 }
