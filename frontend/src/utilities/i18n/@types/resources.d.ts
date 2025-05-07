@@ -1,4 +1,63 @@
 interface Resources {
+  "booking": {
+    "rooms": "Räume",
+    "sportFacilities": "Sportanlagen",
+    "resources": "Ressourcen",
+    "events": "Events",
+    "booking": "Buchungen",
+    "faq": {
+      "title": "Häufig gestellte Fragen",
+      "showMore": "Mehr anzeigen",
+      "showLess": "Weniger anzeigen",
+      "items": [
+        {
+          "question": "Frage 1",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        },
+        {
+          "question": "Frage 2",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        },
+        {
+          "question": "Frage 3",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        }
+      ]
+    },
+    "bookingComponent": {
+      "notFound": "Leider konnte das gewünschte Angebot nicht gefunden werden.",
+      "offer": "Unser Angebot"
+    },
+    "priceCard": {
+      "included": "Im Raum inkludiert sind",
+      "price": "Preis"
+    },
+    "howItWorks": {
+      "title": "So können Sie etwas buchen",
+      "steps": [
+        {
+          "number": 1,
+          "title": "Schritt eins",
+          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        },
+        {
+          "number": 2,
+          "title": "Schritt zwei",
+          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        },
+        {
+          "number": 3,
+          "title": "Schritt drei",
+          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        },
+        {
+          "number": 4,
+          "title": "Schritt vier",
+          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        }
+      ]
+    }
+  },
   "common": {
     "Actions": "Aktionen",
     "SelectNavItem": "Wählen Sie ein Navigationselement aus",
@@ -117,7 +176,8 @@ interface Resources {
     "Events": "Veranstaltungen",
     "LogOut": "Abmelden",
     "Admin": "Admin",
-    "ServicePortal": "Service portal"
+    "ServicePortal": "Service portal",
+    "Booking": "Buchungen"
   },
   "pages": {
     "Title": "Seiten",

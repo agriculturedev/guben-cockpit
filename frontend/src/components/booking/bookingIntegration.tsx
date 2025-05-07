@@ -1,0 +1,92 @@
+import { useEffect, useRef } from "react";
+import { Booking, useBookingStore } from "@/stores/bookingStore";
+
+declare global {
+  var BookingManager: any;
+}
+
+type BookingIntegrationProps = {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function BookingIntegration({ setLoading }: BookingIntegrationProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const setBookings = useBookingStore((state) => state.setBookings);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = import.meta.env.VITE_BOOKING_SDK
+    script.async = true;
+    script.onload = () => {
+      const bm = new BookingManager();
+      bm.url = import.meta.env.VITE_BOOKING_URL;
+      bm.tenant = import.meta.env.VITE_BOOKING_TENANT;
+      bm.init();
+
+      const observer = new MutationObserver(() => {
+        if (containerRef.current) {
+          const bookableElements = containerRef.current.querySelectorAll(".bt-room, .bt-resource");
+          if (bookableElements.length > 0) {
+            const bookables: Booking[] = [];
+      
+            bookableElements.forEach((el) => {
+              const title = el.querySelector("h4")?.textContent?.trim() || "";
+
+              let description = "";
+              const descriptionElement = el.querySelector(".description");         
+
+              if (descriptionElement) {
+                let currentElement = descriptionElement.nextElementSibling;
+                const paragraphs = [];
+
+                while (currentElement && currentElement.tagName === "P" && !currentElement.classList.length && currentElement.textContent?.trim() !== "") {
+                  paragraphs.push(currentElement.textContent?.trim() || "");
+                  currentElement = currentElement.nextElementSibling;
+                }
+
+                description = [descriptionElement.textContent?.trim() || "", ...paragraphs].join("\n\n");
+              }
+            
+              const location = el.querySelector(".location")?.textContent?.trim() || "";
+              const type = el.querySelector(".type")?.textContent?.trim() || "";
+            
+              const flags = Array.from(el.querySelectorAll(".flags .flag")).map(flag => flag.textContent?.trim() || "");
+            
+              const autoCommitNote = el.querySelector(".autoCommitBooking")?.textContent?.trim() || "";
+              const price = el.querySelector(".price")?.textContent?.trim() || "";
+            
+              const bookingUrl = el.querySelector(".btn-booking")?.getAttribute("href") || "";
+
+              const detailsLink = el.querySelector(".btn-detail")?.getAttribute("href") || "#";
+              const imgUrl = el.querySelector("img")?.getAttribute("src") || "/images/guben-city-booking-card-placeholder.png";
+
+              let category = "room";
+              if (flags.includes("Sport")) {
+                category = "sport";
+                const index = flags.indexOf("Sport", 0);
+                if (index > -1) {
+                  flags.splice(index, 1)
+                }
+              } else if (el.classList.contains("bt-resource")) {
+                category = "resource";
+              }
+            
+              bookables.push({ title, description, location, type, flags, autoCommitNote, price, bookingUrl, detailsLink, imgUrl, category });
+            });
+      
+            setBookings(bookables);
+            setLoading(false);
+            observer.disconnect();
+          }
+        }
+      });
+      observer.observe(containerRef.current!, { childList: true, subtree: true });
+    };
+  
+    document.head.appendChild(script);
+  }, [setBookings, setLoading]);
+
+  return (
+    <div ref={containerRef} className="bm-bookable-list" style={{ display: "none" }} />
+  );
+};

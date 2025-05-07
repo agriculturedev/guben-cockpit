@@ -1,0 +1,59 @@
+{
+  "rooms": "Rooms",
+  "sportFacilities": "Sports Facilities",
+  "resources": "Resources",
+  "events": "Events",
+  "booking": "Bookings",
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "items": [
+      {
+        "question": "Question 1",
+        "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+      },
+      {
+        "question": "Question 2",
+        "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+      },
+      {
+        "question": "Question 3",
+        "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+      }
+    ]
+  },
+  "bookingComponent": {
+    "notFound": "Unfortunately, the requested offer could not be found.",
+    "offer": "Our Offer"
+  },
+  "priceCard": {
+    "included": "Included in the room are",
+    "price": "Price"
+  },
+  "howItWorks": {
+    "title": "How to make a booking",
+    "steps": [
+      {
+        "number": 1,
+        "title": "Step One",
+        "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+      },
+      {
+        "number": 2,
+        "title": "Step Two",
+        "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+      },
+      {
+        "number": 3,
+        "title": "Step Three",
+        "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+      },
+      {
+        "number": 4,
+        "title": "Step Four",
+        "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+      }
+    ]
+  }
+}
