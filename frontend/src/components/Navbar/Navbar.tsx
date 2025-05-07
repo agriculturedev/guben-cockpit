@@ -3,7 +3,7 @@ import { BaseImgTag } from "@/components/ui/BaseImgTag";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from '@tanstack/react-router';
-import { CalendarDaysIcon, ExternalLink, HomeIcon, Icon, LayoutGridIcon, LogOutIcon, MapIcon, ShieldIcon } from "lucide-react";
+import { CalendarDaysIcon, ExternalLink, HomeIcon, Icon, LayoutGridIcon, LogOutIcon, MapIcon, PlaneIcon, ShieldIcon } from "lucide-react";
 import React, { createContext, HtmlHTMLAttributes, PropsWithChildren, useCallback, useContext, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
 import { useAuth } from 'react-oidc-context';
@@ -93,6 +93,9 @@ export const Navbar = () => {
           </NavLink>
           <NavLink to="/events" name={t("Events")}>
             <CalendarDaysIcon className={iconStyle} />
+          </NavLink>
+          <NavLink to="/booking" name={t("Booking")}>
+            <PlaneIcon className={iconStyle} />
           </NavLink>
           <NavLink name={t("ServicePortal")} to="https://serviceportal.dikom-bb.de/stadt-guben" target="_blank">
             <ServicePortalIcon className={cn(iconStyle, "size-5 stroke-gubenAccent")} />

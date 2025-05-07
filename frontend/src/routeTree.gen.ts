@@ -15,6 +15,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as MapImport } from './routes/map'
 import { Route as IndexImport } from './routes/index'
+import { Route as BookingIndexImport } from './routes/booking/index'
+import { Route as BookingTitleImport } from './routes/booking/$title'
 import { Route as EventsIndexImport } from './routes/events/index'
 import { Route as AdminIndexImport } from './routes/admin/index'
 import { Route as EventsEventIdImport } from './routes/events/$eventId'
@@ -59,9 +61,19 @@ const EventsIndexRoute = EventsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const BookingIndexRoute = BookingIndexImport.update({
+  path: '/booking/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AdminIndexRoute = AdminIndexImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+
+const BookingTitleRoute = BookingTitleImport.update({
+  path: '/booking/$title',
+    getParentRoute: () => rootRoute,
 } as any)
 
 const EventsEventIdRoute = EventsEventIdImport.update({
@@ -148,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutImport
       parentRoute: typeof AdminRoute
     }
+    '/booking/$title': {
+      id: '/booking/$title'
+      path: '/booking/$title'
+      fullPath: '/booking/$title'
+      preLoaderRoute: typeof BookingTitleImport
+      parentRoute: typeof rootRoute
+    }
     '/events/$eventId': {
       id: '/events/$eventId'
       path: '/events/$eventId'
@@ -161,6 +180,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexImport
       parentRoute: typeof AdminImport
+    }
+    '/booking/': {
+      id: '/booking/'
+      path: '/booking'
+      fullPath: '/booking'
+      preLoaderRoute: typeof BookingIndexImport
+       parentRoute: typeof rootRoute
     }
     '/events/': {
       id: '/events/'
@@ -264,6 +290,8 @@ export interface FileRoutesByFullPath {
   '/map': typeof MapRoute
   '/projects': typeof ProjectsLazyRoute
   '/admin': typeof AdminLayoutRouteWithChildren
+  '/booking/$title': typeof BookingTitleRoute
+  '/booking': typeof BookingIndexRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/admin/': typeof AdminIndexRoute
   '/events': typeof EventsIndexRoute
@@ -281,6 +309,8 @@ export interface FileRoutesByTo {
   '/map': typeof MapRoute
   '/projects': typeof ProjectsLazyRoute
   '/admin': typeof AdminIndexRoute
+  '/booking/$title': typeof BookingTitleRoute
+  '/booking': typeof BookingIndexRoute
   '/events/$eventId': typeof EventsEventIdRoute
   '/events': typeof EventsIndexRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
@@ -299,8 +329,10 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsLazyRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/_layout': typeof AdminLayoutRouteWithChildren
-  '/events/$eventId': typeof EventsEventIdRoute
+  '/booking/$title': typeof BookingTitleRoute
   '/admin/': typeof AdminIndexRoute
+  '/booking/': typeof BookingIndexRoute
+  '/events/$eventId': typeof EventsEventIdRoute
   '/events/': typeof EventsIndexRoute
   '/admin/_layout/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/_layout/events': typeof AdminLayoutEventsRoute
@@ -318,8 +350,10 @@ export interface FileRouteTypes {
     | '/map'
     | '/projects'
     | '/admin'
-    | '/events/$eventId'
+    | '/booking/$title'
     | '/admin/'
+    | '/booking'
+    | '/events/$eventId'
     | '/events'
     | '/admin/dashboard'
     | '/admin/events'
@@ -334,6 +368,8 @@ export interface FileRouteTypes {
     | '/map'
     | '/projects'
     | '/admin'
+    | '/booking/$title'
+    | '/booking'
     | '/events/$eventId'
     | '/events'
     | '/admin/dashboard'
@@ -350,6 +386,8 @@ export interface FileRouteTypes {
     | '/projects'
     | '/admin'
     | '/admin/_layout'
+    | '/booking/$title'
+    | '/booking/'
     | '/events/$eventId'
     | '/admin/'
     | '/events/'
@@ -368,6 +406,8 @@ export interface RootRouteChildren {
   MapRoute: typeof MapRoute
   ProjectsLazyRoute: typeof ProjectsLazyRoute
   AdminRoute: typeof AdminRouteWithChildren
+  BookingTitleRoute: typeof BookingTitleRoute
+  BookingIndexRoute: typeof BookingIndexRoute
   EventsEventIdRoute: typeof EventsEventIdRoute
   EventsIndexRoute: typeof EventsIndexRoute
 }
@@ -377,6 +417,8 @@ const rootRouteChildren: RootRouteChildren = {
   MapRoute: MapRoute,
   ProjectsLazyRoute: ProjectsLazyRoute,
   AdminRoute: AdminRouteWithChildren,
+  BookingTitleRoute: BookingTitleRoute,
+  BookingIndexRoute: BookingIndexRoute,
   EventsEventIdRoute: EventsEventIdRoute,
   EventsIndexRoute: EventsIndexRoute,
 }
@@ -397,6 +439,8 @@ export const routeTree = rootRoute
         "/map",
         "/projects",
         "/admin",
+        "/booking/$title",
+        "/booking/"
         "/events/$eventId",
         "/events/"
       ]
@@ -430,12 +474,18 @@ export const routeTree = rootRoute
         "/admin/_layout/users"
       ]
     },
+    "/booking/$title": {
+      "filePath": "booking/$title.tsx"
+    },
     "/events/$eventId": {
       "filePath": "events/$eventId.tsx"
     },
     "/admin/": {
       "filePath": "admin/index.tsx",
       "parent": "/admin"
+    },
+    "/booking/": {
+      "filePath": "booking/index.tsx"
     },
     "/events/": {
       "filePath": "events/index.tsx"
