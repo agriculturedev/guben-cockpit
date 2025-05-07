@@ -43,6 +43,12 @@ export type CreateDashboardTabQuery = {
 
 export type CreateDashboardTabResponse = Record<string, any>;
 
+export type CreateEventImageQuery = {
+  thumbnailUrl: string;
+  previewUrl: string;
+  originalUrl: string;
+};
+
 export type CreateEventQuery = {
   title: string;
   description: string;
@@ -64,6 +70,7 @@ export type CreateEventQuery = {
   longitude?: number;
   urls: CreateUrlQuery[];
   categoryIds: string[];
+  images: CreateEventImageQuery[];
   /**
    * @format uuid
    */
@@ -133,6 +140,12 @@ export type DeleteFooterItemResponse = Record<string, any>;
 
 export type DeleteProjectResponse = Record<string, any>;
 
+export type EventImageResponse = {
+  thumbnailUrl: string;
+  previewUrl: string;
+  originalUrl: string;
+};
+
 export type EventResponse = {
   /**
    * @format uuid
@@ -154,6 +167,7 @@ export type EventResponse = {
   coordinates?: CoordinatesResponse;
   urls: UrlResponse[];
   categories: CategoryResponse[];
+  images: EventImageResponse[];
   published: boolean;
 };
 

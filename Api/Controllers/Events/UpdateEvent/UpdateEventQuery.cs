@@ -17,5 +17,6 @@ public class UpdateEventQuery : IApiRequest<UpdateEventResponse>
   public required List<CreateUrlQuery> Urls { get; set; } = [];
 
   public required List<Guid> CategoryIds { get; set; } = [];
+  public required List<CreateEventImageQuery> Images {get; set;} = [];
   public Guid LocationId { get; set; }
 }

@@ -27,13 +27,13 @@ declare global {
      * format to dd/MM/yyyy HH:mm or dd/MM/yyyy HH:mm:ss
      * @param includeSeconds boolean
      */
-    formatDateTime(includeSeconds: boolean): string;
+    formatDateTime(includeSeconds?: boolean): string;
 
     /**
      * format to HH:mm or HH:mm:ss
      * @param includeSeconds boolean
      */
-    formatTime(includeSeconds: boolean): string;
+    formatTime(includeSeconds?: boolean): string;
 
     /**
      * Add minutes
@@ -78,6 +78,16 @@ declare global {
     differenceInDays(otherDate: Date): number;
 
     /**
+     * Get the start of the week for this date
+     */
+    startOfWeek(): Date;
+
+    /**
+     * Get the end of the week for this date
+     */
+    endOfWeek(): Date;
+
+    /**
      * Get the start of the month of this date
      */
     startOfMonth(): Date;
@@ -105,14 +115,14 @@ Date.prototype.formatDate = function (): string {
   return format(this, "dd.MM.yyyy");
 };
 
-Date.prototype.formatDateTime = function (includeSeconds: boolean): string {
+Date.prototype.formatDateTime = function (includeSeconds: boolean = false): string {
   if (includeSeconds) {
     return format(this, "dd.MM.yyyy HH:mm:ss");
   }
   return format(this, "dd.MM.yyyy HH:mm");
 };
 
-Date.prototype.formatTime = function (includeSeconds: boolean): string {
+Date.prototype.formatTime = function (includeSeconds: boolean = false): string {
   if (includeSeconds) {
     return format(this, "HH:mm:ss");
   }
@@ -154,6 +164,22 @@ Date.prototype.differenceInDays = function (otherDate: Date): number {
   const differenceInMs = Math.abs(this.getTime() - otherDate.getTime());
   return Math.floor(differenceInMs / oneDayInMs);
 };
+
+Date.prototype.startOfWeek = function (): Date {
+  const dayOfWeek = this.getDay();
+  const diff = this.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+  this.setDate(diff);
+  this.setHours(0, 0, 0, 0);
+  return this;
+}
+
+Date.prototype.endOfWeek = function (): Date {
+  const dayOfWeek = this.getDay();
+  const diff = this.getDate() + (7 - dayOfWeek);
+  this.setDate(diff);
+  this.setHours(23, 59, 59, 999);
+  return this;
+}
 
 Date.prototype.startOfMonth = function (): Date {
   this.setDate(1);

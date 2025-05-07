@@ -3,6 +3,9 @@
 public class TranslationKeys
 {
   public const string MissingProjectId = "MissingProjectId";
+  public const string MissingThumbnail = "MissingThumbnail";
+  public const string MissingPreviewImage = "MissingPreviewImage";
+  public const string MissingOriginalImage = "MissingOriginalImage";
   public const string AnErrorOccured = "AnErrorOccured";
   public const string CreatingUserFailed = "CreatingUserFailed";
   public const string DashboardTabNotFound = "DashboardTabNotFound";
