@@ -5,7 +5,7 @@ public static class KeycloakPolicies
   public static string[] AllRoles =
   [
     ViewUsers, ProjectContributor, PublishProjects, EventContributor, PublishEvents, DashboardManager, PageManager,
-    LocationManager
+    LocationManager, FooterManager
   ];
 
   #region Users
@@ -43,6 +43,12 @@ public static class KeycloakPolicies
   #region Page
 
   public const string PageManager = "page_manager";
+
+  #endregion
+
+  #region Footer
+
+  public const string FooterManager = "footer_manager";
 
   #endregion
 }

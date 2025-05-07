@@ -24,6 +24,7 @@ import { Route as AdminLayoutUsersImport } from './routes/admin/_layout/users'
 import { Route as AdminLayoutProjectsImport } from './routes/admin/_layout/projects'
 import { Route as AdminLayoutPagesImport } from './routes/admin/_layout/pages'
 import { Route as AdminLayoutLocationsImport } from './routes/admin/_layout/locations'
+import { Route as AdminLayoutFooterImport } from './routes/admin/_layout/footer'
 import { Route as AdminLayoutEventsImport } from './routes/admin/_layout/events'
 import { Route as AdminLayoutDashboardImport } from './routes/admin/_layout/dashboard'
 
@@ -96,6 +97,11 @@ const AdminLayoutPagesRoute = AdminLayoutPagesImport.update({
 
 const AdminLayoutLocationsRoute = AdminLayoutLocationsImport.update({
   path: '/locations',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+
+const AdminLayoutFooterRoute = AdminLayoutFooterImport.update({
+  path: '/footer',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
 
@@ -190,6 +196,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutEventsImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/admin/_layout/footer': {
+      id: '/admin/_layout/footer'
+      path: '/footer'
+      fullPath: '/admin/footer'
+      preLoaderRoute: typeof AdminLayoutFooterImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/admin/_layout/locations': {
       id: '/admin/_layout/locations'
       path: '/locations'
@@ -226,6 +239,7 @@ declare module '@tanstack/react-router' {
 interface AdminLayoutRouteChildren {
   AdminLayoutDashboardRoute: typeof AdminLayoutDashboardRoute
   AdminLayoutEventsRoute: typeof AdminLayoutEventsRoute
+  AdminLayoutFooterRoute: typeof AdminLayoutFooterRoute
   AdminLayoutLocationsRoute: typeof AdminLayoutLocationsRoute
   AdminLayoutPagesRoute: typeof AdminLayoutPagesRoute
   AdminLayoutProjectsRoute: typeof AdminLayoutProjectsRoute
@@ -235,6 +249,7 @@ interface AdminLayoutRouteChildren {
 const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
   AdminLayoutDashboardRoute: AdminLayoutDashboardRoute,
   AdminLayoutEventsRoute: AdminLayoutEventsRoute,
+  AdminLayoutFooterRoute: AdminLayoutFooterRoute,
   AdminLayoutLocationsRoute: AdminLayoutLocationsRoute,
   AdminLayoutPagesRoute: AdminLayoutPagesRoute,
   AdminLayoutProjectsRoute: AdminLayoutProjectsRoute,
@@ -268,6 +283,7 @@ export interface FileRoutesByFullPath {
   '/booking': typeof BookingIndexRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
+  '/admin/footer': typeof AdminLayoutFooterRoute
   '/admin/locations': typeof AdminLayoutLocationsRoute
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
@@ -284,6 +300,7 @@ export interface FileRoutesByTo {
   '/booking': typeof BookingIndexRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
+  '/admin/footer': typeof AdminLayoutFooterRoute
   '/admin/locations': typeof AdminLayoutLocationsRoute
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
@@ -303,6 +320,7 @@ export interface FileRoutesById {
   '/booking/': typeof BookingIndexRoute
   '/admin/_layout/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/_layout/events': typeof AdminLayoutEventsRoute
+  '/admin/_layout/footer': typeof AdminLayoutFooterRoute
   '/admin/_layout/locations': typeof AdminLayoutLocationsRoute
   '/admin/_layout/pages': typeof AdminLayoutPagesRoute
   '/admin/_layout/projects': typeof AdminLayoutProjectsRoute
@@ -322,6 +340,7 @@ export interface FileRouteTypes {
     | '/booking'
     | '/admin/dashboard'
     | '/admin/events'
+    | '/admin/footer'
     | '/admin/locations'
     | '/admin/pages'
     | '/admin/projects'
@@ -337,6 +356,7 @@ export interface FileRouteTypes {
     | '/booking'
     | '/admin/dashboard'
     | '/admin/events'
+    | '/admin/footer'
     | '/admin/locations'
     | '/admin/pages'
     | '/admin/projects'
@@ -354,6 +374,7 @@ export interface FileRouteTypes {
     | '/booking/'
     | '/admin/_layout/dashboard'
     | '/admin/_layout/events'
+    | '/admin/_layout/footer'
     | '/admin/_layout/locations'
     | '/admin/_layout/pages'
     | '/admin/_layout/projects'
@@ -427,6 +448,7 @@ export const routeTree = rootRoute
       "children": [
         "/admin/_layout/dashboard",
         "/admin/_layout/events",
+        "/admin/_layout/footer",
         "/admin/_layout/locations",
         "/admin/_layout/pages",
         "/admin/_layout/projects",
@@ -449,6 +471,10 @@ export const routeTree = rootRoute
     },
     "/admin/_layout/events": {
       "filePath": "admin/_layout/events.tsx",
+      "parent": "/admin/_layout"
+    },
+    "/admin/_layout/footer": {
+      "filePath": "admin/_layout/footer.tsx",
       "parent": "/admin/_layout"
     },
     "/admin/_layout/locations": {

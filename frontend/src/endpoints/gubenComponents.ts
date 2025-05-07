@@ -861,6 +861,152 @@ export const useTopics = <TData = Schemas.GetTopicsResponse,>(
   });
 };
 
+export type FooterItemsGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type FooterItemsGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchFooterItemsGetAll = (
+  variables: FooterItemsGetAllVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllFooterItemsResponse,
+    FooterItemsGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/footeritem", method: "get", ...variables, signal });
+
+export const useFooterItemsGetAll = <
+  TData = Schemas.GetAllFooterItemsResponse,
+>(
+  variables: FooterItemsGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllFooterItemsResponse,
+      FooterItemsGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllFooterItemsResponse,
+    FooterItemsGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/footeritem",
+      operationId: "footerItemsGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchFooterItemsGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type FooterUpsertItemError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type FooterUpsertItemVariables = {
+  body: Schemas.UpsertFooterItemQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchFooterUpsertItem = (
+  variables: FooterUpsertItemVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpsertFooterItemResponse,
+    FooterUpsertItemError,
+    Schemas.UpsertFooterItemQuery,
+    {},
+    {},
+    {}
+  >({ url: "/footeritem", method: "post", ...variables, signal });
+
+export const useFooterUpsertItem = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpsertFooterItemResponse,
+      FooterUpsertItemError,
+      FooterUpsertItemVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpsertFooterItemResponse,
+    FooterUpsertItemError,
+    FooterUpsertItemVariables
+  >({
+    mutationFn: (variables: FooterUpsertItemVariables) =>
+      fetchFooterUpsertItem({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type FooterDeleteItemPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type FooterDeleteItemError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type FooterDeleteItemVariables = {
+  pathParams: FooterDeleteItemPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchFooterDeleteItem = (
+  variables: FooterDeleteItemVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteFooterItemResponse,
+    FooterDeleteItemError,
+    undefined,
+    {},
+    {},
+    FooterDeleteItemPathParams
+  >({ url: "/footeritem/{id}", method: "delete", ...variables, signal });
+
+export const useFooterDeleteItem = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteFooterItemResponse,
+      FooterDeleteItemError,
+      FooterDeleteItemVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteFooterItemResponse,
+    FooterDeleteItemError,
+    FooterDeleteItemVariables
+  >({
+    mutationFn: (variables: FooterDeleteItemVariables) =>
+      fetchFooterDeleteItem({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type EventsGetAllQueryParams = {
   title?: string;
   location?: string;
@@ -1556,6 +1702,11 @@ export type QueryOperation =
       path: "/geo/topics";
       operationId: "topics";
       variables: TopicsVariables;
+    }
+  | {
+      path: "/footeritem";
+      operationId: "footerItemsGetAll";
+      variables: FooterItemsGetAllVariables;
     }
   | {
       path: "/events";
