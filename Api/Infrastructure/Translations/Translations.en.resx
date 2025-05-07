@@ -218,4 +218,13 @@ value   : The object must be serialized into a byte array
   <data name="FooterItemNotFound" xml:space="preserve">
     <value>Footer items not found</value>
   </data>
+  <data name="MissingThumbnail" xml:space="preserve">
+    <value>Thumbnail missing</value>
+  </data>
+  <data name="MissingPreviewImage" xml:space="preserve">
+    <value>Preview image missing</value>
+  </data>
+  <data name="MissingOriginalImage" xml:space="preserve">
+    <value>Original image missing</value>
+  </data>
 </root>

@@ -2,7 +2,6 @@
   "Actions": "Actions",
   "SelectNavItem": "Select a navigation item",
   "Add": "Add",
-  "Delete": "Delete",
   "Cancel": "Cancel",
   "Category": "Category",
   "Categories": "Categories",
@@ -61,5 +60,6 @@
     "ThisYear": "This year",
     "DateInput": "Date input"
   },
-  "Marktplatz": "Gubener Marktplatz"
+  "Marktplatz": "Gubener Marktplatz",
+  "MoreInformation": "More Information"
 }

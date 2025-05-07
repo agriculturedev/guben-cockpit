@@ -40,6 +40,9 @@ public class UpdateEventHandler : ApiRequestHandler<UpdateEventQuery, UpdateEven
     var (urlResult, urls) = request.Urls.Select(url => Url.Create(url.Link, url.Description)).MergeResults();
     urlResult.ThrowIfFailure();
 
+    var (imagesResult, images) = request.Images.Select(im => EventImage.Create(im.ThumbnailUrl, im.PreviewUrl, im.OriginalUrl, null, null)).MergeResults();
+    imagesResult.ThrowIfFailure();
+
     var location = await _locationRepository.Get(request.LocationId);
     if (location is null)
       throw new ProblemDetailsException(TranslationKeys.LocationNotFound);
@@ -52,7 +55,7 @@ public class UpdateEventHandler : ApiRequestHandler<UpdateEventQuery, UpdateEven
     i18NResult.ThrowIfFailure();
 
     var updateResult = eventToUpdate.Update(i18NData, request.StartDate, request.EndDate, coords, location, categories,
-      urls, _cultureProvider.GetCulture());
+      urls, _cultureProvider.GetCulture(), images);
 
     updateResult.ThrowIfFailure();
 

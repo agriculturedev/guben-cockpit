@@ -14,9 +14,10 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as MapImport } from './routes/map'
-import { Route as EventsImport } from './routes/events'
 import { Route as IndexImport } from './routes/index'
+import { Route as EventsIndexImport } from './routes/events/index'
 import { Route as AdminIndexImport } from './routes/admin/index'
+import { Route as EventsEventIdImport } from './routes/events/$eventId'
 import { Route as AdminLayoutImport } from './routes/admin/_layout'
 import { Route as AdminLayoutUsersImport } from './routes/admin/_layout/users'
 import { Route as AdminLayoutProjectsImport } from './routes/admin/_layout/projects'
@@ -48,19 +49,24 @@ const MapRoute = MapImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const EventsRoute = EventsImport.update({
-  path: '/events',
+const IndexRoute = IndexImport.update({
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  path: '/',
+const EventsIndexRoute = EventsIndexImport.update({
+  path: '/events/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const AdminIndexRoute = AdminIndexImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+
+const EventsEventIdRoute = EventsEventIdImport.update({
+  path: '/events/$eventId',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const AdminLayoutRoute = AdminLayoutImport.update({
@@ -114,13 +120,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/events': {
-      id: '/events'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof EventsImport
-      parentRoute: typeof rootRoute
-    }
     '/map': {
       id: '/map'
       path: '/map'
@@ -149,12 +148,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutImport
       parentRoute: typeof AdminRoute
     }
+    '/events/$eventId': {
+      id: '/events/$eventId'
+      path: '/events/$eventId'
+      fullPath: '/events/$eventId'
+      preLoaderRoute: typeof EventsEventIdImport
+      parentRoute: typeof rootRoute
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexImport
       parentRoute: typeof AdminImport
+    }
+    '/events/': {
+      id: '/events/'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsIndexImport
+      parentRoute: typeof rootRoute
     }
     '/admin/_layout/dashboard': {
       id: '/admin/_layout/dashboard'
@@ -248,11 +261,12 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/events': typeof EventsRoute
   '/map': typeof MapRoute
   '/projects': typeof ProjectsLazyRoute
   '/admin': typeof AdminLayoutRouteWithChildren
+  '/events/$eventId': typeof EventsEventIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/events': typeof EventsIndexRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
   '/admin/footer': typeof AdminLayoutFooterRoute
@@ -264,10 +278,11 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/events': typeof EventsRoute
   '/map': typeof MapRoute
   '/projects': typeof ProjectsLazyRoute
   '/admin': typeof AdminIndexRoute
+  '/events/$eventId': typeof EventsEventIdRoute
+  '/events': typeof EventsIndexRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
   '/admin/footer': typeof AdminLayoutFooterRoute
@@ -280,12 +295,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/events': typeof EventsRoute
   '/map': typeof MapRoute
   '/projects': typeof ProjectsLazyRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/_layout': typeof AdminLayoutRouteWithChildren
+  '/events/$eventId': typeof EventsEventIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/events/': typeof EventsIndexRoute
   '/admin/_layout/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/_layout/events': typeof AdminLayoutEventsRoute
   '/admin/_layout/footer': typeof AdminLayoutFooterRoute
@@ -299,11 +315,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/events'
     | '/map'
     | '/projects'
     | '/admin'
+    | '/events/$eventId'
     | '/admin/'
+    | '/events'
     | '/admin/dashboard'
     | '/admin/events'
     | '/admin/footer'
@@ -314,10 +331,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/events'
     | '/map'
     | '/projects'
     | '/admin'
+    | '/events/$eventId'
+    | '/events'
     | '/admin/dashboard'
     | '/admin/events'
     | '/admin/footer'
@@ -328,12 +346,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/events'
     | '/map'
     | '/projects'
     | '/admin'
     | '/admin/_layout'
+    | '/events/$eventId'
     | '/admin/'
+    | '/events/'
     | '/admin/_layout/dashboard'
     | '/admin/_layout/events'
     | '/admin/_layout/footer'
@@ -346,18 +365,20 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  EventsRoute: typeof EventsRoute
   MapRoute: typeof MapRoute
   ProjectsLazyRoute: typeof ProjectsLazyRoute
   AdminRoute: typeof AdminRouteWithChildren
+  EventsEventIdRoute: typeof EventsEventIdRoute
+  EventsIndexRoute: typeof EventsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  EventsRoute: EventsRoute,
   MapRoute: MapRoute,
   ProjectsLazyRoute: ProjectsLazyRoute,
   AdminRoute: AdminRouteWithChildren,
+  EventsEventIdRoute: EventsEventIdRoute,
+  EventsIndexRoute: EventsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -373,17 +394,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/events",
         "/map",
         "/projects",
-        "/admin"
+        "/admin",
+        "/events/$eventId",
+        "/events/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/events": {
-      "filePath": "events.tsx"
     },
     "/map": {
       "filePath": "map.tsx"
@@ -411,9 +430,15 @@ export const routeTree = rootRoute
         "/admin/_layout/users"
       ]
     },
+    "/events/$eventId": {
+      "filePath": "events/$eventId.tsx"
+    },
     "/admin/": {
       "filePath": "admin/index.tsx",
       "parent": "/admin"
+    },
+    "/events/": {
+      "filePath": "events/index.tsx"
     },
     "/admin/_layout/dashboard": {
       "filePath": "admin/_layout/dashboard.tsx",

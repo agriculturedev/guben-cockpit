@@ -3,7 +3,6 @@ interface Resources {
     "Actions": "Aktionen",
     "SelectNavItem": "Wählen Sie ein Navigationselement aus",
     "Add": "Hinzufügen",
-    "Delete": "Löschen",
     "Category": "Kategorie",
     "Categories": "Kategorien",
     "Cancel": "Stornieren",
@@ -11,6 +10,7 @@ interface Resources {
     "Urls": "Urls",
     "Credits": "Bildnachweis",
     "Date": "Datum",
+    "Delete": "Löschen",
     "Description": "Beschreibung",
     "Email": "E-Mail",
     "EndDate": "Enddatum",
@@ -61,7 +61,8 @@ interface Resources {
       "ThisYear": "Dieses Jahr",
       "DateInput": "Datumseingabe"
     },
-    "Marktplatz": "Gubener Marktplatz"
+    "Marktplatz": "Gubener Marktplatz",
+    "MoreInformation": "Weitere Informationen"
   },
   "dashboard": {
     "Title": "Dashboard",
@@ -89,7 +90,7 @@ interface Resources {
     }
   },
   "events": {
-    "Title": "Veranstaltungen",
+    "PageTitle": "veranstaltungen in der stadt Guben",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
     "ClickHere": "Klicken Sie hier",
     "Add": "Veranstaltung hinzufügen",

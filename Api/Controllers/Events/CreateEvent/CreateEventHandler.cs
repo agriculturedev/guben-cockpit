@@ -41,13 +41,18 @@ public class CreateEventHandler : ApiRequestHandler<CreateEventQuery, CreateEven
     var (urlResult, urls) = request.Urls.Select(url => Url.Create(url.Link, url.Description)).MergeResults();
     urlResult.ThrowIfFailure();
 
+    var (imagesResult, images) = request.Images
+      .Select(im => EventImage.Create(im.ThumbnailUrl, im.PreviewUrl, im.OriginalUrl, null, null))
+      .MergeResults();
+    imagesResult.ThrowIfFailure();
+
     var location = await _locationRepository.Get(request.LocationId);
     if (location is null)
       throw new ProblemDetailsException(TranslationKeys.LocationNotFound);
     var categories = _categoryRepository.GetByIds(request.CategoryIds).ToList();
 
     var (eventResult, @event) = Event.CreateWithGeneratedIds(request.Title, request.Description,
-      request.StartDate, request.EndDate, location, coords, urls, categories, _culture, user.Id);
+      request.StartDate, request.EndDate, location, coords, urls, categories, _culture, user.Id, images);
     eventResult.ThrowIfFailure();
 
     await _eventRepository.SaveAsync(@event);
