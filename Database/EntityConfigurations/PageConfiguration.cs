@@ -16,7 +16,6 @@ public class PageConfiguration : IEntityTypeConfiguration<Page>
     builder.HasKey(e => e.Id);
     builder.Property(e => e.Id).ValueGeneratedNever();
 
-
     var jsonOptions = new JsonSerializerOptions();
 
     var converter = new ValueConverter<Dictionary<string, PageI18NData>, string>(
