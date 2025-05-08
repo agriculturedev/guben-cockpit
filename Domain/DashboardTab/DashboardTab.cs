@@ -9,7 +9,6 @@ namespace Domain.DashboardTab;
 public sealed class DashboardTab : Entity<Guid>
 {
   public Dictionary<string, DashboardTabI18NData> Translations { get; private set; } = new();
-
   public int Sequence { get; private set; }
   public string MapUrl { get; private set; }
   private readonly List<InformationCard> _informationCards = [];
@@ -47,11 +46,11 @@ public sealed class DashboardTab : Entity<Guid>
 
   public Result UpdateTranslation(string title, CultureInfo cultureInfo)
   {
-    var (result, pageI18NData) = DashboardTabI18NData.Create(title);
+    var (result, tabI18NData) = DashboardTabI18NData.Create(title);
     if (result.IsFailure)
       return result;
 
-    Translations[cultureInfo.TwoLetterISOLanguageName] = pageI18NData;
+    Translations[cultureInfo.TwoLetterISOLanguageName] = tabI18NData;
     return Result.Ok();
   }
 

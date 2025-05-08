@@ -1,3 +1,4 @@
+using System.Globalization;
 using Api.Infrastructure.Extensions;
 using Domain;
 using Domain.DashboardTab;
@@ -9,13 +10,16 @@ namespace Api.Controllers.DashboardTabs.AddCardToTab;
 public class AddCardToTabHandler : ApiRequestHandler<AddCardToTabQuery, AddCardToTabResponse>
 {
   private readonly IDashboardRepository _dashboardRepository;
+  private readonly CultureInfo _culture;
 
   public AddCardToTabHandler(IDashboardRepository dashboardRepository)
   {
     _dashboardRepository = dashboardRepository;
+    _culture = CultureInfo.CurrentCulture;
   }
 
-  public override async Task<AddCardToTabResponse> Handle(AddCardToTabQuery request, CancellationToken cancellationToken)
+  public override async Task<AddCardToTabResponse> Handle(AddCardToTabQuery request,
+    CancellationToken cancellationToken)
   {
     Button? button = null;
 
@@ -26,7 +30,8 @@ public class AddCardToTabHandler : ApiRequestHandler<AddCardToTabQuery, AddCardT
       button = buttonResult.Value;
     }
 
-    var (cardResult, informationCard) = InformationCard.Create(request.Title, request.Description, request.ImageUrl, request.ImageAlt, button);
+    var (cardResult, informationCard) = InformationCard.Create(request.Title, request.Description, request.ImageUrl,
+      request.ImageAlt, button, _culture);
     cardResult.ThrowIfFailure();
 
     var dashboardTab = await _dashboardRepository.Get(request.TabId);

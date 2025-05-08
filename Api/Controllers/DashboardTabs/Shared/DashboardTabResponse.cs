@@ -26,7 +26,7 @@ public struct DashboardTabResponse
       Title = i18NData.Title,
       Sequence = dashboardTab.Sequence,
       MapUrl = dashboardTab.MapUrl,
-      InformationCards = dashboardTab.InformationCards.Select(InformationCardResponse.Map).ToList(),
+      InformationCards = dashboardTab.InformationCards.Select(c => InformationCardResponse.Map(c, culture)).ToList(),
     };
   }
 }
