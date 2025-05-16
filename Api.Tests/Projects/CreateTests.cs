@@ -26,7 +26,7 @@ public class ProjectHandlerTests
 
       // Act
       var handler = new CreateProjectHandler(projectRepository, userRepository, httpContextAccessor);
-      var query = new CreateProjectQuery() { Title = "Test project", IsBusiness = false};
+      var query = new CreateProjectQuery() { Title = "Test project", CatName = "Gubener Marktplatz"};
 
       // Act & Assert
       await Should.NotThrowAsync(async () =>
@@ -56,7 +56,7 @@ public class ProjectHandlerTests
 
       // Act
       var handler = new CreateProjectHandler(projectRepository, userRepository, httpContextAccessor);
-      var query = new CreateProjectQuery() { Title = "Test project", IsBusiness = false};
+      var query = new CreateProjectQuery() { Title = "Test project", CatName = "Gubener Marktplatz"};
 
       // Act & Assert
       await Should.ThrowAsync(async () =>

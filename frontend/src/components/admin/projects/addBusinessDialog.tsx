@@ -54,12 +54,12 @@ export default function AddBusinessDialog({children, ...props}: IProps) {
 
 function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
   return {
+    catName: "Gubener Marktplatz",
     title: form.title,
     description: form.description,
     fullText: form.fullText,
     imageCaption: form.imageCaption,
     imageCredits: form.imageCredits,
-    imageUrl: form.imageUrl,
-    isBusiness: true
+    imageUrl: form.imageUrl
   }
 }

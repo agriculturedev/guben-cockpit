@@ -7,10 +7,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useProjectsGetMyProjects } from "@/endpoints/gubenComponents";
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckIcon, EditIcon, PlusIcon, TrashIcon, XIcon } from "lucide-react";
+import { CheckIcon, EditIcon, FileUpIcon, PlusIcon, TrashIcon, XIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { routePermissionCheck } from "@/guards/routeGuardChecks";
 import { Permissions } from "@/auth/permissions";
+import PublishProjectDialog from "@/components/admin/projects/publishProjectDialog";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   beforeLoad: async ({context, location}) => {
@@ -61,13 +62,17 @@ function Page() {
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[20ch]">{p.title}</TableCell>
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[50ch]">{p.description}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.published ? <CheckIcon /> : <XIcon />}</TableCell>
-              <TableCell className={"text-neutral-500"}>{p.isBusiness ? <CheckIcon /> : <XIcon />}</TableCell>
+              <TableCell className={"text-neutral-500"}>{p.catName === "Stadtentwicklung" ? <CheckIcon /> : <XIcon />}</TableCell>
               <TableCell>
                 <TooltipProvider>
                   <div className="h-full flex items-center gap-2">
                     <EditProjectDialog project={p} onCreateSuccess={onSuccess}>
                       <EditIcon className="size-4 hover:text-red-500"/>
                     </EditProjectDialog>
+
+                    <PublishProjectDialog projectId={p.id} isPublished={p.published} onToggleSuccess={onSuccess}>
+                      <FileUpIcon className="size-4 hover:text-red-500"/>
+                    </PublishProjectDialog>
 
                     <DeleteProjectDialog projectId={p.id} onDeleteSuccess={onSuccess}>
                       <TrashIcon className="size-4 hover:text-red-500"/>

@@ -31,14 +31,14 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
       throw new ProblemDetailsException(TranslationKeys.UserNotFound);
 
     var (projectResult, project) = Project.CreateWithGeneratedId(
+      request.CatName,
       request.Title,
       request.Description,
       request.FullText,
       request.ImageCaption,
       request.ImageUrl,
       request.ImageCredits,
-      user.Id,
-      request.IsBusiness
+      user.Id
     );
 
     projectResult.ThrowIfFailure();

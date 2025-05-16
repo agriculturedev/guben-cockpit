@@ -54,12 +54,12 @@ export default function AddProjectDialog({children, ...props}: IProps) {
 
 function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
   return {
+    catName: "Stadtentwicklung",
     title: form.title,
     description: form.description,
     fullText: form.fullText,
     imageCaption: form.imageCaption,
     imageCredits: form.imageCredits,
-    imageUrl: form.imageUrl,
-    isBusiness: false
+    imageUrl: form.imageUrl
   }
 }
