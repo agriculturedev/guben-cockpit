@@ -3,6 +3,7 @@ namespace Domain.Tests.Project;
 public class ProjectBuilder
 {
   private string _id = Guid.NewGuid().ToString();
+  private string _catName = "Gubener Marktplatz";
   private string _title = "Default Title";
   private string? _description;
   private string? _fullText;
@@ -61,7 +62,7 @@ public class ProjectBuilder
 
   public Projects.Project Build()
   {
-    var (result, project) = Projects.Project.Create(_id, _title, _description, _fullText, _imageCaption, _imageUrl, _imageCredits, _createdBy);
+    var (result, project) = Projects.Project.Create(_id, _catName, _title, _description, _fullText, _imageCaption, _imageUrl, _imageCredits, _createdBy);
     if (result.IsFailure)
       throw new ArgumentException(result.ToString());
 
@@ -70,7 +71,7 @@ public class ProjectBuilder
 
   public Projects.Project BuildWithGeneratedId()
   {
-    var (result, project) = Projects.Project.CreateWithGeneratedId(_title, _description, _fullText, _imageCaption, _imageUrl, _imageCredits, _createdBy);
+    var (result, project) = Projects.Project.CreateWithGeneratedId(_catName, _title, _description, _fullText, _imageCaption, _imageUrl, _imageCredits, _createdBy);
     if (result.IsFailure)
       throw new ArgumentException(result.ToString());
 
