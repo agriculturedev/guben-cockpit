@@ -17,6 +17,12 @@ export type AddCardToTabQuery = {
 
 export type AddCardToTabResponse = Record<string, any>;
 
+export type AddTopicsQuery = {
+  topics?: CreateTopicQuery[];
+};
+
+export type AddTopicsResponse = Record<string, any>;
+
 export type CategoryResponse = {
   /**
    * @format uuid
@@ -104,6 +110,13 @@ export type CreateProjectQuery = {
 
 export type CreateProjectResponse = Record<string, any>;
 
+export type CreateTopicQuery = {
+  id?: string;
+  typ?: string;
+  url?: string;
+  name?: string;
+};
+
 export type CreateUrlQuery = {
   link: string;
   description: string;
@@ -126,8 +139,7 @@ export type DashboardTabResponse = {
 export type DataSourceResponse = {
   id: string;
   name: string;
-  wms?: SourceResponse;
-  wfs?: SourceResponse;
+  sources: SourceResponse[];
 };
 
 export type DeleteCardFromTabResponse = Record<string, any>;
@@ -366,9 +378,10 @@ export type PublishProjectsQuery = {
 export type PublishProjectsResponse = Record<string, any>;
 
 export type SourceResponse = {
-  name: string;
+  layer_name: string;
   url: string;
-} | null;
+  type: string;
+};
 
 export type TopicResponse = {
   id: string;

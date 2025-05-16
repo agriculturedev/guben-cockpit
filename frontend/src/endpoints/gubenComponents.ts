@@ -9,6 +9,149 @@ import type * as Fetcher from "./gubenFetcher";
 import { gubenFetch } from "./gubenFetcher";
 import type * as Schemas from "./gubenSchemas";
 
+export type GetFilesQueryParams = {
+  /**
+   * @default
+   */
+  path?: string;
+};
+
+export type GetFilesError = Fetcher.ErrorWrapper<undefined>;
+
+export type GetFilesVariables = {
+  queryParams?: GetFilesQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchGetFiles = (
+  variables: GetFilesVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<undefined, GetFilesError, undefined, {}, GetFilesQueryParams, {}>({
+    url: "/nextcloud/files",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useGetFiles = <TData = undefined,>(
+  variables: GetFilesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<undefined, GetFilesError, TData>,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<undefined, GetFilesError, TData>({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/files",
+      operationId: "getFiles",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchGetFiles({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type GetFileQueryParams = {
+  filename?: string;
+};
+
+export type GetFileError = Fetcher.ErrorWrapper<{
+  status: 404;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type GetFileVariables = {
+  queryParams?: GetFileQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchGetFile = (
+  variables: GetFileVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<undefined, GetFileError, undefined, {}, GetFileQueryParams, {}>({
+    url: "/nextcloud",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useGetFile = <TData = undefined,>(
+  variables: GetFileVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<undefined, GetFileError, TData>,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<undefined, GetFileError, TData>({
+    queryKey: queryKeyFn({
+      path: "/nextcloud",
+      operationId: "getFile",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchGetFile({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type CreateFileQueryParams = {
+  filename?: string;
+};
+
+export type CreateFileError = Fetcher.ErrorWrapper<undefined>;
+
+export type CreateFileRequestBody = {
+  /**
+   * @format binary
+   */
+  file?: Blob;
+};
+
+export type CreateFileVariables = {
+  body?: CreateFileRequestBody;
+  queryParams?: CreateFileQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchCreateFile = (
+  variables: CreateFileVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    undefined,
+    CreateFileError,
+    CreateFileRequestBody,
+    {},
+    CreateFileQueryParams,
+    {}
+  >({ url: "/nextcloud", method: "post", ...variables, signal });
+
+export const useCreateFile = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      CreateFileError,
+      CreateFileVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    undefined,
+    CreateFileError,
+    CreateFileVariables
+  >({
+    mutationFn: (variables: CreateFileVariables) =>
+      fetchCreateFile({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type UsersGetAllQueryParams = {
   /**
    * @format int32
@@ -825,39 +968,90 @@ export const useLocationsGetAllPaged = <
   });
 };
 
-export type TopicsError = Fetcher.ErrorWrapper<{
+export type GetTopicsError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type TopicsVariables = GubenContext["fetcherOptions"];
+export type GetTopicsVariables = GubenContext["fetcherOptions"];
 
-export const fetchTopics = (variables: TopicsVariables, signal?: AbortSignal) =>
-  gubenFetch<Schemas.GetTopicsResponse, TopicsError, undefined, {}, {}, {}>({
+export const fetchGetTopics = (
+  variables: GetTopicsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<Schemas.GetTopicsResponse, GetTopicsError, undefined, {}, {}, {}>({
     url: "/geo/topics",
     method: "get",
     ...variables,
     signal,
   });
 
-export const useTopics = <TData = Schemas.GetTopicsResponse,>(
-  variables: TopicsVariables,
+export const useGetTopics = <TData = Schemas.GetTopicsResponse,>(
+  variables: GetTopicsVariables,
   options?: Omit<
-    reactQuery.UseQueryOptions<Schemas.GetTopicsResponse, TopicsError, TData>,
+    reactQuery.UseQueryOptions<
+      Schemas.GetTopicsResponse,
+      GetTopicsError,
+      TData
+    >,
     "queryKey" | "queryFn" | "initialData"
   >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<Schemas.GetTopicsResponse, TopicsError, TData>({
+  return reactQuery.useQuery<Schemas.GetTopicsResponse, GetTopicsError, TData>({
     queryKey: queryKeyFn({
       path: "/geo/topics",
-      operationId: "topics",
+      operationId: "getTopics",
       variables,
     }),
     queryFn: ({ signal }) =>
-      fetchTopics({ ...fetcherOptions, ...variables }, signal),
+      fetchGetTopics({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
+  });
+};
+
+export type AddTopicsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type AddTopicsVariables = {
+  body?: Schemas.AddTopicsQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchAddTopics = (
+  variables: AddTopicsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.AddTopicsResponse,
+    AddTopicsError,
+    Schemas.AddTopicsQuery,
+    {},
+    {},
+    {}
+  >({ url: "/geo/topics", method: "post", ...variables, signal });
+
+export const useAddTopics = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.AddTopicsResponse,
+      AddTopicsError,
+      AddTopicsVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.AddTopicsResponse,
+    AddTopicsError,
+    AddTopicsVariables
+  >({
+    mutationFn: (variables: AddTopicsVariables) =>
+      fetchAddTopics({ ...fetcherOptions, ...variables }),
+    ...options,
   });
 };
 
@@ -1649,6 +1843,16 @@ export const useCategoriesGetAll = <TData = Schemas.GetAllCategoriesResponse,>(
 
 export type QueryOperation =
   | {
+      path: "/nextcloud/files";
+      operationId: "getFiles";
+      variables: GetFilesVariables;
+    }
+  | {
+      path: "/nextcloud";
+      operationId: "getFile";
+      variables: GetFileVariables;
+    }
+  | {
       path: "/users";
       operationId: "usersGetAll";
       variables: UsersGetAllVariables;
@@ -1700,8 +1904,8 @@ export type QueryOperation =
     }
   | {
       path: "/geo/topics";
-      operationId: "topics";
-      variables: TopicsVariables;
+      operationId: "getTopics";
+      variables: GetTopicsVariables;
     }
   | {
       path: "/footeritem";

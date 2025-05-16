@@ -11,6 +11,8 @@ import { z } from "zod";
 import {zodValidator} from "@tanstack/zod-adapter";
 import { routePermissionCheck } from "@/guards/routeGuardChecks";
 import { Permissions } from "@/auth/permissions";
+import { Button } from '@/components/ui/button';
+import { UploadImageCard } from '@/components/dashboard/cards/UploadImageCard';
 
 const SelectedTabSchema = z.object({
   selectedTabId: z.string().optional(),
@@ -72,6 +74,7 @@ function AdminDashboard() {
         <div key={selectedTab.id}>
           <EditDashboardTab tab={selectedTab} onSuccess={refetch}/>
           <EditDashboardCards tab={selectedTab} refetch={refetch}/>
+          <UploadImageCard />
         </div>
       }
     </div>
