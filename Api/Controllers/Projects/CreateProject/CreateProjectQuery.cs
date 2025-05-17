@@ -1,14 +1,10 @@
-using System.Text.Json.Serialization;
-using Ardalis.SmartEnum.SystemTextJson;
-using Domain.Projects;
 using Shared.Api;
 
 namespace Api.Controllers.Projects.CreateProject;
 
 public class CreateProjectQuery : IAuthenticatedApiRequest, IApiRequest<CreateProjectResponse>
 {
-  [JsonConverter(typeof(SmartEnumNameConverter<ProjectType, int>))]
-  public required ProjectType Type { get; set; }
+  public required int Type { get; set; } // convert to ProjectType
   public required string Title { get; set; }
   public string? Description { get; set; }
   public string? FullText { get; set; }

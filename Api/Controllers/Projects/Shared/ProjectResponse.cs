@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-using Ardalis.SmartEnum.SystemTextJson;
 using Domain.Projects;
 
 namespace Api.Controllers.Projects.Shared;
@@ -7,9 +5,7 @@ namespace Api.Controllers.Projects.Shared;
 public struct ProjectResponse
 {
   public required string Id { get; set; }
-
-  [JsonConverter(typeof(SmartEnumNameConverter<ProjectType, int>))]
-  public required ProjectType Type { get; set; }
+  public required int Type { get; set; }
   public required string Title { get; set; }
   public string? Description { get; set; }
   public string? FullText { get; set; }
@@ -23,7 +19,7 @@ public struct ProjectResponse
     return new ProjectResponse()
     {
       Id = project.Id,
-      Type = project.Type,
+      Type = project.Type.Value,
       Title = project.Title,
       Description = project.Description,
       FullText = project.FullText,

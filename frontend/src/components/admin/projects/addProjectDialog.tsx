@@ -7,6 +7,7 @@ import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useTranslation } from "react-i18next";
 import ProjectDialogForm from "./projectDialog.form";
+import { ProjectType } from "@/types/ProjectType";
 
 interface IProps {
   children: ReactNode;
@@ -54,7 +55,7 @@ export default function AddProjectDialog({children, ...props}: IProps) {
 
 function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
   return {
-    catName: "Stadtentwicklung",
+    type: ProjectType.Stadtentwicklung,
     title: form.title,
     description: form.description,
     fullText: form.fullText,

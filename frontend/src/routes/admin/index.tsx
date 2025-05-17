@@ -9,30 +9,33 @@ import { userHasPermissions } from "@/utilities/userUtils";
 
 export const Route = createFileRoute('/admin/')({
   component: AdminPanel,
+
 })
 
 function AdminPanel() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
+  const { data: user, isLoading } = useUser();
 
-  const user = useUser();
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (user && userHasPermissions(user, [Permissions.DashboardManager])) {
-    return <Navigate to="/admin/dashboard" />
+    return <Navigate to="/admin/dashboard" />;
   }
 
   return (
     <AuthGuard>
-    <View2>
-      <View2.Content>
-        <div className="grid grid-cols-12 gap-4">
-          <AdminNavigation/>
-
-          <div className='col-span-10 p-6 bg-white rounded-lg'>
-            <p>{t("SelectNavItem")}</p>
+      <View2>
+        <View2.Content>
+          <div className="grid grid-cols-12 gap-4">
+            <AdminNavigation />
+            <div className='col-span-10 p-6 bg-white rounded-lg'>
+              <p>{t("SelectNavItem")}</p>
+            </div>
           </div>
-        </div>
-      </View2.Content>
-    </View2>
-  </AuthGuard>
+        </View2.Content>
+      </View2>
+    </AuthGuard>
   );
 }

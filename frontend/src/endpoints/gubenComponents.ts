@@ -326,7 +326,7 @@ export const useProjectsCreateProject = (
 };
 
 export type ProjectsGetMyProjectsQueryParams = {
-  query?: Schemas.GetMyProjectsQuery;
+  query?: Record<string, any>;
 };
 
 export type ProjectsGetMyProjectsError = Fetcher.ErrorWrapper<{
@@ -1181,7 +1181,7 @@ export const useEventsCreateEvent = (
 };
 
 export type EventsGetMyEventsQueryParams = {
-  query?: Schemas.GetMyEventsQuery;
+  query?: Record<string, any>;
 };
 
 export type EventsGetMyEventsError = Fetcher.ErrorWrapper<{

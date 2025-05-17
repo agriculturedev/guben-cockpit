@@ -19,7 +19,6 @@ function Layout() {
         <View2.Content>
           <div className="grid grid-cols-12 gap-4">
             <AdminNavigation/>
-
             <div className='col-span-10 p-6 bg-white rounded-lg'>
               <Outlet/>
             </div>

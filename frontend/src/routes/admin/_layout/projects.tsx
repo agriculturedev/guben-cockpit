@@ -12,10 +12,11 @@ import { useTranslation } from "react-i18next";
 import { routePermissionCheck } from "@/guards/routeGuardChecks";
 import { Permissions } from "@/auth/permissions";
 import PublishProjectDialog from "@/components/admin/projects/publishProjectDialog";
+import { ProjectType } from "@/types/ProjectType";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   beforeLoad: async ({context, location}) => {
-    routePermissionCheck(context.auth, [Permissions.ProjectContributor, Permissions.PublishProjects])
+    await routePermissionCheck(context.auth, [Permissions.ProjectContributor, Permissions.PublishProjects])
   },
   component: Page
 })
@@ -62,7 +63,7 @@ function Page() {
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[20ch]">{p.title}</TableCell>
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[50ch]">{p.description}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.published ? <CheckIcon /> : <XIcon />}</TableCell>
-              <TableCell className={"text-neutral-500"}>{p.catName === "Stadtentwicklung" ? <CheckIcon /> : <XIcon />}</TableCell>
+              <TableCell className={"text-neutral-500"}>{p.type == ProjectType.GubenerMarktplatz ? <CheckIcon /> : <XIcon />}</TableCell>
               <TableCell>
                 <TooltipProvider>
                   <div className="h-full flex items-center gap-2">

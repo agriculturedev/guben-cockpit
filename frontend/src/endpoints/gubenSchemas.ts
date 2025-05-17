@@ -99,7 +99,10 @@ export type CreateLocationQuery = {
 export type CreateLocationResponse = Record<string, any>;
 
 export type CreateProjectQuery = {
-  type: ProjectType;
+  /**
+   * @format int32
+   */
+  type: number;
   title: string;
   description?: string | null;
   fullText?: string | null;
@@ -296,13 +299,9 @@ export type GetAllUsersResponse = {
   results: UserResponse[];
 };
 
-export type GetMyEventsQuery = Record<string, any>;
-
 export type GetMyEventsResponse = {
   results: EventResponse[];
 };
-
-export type GetMyProjectsQuery = Record<string, any>;
 
 export type GetMyProjectsResponse = {
   results: ProjectResponse[];
@@ -364,7 +363,10 @@ export type ProblemDetails = {
 
 export type ProjectResponse = {
   id: string;
-  type: ProjectType;
+  /**
+   * @format int32
+   */
+  type: number;
   title: string;
   description?: string | null;
   fullText?: string | null;

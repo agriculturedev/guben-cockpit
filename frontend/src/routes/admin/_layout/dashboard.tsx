@@ -18,7 +18,7 @@ const SelectedTabSchema = z.object({
 
 export const Route = createFileRoute('/admin/_layout/dashboard')({
   beforeLoad: async ({context, location}) => {
-    routePermissionCheck(context.auth, [Permissions.DashboardManager])
+    await routePermissionCheck(context.auth, [Permissions.DashboardManager])
   },
   component: AdminDashboard,
   validateSearch: zodValidator(SelectedTabSchema),
