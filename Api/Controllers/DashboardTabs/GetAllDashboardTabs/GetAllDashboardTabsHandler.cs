@@ -1,3 +1,4 @@
+using System.Globalization;
 using Api.Controllers.DashboardTabs.Shared;
 using Domain.DashboardTab.repository;
 using Shared.Api;
@@ -7,10 +8,12 @@ namespace Api.Controllers.DashboardTabs.GetAllDashboardTabs;
 public class GetAllDashboardTabsHandler : ApiRequestHandler<GetAllDashboardTabsQuery, GetAllDashboardTabsResponse>
 {
   private readonly IDashboardRepository _dashboardRepository;
+  private readonly CultureInfo _culture;
 
   public GetAllDashboardTabsHandler(IDashboardRepository dashboardRepository)
   {
     _dashboardRepository = dashboardRepository;
+    _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<GetAllDashboardTabsResponse> Handle(GetAllDashboardTabsQuery request, CancellationToken cancellationToken)
@@ -21,7 +24,7 @@ public class GetAllDashboardTabsHandler : ApiRequestHandler<GetAllDashboardTabsQ
 
     return new GetAllDashboardTabsResponse()
     {
-      Tabs = dashboardTabs.Select(DashboardTabResponse.Map).ToList()
+      Tabs = dashboardTabs.Select(t => DashboardTabResponse.Map(t, _culture)).ToList()
     };
   }
 }
