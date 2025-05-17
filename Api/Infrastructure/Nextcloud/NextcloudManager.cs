@@ -78,7 +78,7 @@ namespace Api.Infrastructure.Nextcloud
       var filePath = $"{_baseFolder}/{fileName}{extension}";
       var directory = Path.GetDirectoryName(filePath)?.Replace("\\", "/");
 
-      if (!string.IsNullOrEmpty(directory) && directory != _baseFolder)
+      if (!string.IsNullOrEmpty(directory) && directory != _baseFolder) // MAKE SURE BASEFOLDER EXISTS IN NEXTCLOUD!
       {
           var mkDirResult = await _client.Mkcol(directory);
           if (!mkDirResult.IsSuccessful && mkDirResult.StatusCode != (int)HttpStatusCode.MethodNotAllowed)
