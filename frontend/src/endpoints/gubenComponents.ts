@@ -825,39 +825,90 @@ export const useLocationsGetAllPaged = <
   });
 };
 
-export type TopicsError = Fetcher.ErrorWrapper<{
+export type GetTopicsError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type TopicsVariables = GubenContext["fetcherOptions"];
+export type GetTopicsVariables = GubenContext["fetcherOptions"];
 
-export const fetchTopics = (variables: TopicsVariables, signal?: AbortSignal) =>
-  gubenFetch<Schemas.GetTopicsResponse, TopicsError, undefined, {}, {}, {}>({
+export const fetchGetTopics = (
+  variables: GetTopicsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<Schemas.GetTopicsResponse, GetTopicsError, undefined, {}, {}, {}>({
     url: "/geo/topics",
     method: "get",
     ...variables,
     signal,
   });
 
-export const useTopics = <TData = Schemas.GetTopicsResponse,>(
-  variables: TopicsVariables,
+export const useGetTopics = <TData = Schemas.GetTopicsResponse,>(
+  variables: GetTopicsVariables,
   options?: Omit<
-    reactQuery.UseQueryOptions<Schemas.GetTopicsResponse, TopicsError, TData>,
+    reactQuery.UseQueryOptions<
+      Schemas.GetTopicsResponse,
+      GetTopicsError,
+      TData
+    >,
     "queryKey" | "queryFn" | "initialData"
   >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<Schemas.GetTopicsResponse, TopicsError, TData>({
+  return reactQuery.useQuery<Schemas.GetTopicsResponse, GetTopicsError, TData>({
     queryKey: queryKeyFn({
       path: "/geo/topics",
-      operationId: "topics",
+      operationId: "getTopics",
       variables,
     }),
     queryFn: ({ signal }) =>
-      fetchTopics({ ...fetcherOptions, ...variables }, signal),
+      fetchGetTopics({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
+  });
+};
+
+export type AddTopicsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type AddTopicsVariables = {
+  body?: Schemas.AddTopicsQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchAddTopics = (
+  variables: AddTopicsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.AddTopicsResponse,
+    AddTopicsError,
+    Schemas.AddTopicsQuery,
+    {},
+    {},
+    {}
+  >({ url: "/geo/topics", method: "post", ...variables, signal });
+
+export const useAddTopics = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.AddTopicsResponse,
+      AddTopicsError,
+      AddTopicsVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.AddTopicsResponse,
+    AddTopicsError,
+    AddTopicsVariables
+  >({
+    mutationFn: (variables: AddTopicsVariables) =>
+      fetchAddTopics({ ...fetcherOptions, ...variables }),
+    ...options,
   });
 };
 
@@ -1232,6 +1283,64 @@ export const useEventsDeleteEvent = (
     mutationFn: (variables: EventsDeleteEventVariables) =>
       fetchEventsDeleteEvent({ ...fetcherOptions, ...variables }),
     ...options,
+  });
+};
+
+export type EventsGetByIdPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type EventsGetByIdError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsGetByIdVariables = {
+  pathParams: EventsGetByIdPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsGetById = (
+  variables: EventsGetByIdVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetEventByIdResponse,
+    EventsGetByIdError,
+    undefined,
+    {},
+    {},
+    EventsGetByIdPathParams
+  >({ url: "/events/{id}", method: "get", ...variables, signal });
+
+export const useEventsGetById = <TData = Schemas.GetEventByIdResponse,>(
+  variables: EventsGetByIdVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetEventByIdResponse,
+      EventsGetByIdError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetEventByIdResponse,
+    EventsGetByIdError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/events/{id}",
+      operationId: "eventsGetById",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchEventsGetById({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
   });
 };
 
@@ -1700,8 +1809,8 @@ export type QueryOperation =
     }
   | {
       path: "/geo/topics";
-      operationId: "topics";
-      variables: TopicsVariables;
+      operationId: "getTopics";
+      variables: GetTopicsVariables;
     }
   | {
       path: "/footeritem";
@@ -1717,6 +1826,11 @@ export type QueryOperation =
       path: "/events/owned";
       operationId: "eventsGetMyEvents";
       variables: EventsGetMyEventsVariables;
+    }
+  | {
+      path: "/events/{id}";
+      operationId: "eventsGetById";
+      variables: EventsGetByIdVariables;
     }
   | {
       path: "/dashboard";

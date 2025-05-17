@@ -44,7 +44,9 @@ function RouteComponent() {
     setPageCount
   } = usePagination();
 
-  const [filters, setFilters] = useState(filtersSchema.parse({}));
+  const [filters, setFilters] = useState(filtersSchema.parse({
+    dateRange: { from: new Date() }
+  }));
 
   const { data } = useEventsGetAll({
     queryParams: {
@@ -53,8 +55,8 @@ function RouteComponent() {
       ...filters.search && { title: filters.search },
       ...filters.location.length > 0 && { location: filters.location.join(";") },
       ...filters.category && { category: filters.category },
-      ...filters.dateRange?.from && { startDate: filters.dateRange.from.toIsoDate() },
-      ...filters.dateRange?.to && { endDate: filters.dateRange.to.toIsoDate() },
+      ...filters.dateRange?.from && { startDate: filters.dateRange.from.toDateString() },
+      ...filters.dateRange?.to && { endDate: filters.dateRange.to.toDateString() },
     },
   }, { retry: false });
 
