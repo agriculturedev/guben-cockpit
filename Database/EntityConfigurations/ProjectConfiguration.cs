@@ -14,7 +14,12 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     builder.HasKey(e => e.Id);
     builder.Property(e => e.Id).ValueGeneratedNever();
 
-    builder.Property(e => e.CatName).IsRequired();
+    builder.Property(e => e.Type)
+      .HasConversion(
+        p => p.Value,
+        p => ProjectType.FromValue(p))
+      .IsRequired();
+
     builder.Property(e => e.Title).IsRequired();
     builder.Property(e => e.Description);
     builder.Property(e => e.FullText);

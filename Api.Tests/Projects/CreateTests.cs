@@ -3,6 +3,7 @@ using Api.Tests.HttpContextAccessor;
 using Database.Repositories;
 using Database.Tests;
 using Database.Tests.Extensions;
+using Domain.Projects;
 using Shouldly;
 
 namespace Api.Tests.Projects;
@@ -26,7 +27,7 @@ public class ProjectHandlerTests
 
       // Act
       var handler = new CreateProjectHandler(projectRepository, userRepository, httpContextAccessor);
-      var query = new CreateProjectQuery() { Title = "Test project", CatName = "Gubener Marktplatz"};
+      var query = new CreateProjectQuery() { Title = "Test project", Type = ProjectType.GubenerMarktplatz};
 
       // Act & Assert
       await Should.NotThrowAsync(async () =>
@@ -56,7 +57,7 @@ public class ProjectHandlerTests
 
       // Act
       var handler = new CreateProjectHandler(projectRepository, userRepository, httpContextAccessor);
-      var query = new CreateProjectQuery() { Title = "Test project", CatName = "Gubener Marktplatz"};
+      var query = new CreateProjectQuery() { Title = "Test project", Type = ProjectType.GubenerMarktplatz};
 
       // Act & Assert
       await Should.ThrowAsync(async () =>

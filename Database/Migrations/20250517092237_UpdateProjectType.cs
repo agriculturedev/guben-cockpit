@@ -5,47 +5,37 @@
 namespace Database.Migrations
 {
     /// <inheritdoc />
-    public partial class ReplaceIsBusinessWithCatName : Migration
+    public partial class UpdateProjectType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "CatName",
+            migrationBuilder.AddColumn<int>(
+                name: "Type",
                 schema: "Guben",
                 table: "Project",
-                type: "text",
-                nullable: true);
+                type: "integer",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.Sql(@"
                 UPDATE ""Guben"".""Project""
-                SET ""CatName"" = CASE
-                    WHEN ""IsBusiness"" = TRUE THEN 'Gubener Marktplatz'
-                    ELSE 'Stadtentwicklung'
+                SET ""Type"" = CASE
+                    WHEN ""IsBusiness"" = TRUE THEN 0
+                    ELSE 1
                 END");
-            
-            migrationBuilder.AlterColumn<string>(
-                name: "CatName",
-                schema: "Guben",
-                table: "Project",
-                type: "text",
-                nullable: false,
-                defaultValue: "Gubener Marktplatz",
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
 
             migrationBuilder.DropColumn(
-                name: "IsBusiness",
-                schema: "Guben",
-                table: "Project");
+              name: "IsBusiness",
+              schema: "Guben",
+              table: "Project");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "CatName",
+                name: "Type",
                 schema: "Guben",
                 table: "Project");
 

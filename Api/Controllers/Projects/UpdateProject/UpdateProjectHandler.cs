@@ -41,7 +41,7 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
       throw new UnauthorizedAccessException(TranslationKeys.ProjectNotOwnedByUser);
 
     project.Update(
-      request.CatName,
+      request.Type,
       request.Title,
       request.Description,
       request.FullText,

@@ -17,6 +17,12 @@ export type AddCardToTabQuery = {
 
 export type AddCardToTabResponse = Record<string, any>;
 
+export type AddTopicsQuery = {
+  topics?: CreateTopicQuery[];
+};
+
+export type AddTopicsResponse = Record<string, any>;
+
 export type CategoryResponse = {
   /**
    * @format uuid
@@ -93,7 +99,7 @@ export type CreateLocationQuery = {
 export type CreateLocationResponse = Record<string, any>;
 
 export type CreateProjectQuery = {
-  catName: string;
+  type: ProjectType;
   title: string;
   description?: string | null;
   fullText?: string | null;
@@ -103,6 +109,13 @@ export type CreateProjectQuery = {
 };
 
 export type CreateProjectResponse = Record<string, any>;
+
+export type CreateTopicQuery = {
+  id?: string;
+  typ?: string;
+  url?: string;
+  name?: string;
+};
 
 export type CreateUrlQuery = {
   link: string;
@@ -126,8 +139,7 @@ export type DashboardTabResponse = {
 export type DataSourceResponse = {
   id: string;
   name: string;
-  wms?: SourceResponse;
-  wfs?: SourceResponse;
+  sources: SourceResponse[];
 };
 
 export type DeleteCardFromTabResponse = Record<string, any>;
@@ -284,9 +296,13 @@ export type GetAllUsersResponse = {
   results: UserResponse[];
 };
 
+export type GetMyEventsQuery = Record<string, any>;
+
 export type GetMyEventsResponse = {
   results: EventResponse[];
 };
+
+export type GetMyProjectsQuery = Record<string, any>;
 
 export type GetMyProjectsResponse = {
   results: ProjectResponse[];
@@ -348,7 +364,7 @@ export type ProblemDetails = {
 
 export type ProjectResponse = {
   id: string;
-  catName: string;
+  type: ProjectType;
   title: string;
   description?: string | null;
   fullText?: string | null;
@@ -356,6 +372,14 @@ export type ProjectResponse = {
   imageUrl?: string | null;
   imageCredits?: string | null;
   published: boolean;
+};
+
+export type ProjectType = {
+  name?: string | null;
+  /**
+   * @format int32
+   */
+  value?: number;
 };
 
 export type PublishProjectsQuery = {
@@ -366,9 +390,10 @@ export type PublishProjectsQuery = {
 export type PublishProjectsResponse = Record<string, any>;
 
 export type SourceResponse = {
-  name: string;
+  layer_name: string;
   url: string;
-} | null;
+  type: string;
+};
 
 export type TopicResponse = {
   id: string;
@@ -415,7 +440,7 @@ export type UpdatePageResponse = Record<string, any>;
 
 export type UpdateProjectQuery = {
   id?: string | null;
-  catName: string;
+  type: ProjectType;
   title: string;
   description?: string | null;
   fullText?: string | null;

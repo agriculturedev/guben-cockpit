@@ -6,7 +6,7 @@ namespace Domain.Projects;
 public sealed class Project : Entity<string>
 {
   // If its a Project CatName is "Stadtentwicklung" (city planning), if its a Business its "Gubener Marktplatz" (Gubener city market)
-  public string CatName { get; private set; }
+  public ProjectType Type { get; private set; }
   public string Title { get; private set; }
   public string? Description { get; private set; }
   public string? FullText { get; private set; }
@@ -16,11 +16,11 @@ public sealed class Project : Entity<string>
   public bool Published { get; private set; }
   public Guid CreatedBy { get; private set; }
 
-  private Project(string id, string catName, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
+  private Project(string id, ProjectType type, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
     imageCredits, Guid createdBy)
   {
     Id = id;
-    CatName = catName;
+    Type = type;
     Title = title;
     Description = description;
     FullText = fullText;
@@ -31,12 +31,12 @@ public sealed class Project : Entity<string>
     CreatedBy = createdBy;
   }
 
-  public static Result<Project> Create(string id, string catName, string title, string? description, string? fullText, string? imageCaption,
+  public static Result<Project> Create(string id, ProjectType type, string title, string? description, string? fullText, string? imageCaption,
     string? imageUrl, string? imageCredits, Guid createdBy)
   {
     return new Project(
       id,
-      catName,
+      type,
       title,
       description,
       fullText,
@@ -47,12 +47,12 @@ public sealed class Project : Entity<string>
     );
   }
 
-  public static Result<Project> CreateWithGeneratedId(string catName, string title, string? description, string? fullText, string? imageCaption,
+  public static Result<Project> CreateWithGeneratedId(ProjectType type, string title, string? description, string? fullText, string? imageCaption,
     string? imageUrl, string? imageCredits, Guid createdBy)
   {
     return new Project(
       Guid.CreateVersion7().ToString(),
-      catName,
+      type,
       title,
       description,
       fullText,
@@ -63,10 +63,10 @@ public sealed class Project : Entity<string>
     );
   }
 
-  public void Update(string catName,string title, string? description, string? fullText, string? imageCaption, string? imageUrl,
+  public void Update(ProjectType type,string title, string? description, string? fullText, string? imageCaption, string? imageUrl,
     string? imageCredits)
   {
-    CatName = catName;
+    Type = type;
     Title = title;
     Description = description;
     FullText = fullText;

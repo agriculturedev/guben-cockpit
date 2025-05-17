@@ -81,9 +81,13 @@ public class ProjectImporter
     if (rawProject.Id is null || rawProject.Title is null || rawProject.CatName is null)
       throw new NullReferenceException("id, catName and title are required");
 
+    if (!ProjectType.TryFromName(rawProject.CatName, out var type))
+      throw new InvalidCastException("Invalid project type: " + rawProject.CatName);
+
+
     var (result, project) = Project.Create(
       rawProject.Id,
-      rawProject.CatName,
+      type,
       rawProject.Title,
       rawProject.Introtext,
       rawProject.Fulltext,
@@ -100,7 +104,7 @@ public class ProjectImporter
       if (existingProject is not null)
       {
         existingProject.Update(
-          project.CatName,
+          project.Type,
           project.Title,
           project.Description,
           project.FullText,

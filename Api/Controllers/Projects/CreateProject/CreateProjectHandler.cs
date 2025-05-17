@@ -31,7 +31,7 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
       throw new ProblemDetailsException(TranslationKeys.UserNotFound);
 
     var (projectResult, project) = Project.CreateWithGeneratedId(
-      request.CatName,
+      request.Type,
       request.Title,
       request.Description,
       request.FullText,

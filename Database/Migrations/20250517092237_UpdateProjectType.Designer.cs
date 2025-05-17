@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Database.Migrations
 {
     [DbContext(typeof(GubenDbContext))]
-    [Migration("20250515110733_ReplaceIsBusinessWithCatName")]
-    partial class ReplaceIsBusinessWithCatName
+    [Migration("20250517092237_UpdateProjectType")]
+    partial class UpdateProjectType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,10 +182,6 @@ namespace Database.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("CatName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -210,6 +206,9 @@ namespace Database.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
