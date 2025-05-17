@@ -1,3 +1,4 @@
+using System.Globalization;
 using Api.Infrastructure.Extensions;
 using Domain;
 using Domain.DashboardTab;
@@ -9,13 +10,16 @@ namespace Api.Controllers.DashboardTabs.UpdateCardOnTab;
 public class UpdateCardOnTabHandler : ApiRequestHandler<UpdateCardOnTabQuery, UpdateCardOnTabResponse>
 {
   private readonly IDashboardRepository _dashboardRepository;
+  private readonly CultureInfo _culture;
 
   public UpdateCardOnTabHandler(IDashboardRepository dashboardRepository)
   {
     _dashboardRepository = dashboardRepository;
+    _culture = CultureInfo.CurrentCulture;
   }
 
-  public override async Task<UpdateCardOnTabResponse> Handle(UpdateCardOnTabQuery request, CancellationToken cancellationToken)
+  public override async Task<UpdateCardOnTabResponse> Handle(UpdateCardOnTabQuery request,
+    CancellationToken cancellationToken)
   {
     var dashboardTab = await _dashboardRepository.Get(request.TabId);
     if (dashboardTab is null)
@@ -34,7 +38,10 @@ public class UpdateCardOnTabHandler : ApiRequestHandler<UpdateCardOnTabQuery, Up
       button = buttonResult.Value;
     }
 
-    card.Update(request.Title, request.Description, request.ImageUrl, request.ImageAlt, button);
+    var updateResult = card.Update(request.Title, request.Description, request.ImageUrl, request.ImageAlt, button,
+      _culture);
+
+    updateResult.ThrowIfFailure();
 
     return new UpdateCardOnTabResponse();
   }

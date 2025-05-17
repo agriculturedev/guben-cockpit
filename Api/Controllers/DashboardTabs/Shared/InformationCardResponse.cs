@@ -1,4 +1,8 @@
+using System.Globalization;
+using Api.Infrastructure.Translations;
+using Domain;
 using Domain.DashboardTab;
+using Shared.Api;
 
 namespace Api.Controllers.DashboardTabs.Shared;
 
@@ -11,15 +15,19 @@ public struct InformationCardResponse
   public string? ImageUrl { get;  set; }
   public string? ImageAlt { get;  set; }
 
-  public static InformationCardResponse Map(InformationCard informationCard)
+  public static InformationCardResponse Map(InformationCard informationCard, CultureInfo culture)
   {
+    var i18NData = informationCard.Translations.GetTranslation(culture);
+    if (i18NData is null)
+      throw new ProblemDetailsException(TranslationKeys.NoValidTranslationsFound);
+
     return new InformationCardResponse()
     {
       Id = informationCard.Id,
-      Title = informationCard.Title,
-      Description = informationCard.Description,
+      Title = i18NData.Title,
+      Description = i18NData.Description,
       ImageUrl = informationCard.ImageUrl,
-      ImageAlt = informationCard.ImageAlt,
+      ImageAlt = i18NData.ImageAlt,
       Button = informationCard.Button is not null ? ButtonResponse.Map(informationCard.Button) : null,
     };
   }
