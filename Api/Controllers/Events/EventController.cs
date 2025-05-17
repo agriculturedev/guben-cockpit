@@ -2,6 +2,7 @@
 using Api.Controllers.Events.CreateEvent;
 using Api.Controllers.Events.DeleteEvent;
 using Api.Controllers.Events.GetAllEvents;
+using Api.Controllers.Events.GetEventById;
 using Api.Controllers.Events.GetMyEvents;
 using Api.Infrastructure.Keycloak;
 using MediatR;
@@ -83,6 +84,16 @@ public class EventController : ControllerBase
     {
       Id = id
     });
+    return Results.Ok(result);
+  }
+
+  [HttpGet("{id:guid}")]
+  [EndpointName("EventsGetById")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetEventByIdResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> GetEventById([FromRoute] Guid id)
+  {
+    var result = await _mediator.Send(new GetEventByIdQuery(id));
     return Results.Ok(result);
   }
 }
