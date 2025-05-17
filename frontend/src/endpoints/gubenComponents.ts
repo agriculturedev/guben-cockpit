@@ -9,149 +9,6 @@ import type * as Fetcher from "./gubenFetcher";
 import { gubenFetch } from "./gubenFetcher";
 import type * as Schemas from "./gubenSchemas";
 
-export type GetFilesQueryParams = {
-  /**
-   * @default
-   */
-  path?: string;
-};
-
-export type GetFilesError = Fetcher.ErrorWrapper<undefined>;
-
-export type GetFilesVariables = {
-  queryParams?: GetFilesQueryParams;
-} & GubenContext["fetcherOptions"];
-
-export const fetchGetFiles = (
-  variables: GetFilesVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<undefined, GetFilesError, undefined, {}, GetFilesQueryParams, {}>({
-    url: "/nextcloud/files",
-    method: "get",
-    ...variables,
-    signal,
-  });
-
-export const useGetFiles = <TData = undefined,>(
-  variables: GetFilesVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<undefined, GetFilesError, TData>,
-    "queryKey" | "queryFn" | "initialData"
-  >,
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<undefined, GetFilesError, TData>({
-    queryKey: queryKeyFn({
-      path: "/nextcloud/files",
-      operationId: "getFiles",
-      variables,
-    }),
-    queryFn: ({ signal }) =>
-      fetchGetFiles({ ...fetcherOptions, ...variables }, signal),
-    ...options,
-    ...queryOptions,
-  });
-};
-
-export type GetFileQueryParams = {
-  filename?: string;
-};
-
-export type GetFileError = Fetcher.ErrorWrapper<{
-  status: 404;
-  payload: Schemas.ProblemDetails;
-}>;
-
-export type GetFileVariables = {
-  queryParams?: GetFileQueryParams;
-} & GubenContext["fetcherOptions"];
-
-export const fetchGetFile = (
-  variables: GetFileVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<undefined, GetFileError, undefined, {}, GetFileQueryParams, {}>({
-    url: "/nextcloud",
-    method: "get",
-    ...variables,
-    signal,
-  });
-
-export const useGetFile = <TData = undefined,>(
-  variables: GetFileVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<undefined, GetFileError, TData>,
-    "queryKey" | "queryFn" | "initialData"
-  >,
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<undefined, GetFileError, TData>({
-    queryKey: queryKeyFn({
-      path: "/nextcloud",
-      operationId: "getFile",
-      variables,
-    }),
-    queryFn: ({ signal }) =>
-      fetchGetFile({ ...fetcherOptions, ...variables }, signal),
-    ...options,
-    ...queryOptions,
-  });
-};
-
-export type CreateFileQueryParams = {
-  filename?: string;
-};
-
-export type CreateFileError = Fetcher.ErrorWrapper<undefined>;
-
-export type CreateFileRequestBody = {
-  /**
-   * @format binary
-   */
-  file?: Blob;
-};
-
-export type CreateFileVariables = {
-  body?: CreateFileRequestBody;
-  queryParams?: CreateFileQueryParams;
-} & GubenContext["fetcherOptions"];
-
-export const fetchCreateFile = (
-  variables: CreateFileVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<
-    undefined,
-    CreateFileError,
-    CreateFileRequestBody,
-    {},
-    CreateFileQueryParams,
-    {}
-  >({ url: "/nextcloud", method: "post", ...variables, signal });
-
-export const useCreateFile = (
-  options?: Omit<
-    reactQuery.UseMutationOptions<
-      undefined,
-      CreateFileError,
-      CreateFileVariables
-    >,
-    "mutationFn"
-  >,
-) => {
-  const { fetcherOptions } = useGubenContext();
-  return reactQuery.useMutation<
-    undefined,
-    CreateFileError,
-    CreateFileVariables
-  >({
-    mutationFn: (variables: CreateFileVariables) =>
-      fetchCreateFile({ ...fetcherOptions, ...variables }),
-    ...options,
-  });
-};
-
 export type UsersGetAllQueryParams = {
   /**
    * @format int32
@@ -807,6 +664,149 @@ export const usePagesUpdate = (
   >({
     mutationFn: (variables: PagesUpdateVariables) =>
       fetchPagesUpdate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type GetFilesQueryParams = {
+  /**
+   * @default
+   */
+  path?: string;
+};
+
+export type GetFilesError = Fetcher.ErrorWrapper<undefined>;
+
+export type GetFilesVariables = {
+  queryParams?: GetFilesQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchGetFiles = (
+  variables: GetFilesVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<undefined, GetFilesError, undefined, {}, GetFilesQueryParams, {}>({
+    url: "/nextcloud/files",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useGetFiles = <TData = undefined,>(
+  variables: GetFilesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<undefined, GetFilesError, TData>,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<undefined, GetFilesError, TData>({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/files",
+      operationId: "getFiles",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchGetFiles({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type GetFileQueryParams = {
+  filename?: string;
+};
+
+export type GetFileError = Fetcher.ErrorWrapper<{
+  status: 404;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type GetFileVariables = {
+  queryParams?: GetFileQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchGetFile = (
+  variables: GetFileVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<undefined, GetFileError, undefined, {}, GetFileQueryParams, {}>({
+    url: "/nextcloud",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useGetFile = <TData = undefined,>(
+  variables: GetFileVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<undefined, GetFileError, TData>,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<undefined, GetFileError, TData>({
+    queryKey: queryKeyFn({
+      path: "/nextcloud",
+      operationId: "getFile",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchGetFile({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type CreateFileQueryParams = {
+  filename?: string;
+};
+
+export type CreateFileError = Fetcher.ErrorWrapper<undefined>;
+
+export type CreateFileRequestBody = {
+  /**
+   * @format binary
+   */
+  file?: Blob;
+};
+
+export type CreateFileVariables = {
+  body?: CreateFileRequestBody;
+  queryParams?: CreateFileQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchCreateFile = (
+  variables: CreateFileVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    undefined,
+    CreateFileError,
+    CreateFileRequestBody,
+    {},
+    CreateFileQueryParams,
+    {}
+  >({ url: "/nextcloud", method: "post", ...variables, signal });
+
+export const useCreateFile = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      CreateFileError,
+      CreateFileVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    undefined,
+    CreateFileError,
+    CreateFileVariables
+  >({
+    mutationFn: (variables: CreateFileVariables) =>
+      fetchCreateFile({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -1843,16 +1843,6 @@ export const useCategoriesGetAll = <TData = Schemas.GetAllCategoriesResponse,>(
 
 export type QueryOperation =
   | {
-      path: "/nextcloud/files";
-      operationId: "getFiles";
-      variables: GetFilesVariables;
-    }
-  | {
-      path: "/nextcloud";
-      operationId: "getFile";
-      variables: GetFileVariables;
-    }
-  | {
       path: "/users";
       operationId: "usersGetAll";
       variables: UsersGetAllVariables;
@@ -1891,6 +1881,16 @@ export type QueryOperation =
       path: "/pages/${id}";
       operationId: "pagesGet";
       variables: PagesGetVariables;
+    }
+  | {
+      path: "/nextcloud/files";
+      operationId: "getFiles";
+      variables: GetFilesVariables;
+    }
+  | {
+      path: "/nextcloud";
+      operationId: "getFile";
+      variables: GetFileVariables;
     }
   | {
       path: "/locations";

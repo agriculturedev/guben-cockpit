@@ -1,8 +1,9 @@
 using System.Net.Mime;
-using MediatR;
+using Api.Infrastructure.Nextcloud;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Api.Nextcloud;
+
+namespace Api.Controllers.Nextcloud;
 
 [ApiController]
 [Route("nextcloud")]
@@ -50,14 +51,17 @@ public class NextcloudController : ControllerBase
   [Consumes("multipart/form-data")]
   public async Task<IActionResult> CreateFile([FromQuery] string filename, IFormFile file)
   {
-    var keycloakId = User.FindFirst("sub")?.Value;
-    if (string.IsNullOrEmpty(keycloakId)) return Unauthorized("User not authenticated.");
+    if (file == null || file.Length == 0)
+      return BadRequest("No file content provided.");
 
-    if (file == null || file.Length == 0) return BadRequest("No file content provided.");
+    if (string.IsNullOrWhiteSpace(filename))
+      return BadRequest("filename is required");
+
+    var extension = Path.GetExtension(file.FileName);
 
     using var ms = new MemoryStream();
     await file.CopyToAsync(ms);
-    await _nextcloudManager.CreateFileAsync(ms.ToArray(), filename);
+    await _nextcloudManager.CreateFileAsync(ms.ToArray(), filename, extension);
     return Ok();
   }
 }

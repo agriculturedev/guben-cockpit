@@ -4,6 +4,7 @@ using Api.Infrastructure.Hangfire;
 using Api.Infrastructure.JsonConverters;
 using Api.Infrastructure.Keycloak;
 using Api.Infrastructure.MediatR;
+using Api.Infrastructure.Nextcloud;
 using Api.Infrastructure.OpenApi;
 using Api.Infrastructure.Translations;
 using Api.Services;
@@ -51,6 +52,8 @@ public class Startup(IConfiguration configuration)
 
     services.AddControllers()
       .AddJsonConverters();
+
+    services.AddNextCloud(MappedConfiguration.Nextcloud);
 
     services.AddKeycloak(Configuration);
     services.AddCustomCors(MappedConfiguration);

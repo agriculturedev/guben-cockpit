@@ -20,6 +20,7 @@ public class FrontendConfiguration
 public class NextcloudConfiguration
 {
   public string BaseUri { get; set; } = null!;
+  public string BaseDirectory { get; set; } = null!;
   public string Username { get; set; } = null!;
   public string Password { get; set; } = null!;
 }

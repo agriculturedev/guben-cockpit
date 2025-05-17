@@ -7,7 +7,7 @@ export const UploadImageCard: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const createFileMutation = useCreateFile();
 
-const onUpload = async () => {
+  const onUpload = async () => {
     if (!filename || !file) {
       alert("Please enter a filename and select a file");
       return;
@@ -19,6 +19,10 @@ const onUpload = async () => {
       await createFileMutation.mutateAsync({
         queryParams: { filename },
         body: formData as any,
+        // Add this to override the default JSON content type
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       alert("Upload successful!");
       setFilename("");
