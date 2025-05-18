@@ -27,6 +27,7 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     builder.Property(e => e.ImageUrl);
     builder.Property(e => e.ImageCredits);
     builder.Property(e => e.Published).IsRequired();
+    builder.Property(e => e.IsBusiness);
     builder.HasOne<User>()
       .WithMany()
       .HasForeignKey(p => p.CreatedBy)
