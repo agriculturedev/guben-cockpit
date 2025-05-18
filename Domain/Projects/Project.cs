@@ -5,6 +5,8 @@ namespace Domain.Projects;
 
 public sealed class Project : Entity<string>
 {
+  // If its a Project CatName is "Stadtentwicklung" (city planning), if its a Business its "Gubener Marktplatz" (Gubener city market)
+  public ProjectType Type { get; private set; }
   public string Title { get; private set; }
   public string? Description { get; private set; }
   public string? FullText { get; private set; }
@@ -14,14 +16,11 @@ public sealed class Project : Entity<string>
   public bool Published { get; private set; }
   public Guid CreatedBy { get; private set; }
 
-  // TODO: this should only be temporary, force frank and guben to fix their data source so we get this info or have 2 different sources.
-  // don't bother putting in a ui for them to edit it, they should fix their shit. we will set it right ONCE in database
-  public bool IsBusiness { get; private set; }
-
-  private Project(string id, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
-    imageCredits, Guid createdBy, bool isBusiness)
+  private Project(string id, ProjectType type, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
+    imageCredits, Guid createdBy)
   {
     Id = id;
+    Type = type;
     Title = title;
     Description = description;
     FullText = fullText;
@@ -30,51 +29,50 @@ public sealed class Project : Entity<string>
     ImageCredits = imageCredits;
     Published = false;
     CreatedBy = createdBy;
-    IsBusiness = isBusiness;
   }
 
-  public static Result<Project> Create(string id, string title, string? description, string? fullText, string? imageCaption,
-    string? imageUrl, string? imageCredits, Guid createdBy, bool isBusiness = false)
+  public static Result<Project> Create(string id, ProjectType type, string title, string? description, string? fullText, string? imageCaption,
+    string? imageUrl, string? imageCredits, Guid createdBy)
   {
     return new Project(
       id,
+      type,
       title,
       description,
       fullText,
       imageCaption,
       imageUrl,
       imageCredits,
-      createdBy,
-      isBusiness
+      createdBy
     );
   }
 
-  public static Result<Project> CreateWithGeneratedId(string title, string? description, string? fullText, string? imageCaption,
-    string? imageUrl, string? imageCredits, Guid createdBy, bool isBusiness = false)
+  public static Result<Project> CreateWithGeneratedId(ProjectType type, string title, string? description, string? fullText, string? imageCaption,
+    string? imageUrl, string? imageCredits, Guid createdBy)
   {
     return new Project(
       Guid.CreateVersion7().ToString(),
+      type,
       title,
       description,
       fullText,
       imageCaption,
       imageUrl,
       imageCredits,
-      createdBy,
-      isBusiness
+      createdBy
     );
   }
 
-  public void Update(string title, string? description, string? fullText, string? imageCaption, string? imageUrl,
-    string? imageCredits, bool isBusiness = false)
+  public void Update(ProjectType type,string title, string? description, string? fullText, string? imageCaption, string? imageUrl,
+    string? imageCredits)
   {
+    Type = type;
     Title = title;
     Description = description;
     FullText = fullText;
     ImageCaption = imageCaption;
     ImageUrl = imageUrl;
     ImageCredits = imageCredits;
-    IsBusiness = isBusiness;
   }
 
   public void SetPublishedState(bool publish)

@@ -14,6 +14,12 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     builder.HasKey(e => e.Id);
     builder.Property(e => e.Id).ValueGeneratedNever();
 
+    builder.Property(e => e.Type)
+      .HasConversion(
+        p => p.Value,
+        p => ProjectType.FromValue(p))
+      .IsRequired();
+
     builder.Property(e => e.Title).IsRequired();
     builder.Property(e => e.Description);
     builder.Property(e => e.FullText);
@@ -21,7 +27,6 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     builder.Property(e => e.ImageUrl);
     builder.Property(e => e.ImageCredits);
     builder.Property(e => e.Published).IsRequired();
-    builder.Property(e => e.IsBusiness);
     builder.HasOne<User>()
       .WithMany()
       .HasForeignKey(p => p.CreatedBy)

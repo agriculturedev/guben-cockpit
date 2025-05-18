@@ -23,6 +23,7 @@ public struct EventResponse
   public CoordinatesResponse? Coordinates { get; set; }
   public required IEnumerable<UrlResponse> Urls { get; set; }
   public required IEnumerable<CategoryResponse> Categories { get; set; }
+  public required IEnumerable<EventImageResponse> Images {get; set;}
   public required bool Published { get; set; }
 
   public static EventResponse Map(Event @event, CultureInfo cultureInfo)
@@ -42,8 +43,9 @@ public struct EventResponse
       EndDate = @event.EndDate,
       Location = LocationResponse.Map(@event.Location, cultureInfo),
       Coordinates = @event.Coordinates is not null ? CoordinatesResponse.Map(@event.Coordinates) : null,
-      Urls = @event.Urls.Select(UrlResponse.Map),
-      Categories = @event.Categories.Select(CategoryResponse.Map),
+      Urls = @event.Urls?.Select(UrlResponse.Map) ?? [],
+      Categories = @event.Categories?.Select(CategoryResponse.Map) ?? [],
+      Images = @event.Images?.Select(EventImageResponse.Map) ?? [],
       Published = @event.Published
     };
   }
@@ -79,3 +81,19 @@ public class UrlResponse
   }
 }
 
+public struct EventImageResponse
+{
+  public required string ThumbnailUrl {get; set;}
+  public required string PreviewUrl {get; set;}
+  public required string OriginalUrl {get; set;}
+
+  public static EventImageResponse Map(EventImage image)
+  {
+    return new EventImageResponse
+    {
+      ThumbnailUrl = image.ThumbnailUrl,
+      PreviewUrl = image.PreviewUrl,
+      OriginalUrl = image.OriginalUrl,
+    };
+  }
+}

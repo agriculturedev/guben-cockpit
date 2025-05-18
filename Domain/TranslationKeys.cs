@@ -3,6 +3,9 @@
 public class TranslationKeys
 {
   public const string MissingProjectId = "MissingProjectId";
+  public const string MissingThumbnail = "MissingThumbnail";
+  public const string MissingPreviewImage = "MissingPreviewImage";
+  public const string MissingOriginalImage = "MissingOriginalImage";
   public const string AnErrorOccured = "AnErrorOccured";
   public const string CreatingUserFailed = "CreatingUserFailed";
   public const string DashboardTabNotFound = "DashboardTabNotFound";
@@ -31,6 +34,8 @@ public class TranslationKeys
   public const string AtLeastOneLayerSourceIsRequired = "AtLeastOneLayerSourceIsRequired";
   public const string EventNotFound = "EventNotFound";
   public const string CategoryNotFound = "CategoryNotFound";
+  public const string FooterItemNotFound = "FooterItemNotFound";
   public const string NoValidTranslationsFound = "NoValidTranslationsFound";
   public const string EventNotOwnedByUser = "EventNotOwnedByUser";
+  public const string ProjectTypeInvalid = "ProjectTypeInvalid";
 }

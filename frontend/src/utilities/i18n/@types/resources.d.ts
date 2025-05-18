@@ -1,19 +1,92 @@
 interface Resources {
+  "booking": {
+    "rooms": "Räume",
+    "sportFacilities": "Sportanlagen",
+    "resources": "Ressourcen",
+    "events": "Events",
+    "booking": "Buchungen",
+    "faq": {
+      "title": "Häufig gestellte Fragen",
+      "showMore": "Mehr anzeigen",
+      "showLess": "Weniger anzeigen",
+      "items": [
+        {
+          "question": "Frage 1",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        },
+        {
+          "question": "Frage 2",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        },
+        {
+          "question": "Frage 3",
+          "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+        }
+      ]
+    },
+    "bookingComponent": {
+      "notFound": "Leider konnte das gewünschte Angebot nicht gefunden werden.",
+      "offer": "Unser Angebot"
+    },
+    "priceCard": {
+      "included": "Im Raum inkludiert sind",
+      "price": "Preis"
+    },
+    "howItWorks": {
+      "title": "So können Sie etwas buchen",
+      "steps": [
+        {
+          "number": 1,
+          "title": "Schritt eins",
+          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        },
+        {
+          "number": 2,
+          "title": "Schritt zwei",
+          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        },
+        {
+          "number": 3,
+          "title": "Schritt drei",
+          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        },
+        {
+          "number": 4,
+          "title": "Schritt vier",
+          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        }
+      ]
+    }
+  },
   "common": {
     "Actions": "Aktionen",
-    "SelectNavItem": "Wählen Sie ein Navigationselement aus",
     "Add": "Hinzufügen",
-    "Delete": "Löschen",
-    "Category": "Kategorie",
-    "Categories": "Kategorien",
+    "All": "Alle",
+    "AllEvents": "Alle veranstaltungen",
     "Cancel": "Stornieren",
-    "Url": "Url",
-    "Urls": "Urls",
+    "Categories": "Kategorien",
+    "Category": "Kategorie",
+    "ComingSoon": "Demnächst verfügbar",
     "Credits": "Bildnachweis",
     "Date": "Datum",
+    "DateAndTime": "Datum und zeit",
+    "Dates": {
+      "Always": "Immer",
+      "DateInput": "Datumseingabe",
+      "Future": "Kommend",
+      "NextMonth": "Nächsten Monat",
+      "NextWeek": "Nächste Woche",
+      "ThisMonth": "Diesen Monat",
+      "ThisWeek": "Diese Woche",
+      "ThisYear": "Dieses Jahr",
+      "Today": "Heute",
+      "Tomorrow": "Morgen"
+    },
+    "Delete": "Löschen",
     "Description": "Beschreibung",
     "Email": "E-Mail",
     "EndDate": "Enddatum",
+    "EventDetails": "Details zur Veranstaltung",
     "FullText": "Volltext",
     "ImageCaption": "Bildunterschrift",
     "ImageCredits": "Bildnachweis",
@@ -21,47 +94,40 @@ interface Resources {
     "Items": "Elemente",
     "ItemsSelected_one": "{{count}} Element ausgewählt",
     "ItemsSelected_other": "{{count}} Elemente ausgewählt",
+    "Latitude": "Latitude",
     "Links": "Links",
     "Location": "Adresse",
+    "Longitude": "Longitude",
+    "Marktplatz": "Gubener Marktplatz",
+    "MoreInformation": "Weitere Informationen",
     "Name": "Name",
     "No": "Nein",
     "NoItemsFound": "Keine Ergebnisse",
     "NoResults": "Keine Ergebnisse",
     "Page": "Seite",
+    "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}",
     "PermanentActionConfirmation": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden",
     "Save": "Speichern",
     "Search": "Suche",
-    "SelectItemToEdit": "Zum Bearbeiten Element auswählen",
     "SelectedItems": "Ausgewählte Elemente",
+    "SelectItemToEdit": "Zum Bearbeiten Element auswählen",
+    "SelectNavItem": "Wählen Sie ein Navigationselement aus",
     "ShowPreview": "Vorschau anzeigen",
     "Sorting": {
-      "Title": "Sortierung",
-      "None": "Keine Auswahl",
       "Ascending": "Aufsteigend",
-      "Descending": "Absteigend"
+      "Date": "Datum",
+      "Descending": "Absteigend",
+      "None": "Keine",
+      "Option": "Wahl",
+      "Order": "Ordnung",
+      "Title": "Titel"
     },
     "StartDate": "Startdatum",
     "Title": "Titel",
     "Total": "total",
-    "Yes": "Ja",
-    "ComingSoon": "Demnächst verfügbar",
-    "PaginationText": "Seite {{page}} von {{pageCount}}, total: {{total}}",
-    "All": "Alle",
-    "Latitude": "Latitude",
-    "Longitude": "Longitude",
-    "Dates": {
-      "Always": "Immer",
-      "Future": "Kommend",
-      "Today": "Heute",
-      "Tomorrow": "Morgen",
-      "ThisWeek": "Diese Woche",
-      "NextWeek": "Nächste Woche",
-      "ThisMonth": "Diesen Monat",
-      "NextMonth": "Nächsten Monat",
-      "ThisYear": "Dieses Jahr",
-      "DateInput": "Datumseingabe"
-    },
-    "Marktplatz": "Gubener Marktplatz"
+    "Url": "Url",
+    "Urls": "Urls",
+    "Yes": "Ja"
   },
   "dashboard": {
     "Title": "Dashboard",
@@ -69,6 +135,9 @@ interface Resources {
     "Add": "Neue Registerkarte hinzufügen",
     "Delete": "Dashboard-Registerkarte löschen",
     "TabInformation": "Registerkarten-Informationen",
+    "UploadImage": "Bild hinzufügen",
+    "Filename": "Dateiname",
+    "SelectImage": "Wählen Sie Bild aus",
     "Cards": {
       "Cards": "Karten",
       "Title": "Kartentitel",
@@ -90,6 +159,7 @@ interface Resources {
   },
   "events": {
     "Title": "Veranstaltungen",
+    "PageTitle": "Veranstaltungen in der stadt Guben",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
     "ClickHere": "Klicken Sie hier",
     "Add": "Veranstaltung hinzufügen",
@@ -98,6 +168,14 @@ interface Resources {
     "Edit": "Veranstaltung bearbeiten",
     "MyEvents": "Meine Veranstaltungen",
     "Published": "Veröffentlicht"
+  },
+  "footer": {
+    "Title": "Fußzeile",
+    "Add": "Fußzeilenelement Hinzufügen",
+    "Delete": "Fußzeilenelement löschen",
+    "Edit": "Fußzeilenelement bearbeiten",
+    "Content": "Inhalt",
+    "DeletedSuccess": "Fußzeilenelement erfolgreich gelöscht"
   },
   "locations": {
     "Title": "Orte",
@@ -117,7 +195,8 @@ interface Resources {
     "Events": "Veranstaltungen",
     "LogOut": "Abmelden",
     "Admin": "Admin",
-    "ServicePortal": "Service portal"
+    "ServicePortal": "Service portal",
+    "Booking": "Buchungen"
   },
   "pages": {
     "Title": "Seiten",
@@ -133,7 +212,13 @@ interface Resources {
     "MyProjects": "Meine Projekte",
     "Published": "Veröffentlicht",
     "AddBusiness": "Geschäft hinzufügen",
-    "IsBusiness": "ist ein Geschäft"
+    "IsBusiness": "ist ein Geschäft",
+    "Publish": "Veröffentlichen",
+    "Unpublish": "Offline nehmen",
+    "PublishSuccess": "Projekt/Geschäft erfolgreich veröffentlicht",
+    "UnpublishSuccess": "Projekt/Geschäft erfolgreich offline genommen",
+    "PublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt veröffentlicht und ist für alle sichtbar",
+    "UnpublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt offline genommen und ist nicht mehr für alle sichtbar"
   },
   "users": {
     "Title": "Benutzer"

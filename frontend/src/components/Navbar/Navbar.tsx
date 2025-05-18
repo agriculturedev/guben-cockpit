@@ -3,7 +3,7 @@ import { BaseImgTag } from "@/components/ui/BaseImgTag";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from '@tanstack/react-router';
-import { CalendarDaysIcon, ExternalLink, HomeIcon, Icon, LayoutGridIcon, LogOutIcon, MapIcon, ShieldIcon } from "lucide-react";
+import { CalendarDaysIcon, ExternalLink, HomeIcon, Icon, LayoutGridIcon, LogOutIcon, MapIcon, PlaneIcon, ShieldIcon } from "lucide-react";
 import React, { createContext, HtmlHTMLAttributes, PropsWithChildren, useCallback, useContext, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
 import { useAuth } from 'react-oidc-context';
@@ -76,9 +76,8 @@ export const Navbar = () => {
       <div className="w-full h-20 bg-white sticky top-0 shadow p-0 pr-2 rounded-b flex items-center justify-between z-50">
         <div id="logo" className="flex-1 flex justify-start items-center h-full pl-5">
           <Link to="/" className="h-full flex justify-center items-center">
-            <BaseImgTag src="/images/guben-logo.jpg" alt="logo" className={"h-2/3"} />
+            <SmartCityGubenLogoIcon className="w-[128px] h-auto" />
           </Link>
-          <SmartCityGubenLogoIcon className="w-[128px] h-auto" />
         </div>
 
         <NavList>
@@ -93,6 +92,9 @@ export const Navbar = () => {
           </NavLink>
           <NavLink to="/events" name={t("Events")}>
             <CalendarDaysIcon className={iconStyle} />
+          </NavLink>
+          <NavLink to="/booking" name={t("Booking")}>
+            <PlaneIcon className={iconStyle} />
           </NavLink>
           <NavLink name={t("ServicePortal")} to="https://serviceportal.dikom-bb.de/stadt-guben" target="_blank">
             <ServicePortalIcon className={cn(iconStyle, "size-5 stroke-gubenAccent")} />

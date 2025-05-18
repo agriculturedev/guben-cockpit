@@ -216,4 +216,19 @@ value   : The object must be serialized into a byte array
   <data name="EventNotOwnedByUser" xml:space="preserve">
     <value>Veranstaltung gehört nicht dem Benutzer</value>
   </data>
+  <data name="FooterItemNotFound" xml:space="preserve">
+    <value>Fußzeilenelement nicht gefunden</value>
+  </data>
+  <data name="MissingThumbnail" xml:space="preserve">
+    <value>Thumbnail fehlt</value>
+  </data>
+  <data name="MissingPreviewImage" xml:space="preserve">
+    <value>Vorschaubild fehlt</value>
+  </data>
+  <data name="MissingOriginalImage" xml:space="preserve">
+    <value>Originalbild fehlt</value>
+  </data>
+  <data name="ProjectTypeInvalid" xml:space="preserve">
+    <value>Projekttyp ungültig</value>
+  </data>
 </root>

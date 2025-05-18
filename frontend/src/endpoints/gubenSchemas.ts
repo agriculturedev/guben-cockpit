@@ -17,6 +17,12 @@ export type AddCardToTabQuery = {
 
 export type AddCardToTabResponse = Record<string, any>;
 
+export type AddTopicsQuery = {
+  topics?: CreateTopicQuery[];
+};
+
+export type AddTopicsResponse = Record<string, any>;
+
 export type CategoryResponse = {
   /**
    * @format uuid
@@ -43,6 +49,12 @@ export type CreateDashboardTabQuery = {
 
 export type CreateDashboardTabResponse = Record<string, any>;
 
+export type CreateEventImageQuery = {
+  thumbnailUrl: string;
+  previewUrl: string;
+  originalUrl: string;
+};
+
 export type CreateEventQuery = {
   title: string;
   description: string;
@@ -64,6 +76,7 @@ export type CreateEventQuery = {
   longitude?: number;
   urls: CreateUrlQuery[];
   categoryIds: string[];
+  images: CreateEventImageQuery[];
   /**
    * @format uuid
    */
@@ -86,16 +99,26 @@ export type CreateLocationQuery = {
 export type CreateLocationResponse = Record<string, any>;
 
 export type CreateProjectQuery = {
+  /**
+   * @format int32
+   */
+  type: number;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  isBusiness: boolean;
 };
 
 export type CreateProjectResponse = Record<string, any>;
+
+export type CreateTopicQuery = {
+  id?: string;
+  typ?: string;
+  url?: string;
+  name?: string;
+};
 
 export type CreateUrlQuery = {
   link: string;
@@ -119,8 +142,7 @@ export type DashboardTabResponse = {
 export type DataSourceResponse = {
   id: string;
   name: string;
-  wms?: SourceResponse;
-  wfs?: SourceResponse;
+  sources: SourceResponse[];
 };
 
 export type DeleteCardFromTabResponse = Record<string, any>;
@@ -129,7 +151,20 @@ export type DeleteDashboardTabResponse = Record<string, any>;
 
 export type DeleteEventResponse = Record<string, any>;
 
+export type DeleteFooterItemResponse = Record<string, any>;
+
 export type DeleteProjectResponse = Record<string, any>;
+
+export type EntityTagHeaderValue = {
+  tag?: StringSegment;
+  isWeak?: boolean;
+} | null;
+
+export type EventImageResponse = {
+  thumbnailUrl: string;
+  previewUrl: string;
+  originalUrl: string;
+};
 
 export type EventResponse = {
   /**
@@ -152,7 +187,38 @@ export type EventResponse = {
   coordinates?: CoordinatesResponse;
   urls: UrlResponse[];
   categories: CategoryResponse[];
+  images: EventImageResponse[];
   published: boolean;
+};
+
+export type FileContentResult = {
+  /**
+   * @format byte
+   */
+  fileContents?: string;
+  contentType?: string | null;
+  fileDownloadName?: string | null;
+  /**
+   * @format date-time
+   */
+  lastModified?: string | null;
+  entityTag?: EntityTagHeaderValue;
+  enableRangeProcessing?: boolean;
+};
+
+export type FilesResponse = {
+  filename: string;
+  url: string;
+  contentType: string;
+};
+
+export type FooterItemResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  name: string;
+  content: string;
 };
 
 export type GetAllBusinessesResponse = {
@@ -201,6 +267,10 @@ export type GetAllEventsResponse = {
    */
   pageCount: number;
   results: EventResponse[];
+};
+
+export type GetAllFooterItemsResponse = {
+  footerItems: FooterItemResponse[];
 };
 
 export type GetAllLocationsPagedResponse = {
@@ -253,6 +323,10 @@ export type GetAllUsersResponse = {
    */
   pageCount: number;
   results: UserResponse[];
+};
+
+export type GetEventByIdResponse = {
+  result?: EventResponse;
 };
 
 export type GetMyEventsResponse = {
@@ -319,14 +393,25 @@ export type ProblemDetails = {
 
 export type ProjectResponse = {
   id: string;
+  /**
+   * @format int32
+   */
+  type: number;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  isBusiness: boolean;
   published: boolean;
+};
+
+export type ProjectType = {
+  name?: string | null;
+  /**
+   * @format int32
+   */
+  value?: number;
 };
 
 export type PublishProjectsQuery = {
@@ -337,9 +422,24 @@ export type PublishProjectsQuery = {
 export type PublishProjectsResponse = Record<string, any>;
 
 export type SourceResponse = {
-  name: string;
+  layer_name: string;
   url: string;
-} | null;
+  type: string;
+};
+
+export type StringSegment = {
+  buffer?: string | null;
+  /**
+   * @format int32
+   */
+  offset?: number;
+  /**
+   * @format int32
+   */
+  length?: number;
+  value?: string | null;
+  hasValue?: boolean;
+};
 
 export type TopicResponse = {
   id: string;
@@ -386,13 +486,13 @@ export type UpdatePageResponse = Record<string, any>;
 
 export type UpdateProjectQuery = {
   id?: string | null;
+  type: ProjectType;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  isBusiness: boolean;
 };
 
 export type UpsertButtonQuery = {
@@ -400,6 +500,17 @@ export type UpsertButtonQuery = {
   url: string;
   openInNewTab: boolean;
 } | null;
+
+export type UpsertFooterItemQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  name: string;
+  content: string;
+};
+
+export type UpsertFooterItemResponse = Record<string, any>;
 
 export type UrlResponse = {
   link: string;

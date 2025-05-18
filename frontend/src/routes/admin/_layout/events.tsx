@@ -12,7 +12,7 @@ import { routePermissionCheck } from "@/guards/routeGuardChecks";
 
 export const Route = createFileRoute('/admin/_layout/events')({
   beforeLoad: async ({context, location}) => {
-    routePermissionCheck(context.auth, [Permissions.EventContributor, Permissions.PublishEvents])
+    await routePermissionCheck(context.auth, [Permissions.EventContributor, Permissions.PublishEvents])
   },
   component: Page
 })

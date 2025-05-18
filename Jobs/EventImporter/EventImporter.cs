@@ -118,6 +118,7 @@ public class EventImporter
 
         var coords = ParseCoordinates(xmlEvent);
 
+        var images = GetImages(xmlEvent);
         var categories = await GetCategoriesAsync(xmlEvent, German);
 
         var (eventResult, @event) = Event.Create(
@@ -132,7 +133,8 @@ public class EventImporter
           new List<Url>(),
           categories,
           cultureInfo,
-          User.SystemUserId
+          User.SystemUserId,
+          images.ToList()
         );
 
         if (eventResult.IsSuccessful)
@@ -167,6 +169,40 @@ public class EventImporter
     return null;
   }
 
+  private List<EventImage> GetImages(XmlEvent xmlEvent)
+  {
+    var images = new List<EventImage>();
+
+    var image1Result = EventImage.Create(
+        xmlEvent.Imagelink,
+        xmlEvent.Imagelinkbig,
+        xmlEvent.ImageLinkXl.Text,
+        xmlEvent.ImageLinkXl.Width,
+        xmlEvent.ImageLinkXl.Height
+    );
+    if(image1Result.IsSuccessful) images.Add(image1Result.Value);
+
+    var image2Result = EventImage.Create(
+        xmlEvent.Imagelink2,
+        xmlEvent.Imagelink2Big,
+        xmlEvent.ImageLink2Xl.Text,
+        xmlEvent.ImageLink2Xl.Width,
+        xmlEvent.ImageLink2Xl.Height
+    );
+    if(image2Result.IsSuccessful) images.Add(image1Result.Value);
+
+    var image3Result = EventImage.Create(
+        xmlEvent.Imagelink3,
+        xmlEvent.Imagelink3Big,
+        xmlEvent.ImageLink3Xl.Text,
+        xmlEvent.ImageLink3Xl.Width,
+        xmlEvent.ImageLink3Xl.Height
+    );
+    if(image3Result.IsSuccessful) images.Add(image1Result.Value);
+
+    return images;
+  }
+
   private async Task<List<Category>> GetCategoriesAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)
   {
     var categoryNames = xmlEvent.GetUserCategories(cultureInfo)
@@ -192,15 +228,14 @@ public class EventImporter
   {
     var existingEvent = await _eventRepository.GetByEventIdAndTerminIdIncludingUnpublished(@event.EventId, @event.TerminId);
     if (existingEvent != null)
-    { // TODO@JOREN: Update seems to be buggy, it is not properly adding new translations on update, perhaps ef comparison of json
-      Console.WriteLine($"Updating existing event: {@event.Id}");
+    {
+      // TODO@JOREN: Update seems to be buggy, it is not properly adding new translations on update, perhaps ef comparison of json
       var updateResult = existingEvent.Update(@event, cultureInfo);
       if (updateResult.IsFailure)
         throw new Exception($"Failed to update existing event {updateResult.ValidationMessages}");
       return;
     }
 
-    Console.WriteLine($"Creating new event: {@event.Id}");
     @event.SetPublishedState(true);
     await _eventRepository.SaveAsync(@event);
   }

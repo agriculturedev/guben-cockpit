@@ -1,4 +1,5 @@
-﻿using Domain.DashboardTab;
+﻿using Database.Comparers;
+using Domain.DashboardTab;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,7 +14,18 @@ public class DashboardTabConfiguration : IEntityTypeConfiguration<DashboardTab>
     builder.HasKey(e => e.Id);
     builder.Property(e => e.Id).ValueGeneratedNever();
 
-    builder.Property(e => e.Title);
+    var converter = I18NConverter<DashboardTabI18NData>.CreateNew();
+
+    // Define a value comparer for the dictionary, EF uses this for change tracking
+    var comparer = I18NComparer<DashboardTabI18NData>.CreateNew();
+
+
+    // Apply the conversion and comparer to the Translations property
+    builder.Property(p => p.Translations)
+      .HasColumnType("jsonb")
+      .HasConversion(converter)
+      .Metadata.SetValueComparer(comparer);
+
     builder.Property(e => e.Sequence);
     builder.Property(e => e.MapUrl);
 
@@ -25,14 +37,31 @@ public class DashboardTabConfiguration : IEntityTypeConfiguration<DashboardTab>
       icb.HasKey(p => p.Id);
       icb.Property(p => p.Id).ValueGeneratedNever();
 
-      icb.Property(p => p.Title);
-      icb.Property(p => p.Description);
+      var converter = I18NConverter<DashboardCardI18NData>.CreateNew();
+
+      // Define a value comparer for the dictionary, EF uses this for change tracking
+      var comparer = I18NComparer<DashboardCardI18NData>.CreateNew();
+
+      // Apply the conversion and comparer to the Translations property
+      icb.Property(p => p.Translations)
+        .HasColumnType("jsonb")
+        .HasConversion(converter)
+        .Metadata.SetValueComparer(comparer);
+
       icb.Property(p => p.ImageUrl);
-      icb.Property(p => p.ImageAlt);
       icb.OwnsOne(p => p.Button, bb =>
       {
-        bb.Property(p => p.Title);
-        bb.Property(p => p.Url);
+        var converter = I18NConverter<ButtonI18NData>.CreateNew();
+
+        // Define a value comparer for the dictionary, EF uses this for change tracking
+        var comparer = I18NComparer<ButtonI18NData>.CreateNew();
+
+
+        bb.Property(p => p.Translations)
+          .HasColumnType("jsonb")
+          .HasConversion(converter)
+          .Metadata.SetValueComparer(comparer);
+
         bb.Property(p => p.OpenInNewTab);
       });
     });

@@ -52,9 +52,9 @@ namespace Database.Migrations
                     b.Property<int>("Sequence")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Translations")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.HasKey("Id");
 
@@ -105,6 +105,24 @@ namespace Database.Migrations
                     b.HasIndex("EventId", "TerminId");
 
                     b.ToTable("Event", "Guben");
+                });
+
+            modelBuilder.Entity("Domain.FooterItems.FooterItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FooterItem", "Guben");
                 });
 
             modelBuilder.Entity("Domain.Locations.Location", b =>
@@ -179,9 +197,6 @@ namespace Database.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsBusiness")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("Published")
                         .HasColumnType("boolean");
 
@@ -189,11 +204,73 @@ namespace Database.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
 
                     b.ToTable("Project", "Guben");
+                });
+
+            modelBuilder.Entity("Domain.Topic.DataSource", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TopicId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("DataSource", "Guben");
+                });
+
+            modelBuilder.Entity("Domain.Topic.Source", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DataSourceId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LayerName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DataSourceId");
+
+                    b.ToTable("Source", "Guben");
+                });
+
+            modelBuilder.Entity("Domain.Topic.Topic", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Topic", "Guben");
                 });
 
             modelBuilder.Entity("Domain.Users.User", b =>
@@ -263,17 +340,12 @@ namespace Database.Migrations
                             b1.Property<Guid>("DashboardTabId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<string>("Description")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("ImageAlt")
-                                .HasColumnType("text");
-
                             b1.Property<string>("ImageUrl")
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Title")
-                                .HasColumnType("text");
+                            b1.Property<string>("Translations")
+                                .IsRequired()
+                                .HasColumnType("jsonb");
 
                             b1.HasKey("Id");
 
@@ -292,13 +364,9 @@ namespace Database.Migrations
                                     b2.Property<bool>("OpenInNewTab")
                                         .HasColumnType("boolean");
 
-                                    b2.Property<string>("Title")
+                                    b2.Property<string>("Translations")
                                         .IsRequired()
-                                        .HasColumnType("text");
-
-                                    b2.Property<string>("Url")
-                                        .IsRequired()
-                                        .HasColumnType("text");
+                                        .HasColumnType("jsonb");
 
                                     b2.HasKey("InformationCardId");
 
@@ -328,6 +396,36 @@ namespace Database.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.OwnsMany("Domain.Events.EventImage", "Images", b1 =>
+                        {
+                            b1.Property<Guid>("EventId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("OriginalUrl")
+                                .HasColumnType("text");
+
+                            b1.Property<int?>("Height")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("PreviewUrl")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("ThumbnailUrl")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<int?>("Width")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("EventId", "OriginalUrl");
+
+                            b1.ToTable("EventImages", "Guben");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EventId");
+                        });
+
                     b.OwnsMany("Domain.Urls.Url", "Urls", b1 =>
                         {
                             b1.Property<Guid>("EventId")
@@ -355,6 +453,8 @@ namespace Database.Migrations
                                 .HasForeignKey("EventId");
                         });
 
+                    b.Navigation("Images");
+
                     b.Navigation("Location");
 
                     b.Navigation("Urls");
@@ -367,6 +467,20 @@ namespace Database.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Topic.DataSource", b =>
+                {
+                    b.HasOne("Domain.Topic.Topic", null)
+                        .WithMany("DataSources")
+                        .HasForeignKey("TopicId");
+                });
+
+            modelBuilder.Entity("Domain.Topic.Source", b =>
+                {
+                    b.HasOne("Domain.Topic.DataSource", null)
+                        .WithMany("Sources")
+                        .HasForeignKey("DataSourceId");
                 });
 
             modelBuilder.Entity("EventCategory", b =>
@@ -387,6 +501,16 @@ namespace Database.Migrations
             modelBuilder.Entity("Domain.Locations.Location", b =>
                 {
                     b.Navigation("Events");
+                });
+
+            modelBuilder.Entity("Domain.Topic.DataSource", b =>
+                {
+                    b.Navigation("Sources");
+                });
+
+            modelBuilder.Entity("Domain.Topic.Topic", b =>
+                {
+                    b.Navigation("DataSources");
                 });
 #pragma warning restore 612, 618
         }

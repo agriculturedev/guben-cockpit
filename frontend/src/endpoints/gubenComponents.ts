@@ -668,6 +668,280 @@ export const usePagesUpdate = (
   });
 };
 
+export type NextcloudGetFilesQueryParams = {
+  /**
+   * @default
+   */
+  path?: string;
+};
+
+export type NextcloudGetFilesError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudGetFilesResponse = string[];
+
+export type NextcloudGetFilesVariables = {
+  queryParams?: NextcloudGetFilesQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudGetFiles = (
+  variables: NextcloudGetFilesVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    NextcloudGetFilesResponse,
+    NextcloudGetFilesError,
+    undefined,
+    {},
+    NextcloudGetFilesQueryParams,
+    {}
+  >({ url: "/nextcloud/files", method: "get", ...variables, signal });
+
+export const useNextcloudGetFiles = <TData = NextcloudGetFilesResponse,>(
+  variables: NextcloudGetFilesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      NextcloudGetFilesResponse,
+      NextcloudGetFilesError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    NextcloudGetFilesResponse,
+    NextcloudGetFilesError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/files",
+      operationId: "nextcloudGetFiles",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudGetFiles({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type NextcloudGetImagesQueryParams = {
+  /**
+   * @default
+   */
+  path?: string;
+};
+
+export type NextcloudGetImagesError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudGetImagesResponse = Schemas.FilesResponse[];
+
+export type NextcloudGetImagesVariables = {
+  queryParams?: NextcloudGetImagesQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudGetImages = (
+  variables: NextcloudGetImagesVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    NextcloudGetImagesResponse,
+    NextcloudGetImagesError,
+    undefined,
+    {},
+    NextcloudGetImagesQueryParams,
+    {}
+  >({ url: "/nextcloud/images", method: "get", ...variables, signal });
+
+export const useNextcloudGetImages = <TData = NextcloudGetImagesResponse,>(
+  variables: NextcloudGetImagesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      NextcloudGetImagesResponse,
+      NextcloudGetImagesError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    NextcloudGetImagesResponse,
+    NextcloudGetImagesError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/images",
+      operationId: "nextcloudGetImages",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudGetImages({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type NextcloudGetImageQueryParams = {
+  filename?: string;
+};
+
+export type NextcloudGetImageError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudGetImageVariables = {
+  queryParams?: NextcloudGetImageQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudGetImage = (
+  variables: NextcloudGetImageVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.FileContentResult,
+    NextcloudGetImageError,
+    undefined,
+    {},
+    NextcloudGetImageQueryParams,
+    {}
+  >({ url: "/nextcloud/image", method: "get", ...variables, signal });
+
+export const useNextcloudGetImage = <TData = Schemas.FileContentResult,>(
+  variables: NextcloudGetImageVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.FileContentResult,
+      NextcloudGetImageError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.FileContentResult,
+    NextcloudGetImageError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/image",
+      operationId: "nextcloudGetImage",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudGetImage({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type NextcloudGetFileQueryParams = {
+  filename?: string;
+};
+
+export type NextcloudGetFileError = Fetcher.ErrorWrapper<{
+  status: 404;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type NextcloudGetFileVariables = {
+  queryParams?: NextcloudGetFileQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudGetFile = (
+  variables: NextcloudGetFileVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.FileContentResult,
+    NextcloudGetFileError,
+    undefined,
+    {},
+    NextcloudGetFileQueryParams,
+    {}
+  >({ url: "/nextcloud", method: "get", ...variables, signal });
+
+export const useNextcloudGetFile = <TData = Schemas.FileContentResult,>(
+  variables: NextcloudGetFileVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.FileContentResult,
+      NextcloudGetFileError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.FileContentResult,
+    NextcloudGetFileError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud",
+      operationId: "nextcloudGetFile",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudGetFile({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type NextcloudCreateFileQueryParams = {
+  filename?: string;
+};
+
+export type NextcloudCreateFileError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudCreateFileRequestBody = {
+  /**
+   * @format binary
+   */
+  file?: Blob;
+};
+
+export type NextcloudCreateFileVariables = {
+  body?: NextcloudCreateFileRequestBody;
+  queryParams?: NextcloudCreateFileQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudCreateFile = (
+  variables: NextcloudCreateFileVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    undefined,
+    NextcloudCreateFileError,
+    NextcloudCreateFileRequestBody,
+    {},
+    NextcloudCreateFileQueryParams,
+    {}
+  >({ url: "/nextcloud", method: "post", ...variables, signal });
+
+export const useNextcloudCreateFile = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      NextcloudCreateFileError,
+      NextcloudCreateFileVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    undefined,
+    NextcloudCreateFileError,
+    NextcloudCreateFileVariables
+  >({
+    mutationFn: (variables: NextcloudCreateFileVariables) =>
+      fetchNextcloudCreateFile({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type LocationsGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -825,39 +1099,236 @@ export const useLocationsGetAllPaged = <
   });
 };
 
-export type TopicsError = Fetcher.ErrorWrapper<{
+export type GetTopicsError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
-export type TopicsVariables = GubenContext["fetcherOptions"];
+export type GetTopicsVariables = GubenContext["fetcherOptions"];
 
-export const fetchTopics = (variables: TopicsVariables, signal?: AbortSignal) =>
-  gubenFetch<Schemas.GetTopicsResponse, TopicsError, undefined, {}, {}, {}>({
+export const fetchGetTopics = (
+  variables: GetTopicsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<Schemas.GetTopicsResponse, GetTopicsError, undefined, {}, {}, {}>({
     url: "/geo/topics",
     method: "get",
     ...variables,
     signal,
   });
 
-export const useTopics = <TData = Schemas.GetTopicsResponse,>(
-  variables: TopicsVariables,
+export const useGetTopics = <TData = Schemas.GetTopicsResponse,>(
+  variables: GetTopicsVariables,
   options?: Omit<
-    reactQuery.UseQueryOptions<Schemas.GetTopicsResponse, TopicsError, TData>,
+    reactQuery.UseQueryOptions<
+      Schemas.GetTopicsResponse,
+      GetTopicsError,
+      TData
+    >,
     "queryKey" | "queryFn" | "initialData"
   >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
-  return reactQuery.useQuery<Schemas.GetTopicsResponse, TopicsError, TData>({
+  return reactQuery.useQuery<Schemas.GetTopicsResponse, GetTopicsError, TData>({
     queryKey: queryKeyFn({
       path: "/geo/topics",
-      operationId: "topics",
+      operationId: "getTopics",
       variables,
     }),
     queryFn: ({ signal }) =>
-      fetchTopics({ ...fetcherOptions, ...variables }, signal),
+      fetchGetTopics({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
+  });
+};
+
+export type AddTopicsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type AddTopicsVariables = {
+  body?: Schemas.AddTopicsQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchAddTopics = (
+  variables: AddTopicsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.AddTopicsResponse,
+    AddTopicsError,
+    Schemas.AddTopicsQuery,
+    {},
+    {},
+    {}
+  >({ url: "/geo/topics", method: "post", ...variables, signal });
+
+export const useAddTopics = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.AddTopicsResponse,
+      AddTopicsError,
+      AddTopicsVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.AddTopicsResponse,
+    AddTopicsError,
+    AddTopicsVariables
+  >({
+    mutationFn: (variables: AddTopicsVariables) =>
+      fetchAddTopics({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type FooterItemsGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type FooterItemsGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchFooterItemsGetAll = (
+  variables: FooterItemsGetAllVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllFooterItemsResponse,
+    FooterItemsGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/footeritem", method: "get", ...variables, signal });
+
+export const useFooterItemsGetAll = <
+  TData = Schemas.GetAllFooterItemsResponse,
+>(
+  variables: FooterItemsGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllFooterItemsResponse,
+      FooterItemsGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllFooterItemsResponse,
+    FooterItemsGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/footeritem",
+      operationId: "footerItemsGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchFooterItemsGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type FooterUpsertItemError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type FooterUpsertItemVariables = {
+  body: Schemas.UpsertFooterItemQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchFooterUpsertItem = (
+  variables: FooterUpsertItemVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpsertFooterItemResponse,
+    FooterUpsertItemError,
+    Schemas.UpsertFooterItemQuery,
+    {},
+    {},
+    {}
+  >({ url: "/footeritem", method: "post", ...variables, signal });
+
+export const useFooterUpsertItem = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpsertFooterItemResponse,
+      FooterUpsertItemError,
+      FooterUpsertItemVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpsertFooterItemResponse,
+    FooterUpsertItemError,
+    FooterUpsertItemVariables
+  >({
+    mutationFn: (variables: FooterUpsertItemVariables) =>
+      fetchFooterUpsertItem({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type FooterDeleteItemPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type FooterDeleteItemError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type FooterDeleteItemVariables = {
+  pathParams: FooterDeleteItemPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchFooterDeleteItem = (
+  variables: FooterDeleteItemVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteFooterItemResponse,
+    FooterDeleteItemError,
+    undefined,
+    {},
+    {},
+    FooterDeleteItemPathParams
+  >({ url: "/footeritem/{id}", method: "delete", ...variables, signal });
+
+export const useFooterDeleteItem = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteFooterItemResponse,
+      FooterDeleteItemError,
+      FooterDeleteItemVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteFooterItemResponse,
+    FooterDeleteItemError,
+    FooterDeleteItemVariables
+  >({
+    mutationFn: (variables: FooterDeleteItemVariables) =>
+      fetchFooterDeleteItem({ ...fetcherOptions, ...variables }),
+    ...options,
   });
 };
 
@@ -1086,6 +1557,64 @@ export const useEventsDeleteEvent = (
     mutationFn: (variables: EventsDeleteEventVariables) =>
       fetchEventsDeleteEvent({ ...fetcherOptions, ...variables }),
     ...options,
+  });
+};
+
+export type EventsGetByIdPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type EventsGetByIdError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsGetByIdVariables = {
+  pathParams: EventsGetByIdPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsGetById = (
+  variables: EventsGetByIdVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetEventByIdResponse,
+    EventsGetByIdError,
+    undefined,
+    {},
+    {},
+    EventsGetByIdPathParams
+  >({ url: "/events/{id}", method: "get", ...variables, signal });
+
+export const useEventsGetById = <TData = Schemas.GetEventByIdResponse,>(
+  variables: EventsGetByIdVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetEventByIdResponse,
+      EventsGetByIdError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetEventByIdResponse,
+    EventsGetByIdError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/events/{id}",
+      operationId: "eventsGetById",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchEventsGetById({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
   });
 };
 
@@ -1543,6 +2072,26 @@ export type QueryOperation =
       variables: PagesGetVariables;
     }
   | {
+      path: "/nextcloud/files";
+      operationId: "nextcloudGetFiles";
+      variables: NextcloudGetFilesVariables;
+    }
+  | {
+      path: "/nextcloud/images";
+      operationId: "nextcloudGetImages";
+      variables: NextcloudGetImagesVariables;
+    }
+  | {
+      path: "/nextcloud/image";
+      operationId: "nextcloudGetImage";
+      variables: NextcloudGetImageVariables;
+    }
+  | {
+      path: "/nextcloud";
+      operationId: "nextcloudGetFile";
+      variables: NextcloudGetFileVariables;
+    }
+  | {
       path: "/locations";
       operationId: "locationsGetAll";
       variables: LocationsGetAllVariables;
@@ -1554,8 +2103,13 @@ export type QueryOperation =
     }
   | {
       path: "/geo/topics";
-      operationId: "topics";
-      variables: TopicsVariables;
+      operationId: "getTopics";
+      variables: GetTopicsVariables;
+    }
+  | {
+      path: "/footeritem";
+      operationId: "footerItemsGetAll";
+      variables: FooterItemsGetAllVariables;
     }
   | {
       path: "/events";
@@ -1566,6 +2120,11 @@ export type QueryOperation =
       path: "/events/owned";
       operationId: "eventsGetMyEvents";
       variables: EventsGetMyEventsVariables;
+    }
+  | {
+      path: "/events/{id}";
+      operationId: "eventsGetById";
+      variables: EventsGetByIdVariables;
     }
   | {
       path: "/dashboard";

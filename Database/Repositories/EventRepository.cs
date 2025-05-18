@@ -28,6 +28,16 @@ public class EventRepository
       .FirstOrDefaultAsync(a => a.Id.Equals(id));
   }
 
+  public Task<Event?> GetById(Guid id)
+  {
+    return Set
+      .TagWith(GetType().Name + '.' + nameof(GetById))
+      .Include(e => e.Location)
+      .Include(e => e.Urls)
+      .Include(e => e.Categories)
+      .FirstOrDefaultAsync(e => e.Id.Equals(id));
+  }
+
   public IEnumerable<Event> GetAllIncludingUnpublished()
   {
     return Set

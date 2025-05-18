@@ -1,12 +1,10 @@
-﻿using System.Text.Json;
+﻿using Database.Comparers;
 using Database.Converters;
 using Domain.Category;
 using Domain.Events;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Database.EntityConfigurations;
 
@@ -34,23 +32,10 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
       .HasForeignKey(p => p.CreatedBy)
       .OnDelete(DeleteBehavior.Restrict);
 
-    var jsonOptions = new JsonSerializerOptions();
-
-    var converter = new ValueConverter<Dictionary<string, EventI18NData>, string>(
-      v => JsonSerializer.Serialize(v, jsonOptions),
-      v => JsonSerializer.Deserialize<Dictionary<string, EventI18NData>>(v, jsonOptions) ??
-           new Dictionary<string, EventI18NData>()
-    );
+    var converter = I18NConverter<EventI18NData>.CreateNew();
 
     // Define a value comparer for the dictionary, EF uses this for change tracking
-    var comparer = new ValueComparer<Dictionary<string, EventI18NData>>(
-      (d1, d2) => JsonSerializer.Serialize(d1, jsonOptions) ==
-                  JsonSerializer.Serialize(d2, jsonOptions), // Compare as JSON
-      d => JsonSerializer.Serialize(d, jsonOptions).GetHashCode(), // Hash the JSON string
-      d => JsonSerializer.Deserialize<Dictionary<string, EventI18NData>>(JsonSerializer.Serialize(d, jsonOptions),
-        jsonOptions)! // Clone via JSON
-    );
-
+    var comparer = I18NComparer<EventI18NData>.CreateNew();
 
     // Apply the conversion and comparer to the Translations property
     builder.Property(p => p.Translations)
@@ -70,6 +55,19 @@ public class EventConfiguration : IEntityTypeConfiguration<Event>
 
       urlBuilder.Property(u => u.Link).IsRequired();
       urlBuilder.Property(u => u.Description).IsRequired();
+    });
+
+    builder.OwnsMany(e => e.Images, imagesBuilder => {
+      imagesBuilder.WithOwner().HasForeignKey("EventId");
+
+      imagesBuilder.Property(e => e.ThumbnailUrl);
+      imagesBuilder.Property(e => e.PreviewUrl);
+      imagesBuilder.Property(e => e.OriginalUrl);
+      imagesBuilder.Property(e => e.Width);
+      imagesBuilder.Property(e => e.Height);
+
+      imagesBuilder.HasKey("EventId", "OriginalUrl"); //composite key to link url + event together
+      imagesBuilder.ToTable("EventImages");
     });
 
     builder.HasMany(e => e.Categories)
