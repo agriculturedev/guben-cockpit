@@ -37,4 +37,5 @@ public class TranslationKeys
   public const string FooterItemNotFound = "FooterItemNotFound";
   public const string NoValidTranslationsFound = "NoValidTranslationsFound";
   public const string EventNotOwnedByUser = "EventNotOwnedByUser";
+  public const string ProjectTypeInvalid = "ProjectTypeInvalid";
 }

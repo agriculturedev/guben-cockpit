@@ -228,4 +228,7 @@ value   : The object must be serialized into a byte array
   <data name="MissingOriginalImage" xml:space="preserve">
     <value>Originalbild fehlt</value>
   </data>
+  <data name="ProjectTypeInvalid" xml:space="preserve">
+    <value>Projekttyp ungültig</value>
+  </data>
 </root>

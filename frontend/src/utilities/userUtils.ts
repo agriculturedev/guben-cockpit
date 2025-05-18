@@ -20,25 +20,44 @@ type TokenRoles = {
   roles: string[];
 }
 
-type TokenDetails = TokenBaseDetails & TokenRoles;
+export type TokenDetails = TokenBaseDetails & TokenRoles;
+
+// tiomeout at 100 to go through faster because
+export const waitForAuthToLoad = async (auth: AuthContextProps, timeoutMs = 100): Promise<void> => {
+  const start = Date.now();
+
+  return new Promise((resolve, reject) => {
+    const check = async () => {
+      if (!auth.isLoading) {
+        resolve();
+      } else if (Date.now() - start > timeoutMs) {
+        reject(new Error("Timed out waiting for auth to finish loading"));
+      } else {
+        setTimeout(check, 100);
+      }
+    };
+    check();
+  });
+};
 
 // this is required because react-oidc-context uses the ID token, not the access token, so accessing user roles requires some custom logic with the access token
-export const getUserFromAuth = (auth: AuthContextProps): TokenDetails | null => {
+export const getUserFromAuth = async (auth: AuthContextProps): Promise<TokenDetails | null> => {
+  try {
+    await waitForAuthToLoad(auth);
 
-  if (auth.isAuthenticated && auth.user?.access_token) {
-    try {
+    if (auth.isAuthenticated && auth.user?.access_token) {
       const decoded = jwtDecode<CustomTokenPayload>(auth.user.access_token);
       return {
         ...decoded,
         roles: decoded.realm_access.roles,
       };
-    } catch (error) {
-      console.error("Token parsing error:", error);
-      return null;
     }
-  }
 
-  return null;
+    return null;
+  } catch (error) {
+    console.error("Error while getting user from auth:", error);
+    return null;
+  }
 };
 
 export const userHasPermission = (user: TokenDetails, permission: Permissions) => {

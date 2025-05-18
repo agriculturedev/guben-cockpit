@@ -62,18 +62,18 @@ function mapProjectToForm(project: ProjectResponse): FormSchema {
     imageCaption: project.imageCaption ?? null,
     imageUrl: project.imageUrl ?? null,
     imageCredits: project.imageCredits ?? null,
-    isBusiness: project.isBusiness ?? false,
+    isBusiness: project.catName === "Gubener Marktplatz" ? true : false,
   }
 }
 
 function mapFormToEditProjectQuery(form: FormSchema): UpdateProjectQuery {
   return {
+    catName: form.isBusiness ? "Gubener Marktplatz" : "Stadtentwicklung",
     title: form.title,
     description: form.description,
     fullText: form.fullText,
     imageCaption: form.imageCaption,
     imageCredits: form.imageCredits,
-    imageUrl: form.imageUrl,
-    isBusiness: form.isBusiness
+    imageUrl: form.imageUrl
   }
 }

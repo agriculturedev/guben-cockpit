@@ -78,19 +78,23 @@ public class ProjectImporter
 
   private async Task UpsertProjectAsync(RawProject rawProject)
   {
-    if (rawProject.Id is null || rawProject.Title is null)
-      throw new NullReferenceException("id and title are required");
+    if (rawProject.Id is null || rawProject.Title is null || rawProject.CatName is null)
+      throw new NullReferenceException("id, catName and title are required");
+
+    if (!ProjectType.TryFromName(rawProject.CatName, out var type))
+      throw new InvalidCastException("Invalid project type: " + rawProject.CatName);
+
 
     var (result, project) = Project.Create(
       rawProject.Id,
+      type,
       rawProject.Title,
       rawProject.Introtext,
       rawProject.Fulltext,
       rawProject.ImageCaption,
       rawProject.ImageUrl,
       rawProject.ImageCredits,
-      User.SystemUserId,
-      false
+      User.SystemUserId
     );
 
     if (result.IsSuccessful)
@@ -100,6 +104,7 @@ public class ProjectImporter
       if (existingProject is not null)
       {
         existingProject.Update(
+          project.Type,
           project.Title,
           project.Description,
           project.FullText,
@@ -225,6 +230,9 @@ internal class RawProject
 
   [JsonPropertyName("catid")]
   public string? Catid { get; set; }
+
+  [JsonPropertyName("cat_name")]
+  public string? CatName { get; set; }
 
   [JsonPropertyName("title")]
   public string? Title { get; set; }

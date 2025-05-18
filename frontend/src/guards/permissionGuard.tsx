@@ -8,10 +8,17 @@ interface Props extends PropsWithChildren {
 }
 
 export const PermissionGuard = ({children, permissions}: Props) => {
-  const user = useUser();
+  const { data: user, isLoading } = useUser();
 
-  if (!user || !userHasPermissions(user, permissions))
+  if (isLoading) {
+    // Optionally show a loader while checking permissions
+    return <div>Loading...</div>;
+  }
+
+  if (!user || !userHasPermissions(user, permissions)) {
+    // Optionally show an "access denied" message
     return null;
+  }
 
-  return children;
+  return <>{children}</>;
 }
