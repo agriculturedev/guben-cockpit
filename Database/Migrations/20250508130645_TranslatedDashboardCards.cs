@@ -10,6 +10,26 @@ namespace Database.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+          migrationBuilder.AddColumn<string>(
+            name: "Translations",
+            schema: "Guben",
+            table: "InformationCard",
+            type: "jsonb",
+            nullable: false,
+            defaultValue: "");
+
+          migrationBuilder.Sql(@"
+            UPDATE ""Guben"".""InformationCard""
+            SET ""Translations"" = jsonb_build_object(
+              'de',
+              jsonb_build_object(
+                'Title', ""Title"",
+                'ImageAlt', ""ImageAlt"",
+                'Description', ""Description""
+              )
+            )
+          ");
+
             migrationBuilder.DropColumn(
                 name: "Description",
                 schema: "Guben",
@@ -25,13 +45,7 @@ namespace Database.Migrations
                 schema: "Guben",
                 table: "InformationCard");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Translations",
-                schema: "Guben",
-                table: "InformationCard",
-                type: "jsonb",
-                nullable: false,
-                defaultValue: "");
+
         }
 
         /// <inheritdoc />

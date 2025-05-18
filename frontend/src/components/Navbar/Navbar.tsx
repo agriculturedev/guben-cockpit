@@ -76,9 +76,8 @@ export const Navbar = () => {
       <div className="w-full h-20 bg-white sticky top-0 shadow p-0 pr-2 rounded-b flex items-center justify-between z-50">
         <div id="logo" className="flex-1 flex justify-start items-center h-full pl-5">
           <Link to="/" className="h-full flex justify-center items-center">
-            <BaseImgTag src="/images/guben-logo.jpg" alt="logo" className={"h-2/3"} />
+            <SmartCityGubenLogoIcon className="w-[128px] h-auto" />
           </Link>
-          <SmartCityGubenLogoIcon className="w-[128px] h-auto" />
         </div>
 
         <NavList>

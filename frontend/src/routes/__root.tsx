@@ -20,12 +20,12 @@ function RootComponent() {
       </div>
       <Footer/>
       <Toaster/>
-      {import.meta.env.DEV && (
-        <>
-          <ReactQueryDevtools initialIsOpen={false} position={"bottom"} />
-          <TanStackRouterDevtools position="bottom-left" />
-        </>
-      )}
+      {/*{import.meta.env.DEV && (*/}
+      {/*  <>*/}
+      {/*    <ReactQueryDevtools initialIsOpen={false} position={"bottom"} />*/}
+      {/*    <TanStackRouterDevtools position="bottom-left" />*/}
+      {/*  </>*/}
+      {/*)}*/}
     </div>
   )
 }
