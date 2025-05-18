@@ -9,7 +9,6 @@ namespace Domain.DashboardTab;
 public sealed class DashboardTab : Entity<Guid>
 {
   public Dictionary<string, DashboardTabI18NData> Translations { get; private set; } = new();
-
   public int Sequence { get; private set; }
   public string MapUrl { get; private set; }
   private readonly List<InformationCard> _informationCards = [];
