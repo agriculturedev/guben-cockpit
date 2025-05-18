@@ -1,6 +1,7 @@
 import { SortDescIcon } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "../ui/dropdown-menu";
+import { useTranslation } from "react-i18next";
 import { Button } from "../ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 export enum SortOption {
   NONE = "none",
@@ -24,25 +25,27 @@ export default function SortFilter({
   order = SortOrder.ASC,
   onChange
 }: Props) {
+  const {t} = useTranslation("common");
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline"><SortDescIcon className="size-4" /></Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="flex flex-col gap-2">
-        <DropdownMenuLabel>Option</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("Sorting.Option")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={option} onValueChange={v => onChange(v == "none" ? undefined : v, order)}>
-          <DropdownMenuRadioItem value={SortOption.NONE}>(none)</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value={SortOption.TITLE}>Title</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value={SortOption.START_DATE}>Date</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value={SortOption.NONE}>({t("Sorting.None")})</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value={SortOption.TITLE}>{t("Sorting.Title")}</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value={SortOption.START_DATE}>{t("Sorting.Date")}</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
 
-        <DropdownMenuLabel>Order</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("Sorting.Order")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={order} onValueChange={v => onChange(option, v)}>
-          <DropdownMenuRadioItem value={SortOrder.ASC}>Ascending</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value={SortOrder.DESC}>Descending</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value={SortOrder.ASC}>{t("Sorting.Ascending")}</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value={SortOrder.DESC}>{t("Sorting.Descending")}</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

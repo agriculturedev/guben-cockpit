@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { useEventsGetById } from '@/endpoints/gubenComponents';
-import { cn } from '@/lib/utils';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { ArrowLeftIcon, ClockIcon, MapPinIcon } from 'lucide-react';
 import { useMemo } from 'react';
@@ -34,7 +33,7 @@ function RouteComponent() {
         onClick={() => navigate({to: "/events"})}
       >
         <ArrowLeftIcon className='size-4'/>
-        <p>All events</p>
+        <p>{t("AllEvents")}</p>
       </Button>
       {<ImageSection url={data.result.images.length > 0 ? data.result.images[0].originalUrl : "/images/stadt-guben.jpg"} />}
 
@@ -49,7 +48,7 @@ function RouteComponent() {
           <h1 className='font-bold'>{data.result.title}</h1>
 
           <div className='space-y-1'>
-            <p className='flex gap-2 flex-nowrap items-center text-neutral-500'><ClockIcon className='size-4' /> Date and Time</p>
+            <p className='flex gap-2 flex-nowrap items-center text-neutral-500'><ClockIcon className='size-4' /> {t("DateAndTime")}</p>
             <p className='flex gap-1 text-neutral-800'>
               {startDate && <p>{startDate?.formatDateTime().replaceAll(".", "/")}</p>}
               {startDate && endDate && "-"}
@@ -58,14 +57,14 @@ function RouteComponent() {
           </div>
 
           <div className='space-y-1'>
-            <p className='flex flex-nowrap items-center gap-2 text-neutral-500'><MapPinIcon className='size-4' /> Location</p>
+            <p className='flex flex-nowrap items-center gap-2 text-neutral-500'><MapPinIcon className='size-4' /> {t("Location")}</p>
             <p className='flex gap-1'>{`${data.result.location.street}, ${data.result.location.zip} ${data.result.location.city} (${data.result.location.name})`}</p>
           </div>
         </div>
 
         <div>
           <div className='w-full lg:w-1/2 space-y-2'>
-            <h2 className='font-bold'>Event details</h2>
+            <h2 className='font-bold'>{t("EventDetails")}</h2>
             <p className='text-neutral-600'>{data.result.description}</p>
           </div>
         </div>
