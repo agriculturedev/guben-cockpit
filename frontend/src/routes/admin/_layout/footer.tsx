@@ -15,7 +15,7 @@ import DeleteFooterItemDialog from '@/components/admin/footer/deleteFooterItemDi
 
 export const Route = createFileRoute('/admin/_layout/footer')({
   beforeLoad: async ({context, location}) => {
-    routePermissionCheck(context.auth, [Permissions.FooterManager])
+    await routePermissionCheck(context.auth, [Permissions.FooterManager])
   },
   component: WrappedComponent,
 })

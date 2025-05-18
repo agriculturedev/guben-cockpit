@@ -1,4 +1,6 @@
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Text.Json.Serialization;
 using Shared.Domain;
 using Shared.Domain.Validation;
 
@@ -6,33 +8,49 @@ namespace Domain.DashboardTab;
 
 public sealed class DashboardTab : Entity<Guid>
 {
-  public string Title { get; private set; }
+  public Dictionary<string, DashboardTabI18NData> Translations { get; private set; } = new();
   public int Sequence { get; private set; }
   public string MapUrl { get; private set; }
   private readonly List<InformationCard> _informationCards = [];
   public IReadOnlyCollection<InformationCard> InformationCards => new ReadOnlyCollection<InformationCard>(_informationCards);
 
-  private DashboardTab(string title, int sequence, string mapUrl)
+  private DashboardTab(int sequence, string mapUrl)
   {
     Id = Guid.CreateVersion7();
-    Title = title;
     Sequence = sequence;
     MapUrl = mapUrl;
   }
 
-  public static Result<DashboardTab> Create(string title, int sequence, string mapUrl, List<InformationCard> informationCards)
+  public static Result<DashboardTab> Create(string title, int sequence, string mapUrl, List<InformationCard> informationCards, CultureInfo cultureInfo)
   {
-    var dashboardTab = new DashboardTab(title, sequence, mapUrl);
+    var dashboardTab = new DashboardTab(sequence, mapUrl);
     dashboardTab.AddInformationCards(informationCards);
+
+    var updateResult = dashboardTab.UpdateTranslation(title, cultureInfo);
+    if (updateResult.IsFailure)
+      return updateResult;
 
     return dashboardTab;
   }
 
-  public Result Update(string title, string mapUrl)
+  public Result Update(string title, string mapUrl, CultureInfo cultureInfo)
   {
-    Title = title;
+    var updateTranslationResult = UpdateTranslation(title, cultureInfo);
+    if (updateTranslationResult.IsFailure)
+      return updateTranslationResult;
+
     MapUrl = mapUrl;
 
+    return Result.Ok();
+  }
+
+  public Result UpdateTranslation(string title, CultureInfo cultureInfo)
+  {
+    var (result, pageI18NData) = DashboardTabI18NData.Create(title);
+    if (result.IsFailure)
+      return result;
+
+    Translations[cultureInfo.TwoLetterISOLanguageName] = pageI18NData;
     return Result.Ok();
   }
 
@@ -62,5 +80,21 @@ public sealed class DashboardTab : Entity<Guid>
 
     _informationCards.Remove(infoCard);
     return Result.Ok();
+  }
+}
+
+public sealed class DashboardTabI18NData
+{
+  public string Title { get; private set; }
+
+  [JsonConstructor]
+  private DashboardTabI18NData(string title)
+  {
+    Title = title;
+  }
+
+  public static Result<DashboardTabI18NData> Create(string title)
+  {
+    return new DashboardTabI18NData(title);
   }
 }

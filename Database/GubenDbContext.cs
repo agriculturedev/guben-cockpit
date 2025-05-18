@@ -1,6 +1,6 @@
-﻿using Domain.DashboardTab;
-using Domain.Users;
+﻿using Domain.Users;
 using Microsoft.EntityFrameworkCore;
+using SmartEnum.EFCore;
 
 namespace Database;
 
@@ -16,7 +16,7 @@ public class GubenDbContext : DbContext
   { }
 
   // add dbsets here
-  
+
   /// <summary>
   /// Configure the model that was discovered by convention from the entity types exposed in <see cref="DbSet{TEntity}"/> properties on this context.
   /// </summary>
@@ -27,5 +27,10 @@ public class GubenDbContext : DbContext
     modelBuilder.ApplyConfigurationsFromAssembly(typeof(GubenDbContext).Assembly);
 
     modelBuilder.Entity<User>().HasData(User.SystemUser);
+  }
+
+  protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+  {
+    configurationBuilder.ConfigureSmartEnum();
   }
 }

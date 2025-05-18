@@ -13,7 +13,7 @@ import { Permissions } from "@/auth/permissions";
 
 export const Route = createFileRoute('/admin/_layout/locations')({
   beforeLoad: async ({context, location}) => {
-    routePermissionCheck(context.auth, [Permissions.LocationManager])
+    await routePermissionCheck(context.auth, [Permissions.LocationManager])
   },
   component: WrappedComponent,
 })

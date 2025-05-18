@@ -15,7 +15,7 @@ const SelectedPageSchema = z.object({
 
 export const Route = createFileRoute('/admin/_layout/pages')({
   beforeLoad: async ({context, location}) => {
-    routePermissionCheck(context.auth, [Permissions.PageManager])
+    await routePermissionCheck(context.auth, [Permissions.PageManager])
   },
   component: PagesAdminPanel,
   validateSearch: zodValidator(SelectedPageSchema),

@@ -7,6 +7,7 @@ import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useTranslation } from "react-i18next";
 import ProjectDialogForm from "./projectDialog.form";
+import { ProjectType } from "@/types/ProjectType";
 
 interface IProps {
   children: ReactNode;
@@ -54,12 +55,12 @@ export default function AddBusinessDialog({children, ...props}: IProps) {
 
 function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
   return {
+    type: ProjectType.GubenerMarktplatz,
     title: form.title,
     description: form.description,
     fullText: form.fullText,
     imageCaption: form.imageCaption,
     imageCredits: form.imageCredits,
-    imageUrl: form.imageUrl,
-    isBusiness: true
+    imageUrl: form.imageUrl
   }
 }

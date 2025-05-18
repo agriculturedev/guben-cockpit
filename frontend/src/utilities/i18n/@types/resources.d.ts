@@ -67,6 +67,9 @@ interface Resources {
     "Categories": "Kategorien",
     "Category": "Kategorie",
     "ComingSoon": "Demnächst verfügbar",
+    "Cancel": "Abbrechen",
+    "Url": "Url",
+    "Urls": "Urls",
     "Credits": "Bildnachweis",
     "Date": "Datum",
     "DateAndTime": "Datum und zeit",
@@ -155,7 +158,8 @@ interface Resources {
     }
   },
   "events": {
-    "PageTitle": "veranstaltungen in der stadt Guben",
+    "Title": "Veranstaltungen",
+    "PageTitle": "Veranstaltungen in der stadt Guben",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
     "ClickHere": "Klicken Sie hier",
     "Add": "Veranstaltung hinzufügen",
@@ -208,7 +212,13 @@ interface Resources {
     "MyProjects": "Meine Projekte",
     "Published": "Veröffentlicht",
     "AddBusiness": "Geschäft hinzufügen",
-    "IsBusiness": "ist ein Geschäft"
+    "IsBusiness": "ist ein Geschäft",
+    "Publish": "Veröffentlichen",
+    "Unpublish": "Offline nehmen",
+    "PublishSuccess": "Projekt/Geschäft erfolgreich veröffentlicht",
+    "UnpublishSuccess": "Projekt/Geschäft erfolgreich offline genommen",
+    "PublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt veröffentlicht und ist für alle sichtbar",
+    "UnpublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt offline genommen und ist nicht mehr für alle sichtbar"
   },
   "users": {
     "Title": "Benutzer"

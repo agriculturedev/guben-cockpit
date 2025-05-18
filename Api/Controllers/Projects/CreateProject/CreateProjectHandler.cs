@@ -30,15 +30,18 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
     if (user is null)
       throw new ProblemDetailsException(TranslationKeys.UserNotFound);
 
+    if (!ProjectType.TryFromValue(request.Type, out var type))
+      throw new ProblemDetailsException(TranslationKeys.ProjectTypeInvalid);
+
     var (projectResult, project) = Project.CreateWithGeneratedId(
+      type,
       request.Title,
       request.Description,
       request.FullText,
       request.ImageCaption,
       request.ImageUrl,
       request.ImageCredits,
-      user.Id,
-      request.IsBusiness
+      user.Id
     );
 
     projectResult.ThrowIfFailure();

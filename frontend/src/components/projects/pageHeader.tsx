@@ -33,7 +33,7 @@ export default function PageHeader() {
         <div className="my-auto relative lg:col-span-6 rounded-lg overflow-hidden hidden lg:flex h-min">
           {selectedProject &&
             <ProjectDialog project={selectedProject} className="w-full">
-              <img className="w-full max-h-[448px] object-cover" src={selectedProject.imageUrl ?? ""} />
+              <img className="w-full max-h-[380px] min-h-300px object-cover" src={selectedProject.imageUrl ?? ""} />
               <div className="bg-neutral-900 text-white p-4 text-left text-xl flex gap-4 w-full">
                 <p>{selectedProject.title}</p>
                 <ExternalLinkIcon />

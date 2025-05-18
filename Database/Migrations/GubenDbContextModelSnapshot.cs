@@ -52,9 +52,9 @@ namespace Database.Migrations
                     b.Property<int>("Sequence")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Translations")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("jsonb");
 
                     b.HasKey("Id");
 
@@ -197,15 +197,15 @@ namespace Database.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsBusiness")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("Published")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -340,17 +340,12 @@ namespace Database.Migrations
                             b1.Property<Guid>("DashboardTabId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<string>("Description")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("ImageAlt")
-                                .HasColumnType("text");
-
                             b1.Property<string>("ImageUrl")
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Title")
-                                .HasColumnType("text");
+                            b1.Property<string>("Translations")
+                                .IsRequired()
+                                .HasColumnType("jsonb");
 
                             b1.HasKey("Id");
 
@@ -369,13 +364,9 @@ namespace Database.Migrations
                                     b2.Property<bool>("OpenInNewTab")
                                         .HasColumnType("boolean");
 
-                                    b2.Property<string>("Title")
+                                    b2.Property<string>("Translations")
                                         .IsRequired()
-                                        .HasColumnType("text");
-
-                                    b2.Property<string>("Url")
-                                        .IsRequired()
-                                        .HasColumnType("text");
+                                        .HasColumnType("jsonb");
 
                                     b2.HasKey("InformationCardId");
 
