@@ -5,19 +5,22 @@ import { cn } from "@/lib/utils";
 import { isNullOrUndefinedOrWhiteSpace } from "@/utilities/nullabilityUtils";
 import sanitizeHtml from "sanitize-html";
 import { FooterItemResponse } from "@/endpoints/gubenSchemas";
+import { BaseImgTag } from "@/components/ui/BaseImgTag";
+import React from "react";
 
 export const Footer = () => {
   const {data: footerItemResponse, isPending} = useFooterItemsGetAll({});
 
   return (
-    <footer className="bg-gubenAccent text-gubenAccent-foreground p-4 h-14 flex justify-center items-center">
+    <footer className="bg-gubenAccent relative text-gubenAccent-foreground p-4 h-14 flex justify-center items-center">
+      <BaseImgTag src="/images/guben-logo.jpg" alt="logo" className={"h-full left-2 absolute"}/>
       <ul className={"flex flex-row gap-10"}>
         {
           isPending
             ? <LoadingIndicator/>
             : footerItemResponse?.footerItems?.map((item, index) => (
               <li key={index}>
-                <FooterItemDialog footerItem={item} />
+                <FooterItemDialog footerItem={item}/>
               </li>
             ))
         }
@@ -31,7 +34,7 @@ interface FooterItemDialogProps {
 }
 
 // TODO: customize the sanitize html so it allows for inline styling for colored text, images etc
-export default function FooterItemDialog({ footerItem }: FooterItemDialogProps) {
+export default function FooterItemDialog({footerItem}: FooterItemDialogProps) {
   return (
     <Dialog>
       <DialogTrigger>{footerItem.name}</DialogTrigger>
@@ -47,7 +50,7 @@ export default function FooterItemDialog({ footerItem }: FooterItemDialogProps) 
         {!isNullOrUndefinedOrWhiteSpace(footerItem.content) &&
           <DialogDescription>
             {/*<div className="text-neutral-800" dangerouslySetInnerHTML={{ __html: sanitizeHtml(footerItem.content!) }} />*/}
-            <div className="text-neutral-800" dangerouslySetInnerHTML={{ __html: footerItem.content! }} />
+            <div className="text-neutral-800" dangerouslySetInnerHTML={{__html: footerItem.content!}}/>
           </DialogDescription>
         }
       </DialogContent>
