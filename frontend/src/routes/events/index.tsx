@@ -1,9 +1,10 @@
 import { PaginationContainer } from '@/components/DataDisplay/PaginationContainer'
 import CitizenInformationSystemBanner from '@/components/events/citizenInformationSystemBanner'
 import EventCard from '@/components/events/eventCard'
+import SortFilter, { SortOption, SortOrder } from '@/components/events/sortFilter'
 import { CategoryFilter } from '@/components/filters/categoryFilter'
-import { LocationsFilter } from '@/components/filters/locationsFilter'
 import { DateRangeFilter } from '@/components/filters/dateRangeFilter'
+import { LocationsFilter } from '@/components/filters/locationsFilter'
 import { SearchFilter } from '@/components/filters/searchFilter'
 import { useEventsGetAll } from '@/endpoints/gubenComponents'
 import { defaultPaginationProps, usePagination } from '@/hooks/usePagination'
@@ -23,7 +24,9 @@ const filtersSchema = z.object({
   dateRange: z.object({
     from: z.date(),
     to: z.date().optional()
-  }).optional()
+  }).optional(),
+  sortBy: z.nativeEnum(SortOption).optional(),
+  ordering: z.nativeEnum(SortOrder).optional()
 }).default({
   location: []
 });
@@ -57,13 +60,15 @@ function RouteComponent() {
       ...filters.category && { category: filters.category },
       ...filters.dateRange?.from && { startDate: filters.dateRange.from.toDateString() },
       ...filters.dateRange?.to && { endDate: filters.dateRange.to.toDateString() },
+      ...filters.sortBy && { sortBy: filters.sortBy },
+      ...filters.ordering && { ordering: filters.ordering }
     },
   }, { retry: false });
 
-  const handleFilterChange = (key: keyof typeof filters, value: unknown) => {
-    console.log(value);
-    const updated = { ...filters, [key]: value };
+  const handleFilterChange = (newFilters: Partial<{ [k in keyof typeof filters]: unknown }>) => {
+    const updated = { ...filters, ...newFilters };
     const parsed = filtersSchema.safeParse(updated);
+    console.log(parsed);
     if (parsed.success) setFilters(parsed.data);
     else setFilters(filtersSchema.parse(undefined));
   };
@@ -80,26 +85,35 @@ function RouteComponent() {
       <section className='space-y-8 max-w-7xl mx-auto'>
         <h1 className='text-5xl text-center'>{t("events:PageTitle")}</h1>
 
-        <div className='grid grid-cols-5 gap-2'>
-          <SearchFilter
-            className={"col-span-2"}
-            value={filters.search ?? null}
-            onChange={v => handleFilterChange("search", v)}
-          />
+        <div className='flex items-end gap-2'>
+          <div className='w-full grid grid-cols-5 gap-2'>
+            <SearchFilter
+              className={"col-span-2"}
+              value={filters.search ?? null}
+              onChange={v => handleFilterChange({ "search": v })}
+            />
+            <CategoryFilter
+              value={filters.category ?? null}
+              onChange={v => handleFilterChange({ "category": v })}
+            />
+            <LocationsFilter
+              value={filters.location}
+              onChange={v => handleFilterChange({ "location": v })}
+            />
+            <DateRangeFilter
+              value={filters.dateRange}
+              onChange={range => handleFilterChange({ "dateRange": range })}
+            />
+          </div>
 
-          <CategoryFilter
-            value={filters.category ?? null}
-            onChange={v => handleFilterChange("category", v)}
-          />
-
-          <LocationsFilter
-            value={filters.location}
-            onChange={v => handleFilterChange("location", v)}
-          />
-
-          <DateRangeFilter
-            value={filters.dateRange}
-            onChange={range => handleFilterChange("dateRange", range)}
+          <SortFilter
+            option={filters.sortBy}
+            order={filters.ordering}
+            onChange={(option, order) => handleFilterChange({
+              "sortBy": option,
+              "ordering": order
+            })
+            }
           />
         </div>
       </section>

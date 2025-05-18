@@ -19,9 +19,7 @@ public class GetEventByIdHandler : ApiRequestHandler<GetEventByIdQuery, GetEvent
 
   public override async Task<GetEventByIdResponse> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
   {
-    var @event = await _repository.GetIncludingUnpublished(request.id);
-
-
+    var @event = await _repository.GetById(request.Id);
 
     if (@event is null)
       throw new ProblemDetailsException(TranslationKeys.EventNotFound);
