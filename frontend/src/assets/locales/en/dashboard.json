@@ -4,6 +4,9 @@
   "Add": "Add new tab",
   "Delete": "Delete dashboard tab",
   "TabInformation": "Tab Information",
+  "UploadImage": "Upload image",
+  "Filename": "Filename",
+  "SelectImage": "Select image",
   "Cards": {
     "Cards": "Cards",
     "Title": "Card title",

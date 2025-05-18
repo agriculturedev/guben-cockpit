@@ -74,9 +74,10 @@ function AdminDashboard() {
         <div key={selectedTab.id}>
           <EditDashboardTab tab={selectedTab} onSuccess={refetch}/>
           <EditDashboardCards tab={selectedTab} refetch={refetch}/>
-          <UploadImageCard />
         </div>
       }
+
+      <UploadImageCard />
     </div>
   )
 }

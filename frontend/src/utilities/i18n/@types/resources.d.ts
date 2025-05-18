@@ -135,6 +135,9 @@ interface Resources {
     "Add": "Neue Registerkarte hinzufügen",
     "Delete": "Dashboard-Registerkarte löschen",
     "TabInformation": "Registerkarten-Informationen",
+    "UploadImage": "Bild hinzufügen",
+    "Filename": "Dateiname",
+    "SelectImage": "Wählen Sie Bild aus",
     "Cards": {
       "Cards": "Karten",
       "Title": "Kartentitel",
