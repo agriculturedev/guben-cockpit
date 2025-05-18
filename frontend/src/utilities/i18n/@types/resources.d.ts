@@ -64,7 +64,7 @@ interface Resources {
     "Add": "Hinzufügen",
     "Category": "Kategorie",
     "Categories": "Kategorien",
-    "Cancel": "Stornieren",
+    "Cancel": "Abbrechen",
     "Url": "Url",
     "Urls": "Urls",
     "Credits": "Bildnachweis",
@@ -203,7 +203,13 @@ interface Resources {
     "MyProjects": "Meine Projekte",
     "Published": "Veröffentlicht",
     "AddBusiness": "Geschäft hinzufügen",
-    "IsBusiness": "ist ein Geschäft"
+    "IsBusiness": "ist ein Geschäft",
+    "Publish": "Veröffentlichen",
+    "Unpublish": "Offline nehmen",
+    "PublishSuccess": "Projekt/Geschäft erfolgreich veröffentlicht",
+    "UnpublishSuccess": "Projekt/Geschäft erfolgreich offline genommen",
+    "PublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt veröffentlicht und ist für alle sichtbar",
+    "UnpublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt offline genommen und ist nicht mehr für alle sichtbar"
   },
   "users": {
     "Title": "Benutzer"
