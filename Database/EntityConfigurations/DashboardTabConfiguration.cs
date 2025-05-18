@@ -1,9 +1,7 @@
-﻿using System.Text.Json;
+﻿using Database.Comparers;
 using Domain.DashboardTab;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Database.EntityConfigurations;
 
@@ -16,22 +14,11 @@ public class DashboardTabConfiguration : IEntityTypeConfiguration<DashboardTab>
     builder.HasKey(e => e.Id);
     builder.Property(e => e.Id).ValueGeneratedNever();
 
-    var jsonOptions = new JsonSerializerOptions();
-
-    var converter = new ValueConverter<Dictionary<string, DashboardTabI18NData>, string>(
-      v => JsonSerializer.Serialize(v, jsonOptions),
-      v => JsonSerializer.Deserialize<Dictionary<string, DashboardTabI18NData>>(v, jsonOptions) ??
-           new Dictionary<string, DashboardTabI18NData>()
-    );
+    var converter = I18NConverter<DashboardTabI18NData>.CreateNew();
 
     // Define a value comparer for the dictionary, EF uses this for change tracking
-    var comparer = new ValueComparer<Dictionary<string, DashboardTabI18NData>>(
-      (d1, d2) => JsonSerializer.Serialize(d1, jsonOptions) ==
-                  JsonSerializer.Serialize(d2, jsonOptions), // Compare as JSON
-      d => JsonSerializer.Serialize(d, jsonOptions).GetHashCode(), // Hash the JSON string
-      d => JsonSerializer.Deserialize<Dictionary<string, DashboardTabI18NData>>(JsonSerializer.Serialize(d, jsonOptions),
-        jsonOptions)! // Clone via JSON
-    );
+    var comparer = I18NComparer<DashboardTabI18NData>.CreateNew();
+
 
     // Apply the conversion and comparer to the Translations property
     builder.Property(p => p.Translations)
@@ -50,22 +37,10 @@ public class DashboardTabConfiguration : IEntityTypeConfiguration<DashboardTab>
       icb.HasKey(p => p.Id);
       icb.Property(p => p.Id).ValueGeneratedNever();
 
-      var jsonOptions = new JsonSerializerOptions();
-
-      var converter = new ValueConverter<Dictionary<string, DashboardCardI18NData>, string>(
-        v => JsonSerializer.Serialize(v, jsonOptions),
-        v => JsonSerializer.Deserialize<Dictionary<string, DashboardCardI18NData>>(v, jsonOptions) ??
-             new Dictionary<string, DashboardCardI18NData>()
-      );
+      var converter = I18NConverter<DashboardCardI18NData>.CreateNew();
 
       // Define a value comparer for the dictionary, EF uses this for change tracking
-      var comparer = new ValueComparer<Dictionary<string, DashboardCardI18NData>>(
-        (d1, d2) => JsonSerializer.Serialize(d1, jsonOptions) ==
-                    JsonSerializer.Serialize(d2, jsonOptions), // Compare as JSON
-        d => JsonSerializer.Serialize(d, jsonOptions).GetHashCode(), // Hash the JSON string
-        d => JsonSerializer.Deserialize<Dictionary<string, DashboardCardI18NData>>(JsonSerializer.Serialize(d, jsonOptions),
-          jsonOptions)! // Clone via JSON
-      );
+      var comparer = I18NComparer<DashboardCardI18NData>.CreateNew();
 
       // Apply the conversion and comparer to the Translations property
       icb.Property(p => p.Translations)
@@ -76,8 +51,17 @@ public class DashboardTabConfiguration : IEntityTypeConfiguration<DashboardTab>
       icb.Property(p => p.ImageUrl);
       icb.OwnsOne(p => p.Button, bb =>
       {
-        bb.Property(p => p.Title);
-        bb.Property(p => p.Url);
+        var converter = I18NConverter<ButtonI18NData>.CreateNew();
+
+        // Define a value comparer for the dictionary, EF uses this for change tracking
+        var comparer = I18NComparer<ButtonI18NData>.CreateNew();
+
+
+        bb.Property(p => p.Translations)
+          .HasColumnType("jsonb")
+          .HasConversion(converter)
+          .Metadata.SetValueComparer(comparer);
+
         bb.Property(p => p.OpenInNewTab);
       });
     });

@@ -25,7 +25,7 @@ public class AddCardToTabHandler : ApiRequestHandler<AddCardToTabQuery, AddCardT
 
     if (request.Button is not null)
     {
-      var buttonResult = Button.Create(request.Button.Title, request.Button.Url, request.Button.OpenInNewTab);
+      var buttonResult = Button.Create(request.Button.Title, request.Button.Url, request.Button.OpenInNewTab, _culture);
       buttonResult.ThrowIfFailure();
       button = buttonResult.Value;
     }

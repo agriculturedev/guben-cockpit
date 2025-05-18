@@ -28,7 +28,7 @@ public struct InformationCardResponse
       Description = i18NData.Description,
       ImageUrl = informationCard.ImageUrl,
       ImageAlt = i18NData.ImageAlt,
-      Button = informationCard.Button is not null ? ButtonResponse.Map(informationCard.Button) : null,
+      Button = informationCard.Button is not null ? ButtonResponse.Map(informationCard.Button, culture) : null,
     };
   }
 }

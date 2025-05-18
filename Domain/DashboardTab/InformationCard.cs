@@ -43,13 +43,17 @@ public sealed class InformationCard : Entity<Guid>
     return Result.Ok();
   }
 
-  public Result Update(string? title, string? description, string? imageUrl, string? imageAlt, Button? button,
+  public Result Update(string? title, string? description, string? imageUrl, string? imageAlt,
     CultureInfo culture)
   {
     ImageUrl = imageUrl;
-    Button = button;
 
     return UpdateTranslation(title, description, imageAlt, culture);
+  }
+
+  public void UpdateButton(Button? button)
+  {
+    Button = button;
   }
 }
 
