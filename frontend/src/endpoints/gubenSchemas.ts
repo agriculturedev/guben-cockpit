@@ -99,13 +99,16 @@ export type CreateLocationQuery = {
 export type CreateLocationResponse = Record<string, any>;
 
 export type CreateProjectQuery = {
+  /**
+   * @format int32
+   */
+  type: number;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  isBusiness: boolean;
 };
 
 export type CreateProjectResponse = Record<string, any>;
@@ -386,14 +389,25 @@ export type ProblemDetails = {
 
 export type ProjectResponse = {
   id: string;
+  /**
+   * @format int32
+   */
+  type: number;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  isBusiness: boolean;
   published: boolean;
+};
+
+export type ProjectType = {
+  name?: string | null;
+  /**
+   * @format int32
+   */
+  value?: number;
 };
 
 export type PublishProjectsQuery = {
@@ -468,13 +482,13 @@ export type UpdatePageResponse = Record<string, any>;
 
 export type UpdateProjectQuery = {
   id?: string | null;
+  type: ProjectType;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  isBusiness: boolean;
 };
 
 export type UpsertButtonQuery = {
