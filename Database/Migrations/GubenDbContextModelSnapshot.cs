@@ -197,9 +197,6 @@ namespace Database.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsBusiness")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("Published")
                         .HasColumnType("boolean");
 
