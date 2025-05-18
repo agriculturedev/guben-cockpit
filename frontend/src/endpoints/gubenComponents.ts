@@ -4,7 +4,7 @@
  * @version 1.0.0
  */
 import * as reactQuery from "@tanstack/react-query";
-import { GubenContext, useGubenContext } from "./gubenContext";
+import { useGubenContext, GubenContext } from "./gubenContext";
 import type * as Fetcher from "./gubenFetcher";
 import { gubenFetch } from "./gubenFetcher";
 import type * as Schemas from "./gubenSchemas";
@@ -1560,6 +1560,64 @@ export const useEventsDeleteEvent = (
   });
 };
 
+export type EventsGetByIdPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type EventsGetByIdError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsGetByIdVariables = {
+  pathParams: EventsGetByIdPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsGetById = (
+  variables: EventsGetByIdVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetEventByIdResponse,
+    EventsGetByIdError,
+    undefined,
+    {},
+    {},
+    EventsGetByIdPathParams
+  >({ url: "/events/{id}", method: "get", ...variables, signal });
+
+export const useEventsGetById = <TData = Schemas.GetEventByIdResponse,>(
+  variables: EventsGetByIdVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetEventByIdResponse,
+      EventsGetByIdError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetEventByIdResponse,
+    EventsGetByIdError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/events/{id}",
+      operationId: "eventsGetById",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchEventsGetById({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type DashboardGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -2062,6 +2120,11 @@ export type QueryOperation =
       path: "/events/owned";
       operationId: "eventsGetMyEvents";
       variables: EventsGetMyEventsVariables;
+    }
+  | {
+      path: "/events/{id}";
+      operationId: "eventsGetById";
+      variables: EventsGetByIdVariables;
     }
   | {
       path: "/dashboard";

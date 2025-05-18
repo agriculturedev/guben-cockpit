@@ -325,6 +325,10 @@ export type GetAllUsersResponse = {
   results: UserResponse[];
 };
 
+export type GetEventByIdResponse = {
+  result?: EventResponse;
+};
+
 export type GetMyEventsResponse = {
   results: EventResponse[];
 };

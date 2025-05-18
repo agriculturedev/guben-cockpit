@@ -6,6 +6,7 @@ namespace Domain.Events.repository;
 public interface IEventRepository : IRepository<Event, Guid>
 {
   Task<Event?> GetIncludingUnpublished(Guid id);
+  Task<Event?> GetById(Guid id);
   IEnumerable<Event> GetAllIncludingUnpublished();
   IEnumerable<Event> GetAllByIdsIncludingUnpublished(IList<Guid> ids);
   Task<Event?> GetByEventIdAndTerminId(string eventId, string terminId);

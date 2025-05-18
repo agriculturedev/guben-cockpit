@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Label } from "../ui/label";
+import { XIcon } from "lucide-react";
 
 interface Props {
   value?: DateRange;
@@ -67,7 +68,7 @@ export const DateRangeFilter = ({
   }, []);
 
   const handleClose = useCallback((isopen: boolean) => {
-    if(!isopen) onChange(range);
+    if (!isopen) onChange(range);
   }, [range]);
 
   return (
@@ -75,25 +76,28 @@ export const DateRangeFilter = ({
       <Label>{t("Date")}</Label>
       <DropdownMenu onOpenChange={handleClose}>
         <DropdownMenuTrigger asChild>
-          <Button className="bg-white text-primary hover:bg-neutral-100 hover:cursor-pointer justify-start">
+          <Button className="w-full bg-white text-primary hover:bg-neutral-100 hover:cursor-pointer justify-start">
             {`${value?.from?.formatDate() ?? '...'} - ${value?.to?.formatDate() ?? '...'}`}
           </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="p-4 flex">
-          <div className="flex flex-col justify-center">
-            <Button variant="ghost" onClick={_ => handlePresetClick(Preset.TODAY)}>today</Button>
-            <Button variant="ghost" onClick={_ => handlePresetClick(Preset.TOMORROW)}>tomorrow</Button>
-            <Button variant="ghost" onClick={_ => handlePresetClick(Preset.THIS_WEEK)}>this week</Button>
-            <Button variant="ghost" onClick={_ => handlePresetClick(Preset.NEXT_WEEK)}>next week</Button>
-            <Button variant="ghost" onClick={_ => handlePresetClick(Preset.THIS_MONTH)}>this month</Button>
-            <Button variant="ghost" onClick={_ => handlePresetClick(Preset.NEXT_MONTH)}>next month</Button>
+          <div className="flex flex-col gap-4">
+            <Button onClick={_ => setRange({ from: undefined, to: undefined })}>Clear</Button>
+
+            <div className="flex flex-col">
+              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.TODAY)}>{t("Dates.Today")}</Button>
+              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.TOMORROW)}>{t("Dates.Tomorrow")}</Button>
+              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.THIS_WEEK)}>{t("Dates.ThisWeek")}</Button>
+              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.NEXT_WEEK)}>{t("Dates.NextWeek")}</Button>
+              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.THIS_MONTH)}>{t("Dates.ThisMonth")}</Button>
+              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.NEXT_MONTH)}>{t("Dates.NextMonth")}</Button>
+            </div>
           </div>
           <Calendar
             mode="range"
             selected={range}
             onSelect={setRange}
-            disabled={{ before: new Date() }}
           />
         </DropdownMenuContent>
       </DropdownMenu>
