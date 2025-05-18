@@ -150,7 +150,7 @@ interface Resources {
   },
   "events": {
     "Title": "Veranstaltungen",
-    "PageTitle": "Veranstaltungen in der Stadt Guben",
+    "PageTitle": "Veranstaltungen in der stadt Guben",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
     "ClickHere": "Klicken Sie hier",
     "Add": "Veranstaltung hinzufügen",
