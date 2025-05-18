@@ -5,7 +5,7 @@ import { Permissions } from "@/auth/permissions";
 
 export const Route = createFileRoute('/admin/_layout/users')({
   beforeLoad: async ({context, location}) => {
-    routePermissionCheck(context.auth, [Permissions.ViewUsers])
+    await routePermissionCheck(context.auth, [Permissions.ViewUsers])
   },
   component: UserList,
 })

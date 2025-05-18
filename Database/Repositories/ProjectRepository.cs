@@ -21,7 +21,7 @@ public class ProjectRepository
       .TagWith(GetType().Name + '.' + nameof(GetAllPagedBusinesses))
       .AsNoTracking()
       .IgnoreAutoIncludes()
-      .Where(p => p.IsBusiness)
+      .Where(p => p.Type == ProjectType.GubenerMarktplatz.Value)
       .ToPagedResult(criteria);
   }
 
@@ -31,7 +31,7 @@ public class ProjectRepository
       .TagWith(GetType().Name + '.' + nameof(GetAllNonBusinesses))
       .AsNoTracking()
       .IgnoreAutoIncludes()
-      .Where(p => !p.IsBusiness)
+      .Where(p => p.Type == ProjectType.Stadtentwicklung.Value)
       .AsEnumerable();
   }
 

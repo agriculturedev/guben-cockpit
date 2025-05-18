@@ -3,6 +3,7 @@ using System;
 using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Database.Migrations
 {
     [DbContext(typeof(GubenDbContext))]
-    partial class GubenDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250517092237_UpdateProjectType")]
+    partial class UpdateProjectType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +55,9 @@ namespace Database.Migrations
                     b.Property<int>("Sequence")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Translations")
+                    b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("jsonb");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -340,12 +343,17 @@ namespace Database.Migrations
                             b1.Property<Guid>("DashboardTabId")
                                 .HasColumnType("uuid");
 
+                            b1.Property<string>("Description")
+                                .HasColumnType("text");
+
+                            b1.Property<string>("ImageAlt")
+                                .HasColumnType("text");
+
                             b1.Property<string>("ImageUrl")
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Translations")
-                                .IsRequired()
-                                .HasColumnType("jsonb");
+                            b1.Property<string>("Title")
+                                .HasColumnType("text");
 
                             b1.HasKey("Id");
 
@@ -364,9 +372,13 @@ namespace Database.Migrations
                                     b2.Property<bool>("OpenInNewTab")
                                         .HasColumnType("boolean");
 
-                                    b2.Property<string>("Translations")
+                                    b2.Property<string>("Title")
                                         .IsRequired()
-                                        .HasColumnType("jsonb");
+                                        .HasColumnType("text");
+
+                                    b2.Property<string>("Url")
+                                        .IsRequired()
+                                        .HasColumnType("text");
 
                                     b2.HasKey("InformationCardId");
 

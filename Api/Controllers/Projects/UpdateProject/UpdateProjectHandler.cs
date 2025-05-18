@@ -41,13 +41,13 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
       throw new UnauthorizedAccessException(TranslationKeys.ProjectNotOwnedByUser);
 
     project.Update(
+      request.Type,
       request.Title,
       request.Description,
       request.FullText,
       request.ImageCaption,
       request.ImageUrl,
-      request.ImageCredits,
-      request.IsBusiness
+      request.ImageCredits
     );
 
     return new UpdateProjectResponse();
