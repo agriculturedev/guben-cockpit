@@ -668,6 +668,280 @@ export const usePagesUpdate = (
   });
 };
 
+export type NextcloudGetFilesQueryParams = {
+  /**
+   * @default
+   */
+  path?: string;
+};
+
+export type NextcloudGetFilesError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudGetFilesResponse = string[];
+
+export type NextcloudGetFilesVariables = {
+  queryParams?: NextcloudGetFilesQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudGetFiles = (
+  variables: NextcloudGetFilesVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    NextcloudGetFilesResponse,
+    NextcloudGetFilesError,
+    undefined,
+    {},
+    NextcloudGetFilesQueryParams,
+    {}
+  >({ url: "/nextcloud/files", method: "get", ...variables, signal });
+
+export const useNextcloudGetFiles = <TData = NextcloudGetFilesResponse,>(
+  variables: NextcloudGetFilesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      NextcloudGetFilesResponse,
+      NextcloudGetFilesError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    NextcloudGetFilesResponse,
+    NextcloudGetFilesError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/files",
+      operationId: "nextcloudGetFiles",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudGetFiles({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type NextcloudGetImagesQueryParams = {
+  /**
+   * @default
+   */
+  path?: string;
+};
+
+export type NextcloudGetImagesError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudGetImagesResponse = Schemas.FilesResponse[];
+
+export type NextcloudGetImagesVariables = {
+  queryParams?: NextcloudGetImagesQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudGetImages = (
+  variables: NextcloudGetImagesVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    NextcloudGetImagesResponse,
+    NextcloudGetImagesError,
+    undefined,
+    {},
+    NextcloudGetImagesQueryParams,
+    {}
+  >({ url: "/nextcloud/images", method: "get", ...variables, signal });
+
+export const useNextcloudGetImages = <TData = NextcloudGetImagesResponse,>(
+  variables: NextcloudGetImagesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      NextcloudGetImagesResponse,
+      NextcloudGetImagesError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    NextcloudGetImagesResponse,
+    NextcloudGetImagesError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/images",
+      operationId: "nextcloudGetImages",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudGetImages({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type NextcloudGetImageQueryParams = {
+  filename?: string;
+};
+
+export type NextcloudGetImageError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudGetImageVariables = {
+  queryParams?: NextcloudGetImageQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudGetImage = (
+  variables: NextcloudGetImageVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.FileContentResult,
+    NextcloudGetImageError,
+    undefined,
+    {},
+    NextcloudGetImageQueryParams,
+    {}
+  >({ url: "/nextcloud/image", method: "get", ...variables, signal });
+
+export const useNextcloudGetImage = <TData = Schemas.FileContentResult,>(
+  variables: NextcloudGetImageVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.FileContentResult,
+      NextcloudGetImageError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.FileContentResult,
+    NextcloudGetImageError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/image",
+      operationId: "nextcloudGetImage",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudGetImage({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type NextcloudGetFileQueryParams = {
+  filename?: string;
+};
+
+export type NextcloudGetFileError = Fetcher.ErrorWrapper<{
+  status: 404;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type NextcloudGetFileVariables = {
+  queryParams?: NextcloudGetFileQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudGetFile = (
+  variables: NextcloudGetFileVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.FileContentResult,
+    NextcloudGetFileError,
+    undefined,
+    {},
+    NextcloudGetFileQueryParams,
+    {}
+  >({ url: "/nextcloud", method: "get", ...variables, signal });
+
+export const useNextcloudGetFile = <TData = Schemas.FileContentResult,>(
+  variables: NextcloudGetFileVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.FileContentResult,
+      NextcloudGetFileError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.FileContentResult,
+    NextcloudGetFileError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud",
+      operationId: "nextcloudGetFile",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudGetFile({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type NextcloudCreateFileQueryParams = {
+  filename?: string;
+};
+
+export type NextcloudCreateFileError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudCreateFileRequestBody = {
+  /**
+   * @format binary
+   */
+  file?: Blob;
+};
+
+export type NextcloudCreateFileVariables = {
+  body?: NextcloudCreateFileRequestBody;
+  queryParams?: NextcloudCreateFileQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudCreateFile = (
+  variables: NextcloudCreateFileVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    undefined,
+    NextcloudCreateFileError,
+    NextcloudCreateFileRequestBody,
+    {},
+    NextcloudCreateFileQueryParams,
+    {}
+  >({ url: "/nextcloud", method: "post", ...variables, signal });
+
+export const useNextcloudCreateFile = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      NextcloudCreateFileError,
+      NextcloudCreateFileVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    undefined,
+    NextcloudCreateFileError,
+    NextcloudCreateFileVariables
+  >({
+    mutationFn: (variables: NextcloudCreateFileVariables) =>
+      fetchNextcloudCreateFile({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type LocationsGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -1796,6 +2070,26 @@ export type QueryOperation =
       path: "/pages/${id}";
       operationId: "pagesGet";
       variables: PagesGetVariables;
+    }
+  | {
+      path: "/nextcloud/files";
+      operationId: "nextcloudGetFiles";
+      variables: NextcloudGetFilesVariables;
+    }
+  | {
+      path: "/nextcloud/images";
+      operationId: "nextcloudGetImages";
+      variables: NextcloudGetImagesVariables;
+    }
+  | {
+      path: "/nextcloud/image";
+      operationId: "nextcloudGetImage";
+      variables: NextcloudGetImageVariables;
+    }
+  | {
+      path: "/nextcloud";
+      operationId: "nextcloudGetFile";
+      variables: NextcloudGetFileVariables;
     }
   | {
       path: "/locations";

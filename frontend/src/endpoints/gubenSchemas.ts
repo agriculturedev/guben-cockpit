@@ -99,13 +99,16 @@ export type CreateLocationQuery = {
 export type CreateLocationResponse = Record<string, any>;
 
 export type CreateProjectQuery = {
+  /**
+   * @format int32
+   */
+  type: number;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  isBusiness: boolean;
 };
 
 export type CreateProjectResponse = Record<string, any>;
@@ -152,6 +155,11 @@ export type DeleteFooterItemResponse = Record<string, any>;
 
 export type DeleteProjectResponse = Record<string, any>;
 
+export type EntityTagHeaderValue = {
+  tag?: StringSegment;
+  isWeak?: boolean;
+} | null;
+
 export type EventImageResponse = {
   thumbnailUrl: string;
   previewUrl: string;
@@ -181,6 +189,27 @@ export type EventResponse = {
   categories: CategoryResponse[];
   images: EventImageResponse[];
   published: boolean;
+};
+
+export type FileContentResult = {
+  /**
+   * @format byte
+   */
+  fileContents?: string;
+  contentType?: string | null;
+  fileDownloadName?: string | null;
+  /**
+   * @format date-time
+   */
+  lastModified?: string | null;
+  entityTag?: EntityTagHeaderValue;
+  enableRangeProcessing?: boolean;
+};
+
+export type FilesResponse = {
+  filename: string;
+  url: string;
+  contentType: string;
 };
 
 export type FooterItemResponse = {
@@ -364,14 +393,25 @@ export type ProblemDetails = {
 
 export type ProjectResponse = {
   id: string;
+  /**
+   * @format int32
+   */
+  type: number;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  isBusiness: boolean;
   published: boolean;
+};
+
+export type ProjectType = {
+  name?: string | null;
+  /**
+   * @format int32
+   */
+  value?: number;
 };
 
 export type PublishProjectsQuery = {
@@ -385,6 +425,20 @@ export type SourceResponse = {
   layer_name: string;
   url: string;
   type: string;
+};
+
+export type StringSegment = {
+  buffer?: string | null;
+  /**
+   * @format int32
+   */
+  offset?: number;
+  /**
+   * @format int32
+   */
+  length?: number;
+  value?: string | null;
+  hasValue?: boolean;
 };
 
 export type TopicResponse = {
@@ -432,13 +486,13 @@ export type UpdatePageResponse = Record<string, any>;
 
 export type UpdateProjectQuery = {
   id?: string | null;
+  type: ProjectType;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
-  isBusiness: boolean;
 };
 
 export type UpsertButtonQuery = {
