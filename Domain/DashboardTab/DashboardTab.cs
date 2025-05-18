@@ -46,11 +46,11 @@ public sealed class DashboardTab : Entity<Guid>
 
   public Result UpdateTranslation(string title, CultureInfo cultureInfo)
   {
-    var (result, tabI18NData) = DashboardTabI18NData.Create(title);
+    var (result, pageI18NData) = DashboardTabI18NData.Create(title);
     if (result.IsFailure)
       return result;
 
-    Translations[cultureInfo.TwoLetterISOLanguageName] = tabI18NData;
+    Translations[cultureInfo.TwoLetterISOLanguageName] = pageI18NData;
     return Result.Ok();
   }
 
