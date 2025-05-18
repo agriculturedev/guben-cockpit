@@ -29,16 +29,24 @@ public class UpdateCardOnTabHandler : ApiRequestHandler<UpdateCardOnTabQuery, Up
     if (card is null)
       throw new ProblemDetailsException(TranslationKeys.InformationCardNotFound);
 
-    Button? button = null;
-
-    if (request.Button is not null)
+    if (card.Button is not null && request.Button is null) // DELETE
     {
-      var buttonResult = Button.Create(request.Button.Title, request.Button.Url, request.Button.OpenInNewTab);
+      card.UpdateButton(null);
+    }
+    else if (card.Button is not null && request.Button is not null) // UPDATE
+    {
+      card.Button.Update(request.Button.Title, request.Button.Url, request.Button.OpenInNewTab, _culture);
+    }
+    else if (card.Button is null && request.Button is not null) // CREATE
+    {
+      var buttonResult = Button.Create(request.Button.Title, request.Button.Url, request.Button.OpenInNewTab, _culture);
       buttonResult.ThrowIfFailure();
-      button = buttonResult.Value;
+      Button? button = buttonResult.Value;
+
+      card.UpdateButton(button);
     }
 
-    var updateResult = card.Update(request.Title, request.Description, request.ImageUrl, request.ImageAlt, button,
+    var updateResult = card.Update(request.Title, request.Description, request.ImageUrl, request.ImageAlt,
       _culture);
 
     updateResult.ThrowIfFailure();
