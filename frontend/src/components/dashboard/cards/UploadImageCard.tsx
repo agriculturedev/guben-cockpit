@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useCreateFile } from "@/endpoints/gubenComponents";
+import { useNextcloudCreateFile } from "@/endpoints/gubenComponents";
 import { Button } from "@/components/ui/button";
 
 export const UploadImageCard: React.FC = () => {
   const [filename, setFilename] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const createFileMutation = useCreateFile();
+  const createFileMutation = useNextcloudCreateFile();
 
   const onUpload = async () => {
     if (!filename || !file) {

@@ -152,6 +152,11 @@ export type DeleteFooterItemResponse = Record<string, any>;
 
 export type DeleteProjectResponse = Record<string, any>;
 
+export type EntityTagHeaderValue = {
+  tag?: StringSegment;
+  isWeak?: boolean;
+} | null;
+
 export type EventImageResponse = {
   thumbnailUrl: string;
   previewUrl: string;
@@ -181,6 +186,27 @@ export type EventResponse = {
   categories: CategoryResponse[];
   images: EventImageResponse[];
   published: boolean;
+};
+
+export type FileContentResult = {
+  /**
+   * @format byte
+   */
+  fileContents?: string;
+  contentType?: string | null;
+  fileDownloadName?: string | null;
+  /**
+   * @format date-time
+   */
+  lastModified?: string | null;
+  entityTag?: EntityTagHeaderValue;
+  enableRangeProcessing?: boolean;
+};
+
+export type FilesResponse = {
+  filename: string;
+  url: string;
+  contentType: string;
 };
 
 export type FooterItemResponse = {
@@ -381,6 +407,20 @@ export type SourceResponse = {
   layer_name: string;
   url: string;
   type: string;
+};
+
+export type StringSegment = {
+  buffer?: string | null;
+  /**
+   * @format int32
+   */
+  offset?: number;
+  /**
+   * @format int32
+   */
+  length?: number;
+  value?: string | null;
+  hasValue?: boolean;
 };
 
 export type TopicResponse = {

@@ -3,11 +3,13 @@ using WebDav;
 
 namespace Api.Infrastructure.Nextcloud
 {
-  public abstract class FileManager
+  public interface IFileManager
   {
     public abstract Task<IList<WebDavResource>> GetFilesAsync(string rootPath);
     public abstract Task<byte[]> GetFileAsync(string filename);
     public abstract Task CreateFileAsync(byte[] fileContents, string fileName, string extension);
+    public abstract Task<byte[]> GetImageAsync(string filename);
+
   }
 
   public static class NextCloudInstaller
@@ -20,7 +22,7 @@ namespace Api.Infrastructure.Nextcloud
     }
   }
 
-  public class NextcloudManager : FileManager
+  public class NextcloudManager : IFileManager
   {
     private readonly IWebDavClient _client;
     private readonly string _baseFolder;
@@ -37,7 +39,7 @@ namespace Api.Infrastructure.Nextcloud
       _baseFolder = config.BaseDirectory;
     }
 
-    public override async Task<IList<WebDavResource>> GetFilesAsync(string rootPath)
+    public async Task<IList<WebDavResource>> GetFilesAsync(string rootPath)
     {
       var path = $"{_baseFolder}/{rootPath}";
       var parameters = new PropfindParameters
@@ -60,7 +62,7 @@ namespace Api.Infrastructure.Nextcloud
           .ToList();
     }
 
-    public override async Task<byte[]> GetFileAsync(string filename)
+    public async Task<byte[]> GetFileAsync(string filename)
     {
       var path = $"{_baseFolder}/{filename}";
       var result = await _client.GetRawFile(path);
@@ -73,7 +75,20 @@ namespace Api.Infrastructure.Nextcloud
        return result.Stream != null ? await ReadStreamAsync(result.Stream) : throw new Exception("File stream is null");
     }
 
-    public override async Task CreateFileAsync(byte[] fileContents, string fileName, string extension)
+    public async Task<byte[]> GetImageAsync(string filename)
+    {
+      var path = $"{_baseFolder}/{filename}";
+      var result = await _client.GetRawFile(path);
+
+      if (!result.IsSuccessful)
+      {
+        throw new Exception($"Failed to get file: {result.StatusCode}");
+      }
+
+      return result.Stream != null ? await ReadStreamAsync(result.Stream) : throw new Exception("File stream is null");
+    }
+
+    public async Task CreateFileAsync(byte[] fileContents, string fileName, string extension)
     {
       var filePath = $"{_baseFolder}/{fileName}{extension}";
       var directory = Path.GetDirectoryName(filePath)?.Replace("\\", "/");

@@ -2,12 +2,13 @@ import { InfoCard } from "@/components/home/InfoCard/InfoCard";
 import { MapComponent } from "@/components/home/MapComponent";
 import { View } from "@/components/layout/View";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useDashboardGetAll } from "@/endpoints/gubenComponents";
+import { useDashboardGetAll, useNextcloudGetImages } from "@/endpoints/gubenComponents";
 import { Pages } from "@/routes/admin/_layout/pages";
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { zodValidator } from "@tanstack/zod-adapter";
 import { useCallback } from "react";
 import { z } from "zod";
+import { NextcloudImageGallery } from "@/components/Images/NextcloudImageGallery";
 
 const SelectedTabSchema = z.object({
   selectedTabId: z.string().optional(),
@@ -22,6 +23,9 @@ function HomeComponent() {
   const {selectedTabId} = Route.useSearch()
   const navigate = useNavigate({from: Route.fullPath})
   const {data: dashboardData} = useDashboardGetAll({});
+  const {data: images} = useNextcloudGetImages({});
+
+  console.log(images);
 
   const setSelectedTabId = useCallback(async (selectedTabId?: string | null) => {
     await navigate({search: (search: { selectedTabId: string | undefined }) => ({...search, selectedTabId: selectedTabId ?? undefined})})
@@ -61,6 +65,8 @@ function HomeComponent() {
 
         </Tabs>
       }
+
+      <NextcloudImageGallery images={images} />
     </View>
   );
 }
