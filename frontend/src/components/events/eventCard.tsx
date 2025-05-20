@@ -112,7 +112,7 @@ EventCard.Dates = () => {
   return (
     <div className="flex items-center gap-2 text-muted-foreground">
       <ClockIcon className={"size-4"} />
-      <p className="">{startDate.formatDateTime().replaceAll(".", "/")} - {endDate.formatDateTime().replaceAll(".", "/")}</p>
+      <p className="">{startDate.formatDateTime()} - {endDate.formatDateTime()}</p>
     </div>
   )
 }
