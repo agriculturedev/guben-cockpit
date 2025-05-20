@@ -50,9 +50,9 @@ function RouteComponent() {
           <div className='space-y-1'>
             <p className='flex gap-2 flex-nowrap items-center text-neutral-500'><ClockIcon className='size-4' /> {t("DateAndTime")}</p>
             <p className='flex gap-1 text-neutral-800'>
-              {startDate && <p>{startDate?.formatDateTime().replaceAll(".", "/")}</p>}
+              {startDate && <p>{startDate?.formatDateTime()}</p>}
               {startDate && endDate && "-"}
-              {endDate && <p>{endDate.formatDateTime().replaceAll(".", "/")}</p>}
+              {endDate && <p>{endDate.formatDateTime()}</p>}
             </p>
           </div>
 
