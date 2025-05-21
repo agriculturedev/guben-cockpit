@@ -1,12 +1,14 @@
 import React, { useRef, useState } from "react";
 import { useNextcloudCreateFile } from "@/endpoints/gubenComponents";
 import { Button } from "@/components/ui/button";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
-export const UploadImageCard: React.FC = () => {
+interface IProps {
+  tabId: string;
+}
+
+export const UploadImageCard: React.FC<IProps> = ({ tabId }) => {
   const [filename, setFilename] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const createFileMutation = useNextcloudCreateFile();
@@ -14,7 +16,7 @@ export const UploadImageCard: React.FC = () => {
 
   const onUpload = async () => {
     if (!filename || !file) {
-      alert("Please enter a filename and select a file");
+      alert(t("Alert"));
       return;
     }
     try {
@@ -22,18 +24,21 @@ export const UploadImageCard: React.FC = () => {
       formData.append("file", file);
 
       await createFileMutation.mutateAsync({
-        queryParams: {filename},
+        queryParams: {
+          filename,
+          tabId
+        },
         body: formData as any,
         // Add this to override the default JSON content type
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Upload successful!");
+      alert(t("UploadSuccesful"));
       setFilename("");
       setFile(null);
     } catch (error) {
-      alert("Upload failed");
+      alert(t("UploadFailed"));
       console.log("Upload error:", error);
     }
   };
@@ -54,10 +59,10 @@ export const UploadImageCard: React.FC = () => {
         <FileUpload setFile={setFile} />
       </div>
       <Button onClick={onUpload} disabled={createFileMutation.isPending} className={"max-w-40"}>
-        {createFileMutation.isPending ? "Uploading..." : t("UploadImage")}
+        {createFileMutation.isPending ? t("Uploading") : t("UploadImage")}
       </Button>
       {createFileMutation.isError && (
-        <p style={{color: "red"}}>Upload failed. Please try again.</p>
+        <p style={{color: "red"}}>{t("UploadFailedTryAgain")}</p>
       )}
     </div>
   );

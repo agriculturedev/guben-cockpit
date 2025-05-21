@@ -139,6 +139,11 @@ interface Resources {
     "UploadImage": "Bild hinzufügen",
     "Filename": "Dateiname",
     "SelectImage": "Bild auswählen",
+    "Alert": "Bitte einen Dateinamen angeben und eine Datei auswählen",
+    "UploadSuccesful": "Hochladen erfolgreich",
+    "UploadFailed": "Hochladen fehlgeschlagen",
+    "UploadFailedTryAgain": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "Uploading": "Hochladen...",
     "Cards": {
       "Cards": "Karten",
       "Title": "Kartentitel",

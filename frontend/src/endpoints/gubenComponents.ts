@@ -672,6 +672,10 @@ export type NextcloudGetFilesQueryParams = {
   /**
    * @default
    */
+  directory?: string;
+  /**
+   * @default
+   */
   path?: string;
 };
 
@@ -726,6 +730,10 @@ export const useNextcloudGetFiles = <TData = NextcloudGetFilesResponse,>(
 };
 
 export type NextcloudGetImagesQueryParams = {
+  /**
+   * @default
+   */
+  directory?: string;
   /**
    * @default
    */
@@ -784,6 +792,10 @@ export const useNextcloudGetImages = <TData = NextcloudGetImagesResponse,>(
 
 export type NextcloudGetImageQueryParams = {
   filename?: string;
+  /**
+   * @default
+   */
+  directory?: string;
 };
 
 export type NextcloudGetImageError = Fetcher.ErrorWrapper<undefined>;
@@ -891,6 +903,7 @@ export const useNextcloudGetFile = <TData = Schemas.FileContentResult,>(
 
 export type NextcloudCreateFileQueryParams = {
   filename?: string;
+  directory?: string;
 };
 
 export type NextcloudCreateFileError = Fetcher.ErrorWrapper<undefined>;
