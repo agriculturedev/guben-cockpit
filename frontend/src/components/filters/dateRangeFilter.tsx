@@ -83,7 +83,7 @@ export const DateRangeFilter = ({
 
         <DropdownMenuContent className="p-4 flex">
           <div className="flex flex-col gap-4">
-            <Button onClick={_ => setRange({ from: undefined, to: undefined })}>Clear</Button>
+            <Button onClick={_ => setRange({ from: undefined, to: undefined })}>{t("Clear")}</Button>
 
             <div className="flex flex-col">
               <Button variant="ghost" onClick={_ => handlePresetClick(Preset.TODAY)}>{t("Dates.Today")}</Button>
