@@ -81,6 +81,11 @@ const NextcloudImage = ({ filename, onClick }: NextcloudImageProps) => {
       className="cursor-pointer rounded-md overflow-hidden border hover:scale-102 transition-all duration-200"
       onClick={onClick}
     >
+      <div className="mt-2 font-semibold text-lg">
+        {decodeURIComponent(
+          filename?.match(/\/Images\/[^/]+\/([^/.]+)/)?.[1] ?? ""
+        )}
+      </div>
       <BaseImgTag
         src={imageUrl}
         alt={filename || "Nextcloud image"}

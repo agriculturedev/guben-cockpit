@@ -23,9 +23,11 @@ public class NextcloudController : ControllerBase
   [HttpGet("files")]
   [EndpointName("NextcloudGetFiles")]
   [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(IList<string>))]
-  public async Task<IActionResult> GetFiles([FromQuery] string? path = "")
+  public async Task<IActionResult> GetFiles([FromQuery] string? tabId = "", [FromQuery] string? path = "")
   {
-    var files = await _nextcloudManager.GetFilesAsync(path ?? "");
+    string fullPath = string.IsNullOrEmpty(tabId) ? (path ?? "") : $"{tabId}/{path}";
+
+    var files = await _nextcloudManager.GetFilesAsync(fullPath ?? "");
     return Ok(files.Select(f => f.DisplayName));
   }
 
@@ -33,9 +35,11 @@ public class NextcloudController : ControllerBase
   [HttpGet("images")]
   [EndpointName("NextcloudGetImages")]
   [ProducesResponseType(StatusCodes.Status200OK, Type=typeof(IEnumerable<FilesResponse>))]
-  public async Task<IActionResult> GetImages([FromQuery] string? path = "")
+  public async Task<IActionResult> GetImages([FromQuery] string? tabId = "", [FromQuery] string? path = "")
   {
-    var files = await _nextcloudManager.GetFilesAsync(path ?? "");
+    string fullPath = string.IsNullOrEmpty(tabId) ? (path ?? "") : $"{tabId}/{path}";
+
+    var files = await _nextcloudManager.GetFilesAsync(fullPath);
 
     // Filter the files to only include recognized image types (by extension)
     var imageFiles = files.Where(file =>
@@ -49,7 +53,7 @@ public class NextcloudController : ControllerBase
       Url = Url.Action(
         action: "GetImage",
         controller: "Nextcloud",
-        values: new { filename = file.DisplayName }
+        values: new { filename = $"{tabId}/{file.DisplayName}" }
       ),
       ContentType = file.ContentType
     });
@@ -60,9 +64,10 @@ public class NextcloudController : ControllerBase
   [HttpGet("image")]
   [EndpointName("NextcloudGetImage")]
   [ProducesResponseType(StatusCodes.Status200OK, Type=typeof(FileContentResult))]
-  public async Task<IActionResult> GetImage([FromQuery] string filename)
+  public async Task<IActionResult> GetImage([FromQuery] string filename, [FromQuery] string? tabId = "")
   {
-    var fileBytes = await _nextcloudManager.GetFileAsync(filename);
+    string fullPath = string.IsNullOrEmpty(tabId) ? filename : $"{tabId}/{filename}";
+    var fileBytes = await _nextcloudManager.GetFileAsync(fullPath);
     return File(fileBytes, MimeHelper.GetMimeTypeForFile(filename), filename);
   }
 
@@ -88,7 +93,7 @@ public class NextcloudController : ControllerBase
   [EndpointName("NextcloudCreateFile")]
   [Authorize]
   [Consumes("multipart/form-data")]
-  public async Task<IActionResult> CreateFile([FromQuery] string filename, IFormFile file)
+  public async Task<IActionResult> CreateFile([FromQuery] string filename, [FromQuery] string tabId, IFormFile file)
   {
     if (file == null || file.Length == 0)
       return BadRequest("No file content provided.");
@@ -96,11 +101,14 @@ public class NextcloudController : ControllerBase
     if (string.IsNullOrWhiteSpace(filename))
       return BadRequest("filename is required");
 
+    if (string.IsNullOrWhiteSpace(tabId))
+      return BadRequest("tabId is required");
+
     var extension = Path.GetExtension(file.FileName);
 
     using var ms = new MemoryStream();
     await file.CopyToAsync(ms);
-    await _nextcloudManager.CreateFileAsync(ms.ToArray(), filename, extension);
+    await _nextcloudManager.CreateFileAsync(ms.ToArray(), filename, extension, tabId);
     return Ok();
   }
 }

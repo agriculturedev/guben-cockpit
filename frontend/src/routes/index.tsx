@@ -9,6 +9,7 @@ import { zodValidator } from "@tanstack/zod-adapter";
 import { useCallback } from "react";
 import { z } from "zod";
 import { NextcloudImageGallery } from "@/components/Images/NextcloudImageGallery";
+import { NextcloudImageCarousel } from "@/components/Images/NextcloudImageCarousel";
 
 const SelectedTabSchema = z.object({
   selectedTabId: z.string().optional(),
@@ -41,6 +42,17 @@ function HomeComponent() {
     void setSelectedTabId(orderedTabs[0].id);
   }
 
+  const groupedImages = images?.reduce((acc: Record<string, typeof images>, image) => {
+    // Extract tabId from the filename path
+    const match = image.filename.match(/Images\/([^/]+)\//);
+    const tabId = match?.[1];
+    if (!tabId) return acc;
+
+    if (!acc[tabId]) acc[tabId] = [];
+    acc[tabId].push(image);
+    return acc;
+  }, {});
+
   return (
     <View pageKey={Pages.Home}>
       <div>
@@ -54,12 +66,14 @@ function HomeComponent() {
             {orderedTabs.map((tab, index) => <TabsContent key={index} value={tab.id} className={"h-full rounded bg-white p-1 flex-row gap-1 relative shadow border border-gray-300"}>
               <div className={"flex min-h-[70vh] h-full"}>
                 <MapComponent src={tab.mapUrl}/>
-                <div className={"flex-1 h-full columns-2 px-4 pt-2"}>
-                  {tab?.informationCards?.map((card, index) => {
-                    return (
-                      <InfoCard key={index} card={card}/>
-                    )
-                  })}
+                <div className="flex-1 h-full columns-2 px-4 pt-2">
+                  {tab?.informationCards?.map((card, index) => (
+                    <InfoCard key={index} card={card} />
+                  ))}
+
+                  {groupedImages?.[tab.id] && groupedImages[tab.id].length > 0 && (
+                    <NextcloudImageCarousel images={groupedImages[tab.id]} />
+                  )}
                 </div>
               </div>
 
@@ -67,8 +81,7 @@ function HomeComponent() {
 
           </Tabs>
         }
-
-        <NextcloudImageGallery images={images}/>
+        
       </div>
     </View>
   );

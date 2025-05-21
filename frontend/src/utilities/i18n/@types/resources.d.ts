@@ -69,7 +69,7 @@ interface Resources {
     "ComingSoon": "Demnächst verfügbar",
     "Credits": "Bildnachweis",
     "Date": "Datum",
-    "DateAndTime": "Datum und zeit",
+    "DateAndTime": "Datum und Zeit",
     "Dates": {
       "Always": "Immer",
       "DateInput": "Datumseingabe",
@@ -138,6 +138,11 @@ interface Resources {
     "UploadImage": "Bild hinzufügen",
     "Filename": "Dateiname",
     "SelectImage": "Wählen Sie Bild aus",
+    "Alert": "Bitte einen Dateinamen angeben und eine Datei auswählen",
+    "UploadSuccesful": "Hochladen erfolgreich",
+    "UploadFailed": "Hochladen fehlgeschlagen",
+    "UploadFailedTryAgain": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "Uploading": "Hochladen...",
     "Cards": {
       "Cards": "Karten",
       "Title": "Kartentitel",
@@ -159,7 +164,7 @@ interface Resources {
   },
   "events": {
     "Title": "Veranstaltungen",
-    "PageTitle": "Veranstaltungen in der stadt Guben",
+    "PageTitle": "Veranstaltungen in der Stadt Guben",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
     "ClickHere": "Klicken Sie hier",
     "Add": "Veranstaltung hinzufügen",

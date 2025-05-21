@@ -7,6 +7,11 @@
   "UploadImage": "Upload image",
   "Filename": "Filename",
   "SelectImage": "Select image",
+  "Alert": "Please enter a filename and select a file",
+  "UploadSuccesful": "Upload successful",
+  "UploadFailed": "Upload failed",
+  "UploadFailedTryAgain": "Upload failed. Please try again.",
+  "Uploading": "Uploading...",
   "Cards": {
     "Cards": "Cards",
     "Title": "Card title",
