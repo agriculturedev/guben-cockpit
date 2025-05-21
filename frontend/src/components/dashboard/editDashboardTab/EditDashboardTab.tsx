@@ -43,7 +43,7 @@ export const EditDashboardTab = ({ tab, onSuccess }: Props) => {
       </div>
       <DashboardTabForm {...{form, onSubmit}}/>
 
-      <UploadImageCard tabId={tab.id} />
+      <UploadImageCard directory={tab.id} />
       <div className="mb-2"></div>
     </div>
   )

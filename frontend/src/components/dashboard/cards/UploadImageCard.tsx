@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 
 interface IProps {
-  tabId: string;
+  directory: string;
 }
 
-export const UploadImageCard: React.FC<IProps> = ({ tabId }) => {
+export const UploadImageCard: React.FC<IProps> = ({ directory }) => {
   const [filename, setFilename] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const createFileMutation = useNextcloudCreateFile();
@@ -26,7 +26,7 @@ export const UploadImageCard: React.FC<IProps> = ({ tabId }) => {
       await createFileMutation.mutateAsync({
         queryParams: {
           filename,
-          tabId
+          directory
         },
         body: formData as any,
         // Add this to override the default JSON content type
