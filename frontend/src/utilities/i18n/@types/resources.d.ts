@@ -69,7 +69,7 @@ interface Resources {
     "ComingSoon": "Demnächst verfügbar",
     "Credits": "Bildnachweis",
     "Date": "Datum",
-    "DateAndTime": "Datum und zeit",
+    "DateAndTime": "Datum und Zeit",
     "Dates": {
       "Always": "Immer",
       "DateInput": "Datumseingabe",
@@ -159,7 +159,7 @@ interface Resources {
   },
   "events": {
     "Title": "Veranstaltungen",
-    "PageTitle": "Veranstaltungen in der stadt Guben",
+    "PageTitle": "Veranstaltungen in der Stadt Guben",
     "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
     "ClickHere": "Klicken Sie hier",
     "Add": "Veranstaltung hinzufügen",
