@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useNextcloudGetImage } from "@/endpoints/gubenComponents";
 import { BaseImgTag } from "../ui/BaseImgTag";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { NextCloudClickableImage } from "@/components/Images/NextcloudImageGallery";
 
-interface Image {
+export interface Image {
   filename: string;
+  directory?: string;
 }
 
 interface IProps {
@@ -15,8 +17,10 @@ export function NextcloudImageCarousel({ images }: IProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentImage = images[currentIndex];
 
+  const fullFilename = currentImage.directory + "/" + currentImage.filename;
+
   const { data: imageData, isLoading, isError } = useNextcloudGetImage({
-    queryParams: { filename: currentImage.filename }
+    queryParams: { filename: currentImage.filename, directory: currentImage.directory },
   });
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -43,10 +47,7 @@ export function NextcloudImageCarousel({ images }: IProps) {
         {isError && <div>Failed to load image</div>}
 
         {!isLoading && !isError && imageUrl && (
-          <BaseImgTag
-            src={imageUrl}
-            alt={currentImage.filename}
-            className="w-full max-h-96 object-contain rounded-md shadow-md"/>
+          <NextCloudClickableImage imageFilename={fullFilename} />
         )}
 
         <button

@@ -8,8 +8,8 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { zodValidator } from "@tanstack/zod-adapter";
 import { useCallback } from "react";
 import { z } from "zod";
-import { NextcloudImageGallery } from "@/components/Images/NextcloudImageGallery";
-import { NextcloudImageCarousel } from "@/components/Images/NextcloudImageCarousel";
+import { Image, NextcloudImageCarousel } from "@/components/Images/NextcloudImageCarousel";
+import { getParamsFromURI } from "@/lib/utils";
 
 const SelectedTabSchema = z.object({
   selectedTabId: z.string().optional(),
@@ -24,9 +24,9 @@ function HomeComponent() {
   const {selectedTabId} = Route.useSearch()
   const navigate = useNavigate({from: Route.fullPath})
   const {data: dashboardData} = useDashboardGetAll({});
-  const {data: images} = useNextcloudGetImages({});
-
-  console.log(images);
+  const {data: images} = useNextcloudGetImages({
+    queryParams: { directory: selectedTabId },
+  });
 
   const setSelectedTabId = useCallback(async (selectedTabId?: string | null) => {
     await navigate({search: (search: { selectedTabId: string | undefined }) => ({...search, selectedTabId: selectedTabId ?? undefined})})
@@ -42,14 +42,18 @@ function HomeComponent() {
     void setSelectedTabId(orderedTabs[0].id);
   }
 
-  const groupedImages = images?.reduce((acc: Record<string, typeof images>, image) => {
+  const groupedImages = images?.reduce((acc: Record<string, Image[]>, image) => {
     // Extract tabId from the filename path
-    const match = image.filename.match(/Images\/([^/]+)\//);
-    const tabId = match?.[1];
-    if (!tabId) return acc;
+    const params = getParamsFromURI( image.url );
+    const directory = params.get("directory");
 
-    if (!acc[tabId]) acc[tabId] = [];
-    acc[tabId].push(image);
+    if (!directory) return acc;
+
+    if (!acc[directory]) acc[directory] = [];
+    acc[directory].push({
+      filename: image.filename,
+      directory: directory
+    });
     return acc;
   }, {});
 
@@ -81,7 +85,7 @@ function HomeComponent() {
 
           </Tabs>
         }
-        
+
       </div>
     </View>
   );

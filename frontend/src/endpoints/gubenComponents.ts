@@ -672,7 +672,7 @@ export type NextcloudGetFilesQueryParams = {
   /**
    * @default
    */
-  tabId?: string;
+  directory?: string;
   /**
    * @default
    */
@@ -733,7 +733,7 @@ export type NextcloudGetImagesQueryParams = {
   /**
    * @default
    */
-  tabId?: string;
+  directory?: string;
   /**
    * @default
    */
@@ -795,7 +795,7 @@ export type NextcloudGetImageQueryParams = {
   /**
    * @default
    */
-  tabId?: string;
+  directory?: string;
 };
 
 export type NextcloudGetImageError = Fetcher.ErrorWrapper<undefined>;
@@ -903,7 +903,7 @@ export const useNextcloudGetFile = <TData = Schemas.FileContentResult,>(
 
 export type NextcloudCreateFileQueryParams = {
   filename?: string;
-  tabId?: string;
+  directory?: string;
 };
 
 export type NextcloudCreateFileError = Fetcher.ErrorWrapper<undefined>;
