@@ -69,7 +69,7 @@ export const NextCloudClickableImage = ({imageFilename}: NextCloudClickableImage
           onClick={() => handleImageClick()}
         />
 
-        <Label>{shortFilename}</Label>
+        <Label>{decodeURIComponent(shortFilename ?? "")}</Label>
       </div>
 
       {showDialog && imageFilename && (
