@@ -12,6 +12,6 @@
   "Unpublish": "Offline nehmen",
   "PublishSuccess": "Projekt/Geschäft erfolgreich veröffentlicht",
   "UnpublishSuccess": "Projekt/Geschäft erfolgreich offline genommen",
-  "PublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt veröffentlicht und ist für alle sichtbar",
-  "UnpublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt offline genommen und ist nicht mehr für alle sichtbar"
+  "PublishConfirmation": "Mit dieser Aktion wird das Projekt/Geschäft veröffentlicht und ist für alle sichtbar.",
+  "UnpublishConfirmation": "Mit dieser Aktion wird das Projekt/Geschäft Offline genommen und ist nicht mehr für alle sichtbar."
 }
