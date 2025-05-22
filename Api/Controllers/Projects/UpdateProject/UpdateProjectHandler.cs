@@ -1,5 +1,6 @@
 using Api.Infrastructure.Extensions;
 using Domain;
+using Domain.Projects;
 using Domain.Projects.repository;
 using Domain.Users.repository;
 using Shared.Api;
@@ -40,8 +41,11 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
     if (project.CreatedBy != user.Id)
       throw new UnauthorizedAccessException(TranslationKeys.ProjectNotOwnedByUser);
 
+    if (!ProjectType.TryFromValue(request.Type, out var type))
+      throw new ProblemDetailsException(TranslationKeys.ProjectTypeInvalid);
+
     project.Update(
-      request.Type,
+      type,
       request.Title,
       request.Description,
       request.FullText,
