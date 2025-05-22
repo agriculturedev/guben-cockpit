@@ -35,7 +35,7 @@ export default function ({ bookingUrl, price, title, flags, description, locatio
                     description
                       ? (!flags || flags.length === 0 ? "p-5" : "px-5 pt-5")
                       : ""
-                  } dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} />
+                  } dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description).replace(/\n/g, "<br>") }} />
               }
               { flags && flags.length > 0 && (
                 <div className="p-5">
