@@ -12,6 +12,6 @@
   "Unpublish": "Take Offline",
   "PublishSuccess": "Project/Business successfully published",
   "UnpublishSuccess": "Project/Business successfully taken offline",
-  "PublishConfirmation": "With this action the Project/Business will be published and visible for all",
-  "UnpublishConfirmation": "With this action the Project/Business will be taken offline and no longer be visible for all"
+  "PublishConfirmation": "With this action the Project/Business will be published and visible to everyone.",
+  "UnpublishConfirmation": "With this action the Project/Business will be taken offline and no longer be visible to anyone."
 }

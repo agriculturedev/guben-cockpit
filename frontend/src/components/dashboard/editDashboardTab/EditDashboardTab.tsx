@@ -6,6 +6,7 @@ import { useErrorToast } from "@/hooks/useErrorToast";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { DeleteDashboardTabButton } from "../deleteDashboardTab/DeleteDashboardTabButton";
+import { UploadImageCard } from "../cards/UploadImageCard";
 
 interface Props {
   tab: DashboardTabResponse;
@@ -41,6 +42,9 @@ export const EditDashboardTab = ({ tab, onSuccess }: Props) => {
         />
       </div>
       <DashboardTabForm {...{form, onSubmit}}/>
+
+      <UploadImageCard directory={tab.id} />
+      <div className="mb-2"></div>
     </div>
   )
 }

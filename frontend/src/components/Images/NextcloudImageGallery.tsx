@@ -4,6 +4,7 @@ import { useNextcloudGetImage } from "@/endpoints/gubenComponents";
 import { BaseImgTag } from "@/components/ui/BaseImgTag";
 import { cn } from "@/lib/utils";
 import { FilesResponse } from "@/endpoints/gubenSchemas";
+import { Label } from "@/components/ui/label";
 
 interface NextcloudImageGalleryProps {
   images?: FilesResponse[];
@@ -43,6 +44,44 @@ export const NextcloudImageGallery = ({ images, className }: NextcloudImageGalle
   );
 };
 
+interface NextCloudClickableImageProps {
+  imageFilename: string;
+}
+
+export const NextCloudClickableImage = ({imageFilename}: NextCloudClickableImageProps) => {
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const shortFilename = imageFilename.split("/").pop()?.split(".")[0];
+
+  const handleImageClick = () => {
+    setShowDialog(true);
+  };
+
+  const handleClose = () => {
+    setShowDialog(false);
+  };
+
+  return (
+    <>
+      <div>
+        <NextcloudImage
+          key={imageFilename}
+          filename={imageFilename}
+          onClick={() => handleImageClick()}
+        />
+
+        <Label>{decodeURIComponent(shortFilename ?? "")}</Label>
+      </div>
+
+      {showDialog && imageFilename && (
+        <ImageDialog
+          filename={imageFilename}
+          onClose={handleClose}
+        />
+      )}
+    </>
+  );
+}
+
 interface NextcloudImageProps {
   filename?: string;
   onClick?: () => void;
@@ -81,10 +120,15 @@ const NextcloudImage = ({ filename, onClick }: NextcloudImageProps) => {
       className="cursor-pointer rounded-md overflow-hidden border hover:scale-102 transition-all duration-200"
       onClick={onClick}
     >
+      <div className="mt-2 font-semibold text-lg">
+        {decodeURIComponent(
+          filename?.match(/\/Images\/[^/]+\/([^/.]+)/)?.[1] ?? ""
+        )}
+      </div>
       <BaseImgTag
         src={imageUrl}
         alt={filename || "Nextcloud image"}
-        className="w-full h-full object-cover aspect-square"
+        className="w-full h-full object-contain aspect-square"
       />
     </div>
   );
@@ -120,7 +164,7 @@ const ImageDialog = ({ filename, onClose }: ImageDialogProps) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="bg-white rounded-xl max-w-7xl w-full max-h-[90vh] p-4 overflow-auto shadow-xl relative">
+            <Dialog.Panel className="bg-white rounded-xl max-w-[90vw] w-full max-h-[90vh] p-4 overflow-auto shadow-xl relative">
               <button
                 onClick={onClose}
                 className="absolute top-2 right-2 text-gray-500 hover:text-black"
