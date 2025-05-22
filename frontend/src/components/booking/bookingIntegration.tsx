@@ -40,11 +40,11 @@ export default function BookingIntegration({ setLoading }: BookingIntegrationPro
                 const paragraphs = [];
 
                 while (currentElement && currentElement.tagName === "P" && !currentElement.classList.length && currentElement.textContent?.trim() !== "") {
-                  paragraphs.push(currentElement.textContent?.trim() || "");
+                  paragraphs.push(currentElement.outerHTML);
                   currentElement = currentElement.nextElementSibling;
                 }
 
-                description = [descriptionElement.textContent?.trim() || "", ...paragraphs].join("\n\n");
+                description = [descriptionElement.outerHTML, ...paragraphs].join("\n");
               }
             
               const location = el.querySelector(".location")?.textContent?.trim() || "";
@@ -94,11 +94,11 @@ export default function BookingIntegration({ setLoading }: BookingIntegrationPro
                     const paragraphs = [];
 
                     while (currentElement && currentElement.tagName === "P" && !currentElement.classList.length && currentElement.textContent?.trim() !== "") {
-                      paragraphs.push(currentElement.textContent?.trim() || "");
+                      paragraphs.push(currentElement.outerHTML);
                       currentElement = currentElement.nextElementSibling;
                     }
 
-                    ticketDescription = [descriptionElement.textContent?.trim() || "", ...paragraphs].join("\n\n");
+                    ticketDescription = [descriptionElement.outerHTML, ...paragraphs].join("\n");
                   }
 
                   const ticketLocation = ticketEl.querySelector(".location")?.textContent?.trim() || "";

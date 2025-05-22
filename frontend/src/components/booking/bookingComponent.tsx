@@ -3,6 +3,7 @@ import { useParams } from "@tanstack/react-router";
 import { useBookingStore } from "@/stores/bookingStore";
 import PriceCard from "./priceCard";
 import { useTranslation } from "react-i18next";
+import DOMPurify from "dompurify";
 
 export default function BookingComponent() {
   const { t } = useTranslation("booking");
@@ -35,13 +36,17 @@ export default function BookingComponent() {
         <BookingDivider text={title} />
         <div className="p-5 grid grid-cols-3 gap-5">
           <div className="col-span-2">
-            <p style={{ whiteSpace: "pre-wrap"}}>{booking.description}</p>
+              <div
+                className="prose max-w-none"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(booking.description || "").replace(/\n/g, "<br>"),
+                }} />
           </div>
-          <div className="col-span-1">
+          <div className="col-span-1 flex items-center justify-center">
             <img
               src={booking.imgUrl}
               alt={t("imageAlt")}
-              className="object-contain" />
+              className="w-full h-auto max-h-80 rounded-lg object-contain" />
           </div>
         </div>
         <BookingDivider text={t("bookingComponent.offer")} />

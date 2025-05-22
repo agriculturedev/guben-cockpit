@@ -1,6 +1,7 @@
 import { CircleCheckIcon } from "lucide-react";
 import { Card } from "../ui/card";
 import { useTranslation } from "react-i18next";
+import DOMPurify from "dompurify";
 
 type PriceCardProps = {
   bookingUrl: string;
@@ -28,12 +29,14 @@ export default function ({ bookingUrl, price, title, flags, description, locatio
                 {title}
               </div>
               <hr className="border-2 border-gubenAccent w-2/3" />
-              <div className={
-                description ? (!flags || flags.length === 0
-                  ? "p-5" : "px-5 pt-5")
-                : "" }>
-                  {description}
-                </div>
+              { description &&
+                <div
+                  className={
+                    description
+                      ? (!flags || flags.length === 0 ? "p-5" : "px-5 pt-5")
+                      : ""
+                  } dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} />
+              }
               { flags && flags.length > 0 && (
                 <div className="p-5">
                   <div className="font-bold">
