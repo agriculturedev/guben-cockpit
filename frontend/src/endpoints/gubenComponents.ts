@@ -326,7 +326,7 @@ export const useProjectsCreateProject = (
 };
 
 export type ProjectsGetMyProjectsQueryParams = {
-  query?: Record<string, any>;
+  query?: Schemas.GetMyProjectsQuery;
 };
 
 export type ProjectsGetMyProjectsError = Fetcher.ErrorWrapper<{
@@ -909,10 +909,7 @@ export type NextcloudCreateFileQueryParams = {
 export type NextcloudCreateFileError = Fetcher.ErrorWrapper<undefined>;
 
 export type NextcloudCreateFileRequestBody = {
-  /**
-   * @format binary
-   */
-  file?: Blob;
+  file?: Schemas.IFormFile;
 };
 
 export type NextcloudCreateFileVariables = {
@@ -1468,7 +1465,7 @@ export const useEventsCreateEvent = (
 };
 
 export type EventsGetMyEventsQueryParams = {
-  query?: Record<string, any>;
+  query?: Schemas.GetMyEventsQuery;
 };
 
 export type EventsGetMyEventsError = Fetcher.ErrorWrapper<{
