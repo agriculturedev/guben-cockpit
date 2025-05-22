@@ -4,6 +4,7 @@
   "resources": "Resources",
   "events": "Events",
   "booking": "Bookings",
+  "imageAlt": "Image could not be loaded.",
   "faq": {
     "title": "Frequently Asked Questions",
     "showMore": "Show more",
@@ -29,7 +30,8 @@
   },
   "priceCard": {
     "included": "Included in the room are",
-    "price": "Price"
+    "price": "Price",
+    "place": "Place"
   },
   "howItWorks": {
     "title": "How to make a booking",

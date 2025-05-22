@@ -5,6 +5,7 @@ interface Resources {
     "resources": "Ressourcen",
     "events": "Events",
     "booking": "Buchungen",
+    "imageAlt": "Bild konnte nicht geladen werden.",
     "faq": {
       "title": "Häufig gestellte Fragen",
       "showMore": "Mehr anzeigen",
@@ -30,7 +31,8 @@ interface Resources {
     },
     "priceCard": {
       "included": "Im Raum inkludiert sind",
-      "price": "Preis"
+      "price": "Preis",
+      "place": "Ort"
     },
     "howItWorks": {
       "title": "So können Sie etwas buchen",
