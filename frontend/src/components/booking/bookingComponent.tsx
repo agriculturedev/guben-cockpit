@@ -3,6 +3,7 @@ import { useParams } from "@tanstack/react-router";
 import { useBookingStore } from "@/stores/bookingStore";
 import PriceCard from "./priceCard";
 import { useTranslation } from "react-i18next";
+import DOMPurify from "dompurify";
 
 export default function BookingComponent() {
   const { t } = useTranslation("booking");
@@ -33,18 +34,46 @@ export default function BookingComponent() {
       </div>
       <div>
         <BookingDivider text={title} />
-        <div className="py-5 pl-5 grid grid-cols-3 gap-5">
+        <div className="p-5 grid grid-cols-3 gap-5">
           <div className="col-span-2">
-            <p style={{ whiteSpace: "pre-wrap"}}>{booking.description}</p>
+              <div
+                className="prose max-w-none"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(booking.description || "").replace(/\n/g, "<br>"),
+                }} />
           </div>
-          <div className="col-span-1">
-          {/* There will probably be some images added here at a later stage,
-          so leaving this empty for now */}
-        </div>
+          <div className="col-span-1 flex items-center justify-center">
+            <img
+              src={booking.imgUrl}
+              alt={t("imageAlt")}
+              className="w-full h-auto max-h-80 rounded-lg object-contain" />
+          </div>
         </div>
         <BookingDivider text={t("bookingComponent.offer")} />
-        <PriceCard bookingUrl={booking.bookingUrl} price={booking.price} title={title} flags={booking.flags} />
+        {booking.tickets && booking.tickets.length > 0 ? (
+          booking.tickets.map((ticket, index) => (
+            <PriceCard
+              key={ticket.bkid || index}
+              bookingUrl={ticket.bookingUrl}
+              description={ticket.description}
+              price={ticket.price}
+              title={ticket.title || title}
+              flags={ticket.flags || booking.flags}
+              location={ticket.location || booking.location}
+              autoCommitNote={ticket.autoCommitNote || booking.autoCommitNote}
+            />
+          ))
+        ) : (
+          <PriceCard
+            bookingUrl={booking.bookingUrl}
+            price={booking.price}
+            title={title}
+            flags={booking.flags}
+            location={booking.location}
+            autoCommitNote={booking.autoCommitNote}
+          />
+        )}
       </div>
     </div>
   )
-}
+};

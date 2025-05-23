@@ -2,6 +2,7 @@ import { MapPinnedIcon } from "lucide-react";
 import { CardHeaderImage, Card, CardHeader, CardContent } from "../ui/card";
 import { Link } from "@tanstack/react-router";
 import { Booking } from "@/stores/bookingStore";
+import DOMPurify from "dompurify";
 
 type BookingCardProps = {
   booking: Booking;
@@ -29,7 +30,9 @@ export default function BookingCard({booking}: BookingCardProps) {
               </div>
             )}
             <hr className="my-2" />
-            <p className="line-clamp-3 mt-2 break-words">{booking.description}</p>
+            <div
+              className="prose line-clamp-3 mt-2 break-words max-w-full"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(booking.description) }} />
           </CardContent>
         </Card>
       </Link>

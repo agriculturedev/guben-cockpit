@@ -5,6 +5,7 @@ interface Resources {
     "resources": "Ressourcen",
     "events": "Events",
     "booking": "Buchungen",
+    "imageAlt": "Bild konnte nicht geladen werden.",
     "faq": {
       "title": "Häufig gestellte Fragen",
       "showMore": "Mehr anzeigen",
@@ -30,7 +31,8 @@ interface Resources {
     },
     "priceCard": {
       "included": "Im Raum inkludiert sind",
-      "price": "Preis"
+      "price": "Preis",
+      "place": "Ort"
     },
     "howItWorks": {
       "title": "So können Sie etwas buchen",
@@ -63,30 +65,31 @@ interface Resources {
     "Add": "Hinzufügen",
     "All": "Alle",
     "AllEvents": "Alle veranstaltungen",
-    "Cancel": "Stornieren",
+    "Cancel": "Abbrechen",
     "Categories": "Kategorien",
     "Category": "Kategorie",
     "ComingSoon": "Demnächst verfügbar",
     "Credits": "Bildnachweis",
     "Date": "Datum",
-    "DateAndTime": "Datum und zeit",
+    "DateAndTime": "Datum und Uhrzeit",
     "Dates": {
       "Always": "Immer",
       "DateInput": "Datumseingabe",
-      "Future": "Kommend",
-      "NextMonth": "Nächsten Monat",
+      "Future": "Demnächst",
+      "NextMonth": "Nächster Monat",
       "NextWeek": "Nächste Woche",
-      "ThisMonth": "Diesen Monat",
+      "ThisMonth": "Dieser Monat",
       "ThisWeek": "Diese Woche",
       "ThisYear": "Dieses Jahr",
       "Today": "Heute",
       "Tomorrow": "Morgen"
     },
+    "Clear": "Zurücksetzen",
     "Delete": "Löschen",
     "Description": "Beschreibung",
     "Email": "E-Mail",
     "EndDate": "Enddatum",
-    "EventDetails": "Details zur Veranstaltung",
+    "EventDetails": "Details zu der Veranstaltung",
     "FullText": "Volltext",
     "ImageCaption": "Bildunterschrift",
     "ImageCredits": "Bildnachweis",
@@ -110,7 +113,7 @@ interface Resources {
     "Save": "Speichern",
     "Search": "Suche",
     "SelectedItems": "Ausgewählte Elemente",
-    "SelectItemToEdit": "Zum Bearbeiten Element auswählen",
+    "SelectItemToEdit": "Zu bearbeitendes Element auswählen",
     "SelectNavItem": "Wählen Sie ein Navigationselement aus",
     "ShowPreview": "Vorschau anzeigen",
     "Sorting": {
@@ -132,12 +135,17 @@ interface Resources {
   "dashboard": {
     "Title": "Dashboard",
     "MapUrl": "Karten-URL",
-    "Add": "Neue Registerkarte hinzufügen",
-    "Delete": "Dashboard-Registerkarte löschen",
-    "TabInformation": "Registerkarten-Informationen",
+    "Add": "Registerkarte hinzufügen",
+    "Delete": "Registerkarte löschen",
+    "TabInformation": "Informationen zur Registerkarte",
     "UploadImage": "Bild hinzufügen",
     "Filename": "Dateiname",
-    "SelectImage": "Wählen Sie Bild aus",
+    "SelectImage": "Bild auswählen",
+    "Alert": "Bitte einen Dateinamen angeben und eine Datei auswählen",
+    "UploadSuccesful": "Hochladen erfolgreich",
+    "UploadFailed": "Hochladen fehlgeschlagen",
+    "UploadFailedTryAgain": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "Uploading": "Hochladen...",
     "Cards": {
       "Cards": "Karten",
       "Title": "Kartentitel",
@@ -148,7 +156,7 @@ interface Resources {
       "Image": "Bild",
       "ImageUrl": "Bild-URL",
       "ImageAlt": "Alternativer Bildtext",
-      "ImageAltExplanation": "Ein Text, der angezeigt wird, wenn das Bild nicht gefunden werden kann",
+      "ImageAltExplanation": "Text der angezeigt wird wenn das Bild nicht gefunden werden kann",
       "Button": {
         "Add": "Schaltfläche hinzufügen",
         "Title": "Schaltflächentext",
@@ -159,8 +167,8 @@ interface Resources {
   },
   "events": {
     "Title": "Veranstaltungen",
-    "PageTitle": "Veranstaltungen in der stadt Guben",
-    "CitizenInformationText": "Wenn Sie auf der Suche nach Bürgerinformationssystem sind",
+    "PageTitle": "Veranstaltungen in der Stadt Guben",
+    "CitizenInformationText": "Wenn Sie auf der Suche nach dem Bürgerinformationssystem sind",
     "ClickHere": "Klicken Sie hier",
     "Add": "Veranstaltung hinzufügen",
     "Delete": "Veranstaltung löschen",
@@ -195,7 +203,7 @@ interface Resources {
     "Events": "Veranstaltungen",
     "LogOut": "Abmelden",
     "Admin": "Admin",
-    "ServicePortal": "Service portal",
+    "ServicePortal": "Service Portal",
     "Booking": "Buchungen"
   },
   "pages": {
@@ -217,8 +225,8 @@ interface Resources {
     "Unpublish": "Offline nehmen",
     "PublishSuccess": "Projekt/Geschäft erfolgreich veröffentlicht",
     "UnpublishSuccess": "Projekt/Geschäft erfolgreich offline genommen",
-    "PublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt veröffentlicht und ist für alle sichtbar",
-    "UnpublishConfirmation": "Mit dieser Aktion wird das Unternehmen/Projekt offline genommen und ist nicht mehr für alle sichtbar"
+    "PublishConfirmation": "Mit dieser Aktion wird das Projekt/Geschäft veröffentlicht und ist für alle sichtbar.",
+    "UnpublishConfirmation": "Mit dieser Aktion wird das Projekt/Geschäft Offline genommen und ist nicht mehr für alle sichtbar."
   },
   "users": {
     "Title": "Benutzer"

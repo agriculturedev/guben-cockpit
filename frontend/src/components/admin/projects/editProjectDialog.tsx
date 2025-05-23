@@ -7,6 +7,7 @@ import { useProjectsUpdateProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useTranslation } from "react-i18next";
 import EditProjectDialogForm from "./editProjectDialog.form";
+import { ProjectType } from "@/types/ProjectType";
 
 interface IProps {
   children: ReactNode;
@@ -62,13 +63,13 @@ function mapProjectToForm(project: ProjectResponse): FormSchema {
     imageCaption: project.imageCaption ?? null,
     imageUrl: project.imageUrl ?? null,
     imageCredits: project.imageCredits ?? null,
-    isBusiness: project.catName === "Gubener Marktplatz" ? true : false,
+    isBusiness: project.type == Number(ProjectType.GubenerMarktplatz),
   }
 }
 
 function mapFormToEditProjectQuery(form: FormSchema): UpdateProjectQuery {
   return {
-    catName: form.isBusiness ? "Gubener Marktplatz" : "Stadtentwicklung",
+    type: form.isBusiness ? ProjectType.GubenerMarktplatz : ProjectType.Stadtentwicklung,
     title: form.title,
     description: form.description,
     fullText: form.fullText,
