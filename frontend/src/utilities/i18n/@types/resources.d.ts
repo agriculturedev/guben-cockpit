@@ -40,22 +40,22 @@ interface Resources {
         {
           "number": 1,
           "title": "Schritt eins",
-          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+          "description": "Wählen Sie ein einen Raum, einen Sportplatz oder eine Ressource aus, den/die Sie buchen möchten und klicken Sie darauf."
         },
         {
           "number": 2,
           "title": "Schritt zwei",
-          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+          "description": "Informieren Sie sich über die Ausstattung, Buchungszeiträume, Regeln und Rahmenbedingungen."
         },
         {
           "number": 3,
           "title": "Schritt drei",
-          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+          "description": "Sobald Sie den richtigen Raum, Sportplatz oder die passende Ressource gefunden haben, geht es über den Button am Ende der Seite weiter zur Buchung."
         },
         {
           "number": 4,
           "title": "Schritt vier",
-          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+          "description": "Geben Sie auf der folgenden Webseite Ihre Kontaktdaten ein, kontrollieren Sie Ihre Eingaben und schicken die Anfrage ab. Sobald diese bestätigt wurde, erhalten Sie eine E-Mail."
         }
       ]
     }

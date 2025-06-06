@@ -39,22 +39,22 @@
       {
         "number": 1,
         "title": "Step One",
-        "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        "description": "Select a room, a sports ground or a resource that you would like to book and click on it."
       },
       {
         "number": 2,
         "title": "Step Two",
-        "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        "description": "Find out about the facilities, booking periods, rules and general conditions."
       },
       {
         "number": 3,
         "title": "Step Three",
-        "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        "description": "As soon as you have found the right room, sports ground or resource, click on the button at the bottom of the page to continue to the booking process."
       },
       {
         "number": 4,
         "title": "Step Four",
-        "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+        "description": "Enter your contact details on the following website, check your entries and send the request. As soon as it has been confirmed, you will receive an e-mail."
       }
     ]
   }
