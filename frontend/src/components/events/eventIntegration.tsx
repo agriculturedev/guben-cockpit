@@ -121,7 +121,6 @@ export default function EventIntegration({ setLoading, setEvents }: EventIntegra
                   city: eventDiv?.querySelector(".event-location .city")?.textContent?.trim() || "",
                 };
 
-                console.log(event.details);
               }
             } catch (err) {
               console.error("Failed to fetch event details for", event.bkid, err);

@@ -24,8 +24,6 @@ function RouteComponent() {
 
   const data = eventFromState || fetchedData?.result;
 
-  console.log(data);
-
   const [startDate, endDate] = useMemo(() => data ? [
     new Date(data.startDate),
     new Date(data.endDate)

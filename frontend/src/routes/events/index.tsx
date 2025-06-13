@@ -97,7 +97,6 @@ function RouteComponent() {
   const handleFilterChange = (newFilters: Partial<{ [k in keyof typeof filters]: unknown }>) => {
     const updated = { ...filters, ...newFilters };
     const parsed = filtersSchema.safeParse(updated);
-    console.log(parsed);
     if (parsed.success) setFilters(parsed.data);
     else setFilters(filtersSchema.parse(undefined));
   };
