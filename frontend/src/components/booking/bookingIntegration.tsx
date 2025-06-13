@@ -87,7 +87,7 @@ export default function BookingIntegration({ setLoading }: BookingIntegrationPro
                   const ticketTitle = ticketEl.querySelector("h4")?.textContent?.trim() || "";
 
                   let ticketDescription = "";
-                  const descriptionElement = ticketEl.querySelector(".description");         
+                  const descriptionElement = ticketEl.querySelector(".description");
 
                   if (descriptionElement) {
                     let currentElement = descriptionElement.nextElementSibling;
