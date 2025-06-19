@@ -1,6 +1,7 @@
 interface Resources {
   "booking": {
     "rooms": "Räume",
+    "our_rooms": "Unsere Räumlichkeiten",
     "sportFacilities": "Sportanlagen",
     "resources": "Ressourcen",
     "events": "Events",
