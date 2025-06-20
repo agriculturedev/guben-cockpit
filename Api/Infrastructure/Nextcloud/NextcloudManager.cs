@@ -7,9 +7,7 @@ namespace Api.Infrastructure.Nextcloud
   {
     public abstract Task<IList<WebDavResource>> GetFilesAsync(string rootPath);
     public abstract Task<byte[]> GetFileAsync(string filename);
-    public abstract Task CreateFileAsync(byte[] fileContents, string fileName, string extension, string tabId);
-    public abstract Task<byte[]> GetImageAsync(string filename);
-
+    public abstract Task CreateFileAsync(byte[] fileContents, string path);
   }
 
   public static class NextCloudInstaller
@@ -24,6 +22,10 @@ namespace Api.Infrastructure.Nextcloud
 
   public class NextcloudManager : IFileManager
   {
+    public const string WfsDirectory = "WFS";
+    public const string ImagesDirectory = "Images";
+
+
     private readonly IWebDavClient _client;
     private readonly string _baseFolder;
 
@@ -75,27 +77,14 @@ namespace Api.Infrastructure.Nextcloud
        return result.Stream != null ? await ReadStreamAsync(result.Stream) : throw new Exception("File stream is null");
     }
 
-    public async Task<byte[]> GetImageAsync(string filename)
+    public async Task CreateFileAsync(byte[] fileContents, string path)
     {
-      var path = $"{_baseFolder}/{filename}";
-      var result = await _client.GetRawFile(path);
+      var filePath = $"{_baseFolder}/{path}";
+      var adjustedDirectory = Path.GetDirectoryName(filePath)?.Replace("\\", "/");
 
-      if (!result.IsSuccessful)
+      if (!string.IsNullOrEmpty(adjustedDirectory) && adjustedDirectory != _baseFolder) // MAKE SURE BASEFOLDER EXISTS IN NEXTCLOUD!
       {
-        throw new Exception($"Failed to get file: {result.StatusCode}");
-      }
-
-      return result.Stream != null ? await ReadStreamAsync(result.Stream) : throw new Exception("File stream is null");
-    }
-
-    public async Task CreateFileAsync(byte[] fileContents, string fileName, string extension, string tabId)
-    {
-      var filePath = $"{_baseFolder}/{tabId}/{fileName}{extension}";
-      var directory = Path.GetDirectoryName(filePath)?.Replace("\\", "/");
-
-      if (!string.IsNullOrEmpty(directory) && directory != _baseFolder) // MAKE SURE BASEFOLDER EXISTS IN NEXTCLOUD!
-      {
-          var mkDirResult = await _client.Mkcol(directory);
+          var mkDirResult = await _client.Mkcol(adjustedDirectory);
           if (!mkDirResult.IsSuccessful && mkDirResult.StatusCode != (int)HttpStatusCode.MethodNotAllowed)
           {
               throw new Exception($"Failed to create directory: {mkDirResult.StatusCode}");

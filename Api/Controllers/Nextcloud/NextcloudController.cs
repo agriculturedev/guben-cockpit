@@ -107,7 +107,8 @@ public class NextcloudController : ControllerBase
 
     using var ms = new MemoryStream();
     await file.CopyToAsync(ms);
-    await _nextcloudManager.CreateFileAsync(ms.ToArray(), filename, extension, directory);
+    var path = $"{NextcloudManager.ImagesDirectory}/{directory}/{filename}.{extension}";
+    await _nextcloudManager.CreateFileAsync(ms.ToArray(), path);
     return Ok();
   }
 }
