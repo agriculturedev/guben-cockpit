@@ -10,7 +10,10 @@ export default function BookingComponent() {
 
   const { title } = useParams({ from: '/booking/$title' });
   const bookings = useBookingStore(state => state.bookings);
-  const booking = bookings.find(b => b.title === title);
+  let booking = bookings.find(b => b.title === title);
+  if (!booking) {
+    booking = bookings.find(b => b.bookings?.find(innerBooking => innerBooking.title === title));
+  }
 
   if (!booking) {
     return (
@@ -61,6 +64,7 @@ export default function BookingComponent() {
               flags={ticket.flags || booking.flags}
               location={ticket.location || booking.location}
               autoCommitNote={ticket.autoCommitNote || booking.autoCommitNote}
+              imgUrl={ticket.imgUrl}
             />
           ))
         ) : (

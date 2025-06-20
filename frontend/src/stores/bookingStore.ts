@@ -10,6 +10,7 @@ export type Ticket = {
   price: string;
   bookingUrl: string;
   bkid: string;
+  imgUrl: string;
 };
 
 export type Booking = {
@@ -25,6 +26,7 @@ export type Booking = {
   bkid?: string;
   autoCommitNote?: string;
   tickets?: Ticket[];
+  bookings?: Booking[];
 };
 
 type BookingStore = {
