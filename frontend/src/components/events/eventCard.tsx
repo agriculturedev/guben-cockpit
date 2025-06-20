@@ -5,6 +5,7 @@ import { ArrowRightIcon, ClockIcon, MapPinIcon } from "lucide-react";
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getEventImage } from "@/lib/DefaultEventImage";
+import DOMPurify from "dompurify";
 
 type TEventCardContext = { event: EventResponse }
 const EventCardContext = createContext<TEventCardContext | undefined>(undefined);
@@ -52,9 +53,18 @@ EventCard.Title = () => {
 
 EventCard.Description = () => {
   const {event} = useEventCard();
+  if ((event as any).isBookingEvent) {
+    return (
+      <div
+        className="text-muted-foreground line-clamp-2"
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(event.description) }}
+      />
+    );
+  }
+
   return (
     <p className="text-muted-foreground line-clamp-2">{event.description}</p>
-  )
+  );
 }
 
 interface EventCardImageProps {
@@ -154,8 +164,12 @@ EventCard.MoreInfoButton = () => {
   const {event} = useEventCard();
   const {t} = useTranslation("common");
 
+  const linkProps = (event as any).isBookingEvent
+    ? { to: "/events/" + event.id, state: { event } }
+    : { to: "/events/" + event.id };
+
   return (
-    <Link to={"/events/" + event.id} className={"flex flex-nowrap gap-2 items-center border w-min rounded-md px-2 py-1 text-muted-foreground hover:text-red-500 hover:bg-red-50"}>
+    <Link {...linkProps} className={"flex flex-nowrap gap-2 items-center border w-min rounded-md px-2 py-1 text-muted-foreground hover:text-red-500 hover:bg-red-50"}>
       <p className="text-nowrap">{t("MoreInformation")}</p>
       <ArrowRightIcon className="size-4"/>
     </Link>
