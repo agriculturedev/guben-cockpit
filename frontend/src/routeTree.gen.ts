@@ -21,6 +21,7 @@ import { Route as AdminIndexImport } from './routes/admin/index'
 import { Route as EventsEventIdImport } from './routes/events/$eventId'
 import { Route as BookingTitleImport } from './routes/booking/$title'
 import { Route as AdminLayoutImport } from './routes/admin/_layout'
+import { Route as BookingRoomTitleImport } from './routes/booking/room/$title'
 import { Route as AdminLayoutUsersImport } from './routes/admin/_layout/users'
 import { Route as AdminLayoutProjectsImport } from './routes/admin/_layout/projects'
 import { Route as AdminLayoutPagesImport } from './routes/admin/_layout/pages'
@@ -84,6 +85,11 @@ const BookingTitleRoute = BookingTitleImport.update({
 const AdminLayoutRoute = AdminLayoutImport.update({
   id: '/_layout',
   getParentRoute: () => AdminRoute,
+} as any)
+
+const BookingRoomTitleRoute = BookingRoomTitleImport.update({
+  path: '/booking/room/$title',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const AdminLayoutUsersRoute = AdminLayoutUsersImport.update({
@@ -244,6 +250,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutUsersImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/booking/room/$title': {
+      id: '/booking/room/$title'
+      path: '/booking/room/$title'
+      fullPath: '/booking/room/$title'
+      preLoaderRoute: typeof BookingRoomTitleImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -302,6 +315,7 @@ export interface FileRoutesByFullPath {
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
   '/admin/users': typeof AdminLayoutUsersRoute
+  '/booking/room/$title': typeof BookingRoomTitleRoute
 }
 
 export interface FileRoutesByTo {
@@ -320,6 +334,7 @@ export interface FileRoutesByTo {
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
   '/admin/users': typeof AdminLayoutUsersRoute
+  '/booking/room/$title': typeof BookingRoomTitleRoute
 }
 
 export interface FileRoutesById {
@@ -341,6 +356,7 @@ export interface FileRoutesById {
   '/admin/_layout/pages': typeof AdminLayoutPagesRoute
   '/admin/_layout/projects': typeof AdminLayoutProjectsRoute
   '/admin/_layout/users': typeof AdminLayoutUsersRoute
+  '/booking/room/$title': typeof BookingRoomTitleRoute
 }
 
 export interface FileRouteTypes {
@@ -362,6 +378,7 @@ export interface FileRouteTypes {
     | '/admin/pages'
     | '/admin/projects'
     | '/admin/users'
+    | '/booking/room/$title'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -379,6 +396,7 @@ export interface FileRouteTypes {
     | '/admin/pages'
     | '/admin/projects'
     | '/admin/users'
+    | '/booking/room/$title'
   id:
     | '__root__'
     | '/'
@@ -398,6 +416,7 @@ export interface FileRouteTypes {
     | '/admin/_layout/pages'
     | '/admin/_layout/projects'
     | '/admin/_layout/users'
+    | '/booking/room/$title'
   fileRoutesById: FileRoutesById
 }
 
@@ -410,6 +429,7 @@ export interface RootRouteChildren {
   EventsEventIdRoute: typeof EventsEventIdRoute
   BookingIndexRoute: typeof BookingIndexRoute
   EventsIndexRoute: typeof EventsIndexRoute
+  BookingRoomTitleRoute: typeof BookingRoomTitleRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -421,6 +441,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventsEventIdRoute: EventsEventIdRoute,
   BookingIndexRoute: BookingIndexRoute,
   EventsIndexRoute: EventsIndexRoute,
+  BookingRoomTitleRoute: BookingRoomTitleRoute,
 }
 
 export const routeTree = rootRoute
@@ -442,7 +463,8 @@ export const routeTree = rootRoute
         "/booking/$title",
         "/events/$eventId",
         "/booking/",
-        "/events/"
+        "/events/",
+        "/booking/room/$title"
       ]
     },
     "/": {
@@ -517,6 +539,9 @@ export const routeTree = rootRoute
     "/admin/_layout/users": {
       "filePath": "admin/_layout/users.tsx",
       "parent": "/admin/_layout"
+    },
+    "/booking/room/$title": {
+      "filePath": "booking/room/$title.tsx"
     }
   }
 }

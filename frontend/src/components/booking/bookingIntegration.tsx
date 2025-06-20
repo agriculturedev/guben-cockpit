@@ -74,7 +74,7 @@ export default function BookingIntegration({ setLoading }: BookingIntegrationPro
               bookables.push({ title, description, location, type, flags, autoCommitNote, price, bookingUrl, bkid, imgUrl, category, tickets: [] });
             });
 
-            const fetchTicketsForBookable = async (bookable: Booking) => {
+            const fetchTicketsAndBookables = async (bookable: Booking) => {
               if (!bookable.bkid || bookable.bkid === "#") return;
               const url = `${import.meta.env.VITE_BOOKING_URL}/html/${import.meta.env.VITE_BOOKING_TENANT}/bookables/${bookable.bkid}`;
               try {
@@ -108,6 +108,7 @@ export default function BookingIntegration({ setLoading }: BookingIntegrationPro
                   const ticketBookingUrl = ticketEl.querySelector(".btn-booking")?.getAttribute("href") || "";
                   const ticketBkid = ticketEl.querySelector(".btn-detail")?.getAttribute("href")?.split("bkid=")[1] || "";
                   const ticketFlags = Array.from(ticketEl.querySelectorAll(".flag")).map(f => f.textContent?.trim() || "");
+                  const ticketImgUrl = ticketEl.querySelector("img")?.getAttribute("src") || "/images/guben-city-booking-card-placeholder.png";
 
                   return {
                     title: ticketTitle,
@@ -118,16 +119,37 @@ export default function BookingIntegration({ setLoading }: BookingIntegrationPro
                     price: ticketPrice,
                     bookingUrl: ticketBookingUrl,
                     description: ticketDescription,
-                    bkid: ticketBkid
+                    bkid: ticketBkid,
+                    imgUrl: ticketImgUrl
                   } as Ticket;
                 });
+
+                const roomeElement = doc.querySelectorAll(".bt-room");
+                bookable.bookings = Array.from(roomeElement).map(roomEl => {
+                  const bkid = roomEl.querySelector(".btn-detail")?.getAttribute("href")?.split("bkid=")[1] || "";
+                  if (bookable.bkid === bkid) return null;
+                  return bookables.find(b => b.bkid === bkid) || null;
+                }).filter((b): b is Booking => b !== null);
             } catch (err) {
               console.error("Failed to fetch tickets for bookable", bookable.bkid, err);
             }
           };
 
-          Promise.all(bookables.map(fetchTicketsForBookable)).then(() => {
-            setBookings(bookables);
+          Promise.all(bookables.map(fetchTicketsAndBookables)).then(() => {
+            const nestedBkids = new Set<String>();
+
+            for (const bookable of bookables) {
+              if (bookable.bookings) {
+                for (const nested of bookable.bookings) {
+                  if (nested.bkid) nestedBkids.add(nested.bkid);
+                }
+              }
+            }
+
+            const parentBookings = bookables.filter(b => !nestedBkids.has(b.bkid || ""));
+
+            console.log(parentBookings);
+            setBookings(parentBookings);
             setLoading(false);
             observer.disconnect();
           });

@@ -11,9 +11,10 @@ type PriceCardProps = {
   description?: string;
   location?: string;
   autoCommitNote?: string;
+  imgUrl?: string;
 }
 
-export default function ({ bookingUrl, price, title, flags, description, location, autoCommitNote }: PriceCardProps) {
+export default function ({ bookingUrl, price, title, flags, description, location, autoCommitNote, imgUrl }: PriceCardProps) {
   const { t } = useTranslation("booking");
 
   return (
@@ -56,14 +57,23 @@ export default function ({ bookingUrl, price, title, flags, description, locatio
               )}
 
             </div>
-            <div className="col-span-1 bg-red-600/70 h-full font-bold place-content-center p-5 text-gubenAccent-foreground">
-              <p>{t("priceCard.price")}: {price}</p>
-              { location && (
-                <p>{t("priceCard.place")}: {location}</p>
-              )}
-              { autoCommitNote && (
-                <p>{autoCommitNote}</p>
-              )}
+            <div
+              className="col-span-1 relative h-full font-bold text-gubenAccent-foreground"
+              style={{
+                backgroundImage: imgUrl ? `url(${imgUrl})` : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}>
+              <div className="absolute inset-0 bg-red-600/50" />
+              <div className="relative z-10 h-full flex flex-col justify-center items-start p-5">
+                <p>{t("priceCard.price")}: {price}</p>
+                { location && (
+                  <p>{t("priceCard.place")}: {location}</p>
+                )}
+                { autoCommitNote && (
+                  <p>{autoCommitNote}</p>
+                )}
+              </div>
             </div>
           </div>
         </Card>
