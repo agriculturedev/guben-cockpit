@@ -24,10 +24,10 @@ public class UploadWfsHandler : ApiRequestHandler<UploadWfsQuery, UploadWfsRespo
     using var ms = new MemoryStream();
     await request.File.CopyToAsync(ms, cancellationToken);
 
-    var path = $"{NextcloudManager.WfsDirectory}/{request.File.FileName}.{extension}";
+    var path = $"{request.Type.Name}/{request.File.FileName}.{extension}";
     await _nextcloudManager.CreateFileAsync(ms.ToArray(), path);
 
-    var (result, newDataSource) = GeoDataSource.Create(path, false, request.IsPublic);
+    var (result, newDataSource) = GeoDataSource.Create(path, false, request.IsPublic, request.Type);
     result.ThrowIfFailure();
 
     await _geoDataSourceRepository.SaveAsync(newDataSource);

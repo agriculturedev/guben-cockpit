@@ -1,10 +1,15 @@
 using System.Net.Mime;
 using Api.Controllers.Geo.AddTopic;
+using Api.Controllers.Geo.GetGeoDataSources;
 using Api.Controllers.Geo.GetTopics;
 using Api.Controllers.Geo.UploadWfs;
+using Api.Controllers.Geo.ValidateGeoDataSource;
+using Domain;
+using Domain.GeoDataSource;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api;
 
 namespace Api.Controllers.Geo;
 
@@ -44,19 +49,52 @@ public class GeoController : ControllerBase
     return Results.Ok(result);
   }
 
-  [HttpPost("wfs")]
-  [EndpointName("GeoUploadWfs")]
+  [HttpPost("geodata/upload")]
+  [EndpointName("GeoUploadGeoDataSource")]
   [Authorize]
   [Consumes("multipart/form-data")]
-  public async Task<IResult> CreateWfsFile([FromQuery] bool isPublic, IFormFile file)
+  public async Task<IResult> CreateGeoDataFile([FromBody] bool isPublic, [FromBody] GeoDataSourceType type, IFormFile file)
   {
     if (file == null || file.Length == 0)
       return Results.BadRequest("No file content provided.");
 
+    if (!GeoDataSourceType.TryFromValue(type, out var castType))
+      throw new ProblemDetailsException(TranslationKeys.GeoDataSourceTypeInvalid);
+
     var result = await _mediator.Send(new UploadWfsQuery()
     {
       IsPublic = isPublic,
-      File = file
+      File = file,
+      Type = castType
+    });
+
+    return Results.Ok(result);
+  }
+
+  [HttpGet("geodata")]
+  [EndpointName("GeoGetAllGeoDataSources")]
+  [Authorize]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetGeoDataSourcesResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> GetAllGeoDataSources()
+  {
+    var result = await _mediator.Send(new GetGeoDataSourcesQuery());
+    return Results.Ok(result);
+  }
+
+
+
+  [HttpPatch("validate/{Id:guid}")]
+  [EndpointName("GeoValidate")]
+  [Authorize] // TODO@JOREN: new role for data protection officer
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ValidateGeoDataSourceResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> ValidateGeoDataSource([FromRoute] Guid id, [FromBody] bool isValid)
+  {
+    var result = await _mediator.Send(new ValidateGeoDataSourceQuery()
+    {
+      Id = id,
+      IsValid = isValid
     });
     return Results.Ok(result);
   }

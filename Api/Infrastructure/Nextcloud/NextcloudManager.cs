@@ -22,9 +22,7 @@ namespace Api.Infrastructure.Nextcloud
 
   public class NextcloudManager : IFileManager
   {
-    public const string WfsDirectory = "WFS";
     public const string ImagesDirectory = "Images";
-
 
     private readonly IWebDavClient _client;
     private readonly string _baseFolder;

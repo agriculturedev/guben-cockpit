@@ -16,5 +16,11 @@ public class GeoDataSourceConfiguration : IEntityTypeConfiguration<GeoDataSource
     builder.Property(e => e.Path);
     builder.Property(e => e.IsValidated);
     builder.Property(e => e.IsPublic);
+
+    builder.Property(e => e.Type)
+      .HasConversion(
+        p => p.Value,
+        p => GeoDataSourceType.FromValue(p))
+      .IsRequired();
   }
 }
