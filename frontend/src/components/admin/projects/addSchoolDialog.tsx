@@ -1,13 +1,13 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { CreateProjectQuery, CreateProjectResponse } from "@/endpoints/gubenSchemas";
-import { ReactNode, useState } from "react";
-import { FormSchema } from "./projectDialog.formSchema";
-
-import { useProjectsCreateProject, useNextcloudCreateFile } from "@/endpoints/gubenComponents";
-import { useErrorToast } from "@/hooks/useErrorToast";
 import { useTranslation } from "react-i18next";
-import ProjectDialogForm from "./projectDialog.form";
+import { useState, ReactNode } from "react";
+import { useErrorToast } from "@/hooks/useErrorToast";
+import { FormSchema } from "./projectDialog.formSchema";
+import { CreateProjectQuery, CreateProjectResponse } from "@/endpoints/gubenSchemas";
 import { ProjectType } from "@/types/ProjectType";
+import ProjectDialogForm from "./projectDialog.form";
+import { useProjectsCreateProject } from "@/endpoints/gubenComponents";
+import { useNextcloudCreateFile } from "@/endpoints/gubenComponents";
 import { FileInput } from "@/components/inputs/FileInput";
 
 interface IProps {
@@ -15,9 +15,8 @@ interface IProps {
   onCreateSuccess: (data: CreateProjectResponse) => Promise<void>;
 }
 
-//TODO: move to compound component design to prevent prop drilling
-export default function AddBusinessDialog({children, ...props}: IProps) {
-  const {t} = useTranslation("projects");
+export default function AddSchoolDialog({ children, ...props }: IProps) {
+  const { t } = useTranslation("projects");
   const [isOpen, setOpen] = useState<boolean>(false);
   const [pdfFiles, setPdfFiles] = useState<File[]>([]);
   const [images, setImages] = useState<File[]>([]);
@@ -25,7 +24,7 @@ export default function AddBusinessDialog({children, ...props}: IProps) {
 
   const createFileMutation = useNextcloudCreateFile();
 
-  const {mutateAsync} = useProjectsCreateProject({
+  const { mutateAsync } = useProjectsCreateProject({
     onSuccess: async (data) => {
       try {
         if (data?.id && data?.type?.name && (pdfFiles.length > 0 || images.length > 0)) {
@@ -69,14 +68,14 @@ export default function AddBusinessDialog({children, ...props}: IProps) {
     onError: (error) => {
       useErrorToast(error);
     }
-  })
+  });
 
   const handleSubmit = async (form: FormSchema) => {
     setIsUploading(true);
     await mutateAsync({
       body: mapFormToCreateProjectQuery(form)
     });
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
@@ -85,7 +84,7 @@ export default function AddBusinessDialog({children, ...props}: IProps) {
       </DialogTrigger>
       <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2"}>
         <DialogHeader>
-          <DialogTitle>{t("AddBusiness")}</DialogTitle>
+          <DialogTitle>{t("AddSchool")}</DialogTitle>
         </DialogHeader>
         <FileInput files={pdfFiles} setFiles={setPdfFiles} />
         <FileInput images={true} files={images} setFiles={setImages} />
@@ -101,7 +100,7 @@ export default function AddBusinessDialog({children, ...props}: IProps) {
 
 function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
   return {
-    type: ProjectType.GubenerMarktplatz,
+    type: ProjectType.Schule,
     title: form.title,
     description: form.description,
     fullText: form.fullText,
@@ -110,3 +109,4 @@ function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
     imageUrl: form.imageUrl
   }
 }
+

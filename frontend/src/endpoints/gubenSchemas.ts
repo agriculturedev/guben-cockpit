@@ -111,7 +111,10 @@ export type CreateProjectQuery = {
   imageCredits?: string | null;
 };
 
-export type CreateProjectResponse = Record<string, any>;
+export type CreateProjectResponse = {
+  id?: string;
+  type?: ProjectType;
+};
 
 export type CreateTopicQuery = {
   id?: string;
@@ -305,6 +308,10 @@ export type GetAllPagesResponse = {
   pages: PageResponse[];
 };
 
+export type GetAllSchoolsResponse = {
+  projects: ProjectResponse[];
+};
+
 export type GetAllUsersResponse = {
   /**
    * @format int32
@@ -329,13 +336,9 @@ export type GetEventByIdResponse = {
   result?: EventResponse;
 };
 
-export type GetMyEventsQuery = Record<string, any>;
-
 export type GetMyEventsResponse = {
   results: EventResponse[];
 };
-
-export type GetMyProjectsQuery = Record<string, any>;
 
 export type GetMyProjectsResponse = {
   results: ProjectResponse[];
@@ -344,11 +347,6 @@ export type GetMyProjectsResponse = {
 export type GetTopicsResponse = {
   topics: TopicResponse[];
 };
-
-/**
- * @format binary
- */
-export type IFormFile = Blob;
 
 export type InformationCardResponse = {
   /**
@@ -413,6 +411,14 @@ export type ProjectResponse = {
   imageUrl?: string | null;
   imageCredits?: string | null;
   published: boolean;
+};
+
+export type ProjectType = {
+  name?: string | null;
+  /**
+   * @format int32
+   */
+  value?: number;
 };
 
 export type PublishProjectsQuery = {

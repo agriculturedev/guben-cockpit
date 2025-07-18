@@ -5,10 +5,11 @@ import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 
 interface IProps {
+  pdf?: boolean;
   directory: string;
 }
 
-export const UploadImageCard: React.FC<IProps> = ({ directory }) => {
+export const UploadImageCard: React.FC<IProps> = ({ directory, pdf }) => {
   const [filename, setFilename] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const createFileMutation = useNextcloudCreateFile();
@@ -45,7 +46,7 @@ export const UploadImageCard: React.FC<IProps> = ({ directory }) => {
 
   return (
     <div className="flex-col flex gap-2">
-      <h1>{t("UploadImage")}</h1>
+      <h1>{pdf ? t("UploadPdf") : t("UploadImage")}</h1>
       <div className={"flex gap-2 items-center"}>
 
         <Input
@@ -56,10 +57,10 @@ export const UploadImageCard: React.FC<IProps> = ({ directory }) => {
         />
 
 
-        <FileUpload setFile={setFile} />
+        <FileUpload setFile={setFile} pdf={pdf}/>
       </div>
       <Button onClick={onUpload} disabled={createFileMutation.isPending} className={"max-w-40"}>
-        {createFileMutation.isPending ? t("Uploading") : t("UploadImage")}
+        {createFileMutation.isPending ? t("Uploading") : (pdf ? t("UploadPdf") : t("UploadImage"))}
       </Button>
       {createFileMutation.isError && (
         <p style={{color: "red"}}>{t("UploadFailedTryAgain")}</p>
@@ -68,7 +69,7 @@ export const UploadImageCard: React.FC<IProps> = ({ directory }) => {
   );
 };
 
-function FileUpload({ setFile }: { setFile: (file: File | null) => void }) {
+function FileUpload({ setFile, pdf }: { setFile: (file: File | null) => void, pdf?: boolean }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const {t} = useTranslation(["dashboard"]);
 
@@ -85,12 +86,12 @@ function FileUpload({ setFile }: { setFile: (file: File | null) => void }) {
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept={pdf ? "application/pdf" : "image/*"}
         onChange={handleChange}
         className="hidden"
       />
       <Button type="button" variant="outline" onClick={handleClick}>
-        {t("SelectImage")}
+        {pdf ? t("SelectPdf") : t("SelectImage")}
       </Button>
     </div>
   );
