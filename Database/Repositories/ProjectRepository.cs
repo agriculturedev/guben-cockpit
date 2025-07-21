@@ -35,6 +35,16 @@ public class ProjectRepository
       .AsEnumerable();
   }
 
+  public IEnumerable<Project> GetAllSchools()
+  {
+    return ModifiedSet
+      .TagWith(GetType().Name + '.' + nameof(GetAllSchools))
+      .AsNoTracking()
+      .IgnoreAutoIncludes()
+      .Where(p => p.Type == ProjectType.Schule.Value)
+      .AsEnumerable();
+  }
+
   public Task<Project?> GetIncludingUnpublished(string id)
   {
     return Set

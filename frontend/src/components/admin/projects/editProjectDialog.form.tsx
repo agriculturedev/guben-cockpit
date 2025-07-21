@@ -14,6 +14,7 @@ interface IProps {
   defaultData?: FormSchema;
   onSubmit: (form: FormSchema) => void;
   onClose: () => void;
+  disabled: boolean;
 }
 
 export default function EditProjectDialogForm(props: IProps) {
@@ -23,6 +24,9 @@ export default function EditProjectDialogForm(props: IProps) {
     resolver: zodResolver(formSchema),
     defaultValues: formDefaults
   })
+
+  const isBusiness = form.watch("isBusiness");
+  const isSchool = form.watch("isSchool");
 
   //ensure form is reset on mount
   useEffect(() => form.reset(props.defaultData ?? formDefaults), [props.defaultData]);
@@ -121,21 +125,40 @@ export default function EditProjectDialogForm(props: IProps) {
         <FormField
           control={form.control}
           name="isBusiness"
-          render={({ field }) => {
-            return (
-              <FormItem className="flex gap-2 items-center">
-                <FormControl>
-                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                </FormControl>
-                <FormLabel>{t("projects:IsBusiness")}</FormLabel>
-              </FormItem>
-            )
-          }
-        }/>
+          render={({ field }) => (
+            <FormItem className="flex gap-2 items-center">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  disabled={isSchool}
+                />
+              </FormControl>
+              <FormLabel>{t("projects:IsBusiness")}</FormLabel>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="isSchool"
+          render={({ field }) => (
+            <FormItem className="flex gap-2 items-center">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  disabled={isBusiness}
+                />
+              </FormControl>
+              <FormLabel>{t("projects:IsSchool")}</FormLabel>
+            </FormItem>
+          )}
+        />
 
         <div className={"flex justify-end gap-2"}>
           <Button className={"bg-transparent text-foreground"} onClick={props.onClose}>{t("Cancel")}</Button>
-          <Button className={"bg-gubenAccent text-gubenAccent-foreground"}>{t("Save")}</Button>
+          <Button className={"bg-gubenAccent text-gubenAccent-foreground"} disabled={props.disabled}>{t("Save")}</Button>
         </div>
       </form>
     </Form>

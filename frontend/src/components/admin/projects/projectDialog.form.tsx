@@ -13,6 +13,7 @@ interface IProps {
   defaultData?: FormSchema;
   onSubmit: (form: FormSchema) => void;
   onClose: () => void;
+  disabled: boolean;
 }
 
 export default function ProjectDialogForm(props: IProps) {
@@ -119,7 +120,7 @@ export default function ProjectDialogForm(props: IProps) {
 
         <div className={"flex justify-end gap-2"}>
           <Button className={"bg-transparent text-foreground"} onClick={props.onClose}>{t("Cancel")}</Button>
-          <Button className={"bg-gubenAccent text-gubenAccent-foreground"}>{t("Save")}</Button>
+          <Button className={"bg-gubenAccent text-gubenAccent-foreground"} disabled={props.disabled}>{t("Save")}</Button>
         </div>
       </form>
     </Form>

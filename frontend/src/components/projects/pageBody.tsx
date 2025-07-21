@@ -15,8 +15,6 @@ export default function PageBody() {
     }
   });
 
-  console.log(data?.results);
-
   return (
     <section className="mt-8 flex flex-col gap-4">
       <h1 className="text-4xl text-black">

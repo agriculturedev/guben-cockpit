@@ -2,17 +2,19 @@ import { ConfirmationDialogContent } from "@/components/confirmationDialog/confi
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useProjectsDeleteProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
+import { ProjectType } from "@/types/ProjectType";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 interface IProps {
   projectId: string;
+  type?: string;
   onDeleteSuccess: () => Promise<void>;
   children: React.ReactNode;
 }
 
-export default function DeleteProjectDialog({projectId, onDeleteSuccess, children}: IProps) {
+export default function DeleteProjectDialog({projectId, type, onDeleteSuccess, children}: IProps) {
   const {t} = useTranslation(["common", "projects"])
   const [open, setOpen] = useState(false);
 
@@ -29,6 +31,9 @@ export default function DeleteProjectDialog({projectId, onDeleteSuccess, childre
   const onSubmit = useCallback(() => mutation.mutate({
     pathParams: {
       id: projectId
+    },
+    queryParams: {
+      type: type
     }
   }), [mutation, projectId]);
 
