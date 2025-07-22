@@ -33,6 +33,7 @@ public sealed class Topic : Entity<string>
 public sealed class DataSource : Entity<string>
 {
   public string Name { get; set; }
+  public string Version { get; set; } = "";
 
   private readonly List<Source> _sources;
   public IReadOnlyCollection<Source> Sources => _sources.AsReadOnly();
@@ -44,12 +45,15 @@ public sealed class DataSource : Entity<string>
     _sources = new List<Source>();
   }
 
-  public static Result<DataSource> Create(string id, string name, IList<Source> sources)
+  public static Result<DataSource> Create(string id, string name, IList<Source> sources, string version = "")
   {
     if (!sources.Any())
       return Result.Error(TranslationKeys.AtLeastOneLayerSourceIsRequired);
 
-    var dataSource = new DataSource(id, name);
+    var dataSource = new DataSource(id, name)
+    {
+      Version = version
+    };
 
     dataSource._sources.AddRange(sources);
 

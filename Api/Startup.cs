@@ -54,6 +54,7 @@ public class Startup(IConfiguration configuration)
       .AddJsonConverters();
 
     services.AddNextCloud(MappedConfiguration.Nextcloud);
+    services.AddTopic(MappedConfiguration.Topic);
 
     services.AddKeycloak(Configuration);
     services.AddCustomCors(MappedConfiguration);

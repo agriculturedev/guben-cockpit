@@ -28,6 +28,10 @@ public static class KeycloakInstaller
       );
     }
 
+    authBuilder.AddPolicy("OnlyResiFormClient", policy =>
+      policy.RequireClaim("azp", "resi-form")
+    );
+
     return authBuilder;
   }
 }
