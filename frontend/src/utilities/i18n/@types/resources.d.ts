@@ -220,7 +220,7 @@ interface Resources {
     "DeletedSuccess": "Projekt erfolgreich gelöscht",
     "Title": "Projekte",
     "Add": "Projekt hinzufügen",
-    "Remove": "Entfernens",
+    "Remove": "Entfernen",
     "Edit": "Projekt bearbeiten",
     "Highlighted": "Hervorgehoben",
     "MyProjects": "Meine Projekte",
