@@ -124,7 +124,7 @@ namespace Api.Infrastructure.Nextcloud
 
     public async Task CreateFileAsync(byte[] fileContents, string fileName, string extension, string tabId)
     {
-      var filePath = $"{_baseFolder}/{tabId}/{fileName}{extension}";
+      var filePath = $"{_baseFolder}/{tabId}/{fileName}";
       var directory = Path.GetDirectoryName(filePath)?.Replace("\\", "/");
 
       if (!string.IsNullOrEmpty(directory) && directory != _baseFolder) // MAKE SURE BASEFOLDER EXISTS IN NEXTCLOUD!

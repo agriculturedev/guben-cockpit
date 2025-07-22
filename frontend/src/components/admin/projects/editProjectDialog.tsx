@@ -42,15 +42,15 @@ export default function EditProjectDialog({ children, project, ...props }: IProp
   const { mutateAsync } = useProjectsUpdateProject({
     onSuccess: async (data) => {
       try {
-        if (data?.id && data?.type?.name && (pdfFiles.length > 0 || images.length > 0)) {
+        if (project.id && project.type && (pdfFiles.length > 0 || images.length > 0)) {
           const allFiles = [
             ...pdfFiles.map(file => ({
               file,
-              directory: `${data?.type?.name}/${data.id}/pdfs`
+              directory: `${ProjectType[project.type]}/${project.id}/pdfs`
             })),
             ...images.map(file => ({
               file,
-              directory: `${data?.type?.name}/${data.id}/images`
+              directory: `${ProjectType[project.type]}/${project.id}/images`
             }))
           ];
 
