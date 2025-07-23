@@ -15,7 +15,7 @@ interface IProps {
   children: React.ReactNode;
   className?: string;
   school?: boolean;
-  imageFilenames?: string[]; 
+  imageFilenames?: string[];
 }
 
 export default function ProjectDialog({ project, children, className, imageFilenames }: IProps) {
@@ -40,7 +40,8 @@ export default function ProjectDialog({ project, children, className, imageFilen
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = fileName;
+        const decodedFileName = decodeURIComponent(fileName.split('/').pop() || fileName);
+        a.download = decodedFileName;
         a.click();
         window.URL.revokeObjectURL(url);
       } else {
@@ -59,70 +60,90 @@ export default function ProjectDialog({ project, children, className, imageFilen
   }));
 
   return (
-    <Dialog>
-      <DialogTrigger className={className}>{children}</DialogTrigger>
-      <DialogContent className={cn(
-        "bg-white rounded-lg text-lg",
-        "flex flex-col gap-4 p-16",
-        "min-w-[100svw] max-w-[100svw] min-h-[100svh] max-h-[100svh] md:min-w-[80svw] md:max-w-[80svw] md:min-h-[80svh] md:max-h-[80svh]"
-      )}>
-      <DialogHeader className="gap-4">
-        <DialogTitle className="text-4xl">{project.title}</DialogTitle>
-
-        {project.imageUrl && (
-          <div className="flex flex-col max-w-[512px] rounded-lg overflow-hidden">
-            <BaseImgTag
-              className="w-full"
-              alt={project.imageCaption ?? undefined}
-              src={project.imageUrl}
-            />
-            {project.imageCredits && (
-              <p className="text-sm py-1 px-2 bg-black text-white">
-                © {project.imageCredits}
-              </p>
-            )}
-          </div>
-        )}
-
-        {imageObjects?.length > 0 && (
-          <div className="max-w-[512px] mx-auto">
-            <NextcloudImageCarousel images={imageObjects} />
-          </div>
-        )}
-      </DialogHeader>
-
-        {!isNullOrUndefinedOrWhiteSpace(project.description) &&
-          <DialogDescription>
-            <div className="text-neutral-800" dangerouslySetInnerHTML={{ __html: sanitizeHtml(project.description!) }} />
-          </DialogDescription>
+    <>
+      <style>{`
+        .project-text a {
+          color: #2563eb;
+          text-decoration: underline;
         }
-
-        {!isNullOrUndefinedOrWhiteSpace(project.fullText) &&
-          <div className="whitespace-pre-wrap flex flex-col gap-2 text-neutral-800" dangerouslySetInnerHTML={{ __html: sanitizeHtml(project.fullText!) }} />
+        .project-text a:hover {
+          color: #1d4ed8;
         }
+      `}</style>
 
-        {pdfsQuery.isSuccess && pdfsQuery.data.length > 0 && (
-          <div className="mt-8 border-t pt-4">
-            <h3 className="text-xl font-semibold mb-2">{t("projects:AttachedPdfs")}</h3>
-            <ul className="list-disc list-inside space-y-1">
-              {pdfsQuery.data.map((fileName, i) => {
-                const displayName = decodeURIComponent(fileName.split('/').pop() || fileName);
+      <Dialog>
+        <DialogTrigger className={className}>{children}</DialogTrigger>
+        <DialogContent className={cn(
+          "bg-white rounded-lg text-lg",
+          "flex flex-col gap-4 p-16",
+          "min-w-[100svw] max-w-[100svw] min-h-[100svh] max-h-[100svh] md:min-w-[80svw] md:max-w-[80svw] md:min-h-[80svh] md:max-h-[80svh]"
+        )}>
+          <DialogHeader className="gap-4">
+            <DialogTitle className="text-4xl">{project.title}</DialogTitle>
 
-                return (
-                  <li key={i}>
-                    <button
-                      onClick={() => downloadFile(fileName)}
-                      className="text-blue-600 underline hover:text-blue-800"
-                    >
-                      {displayName}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}        
-      </DialogContent>
-    </Dialog>
+            {imageObjects?.length > 0 || project.imageUrl ? (
+              <div className="max-w-[512px] mx-auto">
+                <NextcloudImageCarousel
+                  images={[
+                    ...(project.imageUrl
+                      ? [{
+                        filename: project.imageUrl,
+                        external: true
+                      }]
+                      : []),
+                    ...imageObjects,
+                  ]}
+                />
+              </div>
+            ) : project.imageUrl ? (
+              <div className="flex flex-col max-w-[512px] rounded-lg overflow-hidden">
+                <BaseImgTag
+                  className="w-full"
+                  alt={project.imageCaption ?? undefined}
+                  src={project.imageUrl}
+                />
+                {project.imageCredits && (
+                  <p className="text-sm py-1 px-2 bg-black text-white">
+                    © {project.imageCredits}
+                  </p>
+                )}
+              </div>
+            ) : null}
+          </DialogHeader>
+
+          {!isNullOrUndefinedOrWhiteSpace(project.description) &&
+            <DialogDescription>
+              <div className="text-neutral-800" dangerouslySetInnerHTML={{ __html: sanitizeHtml(project.description!) }} />
+            </DialogDescription>
+          }
+
+          {!isNullOrUndefinedOrWhiteSpace(project.fullText) &&
+            <div className="whitespace-pre-wrap flex flex-col gap-2 text-neutral-800 project-text" dangerouslySetInnerHTML={{ __html: sanitizeHtml(project.fullText!) }} />
+          }
+
+          {pdfsQuery.isSuccess && pdfsQuery.data.length > 0 && (
+            <div className="mt-8 border-t pt-4">
+              <h3 className="text-xl font-semibold mb-2">{t("projects:AttachedPdfs")}</h3>
+              <ul className="list-disc list-inside space-y-1">
+                {pdfsQuery.data.map((fileName, i) => {
+                  const displayName = decodeURIComponent(fileName.split('/').pop() || fileName);
+
+                  return (
+                    <li key={i}>
+                      <button
+                        onClick={() => downloadFile(fileName)}
+                        className="text-blue-600 underline hover:text-blue-800"
+                      >
+                        {displayName}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }

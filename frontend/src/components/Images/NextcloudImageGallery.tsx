@@ -46,9 +46,10 @@ export const NextcloudImageGallery = ({ images, className }: NextcloudImageGalle
 
 interface NextCloudClickableImageProps {
   imageFilename: string;
+  isExternal?: boolean;
 }
 
-export const NextCloudClickableImage = ({imageFilename}: NextCloudClickableImageProps) => {
+export const NextCloudClickableImage = ({imageFilename, isExternal}: NextCloudClickableImageProps) => {
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const shortFilename = imageFilename.split("/").pop()?.split(".")[0];
 
@@ -63,20 +64,18 @@ export const NextCloudClickableImage = ({imageFilename}: NextCloudClickableImage
   return (
     <>
       <div>
-        <NextcloudImage
-          key={imageFilename}
-          filename={imageFilename}
-          onClick={() => handleImageClick()}
-        />
+        {isExternal
+          ? <ExternalImage url={imageFilename} onClick={handleImageClick} />
+          : <NextcloudImage key={imageFilename} filename={imageFilename} onClick={() => handleImageClick()}/>
+        }
 
         <Label>{decodeURIComponent(shortFilename ?? "")}</Label>
       </div>
 
       {showDialog && imageFilename && (
-        <ImageDialog
-          filename={imageFilename}
-          onClose={handleClose}
-        />
+        isExternal
+          ? <ExternalImageDialog filename={imageFilename} onClose={handleClose} />
+          : <ImageDialog filename={imageFilename} onClose={handleClose} />
       )}
     </>
   );
@@ -185,5 +184,70 @@ const ImageDialog = ({ filename, onClose }: ImageDialogProps) => {
         </div>
       </Dialog>
     </Transition>
+  );
+};
+
+interface ExternalImageDialogProps {
+  filename: string;
+  onClose: () => void;
+}
+
+const ExternalImageDialog = ({ filename, onClose }: ExternalImageDialogProps) => {
+  return (
+    <Transition show={true} as={Fragment}>
+      <Dialog onClose={onClose} className="fixed z-50 inset-0 overflow-y-auto">
+        <div className="flex items-center justify-center min-h-screen p-4 bg-black/70">
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-200"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-150"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <Dialog.Panel className="bg-white rounded-xl max-w-[90vw] w-full max-h-[90vh] p-4 overflow-auto shadow-xl relative">
+              <button
+                onClick={onClose}
+                className="absolute top-2 right-2 text-gray-500 hover:text-black"
+              >
+                ✕
+              </button>
+              <BaseImgTag
+                src={filename}
+                alt={filename}
+                className="w-full h-auto max-h-[80vh] object-contain mx-auto"
+              />
+            </Dialog.Panel>
+          </Transition.Child>
+        </div>
+      </Dialog>
+    </Transition>
+  );
+};
+
+interface ExternalImageProps {
+  url: string;
+  onClick?: () => void;
+  label?: string;
+}
+
+const ExternalImage = ({ url, onClick, label }: ExternalImageProps) => {
+  return (
+    <div
+      className="cursor-pointer rounded-md overflow-hidden border hover:scale-102 transition-all duration-200"
+      onClick={onClick}
+    >
+      {label && (
+        <div className="mt-2 font-semibold text-lg">
+          {decodeURIComponent(url)}
+        </div>
+      )}
+      <BaseImgTag
+        src={url}
+        alt={label || "External image"}
+        className="w-full h-full object-contain aspect-square"
+      />
+    </div>
   );
 };

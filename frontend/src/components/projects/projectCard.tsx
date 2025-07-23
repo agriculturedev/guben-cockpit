@@ -28,7 +28,7 @@ export default function ProjectCard({project, school}: IProps){
   });
 
   const imageUrl = image.data ? URL.createObjectURL(image.data as Blob) : undefined;
-  const imageUrlToUse = school && imageUrl ? imageUrl : project.imageUrl;
+  const imageUrlToUse = project.imageUrl ? project.imageUrl : imageUrl;
 
   return (
     <ProjectDialog project={project} school={school} imageFilenames={filenamesAsStrings}>
