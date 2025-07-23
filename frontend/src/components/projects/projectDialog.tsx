@@ -40,7 +40,8 @@ export default function ProjectDialog({ project, children, className, imageFilen
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = fileName;
+        const decodedFileName = decodeURIComponent(fileName.split('/').pop() || fileName);
+        a.download = decodedFileName;
         a.click();
         window.URL.revokeObjectURL(url);
       } else {
