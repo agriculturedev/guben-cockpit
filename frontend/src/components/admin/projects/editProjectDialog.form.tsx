@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { formSchema, formDefaults, FormSchema } from "./editProjectDialog.formSchema";
 import { Checkbox } from "@/components/ui/checkbox";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface IProps {
   defaultData?: FormSchema;
@@ -115,7 +117,12 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("FullText")}</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("FullText")} {...field} value={field.value ?? undefined} />
+                <ReactQuill
+                  theme="snow"
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                  placeholder={t("FullText")}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

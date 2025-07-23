@@ -8,6 +8,8 @@ import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {EditableImage} from "@/components/ui/editableImage";
 import {useTranslation} from "react-i18next";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface IProps {
   defaultData?: FormSchema;
@@ -107,13 +109,18 @@ export default function ProjectDialogForm(props: IProps) {
         <FormField
           control={form.control}
           name="fullText"
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>{t("FullText")}</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("FullText")} {...field} value={field.value ?? undefined}/>
+                <ReactQuill
+                  theme="snow"
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                  placeholder={t("FullText")}
+                />
               </FormControl>
-              <FormMessage/>
+              <FormMessage />
             </FormItem>
           )}
         />
