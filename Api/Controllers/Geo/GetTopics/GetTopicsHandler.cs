@@ -33,8 +33,9 @@ public class GetTopicsHandler : ApiRequestHandler<GetTopicsQuery, GetTopicsRespo
 
   public async Task<List<TopicResponse>> GetTopicsFromConfig()
   {
-    var configJsonPath = Path.Combine(_topicConfig.Directory, "config.json");
-    var servicesJsonPath = Path.Combine(_topicConfig.Directory, "resources", "services-internet.json");
+    var basePath = Path.GetFullPath(_topicConfig.Directory);
+    var configJsonPath = Path.Combine(basePath, "config.json");
+    var servicesJsonPath = Path.Combine(basePath, "resources", "services-internet.json");
 
     if (!File.Exists(configJsonPath) || !File.Exists(servicesJsonPath))
       throw new FileNotFoundException("Required config files not found");
