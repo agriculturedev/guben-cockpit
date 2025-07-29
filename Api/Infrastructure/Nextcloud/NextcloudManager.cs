@@ -41,9 +41,7 @@ namespace Api.Infrastructure.Nextcloud
       };
       _client = new WebDavClient(clientParams);
 
-      //Everything but the Geo stuff is currently saved under Guben/Images/...
-      //Should be either send by the frontend or moved into its own Controller, so BaseDirectory is just Guben...
-      _baseFolder = config.BaseDirectory + ImagesDirectory;
+      _baseFolder = config.BaseDirectory;
     }
 
     public async Task<IList<WebDavResource>> GetFilesAsync(string rootPath)
