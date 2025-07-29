@@ -70,7 +70,7 @@ const InternalImageCarousel = ({
     }
   }, [imageData]);
 
-  const fullFilename = image.directory + "/" + image.filename;
+  const fullFilename = image.filename.includes("remote.php/webdav") ? image.filename : `${image.directory}/${image.filename}`;
 
   return (
     <>
