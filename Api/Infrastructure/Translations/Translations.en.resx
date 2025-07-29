@@ -230,4 +230,10 @@ value   : The object must be serialized into a byte array
   <data name="ProjectTypeInvalid" xml:space="preserve">
     <value>Project type not valid</value>
   </data>
+  <data name="GeoDataSourceNotFound" xml:space="preserve">
+    <value>GeoData Source not found</value>
+  </data>
+  <data name="GeoDataSourceTypeInvalid" xml:space="preserve">
+    <value>GeoData Source not valid</value>
+  </data>
 </root>

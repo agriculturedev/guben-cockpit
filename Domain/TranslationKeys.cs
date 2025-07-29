@@ -38,4 +38,7 @@ public class TranslationKeys
   public const string NoValidTranslationsFound = "NoValidTranslationsFound";
   public const string EventNotOwnedByUser = "EventNotOwnedByUser";
   public const string ProjectTypeInvalid = "ProjectTypeInvalid";
+  public const string GeoDataSourceNotFound = "GeoDataSourceNotFound";
+  public const string GeoDataSourceTypeInvalid = "GeoDataSourceTypeInvalid";
+
 }
