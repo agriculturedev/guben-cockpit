@@ -10,7 +10,9 @@ namespace Api.Infrastructure.Nextcloud
   {
     public abstract Task<IList<WebDavResource>> GetFilesAsync(string rootPath);
     public abstract Task<byte[]> GetFileAsync(string filename);
-    public abstract Task CreateFileAsync(byte[] fileContents, string path);
+    public abstract Task CreateFileAsync(byte[] fileContents, string path, string? extension);
+    public abstract Task<bool> DeleteFileAsync(string filename);
+    public abstract Task<bool> DeleteProjectFolderAsync(string projectId, string type);
   }
 
   public static class NextCloudInstaller
@@ -84,19 +86,6 @@ namespace Api.Infrastructure.Nextcloud
       return result.Stream != null ? await ReadStreamAsync(result.Stream) : throw new Exception("File stream is null");
     }
 
-    public async Task<byte[]> GetImageAsync(string filename)
-    {
-      var path = $"{_baseFolder}/{filename}";
-      var result = await _client.GetRawFile(path);
-
-      if (!result.IsSuccessful)
-      {
-        throw new Exception($"Failed to get file: {result.StatusCode}");
-      }
-
-      return result.Stream != null ? await ReadStreamAsync(result.Stream) : throw new Exception("File stream is null");
-    }
-
     public async Task<bool> DeleteFileAsync(string filePath)
     {
       var fullPath = $"{_baseFolder}/{filePath}";
@@ -124,7 +113,7 @@ namespace Api.Infrastructure.Nextcloud
       }
     }
 
-    public async Task CreateFileAsync(byte[] fileContents, string path, string extension)
+    public async Task CreateFileAsync(byte[] fileContents, string path, string? extension)
     {
       var filePath = $"{_baseFolder}/{path}";
       var adjustedDirectory = Path.GetDirectoryName(filePath)?.Replace("\\", "/");
@@ -138,7 +127,14 @@ namespace Api.Infrastructure.Nextcloud
       byte[] processedContents;
       try
       {
-        processedContents = CompressImage(fileContents, extension);
+        if (!string.IsNullOrEmpty(extension))
+        {
+          processedContents = CompressImage(fileContents, extension);
+        }
+        else
+        {
+          processedContents = fileContents;
+        }
       }
       catch (NotSupportedException)
       {
