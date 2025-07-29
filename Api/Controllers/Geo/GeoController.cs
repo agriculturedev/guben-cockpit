@@ -53,18 +53,18 @@ public class GeoController : ControllerBase
   [EndpointName("GeoUploadGeoDataSource")]
   [Authorize]
   [Consumes("multipart/form-data")]
-  public async Task<IResult> CreateGeoDataFile([FromBody] bool isPublic, [FromBody] GeoDataSourceType type, IFormFile file)
+  public async Task<IResult> CreateGeoDataFile([FromBody] UploadWfsQuery query)
   {
-    if (file == null || file.Length == 0)
+    if (query.File == null || query.File.Length == 0)
       return Results.BadRequest("No file content provided.");
 
-    if (!GeoDataSourceType.TryFromValue(type, out var castType))
+    if (!GeoDataSourceType.TryFromValue(query.Type, out var castType))
       throw new ProblemDetailsException(TranslationKeys.GeoDataSourceTypeInvalid);
 
     var result = await _mediator.Send(new UploadWfsQuery()
     {
-      IsPublic = isPublic,
-      File = file,
+      IsPublic = query.IsPublic,
+      File = query.File,
       Type = castType
     });
 
