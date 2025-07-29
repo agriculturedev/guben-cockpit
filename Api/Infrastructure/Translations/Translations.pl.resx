@@ -230,4 +230,10 @@ value   : The object must be serialized into a byte array
   <data name="ProjectTypeInvalid" xml:space="preserve">
     <value>Nieprawidłowy typ projektu</value>
   </data>
+  <data name="GeoDataSourceNotFound" xml:space="preserve">
+    <value>Źródło danych geograficznych nie zostało znalezione.</value>
+  </data>
+  <data name="GeoDataSourceTypeInvalid" xml:space="preserve">
+    <value>Nieprawidłowy typ źródła danych geograficznych.</value>
+  </data>
 </root>
