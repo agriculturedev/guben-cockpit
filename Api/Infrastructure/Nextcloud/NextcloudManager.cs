@@ -10,7 +10,7 @@ namespace Api.Infrastructure.Nextcloud
   {
     public abstract Task<IList<WebDavResource>> GetFilesAsync(string rootPath);
     public abstract Task<byte[]> GetFileAsync(string filename);
-    public abstract Task CreateFileAsync(byte[] fileContents, string path, string? extension);
+    public abstract Task CreateFileAsync(byte[] fileContents, string path, string? extension = null);
     public abstract Task<bool> DeleteFileAsync(string filename);
     public abstract Task<bool> DeleteProjectFolderAsync(string projectId, string type);
   }
@@ -113,7 +113,7 @@ namespace Api.Infrastructure.Nextcloud
       }
     }
 
-    public async Task CreateFileAsync(byte[] fileContents, string path, string? extension)
+    public async Task CreateFileAsync(byte[] fileContents, string path, string? extension = null)
     {
       var filePath = $"{_baseFolder}/{path}";
       var adjustedDirectory = Path.GetDirectoryName(filePath)?.Replace("\\", "/");
