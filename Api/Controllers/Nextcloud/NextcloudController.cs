@@ -72,9 +72,13 @@ public class NextcloudController : ControllerBase
     }
     else
     {
-      fullPath = string.IsNullOrWhiteSpace(directory) ? filename : $"{NextcloudManager.ImagesDirectory}/{directory}/{filename}"; 
+
+      var basePath = string.IsNullOrWhiteSpace(directory)
+            ? $"{NextcloudManager.ImagesDirectory}"
+            : $"{NextcloudManager.ImagesDirectory}/{directory}";
+
+      fullPath = $"{basePath}/{filename}";
     }
-    Console.WriteLine(fullPath);
     var fileBytes = await _nextcloudManager.GetFileAsync(fullPath);
     return File(fileBytes, MimeHelper.GetMimeTypeForFile(filename), filename);
   }
