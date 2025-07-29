@@ -73,8 +73,16 @@ namespace Api.Infrastructure.Nextcloud
 
     public async Task<byte[]> GetFileAsync(string filename)
     {
-      var path = $"{_baseFolder}/{filename}";
-      var result = await _client.GetRawFile(path);
+      WebDavStreamResponse result;;
+      if (filename.Contains("Guben/Images", StringComparison.OrdinalIgnoreCase))
+      {
+        result = await _client.GetRawFile(filename);
+      }
+      else
+      {
+        var path = $"{_baseFolder}/{filename}";
+        result = await _client.GetRawFile(path);
+      }      
 
       if (!result.IsSuccessful)
       {

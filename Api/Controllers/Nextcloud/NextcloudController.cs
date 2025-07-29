@@ -65,7 +65,20 @@ public class NextcloudController : ControllerBase
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileContentResult))]
   public async Task<IActionResult> GetImage([FromQuery] string filename, [FromQuery] string? directory = "")
   {
-    string fullPath = string.IsNullOrWhiteSpace(directory) ? filename : $"{NextcloudManager.ImagesDirectory}/{directory}/{filename}";
+    string fullPath;
+    if (filename.Contains("remote.php/webdav", StringComparison.OrdinalIgnoreCase))
+    {
+      fullPath = filename;
+    }
+    else
+    {
+
+      var basePath = string.IsNullOrWhiteSpace(directory)
+            ? $"{NextcloudManager.ImagesDirectory}"
+            : $"{NextcloudManager.ImagesDirectory}/{directory}";
+
+      fullPath = $"{basePath}/{filename}";
+    }
     var fileBytes = await _nextcloudManager.GetFileAsync(fullPath);
     return File(fileBytes, MimeHelper.GetMimeTypeForFile(filename), filename);
   }
