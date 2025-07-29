@@ -8,11 +8,14 @@ import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {EditableImage} from "@/components/ui/editableImage";
 import {useTranslation} from "react-i18next";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface IProps {
   defaultData?: FormSchema;
   onSubmit: (form: FormSchema) => void;
   onClose: () => void;
+  disabled: boolean;
 }
 
 export default function ProjectDialogForm(props: IProps) {
@@ -106,20 +109,25 @@ export default function ProjectDialogForm(props: IProps) {
         <FormField
           control={form.control}
           name="fullText"
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>{t("FullText")}</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("FullText")} {...field} value={field.value ?? undefined}/>
+                <ReactQuill
+                  theme="snow"
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                  placeholder={t("FullText")}
+                />
               </FormControl>
-              <FormMessage/>
+              <FormMessage />
             </FormItem>
           )}
         />
 
         <div className={"flex justify-end gap-2"}>
           <Button className={"bg-transparent text-foreground"} onClick={props.onClose}>{t("Cancel")}</Button>
-          <Button className={"bg-gubenAccent text-gubenAccent-foreground"}>{t("Save")}</Button>
+          <Button className={"bg-gubenAccent text-gubenAccent-foreground"} disabled={props.disabled}>{t("Save")}</Button>
         </div>
       </form>
     </Form>

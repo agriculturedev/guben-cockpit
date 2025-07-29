@@ -325,8 +325,57 @@ export const useProjectsCreateProject = (
   });
 };
 
+export type ProjectsGetSchoolsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type ProjectsGetSchoolsVariables = GubenContext["fetcherOptions"];
+
+export const fetchProjectsGetSchools = (
+  variables: ProjectsGetSchoolsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllSchoolsResponse,
+    ProjectsGetSchoolsError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/projects/schools", method: "get", ...variables, signal });
+
+export const useProjectsGetSchools = <TData = Schemas.GetAllSchoolsResponse,>(
+  variables: ProjectsGetSchoolsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllSchoolsResponse,
+      ProjectsGetSchoolsError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllSchoolsResponse,
+    ProjectsGetSchoolsError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/projects/schools",
+      operationId: "projectsGetSchools",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchProjectsGetSchools({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type ProjectsGetMyProjectsQueryParams = {
-  query?: Schemas.GetMyProjectsQuery;
+  query?: Record<string, any>;
 };
 
 export type ProjectsGetMyProjectsError = Fetcher.ErrorWrapper<{
@@ -909,7 +958,10 @@ export type NextcloudCreateFileQueryParams = {
 export type NextcloudCreateFileError = Fetcher.ErrorWrapper<undefined>;
 
 export type NextcloudCreateFileRequestBody = {
-  file?: Schemas.IFormFile;
+  /**
+   * @format binary
+   */
+  file?: Blob;
 };
 
 export type NextcloudCreateFileVariables = {
@@ -948,6 +1000,52 @@ export const useNextcloudCreateFile = (
   >({
     mutationFn: (variables: NextcloudCreateFileVariables) =>
       fetchNextcloudCreateFile({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type NextcloudDeleteFileQueryParams = {
+  filename?: string;
+  directory?: string;
+};
+
+export type NextcloudDeleteFileError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudDeleteFileVariables = {
+  queryParams?: NextcloudDeleteFileQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudDeleteFile = (
+  variables: NextcloudDeleteFileVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    undefined,
+    NextcloudDeleteFileError,
+    undefined,
+    {},
+    NextcloudDeleteFileQueryParams,
+    {}
+  >({ url: "/nextcloud", method: "delete", ...variables, signal });
+
+export const useNextcloudDeleteFile = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      NextcloudDeleteFileError,
+      NextcloudDeleteFileVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    undefined,
+    NextcloudDeleteFileError,
+    NextcloudDeleteFileVariables
+  >({
+    mutationFn: (variables: NextcloudDeleteFileVariables) =>
+      fetchNextcloudDeleteFile({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -1465,7 +1563,7 @@ export const useEventsCreateEvent = (
 };
 
 export type EventsGetMyEventsQueryParams = {
-  query?: Schemas.GetMyEventsQuery;
+  query?: Record<string, any>;
 };
 
 export type EventsGetMyEventsError = Fetcher.ErrorWrapper<{
@@ -2065,6 +2163,11 @@ export type QueryOperation =
       path: "/projects";
       operationId: "projectsGetAllNonBusinesses";
       variables: ProjectsGetAllNonBusinessesVariables;
+    }
+  | {
+      path: "/projects/schools";
+      operationId: "projectsGetSchools";
+      variables: ProjectsGetSchoolsVariables;
     }
   | {
       path: "/projects/owned";

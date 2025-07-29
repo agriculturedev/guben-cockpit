@@ -1,5 +1,8 @@
 using System.Net;
 using WebDav;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Png;
 
 namespace Api.Infrastructure.Nextcloud
 {
@@ -46,7 +49,7 @@ namespace Api.Infrastructure.Nextcloud
       var path = $"{_baseFolder}/{rootPath}";
       var parameters = new PropfindParameters
       {
-          Headers = new List<KeyValuePair<string, string>>
+        Headers = new List<KeyValuePair<string, string>>
           {
               new ("Depth", "infinity")
           }
@@ -56,11 +59,15 @@ namespace Api.Infrastructure.Nextcloud
 
       if (!result.IsSuccessful)
       {
-        throw new Exception($"Failed to get directory contents: {result.StatusCode}");
+          if ((int)result.StatusCode == 404 || (int)result.StatusCode == 403)
+          {
+              return new List<WebDavResource>();
+          }
+          throw new Exception($"Failed to get directory contents: {result.StatusCode}");
       }
 
       return result.Resources
-          .Where(entry => entry.ContentType != "httpd/unix-directory")
+          .Where(entry => !string.IsNullOrEmpty(entry.ContentType) && entry.ContentType != "httpd/unix-directory")
           .ToList();
     }
 
@@ -74,29 +81,76 @@ namespace Api.Infrastructure.Nextcloud
         throw new Exception($"Failed to get file: {result.StatusCode}");
       }
 
-       return result.Stream != null ? await ReadStreamAsync(result.Stream) : throw new Exception("File stream is null");
+      return result.Stream != null ? await ReadStreamAsync(result.Stream) : throw new Exception("File stream is null");
     }
 
-    public async Task CreateFileAsync(byte[] fileContents, string path)
+    public async Task<byte[]> GetImageAsync(string filename)
+    {
+      var path = $"{_baseFolder}/{filename}";
+      var result = await _client.GetRawFile(path);
+
+      if (!result.IsSuccessful)
+      {
+        throw new Exception($"Failed to get file: {result.StatusCode}");
+      }
+
+      return result.Stream != null ? await ReadStreamAsync(result.Stream) : throw new Exception("File stream is null");
+    }
+
+    public async Task<bool> DeleteFileAsync(string filePath)
+    {
+      var fullPath = $"{_baseFolder}/{filePath}";
+      var result = await _client.Delete(fullPath);
+      return result.IsSuccessful;
+    }
+
+    //deletes everything from Guben/Images/e.g. School
+    public async Task<bool> DeleteProjectFolderAsync(string projectId, string type)
+    {
+      var fullPath = $"{_baseFolder}/{type}/{projectId}";
+      try
+      {
+        var propfindResult = await _client.Propfind(fullPath);
+        if (propfindResult?.IsSuccessful != true || propfindResult.Resources == null || propfindResult.Resources.Count == 0)
+        {
+          return true;
+        }
+        var deleteResult = await _client.Delete(fullPath);
+        return deleteResult?.IsSuccessful == true;
+      }
+      catch
+      {
+        return false;
+      }
+    }
+
+    public async Task CreateFileAsync(byte[] fileContents, string path, string extension)
     {
       var filePath = $"{_baseFolder}/{path}";
       var adjustedDirectory = Path.GetDirectoryName(filePath)?.Replace("\\", "/");
 
       if (!string.IsNullOrEmpty(adjustedDirectory) && adjustedDirectory != _baseFolder) // MAKE SURE BASEFOLDER EXISTS IN NEXTCLOUD!
       {
-          var mkDirResult = await _client.Mkcol(adjustedDirectory);
-          if (!mkDirResult.IsSuccessful && mkDirResult.StatusCode != (int)HttpStatusCode.MethodNotAllowed)
-          {
-              throw new Exception($"Failed to create directory: {mkDirResult.StatusCode}");
-          }
+        var relativeDir = adjustedDirectory.Substring(_baseFolder.Length).TrimStart('/');
+        await EnsureDirectoryExists(relativeDir);
       }
 
-      using (var ms = new MemoryStream(fileContents))
+      byte[] processedContents;
+      try
+      {
+        processedContents = CompressImage(fileContents, extension);
+      }
+      catch (NotSupportedException)
+      {
+        processedContents = fileContents;
+      }
+
+      using (var ms = new MemoryStream(processedContents))
       {
         var putResult = await _client.PutFile(filePath, ms);
         if (!putResult.IsSuccessful)
         {
-            throw new Exception($"Failed to upload file: {putResult.StatusCode}");
+          throw new Exception($"Failed to upload file: {putResult.StatusCode}");
         }
       }
     }
@@ -106,6 +160,52 @@ namespace Api.Infrastructure.Nextcloud
       using var ms = new MemoryStream();
       await stream.CopyToAsync(ms);
       return ms.ToArray();
+    }
+
+    private async Task EnsureDirectoryExists(string directory)
+    {
+      var parts = directory.Split('/', StringSplitOptions.RemoveEmptyEntries);
+      string current = "";
+      foreach (var part in parts)
+      {
+        current = string.IsNullOrEmpty(current) ? part : $"{current}/{part}";
+        var mkDirResult = await _client.Mkcol($"{_baseFolder}/{current}");
+        if (!mkDirResult.IsSuccessful && mkDirResult.StatusCode != (int)HttpStatusCode.MethodNotAllowed)
+        {
+          throw new Exception($"Failed to create directory: {mkDirResult.StatusCode}");
+        }
+      }
+    }
+
+    private static byte[] CompressImage(byte[] imageBytes, string extension)
+    {
+      using var inputStream = new MemoryStream(imageBytes);
+      try
+      {
+        using var image = Image.Load(inputStream);
+        var outputStream = new MemoryStream();
+
+        if (extension.Equals(".jpg", StringComparison.OrdinalIgnoreCase) || extension.Equals(".jpeg", StringComparison.OrdinalIgnoreCase))
+        {
+          var encoder = new JpegEncoder { Quality = 75 };
+          image.Save(outputStream, encoder);
+        }
+        else if (extension.Equals(".png", StringComparison.OrdinalIgnoreCase))
+        {
+          var encoder = new PngEncoder { CompressionLevel = PngCompressionLevel.DefaultCompression };
+          image.Save(outputStream, encoder);
+        }
+        else
+        {
+          throw new NotSupportedException("Only .jpg and .png formats are supported for compression.");
+        }
+
+        return outputStream.ToArray();
+      }
+      catch (UnknownImageFormatException)
+      {
+        throw new NotSupportedException("File format not supported for compression.");
+      }
     }
   }
 }

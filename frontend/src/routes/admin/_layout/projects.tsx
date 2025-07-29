@@ -13,6 +13,7 @@ import { routePermissionCheck } from "@/guards/routeGuardChecks";
 import { Permissions } from "@/auth/permissions";
 import PublishProjectDialog from "@/components/admin/projects/publishProjectDialog";
 import { ProjectType } from "@/types/ProjectType";
+import AddSchoolDialog from "@/components/admin/projects/addSchoolDialog";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   beforeLoad: async ({context, location}) => {
@@ -46,6 +47,15 @@ function Page() {
             </div>
           </Button>
         </AddProjectDialog>
+
+        <AddSchoolDialog onCreateSuccess={onSuccess}>
+          <Button>
+            <div className="flex gap-2 items-center">
+              <PlusIcon className="size-4" />
+              <p>{t("projects:AddSchool")}</p>
+            </div>
+          </Button>
+        </AddSchoolDialog>
       </div>
       <Table>
         <TableHeader>
@@ -54,6 +64,7 @@ function Page() {
             <TableHead>{t("Description")}</TableHead>
             <TableHead>{t("projects:Published")}</TableHead>
             <TableHead>{t("projects:IsBusiness")}</TableHead>
+            <TableHead>{t("projects:IsSchool")}</TableHead>
             <TableHead className="w-min">{t("Actions")}</TableHead>
           </TableRow>
         </TableHeader>
@@ -64,6 +75,7 @@ function Page() {
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[50ch]">{p.description}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.published ? <CheckIcon /> : <XIcon />}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.type == ProjectType.GubenerMarktplatz ? <CheckIcon /> : <XIcon />}</TableCell>
+              <TableCell className={"text-neutral-500"}>{p.type == ProjectType.Schule ? <CheckIcon /> : <XIcon />}</TableCell>
               <TableCell>
                 <TooltipProvider>
                   <div className="h-full flex items-center gap-2">
@@ -75,7 +87,7 @@ function Page() {
                       <FileUpIcon className="size-4 hover:text-red-500"/>
                     </PublishProjectDialog>
 
-                    <DeleteProjectDialog projectId={p.id} onDeleteSuccess={onSuccess}>
+                    <DeleteProjectDialog projectId={p.id} type={ProjectType[p.type]} onDeleteSuccess={onSuccess}>
                       <TrashIcon className="size-4 hover:text-red-500"/>
                     </DeleteProjectDialog>
                   </div>

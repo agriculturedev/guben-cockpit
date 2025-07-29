@@ -24,6 +24,7 @@ public class DataSourceResponse
 {
   public required string Id { get; set; }
   public required string Name { get; set; }
+  public required string Version { get; set; }
   public required IEnumerable<SourceResponse> Sources { get; set; }
 
   public static DataSourceResponse Map(DataSource dataSource)
@@ -32,6 +33,7 @@ public class DataSourceResponse
     {
       Id = dataSource.Id,
       Name = dataSource.Name,
+      Version = dataSource.Version,
       Sources = dataSource.Sources.Select(SourceResponse.Map)
     };
   }

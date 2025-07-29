@@ -39,6 +39,18 @@ public class GeoController : ControllerBase
     return Results.Ok(result);
   }
 
+  // For now the same as the Topics above. Until the Geoupload is added or when we have private data
+  [HttpGet("topicsPrivate")]
+  [EndpointName("GetTopicsPrivate")]
+  [Authorize(Policy = "OnlyResiFormClient")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetTopicsResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> GetTopicsPrivate()
+  {
+    var result = await _mediator.Send(new GetTopicsQuery());
+    return Results.Ok(result);
+  }
+
   [HttpPost("topics")]
   [EndpointName("AddTopics")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddTopicsResponse))]
