@@ -58,7 +58,7 @@ const NavButton = (props: { name: string } & HtmlHTMLAttributes<HTMLButtonElemen
 )
 
 export const Navbar = () => {
-  const iconStyle = "icon size-5";
+  const iconStyle = "icon size-8";
   const auth = useAuth();
   const { t } = useTranslation("navigation");
   const location = useLocation();
@@ -73,7 +73,7 @@ export const Navbar = () => {
 
   return (
     <NavContext.Provider value={{ location: location.pathname }}>
-      <div className="w-full h-20 bg-white sticky top-0 shadow p-0 pr-2 rounded-b flex items-center justify-between z-50">
+      <div className="w-full h-20 bg-white sticky top-0 shadow py-12 pr-2 rounded-b flex items-center justify-between z-50">
         <div id="logo" className="flex-1 flex justify-start items-center h-full pl-5">
           <Link to="/" className="h-full flex justify-center items-center">
             <SmartCityGubenLogoIcon className="w-[128px] h-auto" />
@@ -82,22 +82,40 @@ export const Navbar = () => {
 
         <NavList>
           <NavLink to="/" name={t("Dashboard")}>
-            <HomeIcon className={iconStyle} />
+            <div className="flex flex-col items-center w-24">
+              <HomeIcon className={iconStyle} />
+              <span className="mt-1">{t('Dashboard')}</span>
+            </div>
           </NavLink>
           <NavLink to="/projects" name={t("Projects")}>
-            <LayoutGridIcon className={iconStyle} />
+            <div className="flex flex-col items-center w-24">
+              <LayoutGridIcon className={iconStyle} />
+              <span className="mt-1">{t('Projects')}</span>
+            </div>
           </NavLink>
           <NavLink to="/map" name={t("Map")}>
-            <MapIcon className={iconStyle} />
+            <div className="flex flex-col items-center w-24">
+              <MapIcon className={iconStyle} />
+              <span className="mt-1">{t('Map')}</span>
+            </div>
           </NavLink>
           <NavLink to="/events" name={t("Events")}>
-            <CalendarDaysIcon className={iconStyle} />
+            <div className="flex flex-col items-center w-24">
+              <CalendarDaysIcon className={iconStyle} />
+              <span className="mt-1">{t('Events')}</span>
+            </div>
           </NavLink>
           <NavLink to="/booking" name={t("Booking")}>
-            <PlaneIcon className={iconStyle} />
+            <div className="flex flex-col items-center w-24">
+              <PlaneIcon className={iconStyle} />
+              <span className="mt-1">{t('Booking')}</span>
+            </div>
           </NavLink>
           <NavLink name={t("ServicePortal")} to="https://serviceportal.dikom-bb.de/stadt-guben" target="_blank">
-            <ServicePortalIcon className={cn(iconStyle, "size-5 stroke-gubenAccent")} />
+            <div className="flex flex-col items-center w-24">
+              <ServicePortalIcon className={iconStyle} />
+              <span className="mt-1 whitespace-nowrap">{t('ServicePortal')}</span>
+            </div>
           </NavLink>
         </NavList>
 
@@ -109,12 +127,12 @@ export const Navbar = () => {
           }
 
           <NavLink to={"/admin"} name={t("Admin")}>
-            <ShieldIcon className={iconStyle} />
+            <ShieldIcon className="icon size-6" />
           </NavLink>
 
           {auth.isAuthenticated &&
             <NavButton name={t("LogOut")} onClick={handleSignout}>
-              <LogOutIcon className={iconStyle} />
+              <LogOutIcon className="icon size-6" />
             </NavButton>
           }
 
