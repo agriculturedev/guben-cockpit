@@ -24,7 +24,7 @@ public class GetAllEventsHandler : ApiPagedRequestHandler<GetAllEventsQuery, Get
     var filter = new EventFilterCriteria
     {
       TitleQuery = request.TitleSearch,
-      LocationQuery = request.LocationSearch?.Split(";"),
+      DistanceInKm = request.DistanceInKm,
       CategoryIdQuery = request.CategoryId,
       StartDateQuery = request.StartDate,
       EndDateQuery = request.EndDate,

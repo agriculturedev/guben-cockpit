@@ -3,7 +3,7 @@ namespace Domain.Events.repository;
 public class EventFilterCriteria
 {
   public string? TitleQuery { get; set; }
-  public string[]? LocationQuery { get; set; }
+  public int? DistanceInKm { get; set; }
   public Guid? CategoryIdQuery { get; set; }
 
   public DateOnly? StartDateQuery { get; set; }

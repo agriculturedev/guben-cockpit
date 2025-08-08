@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { Skeleton } from '@/components/ui/skeleton'
 import { CategoryResponse, LocationResponse, EventImageResponse, EventResponse } from '@/endpoints/gubenSchemas'
+import { DistanceFilter } from '@/components/filters/DistanceFilter'
 
 type BookingEvent = {
   title: string;
@@ -47,7 +48,7 @@ export const Route = createFileRoute('/events/')({
 })
 
 const filtersSchema = z.object({
-  location: z.array(z.string()).default([]),
+  distance: z.number().optional(),
   search: z.string().optional(),
   category: z.string().optional(),
   dateRange: z.object({
@@ -56,9 +57,7 @@ const filtersSchema = z.object({
   }).optional(),
   sortBy: z.nativeEnum(SortOption).optional(),
   ordering: z.nativeEnum(SortOrder).optional()
-}).default({
-  location: []
-});
+}).default({});
 
 function RouteComponent() {
   const { t } = useTranslation(["common", "events"]);
@@ -77,7 +76,8 @@ function RouteComponent() {
   } = usePagination();
 
   const [filters, setFilters] = useState(filtersSchema.parse({
-    dateRange: { from: new Date() }
+    dateRange: { from: new Date() },
+    distance: 10,
   }));
 
   const { data } = useEventsGetAll({
@@ -85,7 +85,7 @@ function RouteComponent() {
       pageSize: pageSize,
       pageNumber: page,
       ...filters.search && { title: filters.search },
-      ...filters.location.length > 0 && { location: filters.location.join(";") },
+      ...filters.distance && { distance: filters.distance },
       ...filters.category && { category: filters.category },
       ...filters.dateRange?.from && { startDate: filters.dateRange.from.toDateString() },
       ...filters.dateRange?.to && { endDate: filters.dateRange.to.toDateString() },
@@ -169,9 +169,9 @@ function RouteComponent() {
       if (filters.search && !event.title.toLowerCase().includes(filters.search.toLowerCase())) {
         return false;
       }
-      if (filters.location.length > 0 && (!event.location || !filters.location.includes(event.location.city ?? ""))) {
-        return false;
-      }
+      //if (filters.location.length > 0 && (!event.location || !filters.location.includes(event.location.city ?? ""))) {
+      //  return false;
+      //}
       if (filters.category && !event.categories.some(c => c.name === filters.category)) {
         return false;
       }
@@ -219,12 +219,12 @@ function RouteComponent() {
                 ).map(name => ({ id: name, name }))
               }
             />
-            <LocationsFilter
-              value={filters.location}
-              onChange={v => handleFilterChange({ location: v })}
-              customLocations={customEvents.map(e => ({
-                city: e.details?.city
-              }))}
+            <DistanceFilter
+              value={filters.distance?.toString()}
+              onChange={(v) => {
+                const num = v ? parseInt(v) : undefined;
+                handleFilterChange({ distance: num });
+              }}
             />
             <DateRangeFilter
               value={filters.dateRange}

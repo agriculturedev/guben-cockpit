@@ -6,6 +6,7 @@ import { ArrowLeftIcon, ClockIcon, MapPinIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
+import { MapComponent } from '@/components/home/MapComponent';
 
 export const Route = createFileRoute('/events/$eventId')({
   component: RouteComponent,
@@ -78,6 +79,10 @@ function RouteComponent() {
                 <p className="text-neutral-600">{data.description}</p>
               )}
           </div>
+        </div>
+
+        <div className={"flex min-h-[70vh] h-full"}>
+          <MapComponent src="https://guben.elie.de/" lat={data?.coordinates?.latitude} lon={data?.coordinates?.longitude} />
         </div>
       </section>
     </main>
