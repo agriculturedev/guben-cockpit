@@ -27,7 +27,7 @@ export const CategoryFilter = ({
 
   const options = mergedCategories.map(c => ({
     label: c.name,
-    value: c.name
+    value: c.id
   }));
 
   return (

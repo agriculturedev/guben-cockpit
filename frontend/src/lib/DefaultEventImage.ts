@@ -30,8 +30,6 @@ export function getEventImage(category?: string | null): string | null {
       // Remove any remaining non-alphanumeric characters
       .replace(/[^a-z0-9-]/g, '');
 
-    console.log(normalizedCategory);
-
     const categoryImagePath = `/images/categories/${normalizedCategory}.png`;
 
     return categoryImagePath;

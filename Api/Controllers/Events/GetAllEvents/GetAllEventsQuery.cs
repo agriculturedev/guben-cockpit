@@ -11,8 +11,8 @@ public class GetAllEventsQuery : PagedQuery, IApiRequest<GetAllEventsResponse>, 
   [FromQuery(Name = "title")]
   public string? TitleSearch { get; set; }
 
-  [FromQuery(Name = "location")]
-  public string? LocationSearch { get; set; }
+  [FromQuery(Name = "distance")]
+  public int? DistanceInKm { get; set; }
 
   [FromQuery(Name = "category")]
   public Guid? CategoryId { get; set; }

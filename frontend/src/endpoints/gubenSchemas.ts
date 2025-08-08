@@ -145,6 +145,7 @@ export type DashboardTabResponse = {
 export type DataSourceResponse = {
   id: string;
   name: string;
+  version: string;
   sources: SourceResponse[];
 };
 
@@ -222,6 +223,24 @@ export type FooterItemResponse = {
   id: string;
   name: string;
   content: string;
+};
+
+export type GeoDataSourceResponse = {
+  path: string;
+  isValidated: boolean;
+  isPublic: boolean;
+  /**
+   * @format int32
+   */
+  type: number;
+};
+
+export type GeoDataSourceType = {
+  name: string | null;
+  /**
+   * @format int32
+   */
+  value: number;
 };
 
 export type GetAllBusinessesResponse = {
@@ -336,6 +355,10 @@ export type GetEventByIdResponse = {
   result?: EventResponse;
 };
 
+export type GetGeoDataSourcesResponse = {
+  sources: GeoDataSourceResponse[];
+};
+
 export type GetMyEventsResponse = {
   results: EventResponse[];
 };
@@ -347,6 +370,11 @@ export type GetMyProjectsResponse = {
 export type GetTopicsResponse = {
   topics: TopicResponse[];
 };
+
+/**
+ * @format binary
+ */
+export type IFormFile = Blob;
 
 export type InformationCardResponse = {
   /**
@@ -505,6 +533,12 @@ export type UpdateProjectQuery = {
   imageCredits?: string | null;
 };
 
+export type UploadWfsQuery = {
+  isPublic: boolean;
+  file: IFormFile;
+  type: GeoDataSourceType;
+};
+
 export type UpsertButtonQuery = {
   title: string;
   url: string;
@@ -537,3 +571,5 @@ export type UserResponse = {
   lastName: string;
   email: string;
 };
+
+export type ValidateGeoDataSourceResponse = Record<string, any>;

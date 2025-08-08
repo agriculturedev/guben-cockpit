@@ -528,6 +528,13 @@ export type ProjectsDeleteProjectPathParams = {
   id: string;
 };
 
+export type ProjectsDeleteProjectQueryParams = {
+  /**
+   * @default null
+   */
+  type?: string;
+};
+
 export type ProjectsDeleteProjectError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -535,6 +542,7 @@ export type ProjectsDeleteProjectError = Fetcher.ErrorWrapper<{
 
 export type ProjectsDeleteProjectVariables = {
   pathParams: ProjectsDeleteProjectPathParams;
+  queryParams?: ProjectsDeleteProjectQueryParams;
 } & GubenContext["fetcherOptions"];
 
 export const fetchProjectsDeleteProject = (
@@ -546,7 +554,7 @@ export const fetchProjectsDeleteProject = (
     ProjectsDeleteProjectError,
     undefined,
     {},
-    {},
+    ProjectsDeleteProjectQueryParams,
     ProjectsDeleteProjectPathParams
   >({ url: "/projects/{id}", method: "delete", ...variables, signal });
 
@@ -958,10 +966,7 @@ export type NextcloudCreateFileQueryParams = {
 export type NextcloudCreateFileError = Fetcher.ErrorWrapper<undefined>;
 
 export type NextcloudCreateFileRequestBody = {
-  /**
-   * @format binary
-   */
-  file?: Blob;
+  file?: Schemas.IFormFile;
 };
 
 export type NextcloudCreateFileVariables = {
@@ -1294,6 +1299,199 @@ export const useAddTopics = (
   });
 };
 
+export type GetTopicsPrivateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type GetTopicsPrivateVariables = GubenContext["fetcherOptions"];
+
+export const fetchGetTopicsPrivate = (
+  variables: GetTopicsPrivateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetTopicsResponse,
+    GetTopicsPrivateError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/geo/topicsPrivate", method: "get", ...variables, signal });
+
+export const useGetTopicsPrivate = <TData = Schemas.GetTopicsResponse,>(
+  variables: GetTopicsPrivateVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetTopicsResponse,
+      GetTopicsPrivateError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetTopicsResponse,
+    GetTopicsPrivateError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/geo/topicsPrivate",
+      operationId: "getTopicsPrivate",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchGetTopicsPrivate({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type GeoUploadGeoDataSourceError = Fetcher.ErrorWrapper<undefined>;
+
+export type GeoUploadGeoDataSourceVariables = {
+  body: Schemas.UploadWfsQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchGeoUploadGeoDataSource = (
+  variables: GeoUploadGeoDataSourceVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    undefined,
+    GeoUploadGeoDataSourceError,
+    Schemas.UploadWfsQuery,
+    {},
+    {},
+    {}
+  >({ url: "/geo/geodata/upload", method: "post", ...variables, signal });
+
+export const useGeoUploadGeoDataSource = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      GeoUploadGeoDataSourceError,
+      GeoUploadGeoDataSourceVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    undefined,
+    GeoUploadGeoDataSourceError,
+    GeoUploadGeoDataSourceVariables
+  >({
+    mutationFn: (variables: GeoUploadGeoDataSourceVariables) =>
+      fetchGeoUploadGeoDataSource({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type GeoGetAllGeoDataSourcesError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type GeoGetAllGeoDataSourcesVariables = GubenContext["fetcherOptions"];
+
+export const fetchGeoGetAllGeoDataSources = (
+  variables: GeoGetAllGeoDataSourcesVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetGeoDataSourcesResponse,
+    GeoGetAllGeoDataSourcesError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/geo/geodata", method: "get", ...variables, signal });
+
+export const useGeoGetAllGeoDataSources = <
+  TData = Schemas.GetGeoDataSourcesResponse,
+>(
+  variables: GeoGetAllGeoDataSourcesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetGeoDataSourcesResponse,
+      GeoGetAllGeoDataSourcesError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetGeoDataSourcesResponse,
+    GeoGetAllGeoDataSourcesError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/geo/geodata",
+      operationId: "geoGetAllGeoDataSources",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchGeoGetAllGeoDataSources({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type GeoValidatePathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type GeoValidateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type GeoValidateVariables = {
+  body?: boolean;
+  pathParams: GeoValidatePathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchGeoValidate = (
+  variables: GeoValidateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.ValidateGeoDataSourceResponse,
+    GeoValidateError,
+    boolean,
+    {},
+    {},
+    GeoValidatePathParams
+  >({ url: "/geo/validate/{id}", method: "patch", ...variables, signal });
+
+export const useGeoValidate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.ValidateGeoDataSourceResponse,
+      GeoValidateError,
+      GeoValidateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.ValidateGeoDataSourceResponse,
+    GeoValidateError,
+    GeoValidateVariables
+  >({
+    mutationFn: (variables: GeoValidateVariables) =>
+      fetchGeoValidate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type FooterItemsGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -1442,7 +1640,10 @@ export const useFooterDeleteItem = (
 
 export type EventsGetAllQueryParams = {
   title?: string;
-  location?: string;
+  /**
+   * @format int32
+   */
+  distance?: number;
   /**
    * @format uuid
    */
@@ -2218,6 +2419,16 @@ export type QueryOperation =
       path: "/geo/topics";
       operationId: "getTopics";
       variables: GetTopicsVariables;
+    }
+  | {
+      path: "/geo/topicsPrivate";
+      operationId: "getTopicsPrivate";
+      variables: GetTopicsPrivateVariables;
+    }
+  | {
+      path: "/geo/geodata";
+      operationId: "geoGetAllGeoDataSources";
+      variables: GeoGetAllGeoDataSourcesVariables;
     }
   | {
       path: "/footeritem";

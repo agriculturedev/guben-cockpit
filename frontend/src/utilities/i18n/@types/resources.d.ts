@@ -132,7 +132,8 @@ interface Resources {
     "Total": "total",
     "Url": "Url",
     "Urls": "Urls",
-    "Yes": "Ja"
+    "Yes": "Ja",
+    "Radius": "Radius"
   },
   "dashboard": {
     "Title": "Dashboard",
@@ -202,7 +203,7 @@ interface Resources {
     "Fax": "Fax"
   },
   "navigation": {
-    "Dashboard": "Dashboard",
+    "Dashboard": "Übersicht",
     "Projects": "Projekte",
     "Map": "Karte",
     "Events": "Veranstaltungen",
