@@ -171,6 +171,9 @@ interface Resources {
       }
     }
   },
+  "dataManagement": {
+    "Title": "Data management"
+  },
   "events": {
     "Title": "Veranstaltungen",
     "PageTitle": "Veranstaltungen in der Stadt Guben",

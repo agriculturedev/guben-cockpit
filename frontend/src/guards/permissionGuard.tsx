@@ -14,7 +14,7 @@ export const PermissionGuard = ({children, permissions}: Props) => {
     // Optionally show a loader while checking permissions
     return <div>Loading...</div>;
   }
-
+  console.log(user);
   if (!user || !userHasPermissions(user, permissions)) {
     // Optionally show an "access denied" message
     return null;
