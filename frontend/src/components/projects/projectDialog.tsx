@@ -81,7 +81,7 @@ export default function ProjectDialog({ project, children, className, imageFilen
           <DialogHeader className="gap-4">
             <DialogTitle className="text-4xl">{project.title}</DialogTitle>
 
-            {imageObjects?.length > 0 || project.imageUrl ? (
+            {imageObjects?.length > 0 ? (
               <div className="max-w-[512px] mx-auto">
                 <NextcloudImageCarousel
                   images={[

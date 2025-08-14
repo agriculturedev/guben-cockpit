@@ -83,7 +83,8 @@ interface Resources {
       "ThisWeek": "Diese Woche",
       "ThisYear": "Dieses Jahr",
       "Today": "Heute",
-      "Tomorrow": "Morgen"
+      "Tomorrow": "Morgen",
+      "ConfirmDate": "Dateum anwenden"
     },
     "Clear": "Zurücksetzen",
     "Delete": "Löschen",

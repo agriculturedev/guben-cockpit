@@ -31,50 +31,60 @@ export const DateRangeFilter = ({
   const { t } = useTranslation("common");
 
   const [range, setRange] = useState<DateRange | undefined>(value);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handlePresetClick = useCallback((preset: Preset) => {
+    let newRange: DateRange | undefined;
     switch (preset) {
       case Preset.TODAY:
-        return setRange({
+        newRange = {
           from: new Date(),
           to: new Date()
-        });
+        };
+        break;
       case Preset.TOMORROW:
-        return setRange({
+        newRange = {
           from: new Date().addDays(1),
           to: new Date().addDays(1)
-        });
+        };
+        break;
       case Preset.THIS_WEEK:
-        return setRange({
+        newRange = {
           from: new Date(Math.max(new Date().startOfWeek().getTime(), new Date().getTime())),
           to: new Date().endOfWeek()
-        });
+        };
+        break;
       case Preset.NEXT_WEEK:
-        return setRange({
+        newRange = {
           from: new Date().addDays(7).startOfWeek(),
           to: new Date().addDays(7).endOfWeek()
-        });
+        };
+        break;
       case Preset.THIS_MONTH:
-        return setRange({
+        newRange = {
           from: new Date(Math.max(new Date().startOfMonth().getTime(), new Date().getTime())),
-          to: new Date().endOfMonth(),
-        });
+          to: new Date().endOfMonth()
+        };
+        break;
       case Preset.NEXT_MONTH:
-        return setRange({
+        newRange = {
           from: new Date().addMonths(1).startOfMonth(),
           to: new Date().addMonths(1).endOfMonth()
-        })
+        };
+        break;
     }
-  }, []);
-
-  const handleClose = useCallback((isopen: boolean) => {
-    if (!isopen) onChange(range);
-  }, [range]);
+    setRange(newRange);
+    onChange(newRange);
+    setIsOpen(false);
+  }, [onChange]);
 
   return (
     <div className={cn("flex flex-col gap-2", className ?? "")}>
       <Label>{t("Date")}</Label>
-      <DropdownMenu onOpenChange={handleClose}>
+      <DropdownMenu open={isOpen} onOpenChange={(open) => {
+        setIsOpen(open);
+        if (!open) onChange(range);
+      }}>
         <DropdownMenuTrigger asChild>
           <Button className="w-full bg-white text-primary hover:bg-neutral-100 hover:cursor-pointer justify-start">
             {`${value?.from?.formatDate() ?? '...'} - ${value?.to?.formatDate() ?? '...'}`}
@@ -83,21 +93,22 @@ export const DateRangeFilter = ({
 
         <DropdownMenuContent className="p-4 flex">
           <div className="flex flex-col gap-4">
-            <Button onClick={_ => setRange({ from: undefined, to: undefined })}>{t("Clear")}</Button>
+            <Button onClick={() => { setRange(undefined); onChange(undefined); setIsOpen(false); }}>{t("Clear")}</Button>
 
             <div className="flex flex-col">
-              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.TODAY)}>{t("Dates.Today")}</Button>
-              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.TOMORROW)}>{t("Dates.Tomorrow")}</Button>
-              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.THIS_WEEK)}>{t("Dates.ThisWeek")}</Button>
-              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.NEXT_WEEK)}>{t("Dates.NextWeek")}</Button>
-              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.THIS_MONTH)}>{t("Dates.ThisMonth")}</Button>
-              <Button variant="ghost" onClick={_ => handlePresetClick(Preset.NEXT_MONTH)}>{t("Dates.NextMonth")}</Button>
+              <Button variant="ghost" onClick={() => handlePresetClick(Preset.TODAY)}>{t("Dates.Today")}</Button>
+              <Button variant="ghost" onClick={() => handlePresetClick(Preset.TOMORROW)}>{t("Dates.Tomorrow")}</Button>
+              <Button variant="ghost" onClick={() => handlePresetClick(Preset.THIS_WEEK)}>{t("Dates.ThisWeek")}</Button>
+              <Button variant="ghost" onClick={() => handlePresetClick(Preset.NEXT_WEEK)}>{t("Dates.NextWeek")}</Button>
+              <Button variant="ghost" onClick={() => handlePresetClick(Preset.THIS_MONTH)}>{t("Dates.ThisMonth")}</Button>
+              <Button variant="ghost" onClick={() => handlePresetClick(Preset.NEXT_MONTH)}>{t("Dates.NextMonth")}</Button>
+              <Button onClick={() => { onChange(range); setIsOpen(false); }}>{t("Dates.ConfirmDate")}</Button>
             </div>
           </div>
           <Calendar
             mode="range"
             selected={range}
-            onSelect={setRange}
+            onSelect={r => setRange(r)}
           />
         </DropdownMenuContent>
       </DropdownMenu>
