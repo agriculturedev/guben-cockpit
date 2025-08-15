@@ -192,6 +192,10 @@ interface Resources {
     "Content": "Inhalt",
     "DeletedSuccess": "Fußzeilenelement erfolgreich gelöscht"
   },
+  "geodata": {
+    "Title": "Geodaten",
+    "ManageGeodata": "Geodaten verwalten"
+  },
   "locations": {
     "Title": "Orte",
     "Add": "Ort hinzufügen",
