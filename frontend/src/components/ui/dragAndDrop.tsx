@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useDroppable } from "@dnd-kit/core";
 
 export interface DragAndDropProps {
+  file: File | null;
   onFileSelected: (file: File | null) => void;
   acceptExtensions?: string[];
   maxSizeBytes?: number;
@@ -12,6 +13,7 @@ export interface DragAndDropProps {
 }
 
 const DragAndDrop: React.FC<DragAndDropProps> = ({
+  file,
   onFileSelected,
   acceptExtensions = [],
   maxSizeBytes,
@@ -23,9 +25,12 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOver, setIsOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
 
   const { setNodeRef } = useDroppable({ id: "geodata-dropzone" });
+
+  const clearInput = () => {
+    if (inputRef.current) inputRef.current.value = "";
+  };
 
   const validate = (f: File) => {
     if (acceptExtensions.length > 0) {
@@ -43,22 +48,26 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
   const pick = (f: File | null) => {
     setError(null);
     if (!f) {
-      setFileName(null);
       onFileSelected(null);
+      clearInput();
       return;
     }
     const v = validate(f);
     if (v) {
       setError(v);
-      setFileName(null);
       onFileSelected(null);
+      clearInput();
       return;
     }
-    setFileName(f.name);
     onFileSelected(f);
   };
 
-  const onBrowse = () => !disabled && inputRef.current?.click();
+  const onBrowse = () => {
+    if (disabled) return;
+    clearInput();
+    inputRef.current?.click();
+  };
+
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     pick(e.target.files?.[0] ?? null);
   };
@@ -68,8 +77,7 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
     e.preventDefault();
     e.stopPropagation();
 
-    const types = Array.from(e.dataTransfer.types || []);
-    if (types.includes("Files")) {
+    if (Array.from(e.dataTransfer.types || []).includes("Files")) {
       e.dataTransfer.dropEffect = "copy";
       if (!isOver) setIsOver(true);
     }
@@ -139,10 +147,10 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
         />
       </div>
 
-      {fileName && (
+      {file && (
         <div className="rounded-lg border px-4 py-3 text-sm flex items-center justify-between mt-3">
           <div className="truncate">
-            <span className="font-medium">Selected:</span> {fileName}
+            <span className="font-medium">Selected:</span> {file.name}
           </div>
           <button
             type="button"
