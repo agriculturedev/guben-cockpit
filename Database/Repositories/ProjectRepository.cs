@@ -53,6 +53,15 @@ public class ProjectRepository
       .FirstOrDefaultAsync(a => a.Id.Equals(id));
   }
 
+  public Task<Project?> GetIncludingDeletedAndUnpublished(string id)
+  {
+    return Set
+      .TagWith(GetType().Name + "." + nameof(GetIncludingDeletedAndUnpublished))
+      .IgnoreAutoIncludes()
+      .IgnoreQueryFilters()
+      .FirstOrDefaultAsync(a => a.Id.Equals(id));
+  }
+
   public IEnumerable<Project> GetAllIncludingUnpublished()
   {
     return Set

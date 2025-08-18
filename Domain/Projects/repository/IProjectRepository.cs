@@ -8,6 +8,7 @@ public interface IProjectRepository : IRepository<Project, string>
   IEnumerable<Project> GetAllNonBusinesses();
   IEnumerable<Project> GetAllSchools();
 
+  Task<Project?> GetIncludingDeletedAndUnpublished(string id);
   Task<Project?> GetIncludingUnpublished(string id);
   IEnumerable<Project> GetAllIncludingUnpublished();
   IEnumerable<Project> GetAllProjects();

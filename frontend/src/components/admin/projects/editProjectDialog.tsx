@@ -1,6 +1,6 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CreateProjectResponse, ProjectResponse, UpdateProjectQuery } from "@/endpoints/gubenSchemas";
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState } from "react";
 import { FormSchema } from "./editProjectDialog.formSchema";
 
 import { useNextcloudDeleteFile, useNextcloudGetFiles, useProjectsUpdateProject } from "@/endpoints/gubenComponents";
@@ -13,14 +13,14 @@ import { FileInput } from "@/components/inputs/FileInput";
 import { Button } from "@/components/ui/button";
 
 interface IProps {
-  children: ReactNode;
   project: ProjectResponse;
   onCreateSuccess: (data: CreateProjectResponse) => Promise<void>;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export default function EditProjectDialog({ children, project, ...props }: IProps) {
+export default function EditProjectDialog({ project, open, onOpenChange, ...props }: IProps) {
   const { t } = useTranslation("projects");
-  const [isOpen, setOpen] = useState<boolean>(false);
   const [pdfFiles, setPdfFiles] = useState<File[]>([]);
   const [images, setImages] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -77,7 +77,7 @@ export default function EditProjectDialog({ children, project, ...props }: IProp
         setImages([]);
         setIsUploading(false);
       }
-      setOpen(false);
+      onOpenChange(false);
       await props.onCreateSuccess(data);
     },
     onError: (error) => {
@@ -109,10 +109,7 @@ export default function EditProjectDialog({ children, project, ...props }: IProp
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger>
-        {children}
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2"}>
         <DialogHeader>
           <DialogTitle>{t("Edit")}</DialogTitle>
@@ -133,7 +130,7 @@ export default function EditProjectDialog({ children, project, ...props }: IProp
             ))}
           </div>
         )}
-        <FileInput files={pdfFiles} setFiles={setPdfFiles} />
+        <FileInput files={pdfFiles || []} setFiles={setPdfFiles} />
         {(imagesQuery.data ?? []).length > 0 && (
           <div>
             {(imagesQuery.data ?? []).map(file => (
@@ -150,12 +147,12 @@ export default function EditProjectDialog({ children, project, ...props }: IProp
             ))}
           </div>
         )}
-        <FileInput images={true} files={images} setFiles={setImages} />
+        <FileInput images files={images || []} setFiles={setImages} />
         <EditProjectDialogForm
           disabled={isUploading}
           defaultData={mapProjectToForm(project)}
           onSubmit={handleSubmit}
-          onClose={() => setOpen(false)}
+          onClose={() => onOpenChange(false)}
         />
       </DialogContent>
     </Dialog>
@@ -165,11 +162,11 @@ export default function EditProjectDialog({ children, project, ...props }: IProp
 function mapProjectToForm(project: ProjectResponse): FormSchema {
   return {
     title: project.title,
-    description: project.description ?? null,
-    fullText: project.fullText ?? null,
-    imageCaption: project.imageCaption ?? null,
-    imageUrl: project.imageUrl ?? null,
-    imageCredits: project.imageCredits ?? null,
+    description: project.description ?? '',
+    fullText: project.fullText ?? '',
+    imageCaption: project.imageCaption ?? '',
+    imageUrl: project.imageUrl ?? '',
+    imageCredits: project.imageCredits ?? '',
     isBusiness: project.type === ProjectType.GubenerMarktplatz,
     isSchool: project.type === ProjectType.Schule
   }
@@ -189,10 +186,10 @@ function mapFormToEditProjectQuery(form: FormSchema): UpdateProjectQuery {
   return {
     type,
     title: form.title,
-    description: form.description,
-    fullText: form.fullText,
-    imageCaption: form.imageCaption,
-    imageCredits: form.imageCredits,
-    imageUrl: form.imageUrl
+    description: form.description || null,
+    fullText: form.fullText || null,
+    imageCaption: form.imageCaption || null,
+    imageCredits: form.imageCredits || null,
+    imageUrl: form.imageUrl || null
   }
 }

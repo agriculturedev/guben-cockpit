@@ -256,9 +256,13 @@ public class EventImporter
 
   private async Task UpsertEventAsync(Event @event, CultureInfo cultureInfo)
   {
-    var existingEvent = await _eventRepository.GetByEventIdAndTerminIdIncludingUnpublished(@event.EventId, @event.TerminId);
+    var existingEvent = await _eventRepository.GetByEventIdAndTerminIdIncludingDeletedAndUnpublished(@event.EventId, @event.TerminId);
     if (existingEvent != null)
     {
+      if (existingEvent.Deleted)
+      {
+        return;
+      }
       // TODO@JOREN: Update seems to be buggy, it is not properly adding new translations on update, perhaps ef comparison of json
       var updateResult = existingEvent.Update(@event, cultureInfo);
       if (updateResult.IsFailure)

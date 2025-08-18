@@ -28,6 +28,18 @@ public class EventRepository
       .FirstOrDefaultAsync(a => a.Id.Equals(id));
   }
 
+  public Task<Event?> GetWithEverythingById(Guid id)
+  {
+    return Set
+      .TagWith(GetType().Name + '.' + nameof(GetWithEverythingById))
+      .Include(e => e.Categories)
+      .Include(e => e.Location)
+      .Include(e => e.Images)
+      .Include(e => e.Urls)
+      .IgnoreAutoIncludes()
+      .FirstOrDefaultAsync(e => e.Id.Equals(id));
+  }
+
   public Task<Event?> GetById(Guid id)
   {
     return Set
@@ -70,11 +82,12 @@ public class EventRepository
       .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
   }
 
-  public Task<Event?> GetByEventIdAndTerminIdIncludingUnpublished(string eventId, string terminId)
+  public Task<Event?> GetByEventIdAndTerminIdIncludingDeletedAndUnpublished(string eventId, string terminId)
   {
     return Set
       .AsSplitQuery()
-      .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminIdIncludingUnpublished))
+      .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminIdIncludingDeletedAndUnpublished))
+      .IgnoreQueryFilters()
       .Include(e => e.Location)
       .Include(e => e.Urls)
       .Include(e => e.Categories)
@@ -104,6 +117,52 @@ public class EventRepository
       .Include(e => e.Categories)
       .Where(e => e.CreatedBy == userId)
       .AsEnumerable();
+  }
+
+  public async Task<PagedResult<Event>> GetAllEventsPaged(
+    PagedCriteria pagination,
+    CultureInfo cultureInfo)
+  {
+    IQueryable<Event> query = Set
+        .Include(e => e.Location)
+        .Include(e => e.Urls)
+        .Include(e => e.Categories);
+
+    var totalCount = await query.CountAsync();
+
+    var results = await query
+        .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+        .Take(pagination.PageSize)
+        .ToListAsync();
+
+    return new PagedResult<Event>(
+        pagination,
+        totalCount,
+        results);
+  }
+
+  public async Task<PagedResult<Event>> GetAllEventsPaged(
+    PagedCriteria pagination,
+    CultureInfo cultureInfo,
+    Guid userId)
+  {
+    IQueryable<Event> query = Set
+        .Include(e => e.Location)
+        .Include(e => e.Urls)
+        .Include(e => e.Categories)
+        .Where(e => e.CreatedBy == userId);
+
+    var totalCount = await query.CountAsync();
+
+    var results = await query
+        .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+        .Take(pagination.PageSize)
+        .ToListAsync();
+
+    return new PagedResult<Event>(
+        pagination,
+        totalCount,
+        results);
   }
 
   public async Task<PagedResult<Event>> GetAllEventsPaged(
@@ -291,8 +350,6 @@ public class EventRepository
       pagination,
       totalCount,
       pagedItems);
-
-
   }
 
   public static double CalculateDistanceInKm(double lat1, double lon1, double lat2, double lon2)

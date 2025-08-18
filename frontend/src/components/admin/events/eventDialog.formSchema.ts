@@ -5,6 +5,12 @@ const urlSchema = z.object({
   url: z.string().url(),
 });
 
+const imageSchema = z.object({
+  thumbnailUrl: z.string(),
+  previewUrl: z.string(),
+  originalUrl: z.string()
+});
+
 export const EventFormZodObject = z.object({
   title: z.string(),
   description: z.string(),
@@ -15,6 +21,7 @@ export const EventFormZodObject = z.object({
   urls: z.array(urlSchema),
   categoryIds: z.array(z.string()),
   locationId: z.string().uuid().optional(),
+  images: z.array(imageSchema),
 });
 
 export type EventFormSchema = z.infer<typeof EventFormZodObject>;
@@ -29,4 +36,5 @@ export const EventFormDefaults: EventFormSchema = {
   urls: [],
   categoryIds: [],
   locationId: undefined,
+  images: [],
 }

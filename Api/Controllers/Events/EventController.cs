@@ -4,6 +4,8 @@ using Api.Controllers.Events.DeleteEvent;
 using Api.Controllers.Events.GetAllEvents;
 using Api.Controllers.Events.GetEventById;
 using Api.Controllers.Events.GetMyEvents;
+using Api.Controllers.Events.PublishEvent;
+using Api.Controllers.Events.UpdateEvent;
 using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -75,6 +77,7 @@ public class EventController : ControllerBase
   [HttpDelete("{id:guid}")]
   // TODO@JOREN: add 'eventAdmin' check, this person can delete other people's events too
   [Authorize(KeycloakPolicies.EventContributor)] // can only delete his/her own events
+  [Authorize(KeycloakPolicies.DeleteEvent)]
   [EndpointName("EventsDeleteEvent")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteEventResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -89,11 +92,36 @@ public class EventController : ControllerBase
 
   [HttpGet("{id:guid}")]
   [EndpointName("EventsGetById")]
+  [Authorize(KeycloakPolicies.PublishEvents)]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetEventByIdResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> GetEventById([FromRoute] Guid id)
   {
     var result = await _mediator.Send(new GetEventByIdQuery(id));
+    return Results.Ok(result);
+  }
+
+  [HttpPut("Publish")]
+  [EndpointName("EventsPublishEvents")]
+  [Authorize(KeycloakPolicies.PublishEvents)]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PublishEventResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> PublishEvents([FromBody] PublishEventQuery query)
+  {
+    var result = await _mediator.Send(query);
+    return Results.Ok(result);
+  }
+
+  [HttpPut("{id}")]
+  [Authorize(KeycloakPolicies.EventContributor)]
+  [Authorize(KeycloakPolicies.EditEvents)]
+  [EndpointName("EventsUpdateEvent")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateEventResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> UpdateEvent([FromRoute] Guid id, [FromBody] UpdateEventQuery query)
+  {
+    query.setId(id);
+    var result = await _mediator.Send(query);
     return Results.Ok(result);
   }
 }

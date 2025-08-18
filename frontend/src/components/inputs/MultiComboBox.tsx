@@ -14,7 +14,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { LoadingIndicator } from "@/components/loadingIndicator/loadingIndicator";
 import { cn } from "@/lib/utils";
-import {useCallback, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 
 export interface ComboboxOption {
   label: string;
@@ -46,6 +46,10 @@ export const MultiComboBox = ({
   const [open, setOpen] = React.useState(defaultOpen);
   const [selectedValues, setSelectedValues] = useState<string[]>(defaultValues
     ?.toSorted((a,b) => a.localeCompare(b)));
+
+  useEffect(() => {
+    setSelectedValues(defaultValues?.toSorted((a, b) => a.localeCompare(b)) ?? []);
+  }, [defaultValues]);
 
   const optionsIndex = useMemo(() => {
     return options.reduce((acc, val) => {

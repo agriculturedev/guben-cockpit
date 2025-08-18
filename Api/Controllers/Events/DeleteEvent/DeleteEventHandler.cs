@@ -1,4 +1,5 @@
 using Api.Infrastructure.Extensions;
+using Api.Infrastructure.Keycloak;
 using Domain;
 using Domain.Events.repository;
 using Domain.Users.repository;
@@ -32,10 +33,24 @@ public class DeleteEventHandler : ApiRequestHandler<DeleteEventQuery, DeleteEven
     if (eventToDelete is null)
       throw new ProblemDetailsException(TranslationKeys.EventNotFound);
 
-    if (eventToDelete.CreatedBy != user.Id) // TODO@JOREN: or user is EventAdmin
+    var isDeleter = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.DeleteEvent) ?? false;
+
+    if (eventToDelete.CreatedBy != user.Id && !isDeleter)
       throw new UnauthorizedAccessException(TranslationKeys.EventNotOwnedByUser);
 
-    _eventRepository.Delete(eventToDelete);
+
+    //Okay following Problem here
+    //If the Event gets imported every 24h and we deleted it will just be created anew
+    //therefore, if it was created by the Backend (CreatedBy 00000000-0000-0000-0000-000000000000) we just flag it as deleted
+    if (eventToDelete.CreatedBy == Guid.Empty)
+    {
+      eventToDelete.Delete();
+      _eventRepository.Save(eventToDelete);
+    }
+    else
+    {
+      _eventRepository.Delete(eventToDelete);      
+    }
 
     return new DeleteEventResponse();
   }

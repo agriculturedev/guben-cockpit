@@ -1,4 +1,5 @@
 using Api.Infrastructure.Extensions;
+using Api.Infrastructure.Keycloak;
 using Domain;
 using Domain.Projects;
 using Domain.Projects.repository;
@@ -38,7 +39,9 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
     if (project is null)
       throw new ProblemDetailsException(TranslationKeys.ProjectNotFound);
 
-    if (project.CreatedBy != user.Id)
+    var isEditor = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.EditProjects) ?? false;
+
+    if (project.CreatedBy != user.Id && !isEditor)
       throw new UnauthorizedAccessException(TranslationKeys.ProjectNotOwnedByUser);
 
     if (!ProjectType.TryFromValue(request.Type, out var type))

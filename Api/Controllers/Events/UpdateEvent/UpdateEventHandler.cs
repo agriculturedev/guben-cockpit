@@ -1,4 +1,5 @@
 using Api.Infrastructure.Extensions;
+using Api.Infrastructure.Keycloak;
 using Api.Infrastructure.Translations;
 using Domain;
 using Domain.Category.repository;
@@ -7,6 +8,7 @@ using Domain.Events;
 using Domain.Events.repository;
 using Domain.Locations.repository;
 using Domain.Urls;
+using Domain.Users.repository;
 using Shared.Api;
 using Shared.Domain.Validation;
 
@@ -18,21 +20,44 @@ public class UpdateEventHandler : ApiRequestHandler<UpdateEventQuery, UpdateEven
   private readonly ILocationRepository _locationRepository;
   private readonly ICategoryRepository _categoryRepository;
   private readonly ICultureProvider _cultureProvider;
+  private readonly IHttpContextAccessor _httpContextAccessor;
+  private readonly IUserRepository _userRepository;
 
   public UpdateEventHandler(IEventRepository eventRepository, ICategoryRepository categoryRepository,
-    ILocationRepository locationRepository, ICultureProvider cultureProvider)
+    ILocationRepository locationRepository, ICultureProvider cultureProvider, IHttpContextAccessor httpContextAccessor,
+    IUserRepository userRepository)
   {
     _eventRepository = eventRepository;
     _categoryRepository = categoryRepository;
     _locationRepository = locationRepository;
     _cultureProvider = cultureProvider;
+    _httpContextAccessor = httpContextAccessor;
+    _userRepository = userRepository;
   }
 
   public override async Task<UpdateEventResponse> Handle(UpdateEventQuery request, CancellationToken cancellationToken)
   {
-    var eventToUpdate = await _eventRepository.GetIncludingUnpublished(request.Id);
+    if (request.Id == null)
+    {
+      throw new ProblemDetailsException(TranslationKeys.MissingEventId);
+    }
+
+    var keycloakId = _httpContextAccessor.HttpContext?.User.GetKeycloakId();
+    if (string.IsNullOrEmpty(keycloakId))
+      throw new UnauthorizedAccessException(TranslationKeys.UserNotLoggedIn);
+
+    var user = await _userRepository.GetByKeycloakId(keycloakId);
+    if (user is null)
+      throw new UnauthorizedAccessException(TranslationKeys.UserNotFound);
+
+    var eventToUpdate = await _eventRepository.GetWithEverythingById(request.Id.Value);
     if (eventToUpdate is null)
       throw new ProblemDetailsException(TranslationKeys.EventNotFound);
+
+    var isEditor = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.EditEvents) ?? false;
+
+    if (eventToUpdate.CreatedBy != user.Id && !isEditor)
+      throw new UnauthorizedAccessException(TranslationKeys.EventNotOwnedByUser);
 
     var (coordsResult, coords) = Coordinates.Create(request.Latitude, request.Longitude);
     coordsResult.ThrowIfFailure();
@@ -47,7 +72,7 @@ public class UpdateEventHandler : ApiRequestHandler<UpdateEventQuery, UpdateEven
     if (location is null)
       throw new ProblemDetailsException(TranslationKeys.LocationNotFound);
 
-    var categories = _categoryRepository.GetByIdsNoTracking(request.CategoryIds).ToList();
+    var categories = _categoryRepository.GetByIds(request.CategoryIds).ToList();
     if (categories is null)
       throw new ProblemDetailsException(TranslationKeys.CategoryNotFound);
 

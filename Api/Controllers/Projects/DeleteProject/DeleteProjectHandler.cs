@@ -1,4 +1,5 @@
 using Api.Infrastructure.Extensions;
+using Api.Infrastructure.Keycloak;
 using Domain;
 using Domain.Projects.repository;
 using Domain.Users.repository;
@@ -33,10 +34,23 @@ public class DeleteProjectHandler : ApiRequestHandler<DeleteProjectQuery, Delete
     if(projectToDelete is null)
       throw new ProblemDetailsException(TranslationKeys.ProjectNotFound);
 
-    if (projectToDelete.CreatedBy != user.Id) // TODO: or if user is admin, but these rules need to be clarified with Sophie
+    var isDeleter = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.DeleteProjects) ?? false;
+
+    if (projectToDelete.CreatedBy != user.Id && !isDeleter)
       throw new UnauthorizedAccessException(TranslationKeys.ProjectNotOwnedByUser);
 
-    _projectRepository.Delete(projectToDelete);
+    //Okay following Problem here
+    //If the Project gets imported every 24h and we deleted it will just be created anew
+    //therefore, if it was created by the Backend (CreatedBy 00000000-0000-0000-0000-000000000000) we just flag it as deleted
+    if (projectToDelete.CreatedBy == Guid.Empty)
+    {
+      projectToDelete.Delete();
+      _projectRepository.Save(projectToDelete);
+    }
+    else
+    {
+      _projectRepository.Delete(projectToDelete);      
+    }
 
     return new DeleteProjectResponse();
   }
