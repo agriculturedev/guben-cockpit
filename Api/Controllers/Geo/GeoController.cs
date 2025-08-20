@@ -96,12 +96,12 @@ public class GeoController : ControllerBase
   [Authorize] // TODO@JOREN: new role for data protection officer
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ValidateGeoDataSourceResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> ValidateGeoDataSource([FromRoute] Guid id, [FromBody] bool isValid)
+  public async Task<IResult> ValidateGeoDataSource([FromRoute] Guid id, [FromBody] ValidateRequest req)
   {
     var result = await _mediator.Send(new ValidateGeoDataSourceQuery()
     {
       Id = id,
-      IsValid = isValid
+      IsValid = req.IsValid
     });
     return Results.Ok(result);
   }

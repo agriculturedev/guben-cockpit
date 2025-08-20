@@ -1,5 +1,29 @@
 {
     "Title": "Geodata",
-    "ManageGeodata": "Manage Geodata"
+    "ManageGeodata": "Manage Geodata",
+    "UploadGeodata": "Upload Geodata",
+    "CockpitPublic": "Guben Cockpit (Public)",
+    "CockpitPublicDescription": "Will appear publicly in the Masterportal after approval.",
+    "ResiPrivate": "Resi Form (Private)",
+    "ResiPrivateDescription": "Private access via secure Topic endpoint after approval.",
+    "DataType": "Data type",
+    "CustomTypePlaceholder": "Custom type name (optional)",
+    "Publishing": "Publishing...",
+    "Publish": "Publish",
+    "UploadedSuccessfully": "Uploaded successfully.",
+    "UploadFailed": "Upload failed",
+    "ReviewUploads": "Review uploads",
+    "SearchByTitle": "Search by title…",
+    "ReviewDialogTitle": "Review request and decide availability.",
+    "ApproveCockpitPublic": "Approve Cockpit (Public)",
+    "ApproveCockpitPublicDesc": "Make available in Masterportal.",
+    "ApproveResiPrivate": "Approve Resi (Private)",
+    "ApproveResiPrivateDesc": "Serve via secure Topic endpoint.",
+    "Metadata": "Metadata",
+    "Path": "Path",
+    "Close": "Close",
+    "Reject": "Reject",
+    "Approve": "Approve",
+    "Review": "Review"
 }
   

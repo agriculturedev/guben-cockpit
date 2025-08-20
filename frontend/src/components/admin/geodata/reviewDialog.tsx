@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import { Check, X, Eye } from "lucide-react";
@@ -14,9 +15,8 @@ interface ReviewDialogProps {
     id: string;
     approvePublic: boolean;
     approvePrivate: boolean;
-    note?: string;
   }) => void;
-  onReject?: (payload: { id: string; note?: string }) => void;
+  onReject?: (payload: { id: string }) => void;
 }
 
 export const ReviewDialog: React.FC<ReviewDialogProps> = ({
@@ -24,24 +24,24 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
   onApprove,
   onReject,
 }) => {
+  const { t } = useTranslation(["common", "geodata"]);
   const [open, setOpen] = useState(false);
   const [approvePublic, setApprovePublic] = useState(
-    row.requested.includes("cockpitPublic"),
+    row.requested === "cockpitPublic",
   );
   const [approvePrivate, setApprovePrivate] = useState(
-    row.requested.includes("resiPrivate"),
+    row.requested === "resiPrivate",
   );
-  const [note, setNote] = useState("");
 
-  const publicDisabled = !row.requested.includes("cockpitPublic");
-  const privateDisabled = !row.requested.includes("resiPrivate");
+  const publicDisabled = row.requested !== "cockpitPublic";
+  const privateDisabled = row.requested !== "resiPrivate";
 
   const onConfirmApprove = () => {
-    onApprove?.({ id: row.id, approvePublic, approvePrivate, note });
+    onApprove?.({ id: row.id, approvePublic, approvePrivate });
     setOpen(false);
   };
   const onConfirmReject = () => {
-    onReject?.({ id: row.id, note });
+    onReject?.({ id: row.id });
     setOpen(false);
   };
 
@@ -49,7 +49,7 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         <button className="inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm hover:bg-gray-50">
-          <Eye className="h-4 w-4" /> Review
+          <Eye className="h-4 w-4" /> {t('geodata:Review')}
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>
@@ -59,57 +59,35 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
             {row.title}
           </Dialog.Title>
           <Dialog.Description className="text-sm text-gray-600 mb-4">
-            Review request and decide availability.
+            {t('geodata:ReviewDialogTitle')}
           </Dialog.Description>
 
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-lg border p-3">
-                <div className="text-xs text-gray-500">Type</div>
+                <div className="text-xs text-gray-500">{t('common:Type')}</div>
                 <div className="mt-1">
                   <TypeBadge type={row.type} />
                 </div>
               </div>
               <div className="rounded-lg border p-3">
-                <div className="text-xs text-gray-500">Requested</div>
+                <div className="text-xs text-gray-500">{t('common:Requested')}</div>
                 <div className="mt-1 flex gap-2 flex-wrap">
-                  {row.requested.includes("cockpitPublic") && (
+                  {row.requested === "cockpitPublic" && (
                     <Chip label="Cockpit (Public)" tone="green" />
                   )}
-                  {row.requested.includes("resiPrivate") && (
+                  {row.requested === "resiPrivate" && (
                     <Chip label="Resi (Private)" tone="blue" />
                   )}
                 </div>
               </div>
-              <div className="rounded-lg border p-3">
-                <div className="text-xs text-gray-500">Uploader</div>
-                <div className="mt-1 text-sm">{row.uploader.name}</div>
-                {row.uploader.email && (
-                  <div className="text-xs text-gray-500">
-                    {row.uploader.email}
-                  </div>
-                )}
-              </div>
-              <div className="rounded-lg border p-3">
-                <div className="text-xs text-gray-500">Submitted</div>
-                <div className="mt-1 text-sm">
-                  {new Date(row.submittedAt).toLocaleString()}
-                </div>
-              </div>
             </div>
 
-            {row.meta && (
+            {row.meta?.path && (
               <div className="rounded-lg border p-3">
-                <div className="text-xs text-gray-500 mb-2">Metadata</div>
+                <div className="text-xs text-gray-500 mb-2">{t('geodata:Metadata')}</div>
                 <div className="text-xs text-gray-700 space-y-1">
-                  {row.meta.crs && <div>CRS: {row.meta.crs}</div>}
-                  {row.meta.bbox && <div>BBOX: {row.meta.bbox.join(", ")}</div>}
-                  {row.meta.layers && row.meta.layers.length > 0 && (
-                    <div>
-                      Layers: {row.meta.layers.slice(0, 5).join(", ")}
-                      {row.meta.layers.length > 5 ? "…" : ""}
-                    </div>
-                  )}
+                  <div className="text-gray-500">{t('geodata:Path')}: {row.meta.path}</div>
                 </div>
               </div>
             )}
@@ -141,9 +119,9 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                   </Checkbox.Indicator>
                 </Checkbox.Root>
                 <div>
-                  <div className="font-medium">Approve Cockpit (Public)</div>
+                  <div className="font-medium">{t('geodata:ApproveCockpitPublic')}</div>
                   <div className="text-xs text-gray-500">
-                    Make available in Masterportal.
+                    {t('geodata:ApproveCockpitPublicDesc')}
                   </div>
                 </div>
               </label>
@@ -174,31 +152,19 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                   </Checkbox.Indicator>
                 </Checkbox.Root>
                 <div>
-                  <div className="font-medium">Approve Resi (Private)</div>
+                  <div className="font-medium">{t('geodata:ApproveResiPrivate')}</div>
                   <div className="text-xs text-gray-500">
-                    Serve via secure Topic endpoint.
+                    {t('geodata:ApproveResiPrivateDesc')}
                   </div>
                 </div>
               </label>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Note (optional)
-              </label>
-              <textarea
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder="Add a short note for the submitter or audit log…"
-                className="w-full bg-white rounded-lg border border-gray-300 px-3 py-2 min-h-[80px] focus:outline-none focus:ring-2 focus:ring-gubenAccent"
-              />
             </div>
           </div>
 
           <div className="mt-5 flex items-center justify-between">
             <Dialog.Close asChild>
               <button className="rounded-md px-3 py-2 text-sm border hover:bg-gray-50">
-                Close
+                {t('geodata:Close')}
               </button>
             </Dialog.Close>
 
@@ -207,13 +173,13 @@ export const ReviewDialog: React.FC<ReviewDialogProps> = ({
                 onClick={onConfirmReject}
                 className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm text-red-600 hover:bg-red-50"
               >
-                <X className="h-4 w-4" /> Reject
+                <X className="h-4 w-4" /> {t('geodata:Reject')}
               </button>
               <button
                 onClick={onConfirmApprove}
                 className="inline-flex items-center gap-2 rounded-md bg-gubenAccent text-white px-3 py-2 text-sm hover:opacity-90"
               >
-                <Check className="h-4 w-4" /> Approve
+                <Check className="h-4 w-4" /> {t('geodata:Approve')}
               </button>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { createFileRoute } from '@tanstack/react-router'
 import * as Checkbox from '@radix-ui/react-checkbox'
 import { Check } from 'lucide-react'
@@ -28,6 +29,7 @@ const TYPE_OPTIONS: GeoDataSourceType[] = [
 ];
 
 function GeoDataComponent() {
+  const { t } = useTranslation(["geodata"])
   const [file, setFile] = useState<File | null>(null)
   const [destPublic, setDestPublic] = useState(false)
   const [destPrivate, setDestPrivate] = useState(false)
@@ -59,20 +61,20 @@ function GeoDataComponent() {
         }
       })
 
-      setStatus({ type: 'ok', msg: 'Uploaded successfully.' })
+      setStatus({ type: 'ok', msg: t('geodata:UploadedSuccessfully') })
       setFile(null)
       setDestPublic(false)
       setDestPrivate(false)
     } catch (e: any) {
       const payload = e?.payload as { title?: string; detail?: string; }
-      const msg = payload?.title || payload?.detail || e?.message || 'Upload failed'
+      const msg = payload?.title || payload?.detail || e?.message || t('geodata:UploadFailed')
       setStatus({ type: 'err', msg })
     }
   }
 
   return (
     <div className="max-w-3xl space-y-6">
-      <h1 className="text-2xl font-semibold" onClick={() => setFile(null)}>Upload Geodata</h1>
+      <h1 className="text-2xl font-semibold" onClick={() => setFile(null)}>{t('geodata:UploadGeodata')}</h1>
 
       <DragAndDrop
         file={file}
@@ -105,10 +107,10 @@ function GeoDataComponent() {
           </Checkbox.Root>
           <div>
             <label htmlFor="dest-public" className="font-medium">
-              Guben Cockpit (Public)
+              {t('geodata:CockpitPublic')}
             </label>
             <div className="text-xs text-gray-500">
-              Will appear publicly in the Masterportal after approval.
+              {t('geodata:CockpitPublicDescription')}
             </div>
           </div>
         </label>
@@ -136,17 +138,17 @@ function GeoDataComponent() {
           </Checkbox.Root>
           <div>
             <label htmlFor="dest-private" className="font-medium">
-              Resi Form (Private)
+              {t('geodata:ResiPrivate')}
             </label>
             <div className="text-xs text-gray-500">
-              Private access via secure Topic endpoint after approval.
+              {t('geodata:ResiPrivateDescription')}
             </div>
           </div>
         </label>
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium">Data type</label>
+        <label className="block text-sm font-medium">{t('geodata:DataType')}</label>
         <div className="flex gap-3">
           <select
             className="w-60 rounded-md border px-3 py-2 text-sm bg-white"
@@ -167,7 +169,7 @@ function GeoDataComponent() {
           {selectedType.value === 99 && (
             <input
               className="flex-1 rounded-md border px-3 py-2 text-sm"
-              placeholder="Custom type name (optional)"
+              placeholder={t('geodata:CustomTypePlaceholder')}
               value={customTypeName}
               onChange={(e) => setCustomTypeName(e.target.value)}
             />
@@ -190,7 +192,7 @@ function GeoDataComponent() {
         disabled={!canPublish} 
         onClick={handlePublish}
       >
-        { isPending ? 'Publishing...' : 'Publish' }
+        { isPending ? t('geodata:Publishing') : t('geodata:Publish') }
       </Button>
     </div>
   )

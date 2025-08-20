@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDroppable } from "@dnd-kit/core";
 
 export interface DragAndDropProps {
@@ -19,9 +20,10 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
   maxSizeBytes,
   className = "",
   disabled = false,
-  label = "Drag & drop your file here",
-  hint = "Click or drop to upload",
+  label,
+  hint,
 }) => {
+  const { t } = useTranslation(["common"]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOver, setIsOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,10 +39,10 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
       const ok = acceptExtensions.some((ext) =>
         f.name.toLowerCase().endsWith(ext.toLowerCase())
       );
-      if (!ok) return `Unsupported file type. Allowed: ${acceptExtensions.join(", ")}`;
+      if (!ok) return t("common:DragAndDrop.Accepted", { extensions: acceptExtensions.join(", ") });
     }
     if (maxSizeBytes && f.size > maxSizeBytes) {
-      return `File too large. Max ${(maxSizeBytes / (1024 * 1024)).toFixed(0)} MB`;
+      return t("common:DragAndDrop.ErrorTooLarge", { max: (maxSizeBytes / (1024 * 1024)).toFixed(0) });
     }
     return null;
   };
@@ -120,12 +122,12 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
           isOver ? "border-gubenAccent bg-gubenAccent/5" : "border-gray-300",
         ].join(" ")}
       >
-        <p className="font-medium">{label}</p>
-        <p className="text-sm text-gray-500 mt-1">{hint}</p>
+        <p className="font-medium">{label ?? t('common:DragAndDrop.Label')}</p>
+        <p className="text-sm text-gray-500 mt-1">{hint ?? t('common:DragAndDrop.Hint')}</p>
 
         {acceptExtensions.length > 0 && (
           <p className="text-xs text-gray-500 mt-1">
-            Accepted: {acceptExtensions.join(", ")}
+            {t("common:DragAndDrop.Accepted", { extensions: acceptExtensions.join(", ") })}
           </p>
         )}
 
@@ -134,7 +136,7 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
           className="mt-3 rounded-lg bg-gubenAccent text-white px-4 py-2 hover:opacity-90"
           disabled={disabled}
         >
-          Browse files
+          {t("common:DragAndDrop.Browse")}
         </button>
 
         <input
@@ -150,7 +152,7 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
       {file && (
         <div className="rounded-lg border px-4 py-3 text-sm flex items-center justify-between mt-3">
           <div className="truncate">
-            <span className="font-medium">Selected:</span> {file.name}
+            <span className="font-medium">{t("common:DragAndDrop.Selected")}</span> {file.name}
           </div>
           <button
             type="button"
@@ -158,7 +160,7 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
             onClick={() => pick(null)}
             disabled={disabled}
           >
-            Remove
+            {t("common:DragAndDrop.Remove")}
           </button>
         </div>
       )}

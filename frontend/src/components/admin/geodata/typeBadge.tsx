@@ -6,10 +6,8 @@ interface TypeBadgeProps {
 
 export const TypeBadge: React.FC<TypeBadgeProps> = ({ type }) => {
   const map: Record<GeodataType, string> = {
-    service_wms: "WMS (Service)",
-    service_wfs: "WFS (Service)",
-    file_vector: "Vector (File)",
-    file_raster: "Raster (File)",
+    WFS: "WFS (Service)",
+    WMS: "WMS (Service)"
   };
 
   return (

@@ -1,8 +1,10 @@
+import { useMemo } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Permissions } from '@/auth/permissions'
 import { GeodataManagerTab, GeodataRow } from '@/components/admin/geodata/geodataManagerTab'
 import { routePermissionCheck } from '@/guards/routeGuardChecks'
+import { useGeoGetAllGeoDataSources, useGeoValidate } from '@/endpoints/gubenComponents'
 
 export const Route = createFileRoute('/admin/_layout/geodatamanage')({
     beforeLoad: async ({context, location}) => {
@@ -16,34 +18,36 @@ function WrappedComponent() {
 }
 
 function GeoDataManageComponent() {
-    const mock: GeodataRow[] = [
-        {
-          id: "geod-001",
-          title: "Straßenbäume 2024",
-          type: "file_vector",
-          requested: ["resiPrivate"],
-          uploader: { name: "Alice Müller", email: "alice@example.com" },
-          submittedAt: new Date().toISOString(),
-          state: "pending_approval",
-          meta: { crs: "EPSG:25833", bbox: [13.54, 51.94, 14.80, 52.25], layers: ["trees"] },
-        },
-        {
-          id: "geod-002",
-          title: "Bauflächen WMS",
-          type: "service_wms",
-          requested: ["cockpitPublic"],
-          uploader: { name: "Bob Nowak" },
-          submittedAt: new Date(Date.now() - 3600_000).toISOString(),
-          state: "pending_approval",
-        },
-    ];
+    const { data, isLoading, refetch } = useGeoGetAllGeoDataSources({})
+    const validateMutation = useGeoValidate({
+      onSuccess: () => {
+        refetch();
+      },
+    })
 
-      
+    const items: GeodataRow[] = useMemo(
+      () =>
+        data?.sources.map(d => ({
+          id: d.id,
+          title: d.path.split('/').pop() ?? 'Untitled',
+          type: d.type === 0 ? 'WFS' : 'WMS',
+          requested: d.isPublic ? 'cockpitPublic' : 'resiPrivate',
+          state: d.isValidated ? 'published' : 'pending_approval',
+          meta: { path: d.path },
+        })) ?? [],
+      [data?.sources],
+    );
+
     return (
         <GeodataManagerTab
-            items={mock}
-            onApprove={(p) => console.log("approve", p)}
-            onReject={(p) => console.log("reject", p)}
+            items={items}
+            isLoading={isLoading}
+            onApprove={({ id }) => {
+              validateMutation.mutate({ pathParams: { id }, body: { isValid: true } })
+            }}
+            onReject={({ id }) => {
+              validateMutation.mutate({ pathParams: { id }, body: { isValid: false } })
+            }}
         />
     )
 }
