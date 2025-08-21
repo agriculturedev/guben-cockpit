@@ -372,6 +372,22 @@ export type GetGeoDataSourcesResponse = {
 };
 
 export type GetMyEventsResponse = {
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
   results: EventResponse[];
 };
 
@@ -461,6 +477,13 @@ export type ProjectType = {
   value?: number;
 };
 
+export type PublishEventQuery = {
+  publish?: boolean;
+  ids?: string[];
+};
+
+export type PublishEventResponse = Record<string, any>;
+
 export type PublishProjectsQuery = {
   publish?: boolean;
   projectIds: string[];
@@ -530,6 +553,40 @@ export type UpdateDashboardTabQuery = {
 };
 
 export type UpdateDashboardTabResponse = Record<string, any>;
+
+export type UpdateEventQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  title: string;
+  description: string;
+  /**
+   * @format date-time
+   */
+  startDate?: string;
+  /**
+   * @format date-time
+   */
+  endDate?: string;
+  /**
+   * @format double
+   */
+  latitude?: number;
+  /**
+   * @format double
+   */
+  longitude?: number;
+  urls: CreateUrlQuery[];
+  categoryIds: string[];
+  images: CreateEventImageQuery[];
+  /**
+   * @format uuid
+   */
+  locationId?: string;
+};
+
+export type UpdateEventResponse = Record<string, any>;
 
 export type UpdatePageQuery = {
   id: string;

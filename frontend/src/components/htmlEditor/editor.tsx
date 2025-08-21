@@ -362,7 +362,6 @@ interface EditorProps {
 const HtmlEditor = ({ content, onChange, placeholder = 'Start writing...' }: EditorProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
-  console.log(content);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({

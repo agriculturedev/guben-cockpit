@@ -43,7 +43,7 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("Title")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("Title")} {...field} value={field.value ?? undefined} />
+                <Input placeholder={t("Title")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -57,7 +57,7 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("Description")}</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("Description")} {...field} value={field.value ?? undefined} />
+                <Textarea placeholder={t("Description")} {...field} value={field.value ?? ''} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -72,7 +72,7 @@ export default function EditProjectDialogForm(props: IProps) {
               <FormLabel>{t("ImageUrl")}</FormLabel>
               <FormControl>
                 <EditableImage
-                  imageUrl={field.value ?? undefined}
+                  imageUrl={field.value || ''}
                   onChange={field.onChange}
                   startInEditingState
                 />
@@ -89,7 +89,7 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("ImageCredits")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? undefined} />
+                <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? ''} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -103,7 +103,7 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("ImageCaption")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? undefined} />
+                <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? ''} />
               </FormControl>
               <FormMessage />
             </FormItem>

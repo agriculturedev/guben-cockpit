@@ -212,6 +212,9 @@ value   : The object must be serialized into a byte array
   <data name="MissingProjectId" xml:space="preserve">
     <value>Missing project id</value>
   </data>
+  <data name="MissingEventId" xml:space="preserve">
+    <value>Missing Event ID</value>
+  </data>
   <data name="EventNotOwnedByUser" xml:space="preserve">
     <value>Event not owned by user</value>
   </data>

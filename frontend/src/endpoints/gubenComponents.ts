@@ -1343,7 +1343,15 @@ export const useEventsCreateEvent = (
 };
 
 export type EventsGetMyEventsQueryParams = {
-  query?: Record<string, any>;
+  Dummy?: boolean;
+  /**
+   * @format int32
+   */
+  pageNumber?: number;
+  /**
+   * @format int32
+   */
+  pageSize?: number;
 };
 
 export type EventsGetMyEventsError = Fetcher.ErrorWrapper<{
@@ -1503,6 +1511,102 @@ export const useEventsGetById = <TData = Schemas.GetEventByIdResponse,>(
       fetchEventsGetById({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
+  });
+};
+
+export type EventsUpdateEventPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type EventsUpdateEventError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsUpdateEventVariables = {
+  body: Schemas.UpdateEventQuery;
+  pathParams: EventsUpdateEventPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsUpdateEvent = (
+  variables: EventsUpdateEventVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpdateEventResponse,
+    EventsUpdateEventError,
+    Schemas.UpdateEventQuery,
+    {},
+    {},
+    EventsUpdateEventPathParams
+  >({ url: "/events/{id}", method: "put", ...variables, signal });
+
+export const useEventsUpdateEvent = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpdateEventResponse,
+      EventsUpdateEventError,
+      EventsUpdateEventVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpdateEventResponse,
+    EventsUpdateEventError,
+    EventsUpdateEventVariables
+  >({
+    mutationFn: (variables: EventsUpdateEventVariables) =>
+      fetchEventsUpdateEvent({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type EventsPublishEventsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type EventsPublishEventsVariables = {
+  body?: Schemas.PublishEventQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchEventsPublishEvents = (
+  variables: EventsPublishEventsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.PublishEventResponse,
+    EventsPublishEventsError,
+    Schemas.PublishEventQuery,
+    {},
+    {},
+    {}
+  >({ url: "/events/Publish", method: "put", ...variables, signal });
+
+export const useEventsPublishEvents = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.PublishEventResponse,
+      EventsPublishEventsError,
+      EventsPublishEventsVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.PublishEventResponse,
+    EventsPublishEventsError,
+    EventsPublishEventsVariables
+  >({
+    mutationFn: (variables: EventsPublishEventsVariables) =>
+      fetchEventsPublishEvents({ ...fetcherOptions, ...variables }),
+    ...options,
   });
 };
 
