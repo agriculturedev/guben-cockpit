@@ -5,10 +5,11 @@ import { EventFormSchema, eventFormSchema, formDefaults } from "./editEventDialo
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
-import MultiComboBox from "@/components/inputs/MultiComboBox";
 import { Combobox } from "@/components/ui/comboBox";
-import HtmlEditor from "@/components/htmlEditor/editor";
 import { Button } from "@/components/ui/button";
+
+import HtmlEditor from "@/components/htmlEditor/editor";
+import MultiComboBox from "@/components/inputs/MultiComboBox";
 
 interface IProps {
   defaultData?: EventFormSchema;
