@@ -2,9 +2,10 @@ import { CreateEventResponse, EventResponse, UpdateEventQuery } from "@/endpoint
 import { useTranslation } from "react-i18next";
 import { DialogContent, Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { EventFormSchema } from "./editEventDialog.formSchema";
-import EditEventDialogForm from "./editEventDialog.form";
 import { useCategoriesGetAll, useEventsUpdateEvent, useLocationsGetAll } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
+
+import EditEventDialogForm from "./editEventDialog.form";
 
 interface IProps {
 	event: EventResponse;
@@ -92,7 +93,6 @@ function mapEventToForm(event: EventResponse): EventFormSchema {
 }
 
 function mapFormEditToEventQuery(form: EventFormSchema): UpdateEventQuery {
-	console.log(form.categoryIds);
 	return {
 		title: form.title,
 		description: form.description,
