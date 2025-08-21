@@ -1,4 +1,3 @@
-import AddEventDialog from "@/components/admin/events/addEventDialog";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,12 +5,14 @@ import { useEventsGetMyEvents } from "@/endpoints/gubenComponents";
 import { createFileRoute } from '@tanstack/react-router';
 import { CheckIcon, EditIcon, FileUpIcon, TrashIcon, XIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import DeleteEventDialog from "@/components/admin/events/deleteEventDialog";
 import { Permissions } from "@/auth/permissions";
 import { routePermissionCheck } from "@/guards/routeGuardChecks";
 import { PaginationContainer } from "@/components/DataDisplay/PaginationContainer";
 import { defaultPaginationProps, usePagination } from "@/hooks/usePagination";
 import { useEffect, useState } from "react";
+
+import AddEventDialog from "@/components/admin/events/addEventDialog";
+import DeleteEventDialog from "@/components/admin/events/deleteEventDialog";
 import PublishEventDialog from "@/components/admin/events/publishEventDialog";
 import EditEventDialog from "@/components/admin/events/editEventDialog";
 
@@ -54,7 +55,6 @@ function Page() {
     setPageCount(myEvents?.pageCount ?? defaultPaginationProps.pageCount);
   }, [myEvents]);
 
-  console.log(myEvents);
   return (
     <div className="w-ful">
       <div className={"mb-4 flex justify-end"}>
