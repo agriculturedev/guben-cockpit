@@ -3,7 +3,6 @@ using Shared.Api.Pagination;
 
 namespace Api.Controllers.Events.GetMyEvents;
 
-public struct GetMyEventsResponse
+public class GetMyEventsResponse : PagedResponse<EventResponse>
 {
-  public required IEnumerable<EventResponse> Results {get; init;}
 }

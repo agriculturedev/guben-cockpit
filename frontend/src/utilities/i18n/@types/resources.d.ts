@@ -84,7 +84,7 @@ interface Resources {
       "ThisYear": "Dieses Jahr",
       "Today": "Heute",
       "Tomorrow": "Morgen",
-      "ConfirmDate": "Dateum anwenden"
+      "ConfirmDate": "Datum anwenden"
     },
     "Clear": "Zurücksetzen",
     "Delete": "Löschen",
@@ -182,7 +182,22 @@ interface Resources {
     "DeletedSuccess": "Veranstaltung erfolgreich gelöscht",
     "Edit": "Veranstaltung bearbeiten",
     "MyEvents": "Meine Veranstaltungen",
-    "Published": "Veröffentlicht"
+    "Published": "Veröffentlicht",
+    "Publish": "Veröffentlichen",
+    "Unpublish": "Offline nehmen",
+    "PublishSuccess": "Event erfolgreich veröffentlicht",
+    "UnpublishSuccess": "Event erfolgreich offline genommen",
+    "PublishConfirmation": "Mit dieser Aktion wird das Event veröffentlicht und ist für alle sichtbar.",
+    "UnpublishConfirmation": "Mit dieser Aktion wird das Event Offline genommen und ist nicht mehr für alle sichtbar.",
+    "Description": "Beschreibung",
+    "StartDate": "Startdatum",
+    "EndDate": "Enddatum",
+    "Latitude": "Breitengrad",
+    "Longitude": "Längengrad",
+    "Category": "Kategorien",
+    "Location": "Adresse",
+    "Save": "Speichern",
+    "Cancel": "Abbrechen"
   },
   "footer": {
     "Title": "Fußzeile",

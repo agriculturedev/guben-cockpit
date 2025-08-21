@@ -8,5 +8,20 @@
   "DeletedSuccess": "Event Succesfully deleted",
   "Edit": "Edit event",
   "MyEvents": "My events",
-  "Published": "Published"
+  "Published": "Published",
+  "Publish": "Publish",
+  "Unpublish": "Take Offline",
+  "PublishSuccess": "Event successfully published",
+  "UnpublishSuccess": "Event successfully taken offline",
+  "PublishConfirmation": "With this action the Event will be published and visible to everyone.",
+  "UnpublishConfirmation": "With this action the Event will be taken offline and no longer be visible to anyone.",
+  "Description": "Description",
+  "StartDate": "Start Date",
+  "EndDate": "Ende Date",
+  "Latitude": "Latitude",
+  "Longitude": "Longitude",
+  "Category": "Category",
+  "Location": "Address",
+  "Save": "Save",
+  "Cancel": "Cancel"
 }

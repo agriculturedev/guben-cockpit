@@ -14,6 +14,7 @@ import { Permissions } from "@/auth/permissions";
 import PublishProjectDialog from "@/components/admin/projects/publishProjectDialog";
 import { ProjectType } from "@/types/ProjectType";
 import AddSchoolDialog from "@/components/admin/projects/addSchoolDialog";
+import { useState } from "react";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   beforeLoad: async ({context, location}) => {
@@ -26,6 +27,7 @@ function Page() {
   const {t} = useTranslation(["common", "projects"]);
   const {data: myProjects, refetch} = useProjectsGetMyProjects({});
   const onSuccess = async () => void await refetch();
+  const [editProjectId, setEditProjectId] = useState<string | null>(null);
 
   return (
     <div className="w-full">
@@ -79,9 +81,17 @@ function Page() {
               <TableCell>
                 <TooltipProvider>
                   <div className="h-full flex items-center gap-2">
-                    <EditProjectDialog project={p} onCreateSuccess={onSuccess}>
+                    <button onClick={() => setEditProjectId(p.id)}>
                       <EditIcon className="size-4 hover:text-red-500"/>
-                    </EditProjectDialog>
+                    </button>
+                    {editProjectId === p.id && (
+                      <EditProjectDialog
+                        project={p}
+                        onCreateSuccess={onSuccess}
+                        open={true}
+                        onOpenChange={(open) => { if (!open) setEditProjectId(null) }}>
+                      </EditProjectDialog>
+                    )}
 
                     <PublishProjectDialog projectId={p.id} isPublished={p.published} onToggleSuccess={onSuccess}>
                       <FileUpIcon className="size-4 hover:text-red-500"/>
