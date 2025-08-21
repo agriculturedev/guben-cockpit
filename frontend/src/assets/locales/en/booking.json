@@ -58,5 +58,9 @@
         "description": "Enter your contact details on the following website, check your entries and send the request. As soon as it has been confirmed, you will receive an e-mail."
       }
     ]
-  }
+  },
+  "tenantId": "Tenant-ID",
+  "Title": "Tenant-IDs",
+  "addTenant": "Add Tenant-ID",
+  "deletedSuccess": "Tenant-ID successfully deleted"
 }

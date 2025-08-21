@@ -29,6 +29,7 @@ import { Route as AdminLayoutLocationsImport } from './routes/admin/_layout/loca
 import { Route as AdminLayoutFooterImport } from './routes/admin/_layout/footer'
 import { Route as AdminLayoutEventsImport } from './routes/admin/_layout/events'
 import { Route as AdminLayoutDashboardImport } from './routes/admin/_layout/dashboard'
+import { Route as AdminLayoutBookingImport } from './routes/admin/_layout/booking'
 
 // Create Virtual Routes
 
@@ -127,6 +128,11 @@ const AdminLayoutDashboardRoute = AdminLayoutDashboardImport.update({
   getParentRoute: () => AdminLayoutRoute,
 } as any)
 
+const AdminLayoutBookingRoute = AdminLayoutBookingImport.update({
+  path: '/booking',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -201,6 +207,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/admin/_layout/booking': {
+      id: '/admin/_layout/booking'
+      path: '/booking'
+      fullPath: '/admin/booking'
+      preLoaderRoute: typeof AdminLayoutBookingImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/admin/_layout/dashboard': {
       id: '/admin/_layout/dashboard'
       path: '/dashboard'
@@ -263,6 +276,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AdminLayoutRouteChildren {
+  AdminLayoutBookingRoute: typeof AdminLayoutBookingRoute
   AdminLayoutDashboardRoute: typeof AdminLayoutDashboardRoute
   AdminLayoutEventsRoute: typeof AdminLayoutEventsRoute
   AdminLayoutFooterRoute: typeof AdminLayoutFooterRoute
@@ -273,6 +287,7 @@ interface AdminLayoutRouteChildren {
 }
 
 const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
+  AdminLayoutBookingRoute: AdminLayoutBookingRoute,
   AdminLayoutDashboardRoute: AdminLayoutDashboardRoute,
   AdminLayoutEventsRoute: AdminLayoutEventsRoute,
   AdminLayoutFooterRoute: AdminLayoutFooterRoute,
@@ -308,6 +323,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/booking': typeof BookingIndexRoute
   '/events': typeof EventsIndexRoute
+  '/admin/booking': typeof AdminLayoutBookingRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
   '/admin/footer': typeof AdminLayoutFooterRoute
@@ -327,6 +343,7 @@ export interface FileRoutesByTo {
   '/events/$eventId': typeof EventsEventIdRoute
   '/booking': typeof BookingIndexRoute
   '/events': typeof EventsIndexRoute
+  '/admin/booking': typeof AdminLayoutBookingRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
   '/admin/footer': typeof AdminLayoutFooterRoute
@@ -349,6 +366,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/booking/': typeof BookingIndexRoute
   '/events/': typeof EventsIndexRoute
+  '/admin/_layout/booking': typeof AdminLayoutBookingRoute
   '/admin/_layout/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/_layout/events': typeof AdminLayoutEventsRoute
   '/admin/_layout/footer': typeof AdminLayoutFooterRoute
@@ -371,6 +389,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/booking'
     | '/events'
+    | '/admin/booking'
     | '/admin/dashboard'
     | '/admin/events'
     | '/admin/footer'
@@ -389,6 +408,7 @@ export interface FileRouteTypes {
     | '/events/$eventId'
     | '/booking'
     | '/events'
+    | '/admin/booking'
     | '/admin/dashboard'
     | '/admin/events'
     | '/admin/footer'
@@ -409,6 +429,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/booking/'
     | '/events/'
+    | '/admin/_layout/booking'
     | '/admin/_layout/dashboard'
     | '/admin/_layout/events'
     | '/admin/_layout/footer'
@@ -487,6 +508,7 @@ export const routeTree = rootRoute
       "filePath": "admin/_layout.tsx",
       "parent": "/admin",
       "children": [
+        "/admin/_layout/booking",
         "/admin/_layout/dashboard",
         "/admin/_layout/events",
         "/admin/_layout/footer",
@@ -511,6 +533,10 @@ export const routeTree = rootRoute
     },
     "/events/": {
       "filePath": "events/index.tsx"
+    },
+    "/admin/_layout/booking": {
+      "filePath": "admin/_layout/booking.tsx",
+      "parent": "/admin/_layout"
     },
     "/admin/_layout/dashboard": {
       "filePath": "admin/_layout/dashboard.tsx",

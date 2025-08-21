@@ -5,7 +5,7 @@ public static class KeycloakPolicies
   public static string[] AllRoles =
   [
     ViewUsers, ProjectContributor, PublishProjects, EventContributor, PublishEvents, DashboardManager, PageManager,
-    LocationManager, FooterManager
+    LocationManager, FooterManager, BookingManager
   ];
 
   #region Users
@@ -35,6 +35,12 @@ public static class KeycloakPolicies
   #endregion
 
   #region Dashboard
+
+  #region Booking
+
+  public const string BookingManager = "booking_manager";
+  
+  #endregion
 
   public const string DashboardManager = "dashboard_manager";
 
