@@ -15,6 +15,7 @@ using Jobs.EventImporter;
 using Jobs.ProjectImporter;
 using Microsoft.EntityFrameworkCore;
 using Shared.Database;
+using Api.Options;
 
 namespace Api;
 
@@ -36,6 +37,8 @@ public class Startup(IConfiguration configuration)
   {
     services.Configure<Configuration>(Configuration);
     MappedConfiguration = Configuration.Get<Configuration>();
+
+    services.Configure<MasterportalOptions>(Configuration.GetSection("Masterportal"));
 
     if (MappedConfiguration is null)
       throw new NullReferenceException("Configuration is null");
