@@ -239,10 +239,10 @@ value   : The object must be serialized into a byte array
   <data name="GeoDataSourceTypeInvalid" xml:space="preserve">
     <value>Nieprawidłowy typ źródła danych geograficznych.</value>
   </data>
-  <data name="NoBookingManager_pl" xml:space="preserve">
+  <data name="NoBookingManager" xml:space="preserve">
     <value>Użytkownik nie jest menedżerem rezerwacji</value>
   </data>
-  <data name="TenantIdNotFound_pl" xml:space="preserve">
+  <data name="TenantIdNotFound" xml:space="preserve">
     <value>Identyfikator najemcy nie został znaleziony</value>
   </data>
 </root>
