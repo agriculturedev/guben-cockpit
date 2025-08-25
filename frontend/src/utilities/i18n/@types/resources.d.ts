@@ -59,7 +59,11 @@ interface Resources {
           "description": "Geben Sie auf der folgenden Webseite Ihre Kontaktdaten ein, kontrollieren Sie Ihre Eingaben und schicken die Anfrage ab. Sobald diese bestätigt wurde, erhalten Sie eine E-Mail."
         }
       ]
-    }
+    },
+    "tenantId": "Mandanten-ID",
+    "Title": "Mandanten-IDs",
+    "addTenant": "Mandanten-ID hinzufügen",
+    "deletedSuccess": "Mandanten-ID wurde erfolgreich gelöscht"
   },
   "common": {
     "Actions": "Aktionen",

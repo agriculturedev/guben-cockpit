@@ -116,6 +116,12 @@ export type CreateProjectResponse = {
   type?: ProjectType;
 };
 
+export type CreateTenantIdQuery = {
+  tenantId: string;
+};
+
+export type CreateTenantIdResponse = Record<string, any>;
+
 export type CreateTopicQuery = {
   id?: string;
   typ?: string;
@@ -158,6 +164,8 @@ export type DeleteEventResponse = Record<string, any>;
 export type DeleteFooterItemResponse = Record<string, any>;
 
 export type DeleteProjectResponse = Record<string, any>;
+
+export type DeleteTenantIdResponse = Record<string, any>;
 
 export type EntityTagHeaderValue = {
   tag?: StringSegment;
@@ -331,6 +339,10 @@ export type GetAllSchoolsResponse = {
   projects: ProjectResponse[];
 };
 
+export type GetAllTenantIdsResponse = {
+  tenants: TenantResponse[];
+};
+
 export type GetAllUsersResponse = {
   /**
    * @format int32
@@ -497,6 +509,14 @@ export type StringSegment = {
   length?: number;
   value?: string | null;
   hasValue?: boolean;
+};
+
+export type TenantResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  tenantId: string;
 };
 
 export type TopicResponse = {
