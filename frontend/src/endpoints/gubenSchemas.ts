@@ -116,6 +116,12 @@ export type CreateProjectResponse = {
   type?: ProjectType;
 };
 
+export type CreateTenantIdQuery = {
+  tenantId: string;
+};
+
+export type CreateTenantIdResponse = Record<string, any>;
+
 export type CreateTopicQuery = {
   id?: string;
   typ?: string;
@@ -158,6 +164,8 @@ export type DeleteEventResponse = Record<string, any>;
 export type DeleteFooterItemResponse = Record<string, any>;
 
 export type DeleteProjectResponse = Record<string, any>;
+
+export type DeleteTenantIdResponse = Record<string, any>;
 
 export type EntityTagHeaderValue = {
   tag?: StringSegment;
@@ -332,6 +340,10 @@ export type GetAllSchoolsResponse = {
   projects: ProjectResponse[];
 };
 
+export type GetAllTenantIdsResponse = {
+  tenants: TenantResponse[];
+};
+
 export type GetAllUsersResponse = {
   /**
    * @format int32
@@ -361,6 +373,22 @@ export type GetGeoDataSourcesResponse = {
 };
 
 export type GetMyEventsResponse = {
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
   results: EventResponse[];
 };
 
@@ -450,6 +478,13 @@ export type ProjectType = {
   value?: number;
 };
 
+export type PublishEventQuery = {
+  publish?: boolean;
+  ids?: string[];
+};
+
+export type PublishEventResponse = Record<string, any>;
+
 export type PublishProjectsQuery = {
   publish?: boolean;
   projectIds: string[];
@@ -475,6 +510,14 @@ export type StringSegment = {
   length?: number;
   value?: string | null;
   hasValue?: boolean;
+};
+
+export type TenantResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  tenantId: string;
 };
 
 export type TopicResponse = {
@@ -511,6 +554,40 @@ export type UpdateDashboardTabQuery = {
 };
 
 export type UpdateDashboardTabResponse = Record<string, any>;
+
+export type UpdateEventQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  title: string;
+  description: string;
+  /**
+   * @format date-time
+   */
+  startDate?: string;
+  /**
+   * @format date-time
+   */
+  endDate?: string;
+  /**
+   * @format double
+   */
+  latitude?: number;
+  /**
+   * @format double
+   */
+  longitude?: number;
+  urls: CreateUrlQuery[];
+  categoryIds: string[];
+  images: CreateEventImageQuery[];
+  /**
+   * @format uuid
+   */
+  locationId?: string;
+};
+
+export type UpdateEventResponse = Record<string, any>;
 
 export type UpdatePageQuery = {
   id: string;

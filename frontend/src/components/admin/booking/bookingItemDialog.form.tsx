@@ -1,0 +1,49 @@
+import { useTranslation } from "react-i18next";
+import { formDefaults, formSchema, FormSchema } from "./bookingItemDialog.formSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+interface IProps {
+	defaultData?: FormSchema;
+	onSubmit: (form: FormSchema) => void;
+	onClose: () => void;
+}
+
+export default function BookingItemDialogForm(props: IProps) {
+	const { t } = useTranslation(["booking", "common"]);
+
+	const form = useForm<FormSchema>({
+		resolver: zodResolver(formSchema),
+		defaultValues: formDefaults
+	});
+
+	useEffect(() => form.reset(props.defaultData ?? formDefaults), [props.defaultData]);
+
+	return (
+		<Form {...form}>
+			<form className={"flex flex-col gap-4"} onSubmit={form.handleSubmit(props.onSubmit)}>
+				<FormField
+					control={form.control}
+					name="tenantId"
+					render={({field}) => (
+						<FormItem>
+							<FormLabel>{t("booking:tenantId")}</FormLabel>
+							<FormControl>
+								<Input placeholder={t("booking:tenantId")} {...field} value={field.value ?? undefined} />
+							</FormControl>
+						</FormItem>
+					)}
+				/>
+
+				<div className={"flex justify-end gap-2"}>
+					<Button className={"bg-transparent text-foreground"} onClick={props.onClose}>{t("common:Cancel")}</Button>
+					<Button className={"bg-gubenAccent text-gubenAccent-foreground"}>{t("common:Save")}</Button>
+				</div>
+			</form>
+		</Form>
+	)
+}

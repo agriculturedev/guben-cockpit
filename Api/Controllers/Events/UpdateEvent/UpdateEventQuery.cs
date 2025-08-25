@@ -5,7 +5,7 @@ namespace Api.Controllers.Events.UpdateEvent;
 
 public class UpdateEventQuery : IApiRequest<UpdateEventResponse>
 {
-  public required Guid Id { get; set; }
+  public Guid? Id { get; private set; }
   public required string Title { get; set; }
   public required string Description { get; set; }
   public DateTime StartDate { get; set; }
@@ -17,6 +17,8 @@ public class UpdateEventQuery : IApiRequest<UpdateEventResponse>
   public required List<CreateUrlQuery> Urls { get; set; } = [];
 
   public required List<Guid> CategoryIds { get; set; } = [];
-  public required List<CreateEventImageQuery> Images {get; set;} = [];
+  public required List<CreateEventImageQuery> Images { get; set; } = [];
   public Guid LocationId { get; set; }
+  
+  public void setId(Guid id) => Id = id;
 }

@@ -38,6 +38,10 @@ export const AdminNavigation = () => {
         <Nav.Item href={"/admin/footer"} label={t("Title", {ns: "footer"})}/>
       </PermissionGuard>
 
+      <PermissionGuard permissions={[Permissions.BookingManager]}>
+        <Nav.Item href={"/admin/booking"} label={t("Title", {ns: "booking"})} />
+      </PermissionGuard>
+
       <PermissionGuard permissions={[Permissions.UploadGeodata]}>
         <Nav.Item href={"/admin/geodata"} label={t("Title", {ns: "geodata"})}/>
       </PermissionGuard>

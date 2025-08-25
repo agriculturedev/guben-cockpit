@@ -11,7 +11,7 @@ using Shared.Api;
 
 namespace Api.Controllers.Events.GetMyEvents;
 
-public class GetMyEventsHandler : ApiRequestHandler<GetMyEventsQuery, GetMyEventsResponse>
+public class GetMyEventsHandler : ApiPagedRequestHandler<GetMyEventsQuery, GetMyEventsResponse, EventResponse>
 {
   private readonly IEventRepository _eventRepository;
   private readonly CultureInfo _culture;
@@ -40,13 +40,32 @@ public class GetMyEventsHandler : ApiRequestHandler<GetMyEventsQuery, GetMyEvent
     var isPublisher = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.PublishEvents) ?? false;
 
     // if the user is a publisher, allow access to all events
-    IEnumerable<Event> events = [];
-    if(isPublisher) events = await _eventRepository.GetAll();
-    else events = _eventRepository.GetAllOwnedBy(user.Id);
-
-    return new GetMyEventsResponse
+    GetMyEventsResponse events;
+    if (isPublisher)
     {
-      Results = events.Select(e => EventResponse.Map(e, _culture))
-    };
+      var pagedResult = await _eventRepository.GetAllEventsPaged(request, _culture);
+      events = new GetMyEventsResponse
+      {
+        PageNumber = pagedResult.PageNumber,
+        PageSize = pagedResult.PageSize,
+        TotalCount = pagedResult.TotalCount,
+        PageCount = pagedResult.PageCount,
+        Results = pagedResult.Results.Select(e => EventResponse.Map(e, _culture))
+      };
+    }
+    else
+    {
+      var pagedResult = await _eventRepository.GetAllEventsPaged(request, _culture, user.Id);
+      events = new GetMyEventsResponse
+      {
+        PageNumber = pagedResult.PageNumber,
+        PageSize = pagedResult.PageSize,
+        TotalCount = pagedResult.TotalCount,
+        PageCount = pagedResult.PageCount,
+        Results = pagedResult.Results.Select(e => EventResponse.Map(e, _culture))
+      };
+    }
+
+    return events;
   }
 }

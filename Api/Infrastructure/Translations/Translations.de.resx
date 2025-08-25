@@ -213,6 +213,9 @@ value   : The object must be serialized into a byte array
   <data name="MissingProjectId" xml:space="preserve">
     <value>Fehlende Projekt-ID</value>
   </data>
+  <data name="MissingEventId" xml:space="preserve">
+    <value>Fehlende Event-ID</value>
+  </data>
   <data name="EventNotOwnedByUser" xml:space="preserve">
     <value>Veranstaltung gehört nicht dem Benutzer</value>
   </data>
@@ -236,5 +239,11 @@ value   : The object must be serialized into a byte array
   </data>
   <data name="GeoDataSourceTypeInvalid" xml:space="preserve">
     <value>Geodatenquelle-Typ ist ungültig.</value>
+  </data>
+  <data name="NoBookingManager" xml:space="preserve">
+    <value>Benutzer ist Kein Buchungsmanager</value>
+  </data>
+  <data name="TenantIdNotFound" xml:space="preserve">
+    <value>Mandanten-ID konnte nicht gefunden werden</value>
   </data>
 </root>

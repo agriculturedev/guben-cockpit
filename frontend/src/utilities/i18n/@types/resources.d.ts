@@ -59,7 +59,11 @@ interface Resources {
           "description": "Geben Sie auf der folgenden Webseite Ihre Kontaktdaten ein, kontrollieren Sie Ihre Eingaben und schicken die Anfrage ab. Sobald diese bestätigt wurde, erhalten Sie eine E-Mail."
         }
       ]
-    }
+    },
+    "tenantId": "Mandanten-ID",
+    "Title": "Mandanten-IDs",
+    "addTenant": "Mandanten-ID hinzufügen",
+    "deletedSuccess": "Mandanten-ID wurde erfolgreich gelöscht"
   },
   "common": {
     "Actions": "Aktionen",
@@ -84,7 +88,7 @@ interface Resources {
       "ThisYear": "Dieses Jahr",
       "Today": "Heute",
       "Tomorrow": "Morgen",
-      "ConfirmDate": "Dateum anwenden"
+      "ConfirmDate": "Datum anwenden"
     },
     "Clear": "Zurücksetzen",
     "Delete": "Löschen",
@@ -196,7 +200,22 @@ interface Resources {
     "DeletedSuccess": "Veranstaltung erfolgreich gelöscht",
     "Edit": "Veranstaltung bearbeiten",
     "MyEvents": "Meine Veranstaltungen",
-    "Published": "Veröffentlicht"
+    "Published": "Veröffentlicht",
+    "Publish": "Veröffentlichen",
+    "Unpublish": "Offline nehmen",
+    "PublishSuccess": "Event erfolgreich veröffentlicht",
+    "UnpublishSuccess": "Event erfolgreich offline genommen",
+    "PublishConfirmation": "Mit dieser Aktion wird das Event veröffentlicht und ist für alle sichtbar.",
+    "UnpublishConfirmation": "Mit dieser Aktion wird das Event Offline genommen und ist nicht mehr für alle sichtbar.",
+    "Description": "Beschreibung",
+    "StartDate": "Startdatum",
+    "EndDate": "Enddatum",
+    "Latitude": "Breitengrad",
+    "Longitude": "Längengrad",
+    "Category": "Kategorien",
+    "Location": "Adresse",
+    "Save": "Speichern",
+    "Cancel": "Abbrechen"
   },
   "footer": {
     "Title": "Fußzeile",
