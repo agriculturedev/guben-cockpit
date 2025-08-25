@@ -6,7 +6,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 export const AdminNavigation = () => {
-  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations", "footer", "geodata"]);
+  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations", "footer", "booking", "geodata"]);
 
   return (
     <Nav className="col-span-2 h-fit">
