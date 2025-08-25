@@ -14,7 +14,7 @@ import { GeoDataSourceType } from '@/endpoints/gubenSchemas'
 
 export const Route = createFileRoute('/admin/_layout/geodata')({
   beforeLoad: async ({context, location}) => {
-    await routePermissionCheck(context.auth, [Permissions.FooterManager])
+    await routePermissionCheck(context.auth, [Permissions.UploadGeodata])
   },
   component: WrappedComponent,
 })

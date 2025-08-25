@@ -5,7 +5,7 @@ public static class KeycloakPolicies
   public static string[] AllRoles =
   [
     ViewUsers, ProjectContributor, PublishProjects, EventContributor, PublishEvents, DashboardManager, PageManager,
-    LocationManager, FooterManager, UploadGeodata
+    LocationManager, FooterManager, UploadGeodata, ManageGeodata
   ];
 
   #region Users
@@ -55,6 +55,12 @@ public static class KeycloakPolicies
   #region Geodata
 
   public const string UploadGeodata = "upload_geodata";
+
+  #endregion
+
+  #region ManageGeodata
+
+  public const string ManageGeodata = "manage_geodata";
 
   #endregion
 }

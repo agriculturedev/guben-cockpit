@@ -8,7 +8,7 @@ import { useGeoGetAllGeoDataSources, useGeoValidate } from '@/endpoints/gubenCom
 
 export const Route = createFileRoute('/admin/_layout/geodatamanage')({
     beforeLoad: async ({context, location}) => {
-      await routePermissionCheck(context.auth, [Permissions.DashboardManager])
+      await routePermissionCheck(context.auth, [Permissions.ManageGeoData])
     },
     component: WrappedComponent,
 })

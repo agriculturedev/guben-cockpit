@@ -9,4 +9,5 @@ export enum Permissions {
   ViewUsers = "view_users",
   FooterManager = "footer_manager",
   UploadGeodata = "upload_geodata",
+  ManageGeoData = "manage_geodata",
 }
