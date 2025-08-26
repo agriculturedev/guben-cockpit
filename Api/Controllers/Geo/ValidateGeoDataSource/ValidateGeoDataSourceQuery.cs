@@ -7,3 +7,8 @@ public class ValidateGeoDataSourceQuery : IApiRequest<ValidateGeoDataSourceRespo
   public required Guid Id { get; set; }
   public required bool IsValid { get; set; }
 }
+
+public class ValidateRequest
+{
+  public bool IsValid { get; set; }
+}

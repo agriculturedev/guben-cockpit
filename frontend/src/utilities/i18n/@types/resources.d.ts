@@ -138,7 +138,21 @@ interface Resources {
     "Url": "Url",
     "Urls": "Urls",
     "Yes": "Ja",
-    "Radius": "Radius"
+    "Radius": "Radius",
+    "Type": "Typ",
+    "Requested": "Angefordert",
+    "State": "Status",
+    "Loading": "Wird geladen",
+    "DragAndDrop": {
+      "Label": "Datei hierher ziehen und ablegen",
+      "Hint": "Klicken oder ablegen zum Hochladen",
+      "Accepted": "Erlaubt: {{extensions}}",
+      "Browse": "Dateien durchsuchen",
+      "Selected": "Ausgewählt:",
+      "Remove": "Entfernen",
+      "ErrorUnsupported": "Nicht unterstützter Dateityp. Erlaubt: {{extensions}}",
+      "ErrorTooLarge": "Datei zu groß. Maximal {{max}} MB"
+    }
   },
   "dashboard": {
     "Title": "Dashboard",
@@ -210,6 +224,34 @@ interface Resources {
     "Edit": "Fußzeilenelement bearbeiten",
     "Content": "Inhalt",
     "DeletedSuccess": "Fußzeilenelement erfolgreich gelöscht"
+  },
+  "geodata": {
+    "Title": "Geodaten",
+    "ManageGeodata": "Geodaten verwalten",
+    "UploadGeodata": "Geodaten hochladen",
+    "CockpitPublic": "Guben Cockpit (Öffentlich)",
+    "CockpitPublicDescription": "Erscheint nach Freigabe öffentlich im Masterportal.",
+    "ResiPrivate": "Resi-Formular (Privat)",
+    "ResiPrivateDescription": "Privater Zugriff über einen sicheren Topic-Endpunkt nach Freigabe.",
+    "DataType": "Datentyp",
+    "CustomTypePlaceholder": "Benutzerdefinierter Typname (optional)",
+    "Publishing": "Wird veröffentlicht...",
+    "Publish": "Veröffentlichen",
+    "UploadedSuccessfully": "Erfolgreich hochgeladen.",
+    "UploadFailed": "Upload fehlgeschlagen",
+    "ReviewUploads": "Uploads prüfen",
+    "SearchByTitle": "Nach Titel suchen…",
+    "ReviewDialogTitle": "Anfrage prüfen und Verfügbarkeit festlegen.",
+    "ApproveCockpitPublic": "Cockpit (Öffentlich) freigeben",
+    "ApproveCockpitPublicDesc": "Im Masterportal verfügbar machen.",
+    "ApproveResiPrivate": "Resi (Privat) freigeben",
+    "ApproveResiPrivateDesc": "Über sicheren Topic-Endpunkt bereitstellen.",
+    "Metadata": "Metadaten",
+    "Path": "Pfad",
+    "Close": "Schließen",
+    "Reject": "Ablehnen",
+    "Approve": "Genehmigen",
+    "Review": "Prüfen"
   },
   "locations": {
     "Title": "Orte",

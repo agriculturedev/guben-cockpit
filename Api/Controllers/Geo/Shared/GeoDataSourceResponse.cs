@@ -4,6 +4,7 @@ namespace Api.Controllers.Geo.Shared;
 
 public class GeoDataSourceResponse
 {
+  public Guid Id { get; init; } 
   public required string Path { get; set; }
   public required bool IsValidated { get; set; }
   public required bool IsPublic { get; set; }
@@ -14,6 +15,7 @@ public class GeoDataSourceResponse
   {
     return new GeoDataSourceResponse()
     {
+      Id = dataSource.Id,
       Path = dataSource.Path,
       IsValidated = dataSource.IsValidated,
       IsPublic = dataSource.IsPublic,

@@ -234,6 +234,7 @@ export type FooterItemResponse = {
 };
 
 export type GeoDataSourceResponse = {
+  id: string;
   path: string;
   isValidated: boolean;
   isPublic: boolean;

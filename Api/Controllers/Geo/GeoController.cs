@@ -65,19 +65,16 @@ public class GeoController : ControllerBase
   [EndpointName("GeoUploadGeoDataSource")]
   [Authorize]
   [Consumes("multipart/form-data")]
-  public async Task<IResult> CreateGeoDataFile([FromBody] UploadWfsQuery query)
+  async public Task<IResult> CreateGeoDataFile([FromForm] UploadWfsQuery query)
   {
     if (query.File == null || query.File.Length == 0)
       return Results.BadRequest("No file content provided.");
-
-    if (!GeoDataSourceType.TryFromValue(query.Type, out var castType))
-      throw new ProblemDetailsException(TranslationKeys.GeoDataSourceTypeInvalid);
 
     var result = await _mediator.Send(new UploadWfsQuery()
     {
       IsPublic = query.IsPublic,
       File = query.File,
-      Type = castType
+      Type = query.Type
     });
 
     return Results.Ok(result);
@@ -94,19 +91,17 @@ public class GeoController : ControllerBase
     return Results.Ok(result);
   }
 
-
-
   [HttpPatch("validate/{Id:guid}")]
   [EndpointName("GeoValidate")]
   [Authorize] // TODO@JOREN: new role for data protection officer
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ValidateGeoDataSourceResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> ValidateGeoDataSource([FromRoute] Guid id, [FromBody] bool isValid)
+  public async Task<IResult> ValidateGeoDataSource([FromRoute] Guid id, [FromBody] ValidateRequest req)
   {
     var result = await _mediator.Send(new ValidateGeoDataSourceQuery()
     {
       Id = id,
-      IsValid = isValid
+      IsValid = req.IsValid
     });
     return Results.Ok(result);
   }

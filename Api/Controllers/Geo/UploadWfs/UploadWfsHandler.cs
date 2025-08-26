@@ -19,12 +19,15 @@ public class UploadWfsHandler : ApiRequestHandler<UploadWfsQuery, UploadWfsRespo
 
   public override async Task<UploadWfsResponse> Handle(UploadWfsQuery request, CancellationToken cancellationToken)
   {
+    var originalName = Path.GetFileNameWithoutExtension(request.File.FileName);
     var extension = Path.GetExtension(request.File.FileName);
+    var safeName     = $"{originalName}_{Guid.NewGuid():N}{extension}";
 
     using var ms = new MemoryStream();
     await request.File.CopyToAsync(ms, cancellationToken);
 
-    var path = $"{request.Type.Name}/{request.File.FileName}.{extension}";
+    const string GeoRoot = "Geo";
+    var path = $"{GeoRoot}/{request.Type.Name}/{safeName}";
     await _nextcloudManager.CreateFileAsync(ms.ToArray(), path);
 
     var (result, newDataSource) = GeoDataSource.Create(path, false, request.IsPublic, request.Type);

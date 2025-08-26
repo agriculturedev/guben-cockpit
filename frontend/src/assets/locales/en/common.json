@@ -71,5 +71,19 @@
   "Url": "Url",
   "Urls": "Urls",
   "Yes": "Yes",
-  "Radius": "Radius"
+  "Radius": "Radius",
+  "Type": "Type",
+  "Requested": "Requested",
+  "State": "State",
+  "Loading": "Loading",
+  "DragAndDrop": {
+    "Label": "Drag & drop your file here",
+    "Hint": "Click or drop to upload",
+    "Accepted": "Accepted: {{extensions}}",
+    "Browse": "Browse files",
+    "Selected": "Selected:",
+    "Remove": "Remove",
+    "ErrorUnsupported": "Unsupported file type. Allowed: {{extensions}}",
+    "ErrorTooLarge": "File too large. Max {{max}} MB"
+  }
 }

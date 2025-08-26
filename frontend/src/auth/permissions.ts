@@ -8,5 +8,7 @@ export enum Permissions {
   PublishProjects = "publish_projects",
   ViewUsers = "view_users",
   FooterManager = "footer_manager",
+  UploadGeodata = "upload_geodata",
+  ManageGeoData = "manage_geodata",
   BookingManager = "booking_manager"
 }

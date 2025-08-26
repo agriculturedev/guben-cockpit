@@ -1032,7 +1032,7 @@ export type GeoValidateError = Fetcher.ErrorWrapper<{
 }>;
 
 export type GeoValidateVariables = {
-  body?: boolean;
+  body?: { isValid: boolean };
   pathParams: GeoValidatePathParams;
 } & GubenContext["fetcherOptions"];
 
@@ -1043,7 +1043,7 @@ export const fetchGeoValidate = (
   gubenFetch<
     Schemas.ValidateGeoDataSourceResponse,
     GeoValidateError,
-    boolean,
+    { isValid: boolean },
     {},
     {},
     GeoValidatePathParams

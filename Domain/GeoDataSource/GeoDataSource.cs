@@ -13,6 +13,7 @@ public class GeoDataSource : Entity<Guid>
 
   private GeoDataSource(string path, bool isValidated, bool isPublic, GeoDataSourceType type)
   {
+    Id = Guid.NewGuid();
     Path = path;
     IsValidated = isValidated;
     IsPublic = isPublic;

@@ -26,6 +26,8 @@ import { Route as AdminLayoutUsersImport } from './routes/admin/_layout/users'
 import { Route as AdminLayoutProjectsImport } from './routes/admin/_layout/projects'
 import { Route as AdminLayoutPagesImport } from './routes/admin/_layout/pages'
 import { Route as AdminLayoutLocationsImport } from './routes/admin/_layout/locations'
+import { Route as AdminLayoutGeodatamanageImport } from './routes/admin/_layout/geodatamanage'
+import { Route as AdminLayoutGeodataImport } from './routes/admin/_layout/geodata'
 import { Route as AdminLayoutFooterImport } from './routes/admin/_layout/footer'
 import { Route as AdminLayoutEventsImport } from './routes/admin/_layout/events'
 import { Route as AdminLayoutDashboardImport } from './routes/admin/_layout/dashboard'
@@ -110,6 +112,16 @@ const AdminLayoutPagesRoute = AdminLayoutPagesImport.update({
 
 const AdminLayoutLocationsRoute = AdminLayoutLocationsImport.update({
   path: '/locations',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+
+const AdminLayoutGeodatamanageRoute = AdminLayoutGeodatamanageImport.update({
+  path: '/geodatamanage',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+
+const AdminLayoutGeodataRoute = AdminLayoutGeodataImport.update({
+  path: '/geodata',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
 
@@ -235,6 +247,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutFooterImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/admin/_layout/geodata': {
+      id: '/admin/_layout/geodata'
+      path: '/geodata'
+      fullPath: '/admin/geodata'
+      preLoaderRoute: typeof AdminLayoutGeodataImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/admin/_layout/geodatamanage': {
+      id: '/admin/_layout/geodatamanage'
+      path: '/geodatamanage'
+      fullPath: '/admin/geodatamanage'
+      preLoaderRoute: typeof AdminLayoutGeodatamanageImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/admin/_layout/locations': {
       id: '/admin/_layout/locations'
       path: '/locations'
@@ -280,6 +306,8 @@ interface AdminLayoutRouteChildren {
   AdminLayoutDashboardRoute: typeof AdminLayoutDashboardRoute
   AdminLayoutEventsRoute: typeof AdminLayoutEventsRoute
   AdminLayoutFooterRoute: typeof AdminLayoutFooterRoute
+  AdminLayoutGeodataRoute: typeof AdminLayoutGeodataRoute
+  AdminLayoutGeodatamanageRoute: typeof AdminLayoutGeodatamanageRoute
   AdminLayoutLocationsRoute: typeof AdminLayoutLocationsRoute
   AdminLayoutPagesRoute: typeof AdminLayoutPagesRoute
   AdminLayoutProjectsRoute: typeof AdminLayoutProjectsRoute
@@ -291,6 +319,8 @@ const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
   AdminLayoutDashboardRoute: AdminLayoutDashboardRoute,
   AdminLayoutEventsRoute: AdminLayoutEventsRoute,
   AdminLayoutFooterRoute: AdminLayoutFooterRoute,
+  AdminLayoutGeodataRoute: AdminLayoutGeodataRoute,
+  AdminLayoutGeodatamanageRoute: AdminLayoutGeodatamanageRoute,
   AdminLayoutLocationsRoute: AdminLayoutLocationsRoute,
   AdminLayoutPagesRoute: AdminLayoutPagesRoute,
   AdminLayoutProjectsRoute: AdminLayoutProjectsRoute,
@@ -327,6 +357,8 @@ export interface FileRoutesByFullPath {
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
   '/admin/footer': typeof AdminLayoutFooterRoute
+  '/admin/geodata': typeof AdminLayoutGeodataRoute
+  '/admin/geodatamanage': typeof AdminLayoutGeodatamanageRoute
   '/admin/locations': typeof AdminLayoutLocationsRoute
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
@@ -347,6 +379,8 @@ export interface FileRoutesByTo {
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
   '/admin/footer': typeof AdminLayoutFooterRoute
+  '/admin/geodata': typeof AdminLayoutGeodataRoute
+  '/admin/geodatamanage': typeof AdminLayoutGeodatamanageRoute
   '/admin/locations': typeof AdminLayoutLocationsRoute
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
@@ -370,6 +404,8 @@ export interface FileRoutesById {
   '/admin/_layout/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/_layout/events': typeof AdminLayoutEventsRoute
   '/admin/_layout/footer': typeof AdminLayoutFooterRoute
+  '/admin/_layout/geodata': typeof AdminLayoutGeodataRoute
+  '/admin/_layout/geodatamanage': typeof AdminLayoutGeodatamanageRoute
   '/admin/_layout/locations': typeof AdminLayoutLocationsRoute
   '/admin/_layout/pages': typeof AdminLayoutPagesRoute
   '/admin/_layout/projects': typeof AdminLayoutProjectsRoute
@@ -393,6 +429,8 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/events'
     | '/admin/footer'
+    | '/admin/geodata'
+    | '/admin/geodatamanage'
     | '/admin/locations'
     | '/admin/pages'
     | '/admin/projects'
@@ -412,6 +450,8 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/events'
     | '/admin/footer'
+    | '/admin/geodata'
+    | '/admin/geodatamanage'
     | '/admin/locations'
     | '/admin/pages'
     | '/admin/projects'
@@ -433,6 +473,8 @@ export interface FileRouteTypes {
     | '/admin/_layout/dashboard'
     | '/admin/_layout/events'
     | '/admin/_layout/footer'
+    | '/admin/_layout/geodata'
+    | '/admin/_layout/geodatamanage'
     | '/admin/_layout/locations'
     | '/admin/_layout/pages'
     | '/admin/_layout/projects'
@@ -512,6 +554,8 @@ export const routeTree = rootRoute
         "/admin/_layout/dashboard",
         "/admin/_layout/events",
         "/admin/_layout/footer",
+        "/admin/_layout/geodata",
+        "/admin/_layout/geodatamanage",
         "/admin/_layout/locations",
         "/admin/_layout/pages",
         "/admin/_layout/projects",
@@ -548,6 +592,14 @@ export const routeTree = rootRoute
     },
     "/admin/_layout/footer": {
       "filePath": "admin/_layout/footer.tsx",
+      "parent": "/admin/_layout"
+    },
+    "/admin/_layout/geodata": {
+      "filePath": "admin/_layout/geodata.tsx",
+      "parent": "/admin/_layout"
+    },
+    "/admin/_layout/geodatamanage": {
+      "filePath": "admin/_layout/geodatamanage.tsx",
       "parent": "/admin/_layout"
     },
     "/admin/_layout/locations": {
