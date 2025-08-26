@@ -109,7 +109,8 @@ EventCard.ImageBox = () => {
 EventCard.DefaultCategoryImage = () => {
   const {event} = useEventCard();
 
-  var image = getEventImage(event.categories[0].name)
+  const firstCategoryName = event.categories?.[0]?.name ?? null;
+  const image = getEventImage(firstCategoryName);
 
   return image != null ? (
     <div className="rounded-lg h-full flex items-center justify-center overflow-hidden">
