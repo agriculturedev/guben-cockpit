@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Api.Options;
@@ -54,7 +55,11 @@ public sealed class MasterportalServicesWriter : IMasterportalServicesWriter
 
             var tmp = _path + ".tmp";
             var bak = _path + "." + DateTime.UtcNow.ToString("yyyyMMddHHmmss") + ".bak";
-            var opts = new JsonSerializerOptions { WriteIndented = true };
+            var opts = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
+            };
 
             await File.WriteAllTextAsync(tmp, arr.ToJsonString(opts), Encoding.UTF8, ct);
 
