@@ -92,7 +92,6 @@ public class EventController : ControllerBase
 
   [HttpGet("{id:guid}")]
   [EndpointName("EventsGetById")]
-  [Authorize(KeycloakPolicies.PublishEvents)]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetEventByIdResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> GetEventById([FromRoute] Guid id)
