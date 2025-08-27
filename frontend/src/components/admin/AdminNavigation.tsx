@@ -42,6 +42,14 @@ export const AdminNavigation = () => {
         <Nav.Item href={"/admin/booking"} label={t("Title", {ns: "booking"})} />
       </PermissionGuard>
 
+      <PermissionGuard permissions={[Permissions.BookingPlatform]}>
+        <Nav.Item 
+          href={import.meta.env.VITE_BOOKING_LOGIN}
+          label={t('bookingPlatform', {ns: "booking"})} 
+          external
+        />
+      </PermissionGuard>
+
       <PermissionGuard permissions={[Permissions.UploadGeodata]}>
         <Nav.Item href={"/admin/geodata"} label={t("Title", {ns: "geodata"})}/>
       </PermissionGuard>
@@ -70,10 +78,28 @@ function Nav({children, ...props}: NavProps) {
 type NavItemProps = {
   href: string;
   label: string;
+  external?: boolean;
 }
 
 Nav.Item = (props: NavItemProps) => {
   const location = useLocation();
+
+  if (props.external) {
+    return (
+      <li>
+        <a
+          className={cn(
+            "py-2 px-1 flex justify-center items-center rounded-lg hover:bg-gray-100 hover:cursor-pointer"
+          )}
+          href={props.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {props.label}
+        </a>
+      </li>
+    )
+  }
 
   return (
     <li>

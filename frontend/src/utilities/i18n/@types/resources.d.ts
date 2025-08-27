@@ -63,7 +63,10 @@ interface Resources {
     "tenantId": "Mandanten-ID",
     "Title": "Mandanten-IDs",
     "addTenant": "Mandanten-ID hinzufügen",
-    "deletedSuccess": "Mandanten-ID wurde erfolgreich gelöscht"
+    "deletedSuccess": "Mandanten-ID wurde erfolgreich gelöscht",
+    "bookingPlatform": "Buchungs Platform",
+    "notBookable": "Das Buchungsobjekt ist aktuell nicht buchbar",
+    "AllBookings": "Alle Buchungen"
   },
   "common": {
     "Actions": "Aktionen",

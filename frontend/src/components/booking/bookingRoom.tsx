@@ -1,12 +1,15 @@
 import { useBookingStore } from "@/stores/bookingStore";
-import { useParams } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import BookingDivider from "./bookingDivider";
 import BookingCard from "./bookingCard";
+import { Button } from "../ui/button";
+import { ArrowLeftIcon } from "lucide-react";
 
 export default function BookingRoom() {
   const { t } = useTranslation("booking");
 
+  const navigate = useNavigate();
   const { title } = useParams({ from: '/booking/room/$title' });
   const bookings = useBookingStore(state => state.bookings);
   const booking = bookings.find(b => b.title === title);
@@ -22,6 +25,14 @@ export default function BookingRoom() {
     return (
     <div>
       <div className="relative w-full h-72 overflow-hidden">
+        <Button
+          variant="ghost"
+          className='z-10 text-white gap-2 absolute top-4 left-4 flex items-center hover:bg-none'
+          onClick={() => navigate({ to: "/booking" })}
+        >
+          <ArrowLeftIcon className='size-4' />
+          <p>{t('AllBookings')}</p>
+        </Button>
         <img
           src={booking.imgUrl}
           className="w-full h-full object-cover absolute top-0 left-0" />
@@ -32,7 +43,7 @@ export default function BookingRoom() {
         </div>
       </div>
       <BookingDivider text={t("our_rooms")} />
-      <div id="rooms">
+      <div id="rooms" className="flex flex-wrap">
         {rooms?.map((room, index) => (
           <BookingCard key={index} booking={room} />
         ))}
