@@ -13,10 +13,7 @@ export default function BookingComponent() {
   const navigate = useNavigate();
   const { title } = useParams({ from: '/booking/$title' });
   const bookings = useBookingStore(state => state.bookings);
-  let booking = bookings.find(b => b.title === title);
-  if (!booking) {
-    booking = bookings.find(b => b.bookings?.find(innerBooking => innerBooking.title === title));
-  }
+  let booking = bookings.find(b => b.title === title) || bookings.flatMap(b => b.bookings || []).find(b => b.title === title);
 
   if (!booking) {
     return (
