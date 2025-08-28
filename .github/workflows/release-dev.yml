@@ -21,7 +21,7 @@ jobs:
       VITE_AUTHORITY: ${{ vars.VITE_AUTHORITY }}
       VITE_AUDIENCE: ${{ vars.VITE_AUDIENCE }}
       VITE_BOOKING_SDK: ${{ vars.VITE_BOOKING_SDK }}
-      VITE_BOOKING_TENANT: ${{ vars.VITE_BOOKING_TENANT }}
+      VITE_BOOKING_LOGIN: ${{ vars.VITE_BOOKING_LOGIN }}
       VITE_BOOKING_URL: ${{ vars.VITE_BOOKING_URL }}
 
     steps:
@@ -53,7 +53,7 @@ jobs:
             VITE_AUTHORITY=${{ vars.VITE_AUTHORITY }}
             VITE_AUDIENCE=${{ vars.VITE_AUDIENCE }}
             VITE_BOOKING_SDK=${{ vars.VITE_BOOKING_SDK }}
-            VITE_BOOKING_TENANT=${{ vars.VITE_BOOKING_TENANT }}
+            VITE_BOOKING_LOGIN=${{ vars.VITE_BOOKING_LOGIN }}
             VITE_BOOKING_URL=${{ vars.VITE_BOOKING_URL }}
 
       - name: Extract metadata (tags, labels) for Docker
