@@ -205,8 +205,6 @@ function RouteComponent() {
 
   const allEvents = mergeEventsWithCustom(data?.results ?? [], filteredNormalizedEvents);
 
-  console.log(allEvents);
-
   return (
     <main className="relative space-y-8 mb-8">
       {loading && <Skeleton />}
