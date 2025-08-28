@@ -1,5 +1,5 @@
 import { CircleCheckIcon } from "lucide-react";
-import { Card } from "../ui/card";
+import { Card, CardContent } from "../ui/card";
 import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
 
@@ -17,15 +17,15 @@ type PriceCardProps = {
 export default function ({ bookingUrl, price, title, flags, description, location, autoCommitNote, imgUrl }: PriceCardProps) {
   const { t } = useTranslation("booking");
 
-  return (
-    <div className="p-5">
-      <a 
-          href={bookingUrl}
-          target="_blank"
-          rel="noopener noreferrer" >
+  const isValidUrl = bookingUrl && bookingUrl.startsWith("http");
+
+  const cardContent = (
         <Card className="hover:shadow-xl cursor-pointer">
           <div className="grid grid-cols-3 gap-5 h-full">
             <div className="col-span-2 bg-gubenAccent-foreground h-full">
+              {!isValidUrl &&
+                <div className="px-5 py-1 font-bold text-gubenAccent">{t('notBookable')}</div>
+              }
               <div className="p-5 font-bold text-xl">
                 {title}
               </div>
@@ -77,7 +77,7 @@ export default function ({ bookingUrl, price, title, flags, description, locatio
             </div>
           </div>
         </Card>
-      </a>
-    </div>
-  )
+      )
+  
+  return <div className="p-5">{isValidUrl ? <a href={bookingUrl} target="_blank" rel="noopener noreferrer">{cardContent}</a> : cardContent}</div>;
 }

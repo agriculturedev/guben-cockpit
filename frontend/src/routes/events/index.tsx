@@ -5,43 +5,17 @@ import EventIntegration from '@/components/events/eventIntegration'
 import SortFilter, { SortOption, SortOrder } from '@/components/events/sortFilter'
 import { CategoryFilter } from '@/components/filters/categoryFilter'
 import { DateRangeFilter } from '@/components/filters/dateRangeFilter'
-import { LocationsFilter } from '@/components/filters/locationsFilter'
 import { SearchFilter } from '@/components/filters/searchFilter'
-import { useEventsGetAll } from '@/endpoints/gubenComponents'
+import { useBookingGetAllTenantIds, useEventsGetAll } from '@/endpoints/gubenComponents'
 import { defaultPaginationProps, usePagination } from '@/hooks/usePagination'
 import { createFileRoute } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 import { Skeleton } from '@/components/ui/skeleton'
 import { CategoryResponse, LocationResponse, EventImageResponse, EventResponse } from '@/endpoints/gubenSchemas'
 import { DistanceFilter } from '@/components/filters/DistanceFilter'
-
-type BookingEvent = {
-  title: string;
-  date: string;
-  organizer: string;
-  contactName: string;
-  contactPhone: string;
-  contactEmail: string;
-  teaser: string;
-  bkid: string;
-  details?: EventDetails;
-  imgUrl: string;
-  flags?: string[];
-};
-
-type EventDetails = {
-  longDescription?: string;
-  eventLocation?: string;
-  eventLocationEmail?: string;
-  eventOrganizer?: string;
-  agenda?: string[];
-  teaserImage?: string;
-  street?: string;
-  zip?: string;
-  city?: string;
-};
+import { useEventStore } from '@/stores/eventStore'
 
 export const Route = createFileRoute('/events/')({
   component: RouteComponent,
@@ -59,8 +33,38 @@ const filtersSchema = z.object({
   ordering: z.nativeEnum(SortOrder).optional()
 }).default({});
 
+//@TODO we chould refactor this and move eventIntegration into the backend and merge the Data in eventRepository
+//so we always have 25 results per Page. But then we need to keep the Booking Events in Cache in Case someone
+//wants to access them, which we definitly need to be careful with 
+//Then all the Custom Filtering Stuff could also be removed
 function RouteComponent() {
   const { t } = useTranslation(["common", "events"]);
+  const bookingEvents = useEventStore((state) => state.events);
+  const processedTenants = useEventStore((state) => state.processedTenants);
+  const markProcessedTenants = useEventStore((state) => state.markProcessedTenants);
+
+  const { data: tenantIds } = useBookingGetAllTenantIds({});
+  
+  const [currentTenantIndex, setCurrentTenantIndex] = useState(0);
+
+  const handleTenantDone = useCallback(() => {
+  const currentTenant = tenantIds?.tenants[currentTenantIndex];
+    if (currentTenant) {
+      markProcessedTenants(currentTenant.tenantId);
+    }
+
+    const hasMoreTenants = currentTenantIndex < (tenantIds?.tenants?.length ?? 0) - 1;
+
+    if (hasMoreTenants) {
+      setCurrentTenantIndex(i => i + 1);
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [currentTenantIndex, tenantIds?.tenants, markProcessedTenants]);
+
+  const currentTenant = tenantIds?.tenants[currentTenantIndex];
+  const shouldShowIntegration = currentTenant && !processedTenants.has(currentTenant.tenantId);
 
   const {
     page,
@@ -108,9 +112,7 @@ function RouteComponent() {
 
   const [loading, setLoading] = useState(true);
 
-  const [customEvents, setBookingEvents] = useState<BookingEvent[]>([]);
-
-  const normalizedEvents = customEvents.map(e => {
+  const normalizedEvents = bookingEvents.map(e => {
     const [startDateStr, endDateStr] = e.date.split(" - ");
 
     const start = startDateStr.replace(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5");
@@ -152,14 +154,14 @@ function RouteComponent() {
       startDate: start,
       endDate: end,
       location,
-      coordinates: undefined,
+      coordinates: e.coordinates,
       urls: [],
       categories: categories,
       images: images,
       published: true,
       isBookingEvent: true,
     };
-  }) as (EventResponse & { isBookingEvent?: boolean })[];;
+  }) as (EventResponse & { isBookingEvent?: boolean })[];
 
   type FiltersType = z.infer<typeof filtersSchema>;
 
@@ -169,9 +171,21 @@ function RouteComponent() {
       if (filters.search && !event.title.toLowerCase().includes(filters.search.toLowerCase())) {
         return false;
       }
-      //if (filters.location.length > 0 && (!event.location || !filters.location.includes(event.location.city ?? ""))) {
-      //  return false;
-      //}
+      if (filters.distance && filters.distance > 0) {
+        const cityCenterLat = 51.95042;
+        const cityCenterLon = 14.7143;
+        if (event.coordinates?.latitude && event.coordinates?.longitude) {
+          const d = calculateDistanceInKm(
+            cityCenterLat,
+            cityCenterLon,
+            event.coordinates.latitude,
+            event.coordinates.longitude
+          );
+          if (d > filters.distance) return false;
+        } else {
+          return false;
+        }
+      }
       if (filters.category && !event.categories.some(c => c.name === filters.category)) {
         return false;
       }
@@ -189,15 +203,18 @@ function RouteComponent() {
 
   const filteredNormalizedEvents = filterEvents(normalizedEvents, filters);
 
-  const allEvents = [
-    ...(data?.results ?? []),
-    ...filteredNormalizedEvents
-  ];
+  const allEvents = mergeEventsWithCustom(data?.results ?? [], filteredNormalizedEvents);
 
   return (
     <main className="relative space-y-8 mb-8">
       {loading && <Skeleton />}
-      <EventIntegration setLoading={setLoading} setEvents={setBookingEvents} />
+      { shouldShowIntegration && (
+        <EventIntegration
+          key={`${currentTenant.tenantId}`}
+          tenantId={currentTenant.tenantId}
+          setLoading={setLoading}
+          onDone={handleTenantDone} />
+      )}
       <CitizenInformationSystemBanner />
 
       <section className='space-y-8 max-w-7xl mx-auto'>
@@ -215,7 +232,7 @@ function RouteComponent() {
               onChange={v => handleFilterChange({ category: v })}
               categories={
                 Array.from(
-                  new Set(customEvents.flatMap(e => e.flags ?? []))
+                  new Set(bookingEvents.flatMap(e => e.flags ?? []))
                 ).map(name => ({ id: name, name }))
               }
             />
@@ -260,4 +277,50 @@ function RouteComponent() {
       </section>
     </main>
   )
+}
+
+function toRadians(angle: number): number {
+  return (Math.PI * angle) / 180.0;
+}
+
+function mergeEventsWithCustom(
+  backendEvents: EventResponse[],
+  bookingEvents: (EventResponse & { isBookingEvent?: boolean })[]
+) {
+  if (!backendEvents.length) return [...bookingEvents];
+
+  const earliest = new Date(backendEvents[0].startDate).getTime();
+  const latest = new Date(backendEvents[backendEvents.length - 1].startDate).getTime();
+
+  const filteredCustom = bookingEvents.filter(event => {
+    const start = new Date(event.startDate).getTime();
+    return start >= earliest && start <= latest;
+  });
+
+  const combined = [...backendEvents, ...filteredCustom];
+  combined.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+
+  return combined;
+}
+
+function calculateDistanceInKm(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371; // Earth radius in km
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(lat1)) *
+      Math.cos(toRadians(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
 }

@@ -62,5 +62,8 @@
   "tenantId": "Tenant-ID",
   "Title": "Tenant-IDs",
   "addTenant": "Add Tenant-ID",
-  "deletedSuccess": "Tenant-ID successfully deleted"
+  "deletedSuccess": "Tenant-ID successfully deleted",
+  "bookingPlatform": "Booking Platform",
+  "notBookable": "The Bookable Object is currently not bookable",
+  "AllBookings": "All Bookings"
 }
