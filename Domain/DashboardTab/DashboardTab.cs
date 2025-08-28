@@ -11,6 +11,7 @@ public sealed class DashboardTab : Entity<Guid>
   public Dictionary<string, DashboardTabI18NData> Translations { get; private set; } = new();
   public int Sequence { get; private set; }
   public string MapUrl { get; private set; }
+  public Guid? DropdownId { get; private set; }
   private readonly List<InformationCard> _informationCards = [];
   public IReadOnlyCollection<InformationCard> InformationCards => new ReadOnlyCollection<InformationCard>(_informationCards);
 
@@ -57,6 +58,11 @@ public sealed class DashboardTab : Entity<Guid>
   public void UpdateSequence(int sequence)
   {
     Sequence = sequence;
+  }
+
+  public void AssignToDropdown(Guid? dropdownId)
+  {
+    DropdownId = dropdownId;  
   }
 
   public void AddInformationCards(List<InformationCard> informationCards)

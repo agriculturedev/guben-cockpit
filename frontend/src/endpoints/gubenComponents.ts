@@ -1973,6 +1973,101 @@ export const useDashboardCardDelete = (
   });
 };
 
+export type DashboardDropdownCreateError = Fetcher.ErrorWrapper<{
+  status: 400,
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardDropdownCreateVariables = {
+  body: Schemas.CreateDashboardDropdownQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardDropdownCreate = (
+  variables: DashboardDropdownCreateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateDashboardDropdownResponse,
+    DashboardCreateError,
+    Schemas.CreateDashboardDropdownQuery,
+    {},
+    {},
+    {}
+  >({ url: "/dashboarddropdown", method: "post", ...variables, signal });
+
+export const useDashboardDropdownCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateDashboardDropdownResponse,
+      DashboardDropdownCreateError,
+      DashboardDropdownCreateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateDashboardDropdownResponse,
+    DashboardDropdownCreateError,
+    DashboardDropdownCreateVariables
+  >({
+    mutationFn: (variables: DashboardDropdownCreateVariables) =>
+      fetchDashboardDropdownCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DashboardDropdownGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardDropdownGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchDashboardDropdownGetAll = (
+  variables: DashboardDropdownGetAllVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetAllDashboardDropdownResponse,
+    DashboardDropdownGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/dashboarddropdown", method: "get", ...variables, signal });
+
+export const useDashboardDropdownGetAll = <
+  TData = Schemas.GetAllDashboardDropdownResponse,
+>(
+  variables: DashboardDropdownGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllDashboardDropdownResponse,
+      DashboardDropdownGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllDashboardDropdownResponse,
+    DashboardDropdownGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/dashboarddropdown",
+      operationId: "dashboardDropdownGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchDashboardDropdownGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type CategoriesGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -2684,6 +2779,11 @@ export type QueryOperation =
       path: "/dashboard";
       operationId: "dashboardGetAll";
       variables: DashboardGetAllVariables;
+    }
+  | {
+      path: "/dashboarddropdown";
+      operationId: "dashboardDropdownGetAll";
+      variables: DashboardDropdownGetAllVariables;
     }
   | {
       path: "/categories";

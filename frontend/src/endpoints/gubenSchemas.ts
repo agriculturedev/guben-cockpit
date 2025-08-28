@@ -49,6 +49,28 @@ export type CreateDashboardTabQuery = {
 
 export type CreateDashboardTabResponse = Record<string, any>;
 
+export type CreateDashboardDropdownQuery = {
+  title: string;
+  link?: string;
+}
+
+export type CreateDashboardDropdownResponse = Record<string, any>;
+
+export type GetAllDashboardDropdownResponse = {
+  dashboardDropdowns: DashboardDropdownResponse[];
+}
+
+export type DashboardDropdownResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  title: string;
+  rank: number;
+  tabs?: DashboardTabResponse[];
+  link?: string | null;
+}
+
 export type CreateEventImageQuery = {
   thumbnailUrl: string;
   previewUrl: string;

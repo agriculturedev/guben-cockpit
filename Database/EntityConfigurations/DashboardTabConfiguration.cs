@@ -1,5 +1,6 @@
 ﻿using Database.Comparers;
 using Domain.DashboardTab;
+using Domain.DashboardDropdown;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -28,6 +29,13 @@ public class DashboardTabConfiguration : IEntityTypeConfiguration<DashboardTab>
 
     builder.Property(e => e.Sequence);
     builder.Property(e => e.MapUrl);
+    builder.Property(e => e.DropdownId);
+    builder.HasIndex(e => new { e.DropdownId, e.Sequence });
+
+    builder.HasOne<DashbaordDropdown>()
+      .WithMany()
+      .HasForeignKey(e => e.DropdownId)
+      .OnDelete(DeleteBehavior.Restrict);
 
     builder.OwnsMany(e => e.InformationCards, icb =>
     {
