@@ -180,7 +180,7 @@ export default function BookingIntegration({ setLoading, tenantId, onDone }: Boo
             const ticketType = ticketEl.querySelector(".type")?.textContent?.trim() || "";
             const ticketAutoNote = ticketEl.querySelector(".autoCommitBooking")?.textContent?.trim() || "";
             const ticketPrice = ticketEl.querySelector(".price")?.textContent?.trim() || "";
-            const ticketBookingUrl = ticketEl.querySelector(".btn-booking")?.getAttribute("href") || "";
+            const ticketBookingUrl = ticketEl.querySelector("a")?.getAttribute("href") || "";
             const ticketBkid = ticketEl.querySelector(".btn-detail")?.getAttribute("href")?.split("bkid=")[1] || "";
             const ticketFlags = Array.from(ticketEl.querySelectorAll(".flag")).map(f => f.textContent?.trim() || "");
             const ticketImgUrl = ticketEl.querySelector("img")?.getAttribute("src") || "/images/guben-city-booking-card-placeholder.png";
