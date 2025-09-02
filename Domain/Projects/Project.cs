@@ -15,6 +15,7 @@ public sealed class Project : Entity<string>
   public string? ImageCredits { get; private set; }
   public bool Published { get; private set; }
   public Guid CreatedBy { get; private set; }
+  public bool Deleted { get; private set; }
 
   private Project(string id, ProjectType type, string title, string? description, string? fullText, string? imageCaption, string? imageUrl, string?
     imageCredits, Guid createdBy)
@@ -29,6 +30,7 @@ public sealed class Project : Entity<string>
     ImageCredits = imageCredits;
     Published = false;
     CreatedBy = createdBy;
+    Deleted = false;
   }
 
   public static Result<Project> Create(string id, ProjectType type, string title, string? description, string? fullText, string? imageCaption,
@@ -73,6 +75,13 @@ public sealed class Project : Entity<string>
     ImageCaption = imageCaption;
     ImageUrl = imageUrl;
     ImageCredits = imageCredits;
+  }
+
+  // Does not truly delete the entity in the DB, but we need this for Projects that we fetch every 24h or so
+  public void Delete()
+  {
+    Published = false;
+    Deleted = true;
   }
 
   public void SetPublishedState(bool publish)

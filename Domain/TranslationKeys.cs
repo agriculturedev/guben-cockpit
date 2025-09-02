@@ -3,6 +3,7 @@
 public class TranslationKeys
 {
   public const string MissingProjectId = "MissingProjectId";
+  public const string MissingEventId = "MissingEventId";
   public const string MissingThumbnail = "MissingThumbnail";
   public const string MissingPreviewImage = "MissingPreviewImage";
   public const string MissingOriginalImage = "MissingOriginalImage";
@@ -38,4 +39,9 @@ public class TranslationKeys
   public const string NoValidTranslationsFound = "NoValidTranslationsFound";
   public const string EventNotOwnedByUser = "EventNotOwnedByUser";
   public const string ProjectTypeInvalid = "ProjectTypeInvalid";
+  public const string GeoDataSourceNotFound = "GeoDataSourceNotFound";
+  public const string GeoDataSourceTypeInvalid = "GeoDataSourceTypeInvalid";
+  public const string NoBookingManager = "NoBookingManager";
+  public const string TenantIdNotFound = "TenantIdNotFound";
+
 }

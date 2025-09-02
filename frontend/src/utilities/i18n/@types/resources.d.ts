@@ -1,6 +1,7 @@
 interface Resources {
   "booking": {
     "rooms": "Räume",
+    "our_rooms": "Unsere Räumlichkeiten",
     "sportFacilities": "Sportanlagen",
     "resources": "Ressourcen",
     "events": "Events",
@@ -40,25 +41,32 @@ interface Resources {
         {
           "number": 1,
           "title": "Schritt eins",
-          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+          "description": "Wählen Sie ein einen Raum, einen Sportplatz oder eine Ressource aus, den/die Sie buchen möchten und klicken Sie darauf."
         },
         {
           "number": 2,
           "title": "Schritt zwei",
-          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+          "description": "Informieren Sie sich über die Ausstattung, Buchungszeiträume, Regeln und Rahmenbedingungen."
         },
         {
           "number": 3,
           "title": "Schritt drei",
-          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+          "description": "Sobald Sie den richtigen Raum, Sportplatz oder die passende Ressource gefunden haben, geht es über den Button am Ende der Seite weiter zur Buchung."
         },
         {
           "number": 4,
           "title": "Schritt vier",
-          "description": "Lorem IpsumIps umIpsumI ps um IpsumIpsumI psumIps umI p sumIpsumIpsum Ipsum..."
+          "description": "Geben Sie auf der folgenden Webseite Ihre Kontaktdaten ein, kontrollieren Sie Ihre Eingaben und schicken die Anfrage ab. Sobald diese bestätigt wurde, erhalten Sie eine E-Mail."
         }
       ]
-    }
+    },
+    "tenantId": "Mandanten-ID",
+    "Title": "Mandanten-IDs",
+    "addTenant": "Mandanten-ID hinzufügen",
+    "deletedSuccess": "Mandanten-ID wurde erfolgreich gelöscht",
+    "bookingPlatform": "Buchungs Platform",
+    "notBookable": "Das Buchungsobjekt ist aktuell nicht buchbar",
+    "AllBookings": "Alle Buchungen"
   },
   "common": {
     "Actions": "Aktionen",
@@ -82,7 +90,8 @@ interface Resources {
       "ThisWeek": "Diese Woche",
       "ThisYear": "Dieses Jahr",
       "Today": "Heute",
-      "Tomorrow": "Morgen"
+      "Tomorrow": "Morgen",
+      "ConfirmDate": "Datum anwenden"
     },
     "Clear": "Zurücksetzen",
     "Delete": "Löschen",
@@ -102,6 +111,7 @@ interface Resources {
     "Location": "Adresse",
     "Longitude": "Longitude",
     "Marktplatz": "Gubener Marktplatz",
+    "Schools": "Schulen",
     "MoreInformation": "Weitere Informationen",
     "Name": "Name",
     "No": "Nein",
@@ -130,7 +140,22 @@ interface Resources {
     "Total": "total",
     "Url": "Url",
     "Urls": "Urls",
-    "Yes": "Ja"
+    "Yes": "Ja",
+    "Radius": "Radius",
+    "Type": "Typ",
+    "Requested": "Angefordert",
+    "State": "Status",
+    "Loading": "Wird geladen",
+    "DragAndDrop": {
+      "Label": "Datei hierher ziehen und ablegen",
+      "Hint": "Klicken oder ablegen zum Hochladen",
+      "Accepted": "Erlaubt: {{extensions}}",
+      "Browse": "Dateien durchsuchen",
+      "Selected": "Ausgewählt:",
+      "Remove": "Entfernen",
+      "ErrorUnsupported": "Nicht unterstützter Dateityp. Erlaubt: {{extensions}}",
+      "ErrorTooLarge": "Datei zu groß. Maximal {{max}} MB"
+    }
   },
   "dashboard": {
     "Title": "Dashboard",
@@ -139,11 +164,14 @@ interface Resources {
     "Delete": "Registerkarte löschen",
     "TabInformation": "Informationen zur Registerkarte",
     "UploadImage": "Bild hinzufügen",
+    "UploadPdf": "Pdf hinzufügen",
     "Filename": "Dateiname",
     "SelectImage": "Bild auswählen",
+    "SelectPdf": "Pdf auswählen",
     "Alert": "Bitte einen Dateinamen angeben und eine Datei auswählen",
     "UploadSuccesful": "Hochladen erfolgreich",
     "UploadFailed": "Hochladen fehlgeschlagen",
+    "DownloadFailed": "Herunterladen fehlgeschlagen",
     "UploadFailedTryAgain": "Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "Uploading": "Hochladen...",
     "Cards": {
@@ -175,7 +203,22 @@ interface Resources {
     "DeletedSuccess": "Veranstaltung erfolgreich gelöscht",
     "Edit": "Veranstaltung bearbeiten",
     "MyEvents": "Meine Veranstaltungen",
-    "Published": "Veröffentlicht"
+    "Published": "Veröffentlicht",
+    "Publish": "Veröffentlichen",
+    "Unpublish": "Offline nehmen",
+    "PublishSuccess": "Event erfolgreich veröffentlicht",
+    "UnpublishSuccess": "Event erfolgreich offline genommen",
+    "PublishConfirmation": "Mit dieser Aktion wird das Event veröffentlicht und ist für alle sichtbar.",
+    "UnpublishConfirmation": "Mit dieser Aktion wird das Event Offline genommen und ist nicht mehr für alle sichtbar.",
+    "Description": "Beschreibung",
+    "StartDate": "Startdatum",
+    "EndDate": "Enddatum",
+    "Latitude": "Breitengrad",
+    "Longitude": "Längengrad",
+    "Category": "Kategorien",
+    "Location": "Adresse",
+    "Save": "Speichern",
+    "Cancel": "Abbrechen"
   },
   "footer": {
     "Title": "Fußzeile",
@@ -184,6 +227,34 @@ interface Resources {
     "Edit": "Fußzeilenelement bearbeiten",
     "Content": "Inhalt",
     "DeletedSuccess": "Fußzeilenelement erfolgreich gelöscht"
+  },
+  "geodata": {
+    "Title": "Geodaten",
+    "ManageGeodata": "Geodaten verwalten",
+    "UploadGeodata": "Geodaten hochladen",
+    "CockpitPublic": "Guben Cockpit (Öffentlich)",
+    "CockpitPublicDescription": "Erscheint nach Freigabe öffentlich im Masterportal.",
+    "ResiPrivate": "Resi-Formular (Privat)",
+    "ResiPrivateDescription": "Privater Zugriff über einen sicheren Topic-Endpunkt nach Freigabe.",
+    "DataType": "Datentyp",
+    "CustomTypePlaceholder": "Benutzerdefinierter Typname (optional)",
+    "Publishing": "Wird veröffentlicht...",
+    "Publish": "Veröffentlichen",
+    "UploadedSuccessfully": "Erfolgreich hochgeladen.",
+    "UploadFailed": "Upload fehlgeschlagen",
+    "ReviewUploads": "Uploads prüfen",
+    "SearchByTitle": "Nach Titel suchen…",
+    "ReviewDialogTitle": "Anfrage prüfen und Verfügbarkeit festlegen.",
+    "ApproveCockpitPublic": "Cockpit (Öffentlich) freigeben",
+    "ApproveCockpitPublicDesc": "Im Masterportal verfügbar machen.",
+    "ApproveResiPrivate": "Resi (Privat) freigeben",
+    "ApproveResiPrivateDesc": "Über sicheren Topic-Endpunkt bereitstellen.",
+    "Metadata": "Metadaten",
+    "Path": "Pfad",
+    "Close": "Schließen",
+    "Reject": "Ablehnen",
+    "Approve": "Genehmigen",
+    "Review": "Prüfen"
   },
   "locations": {
     "Title": "Orte",
@@ -197,7 +268,7 @@ interface Resources {
     "Fax": "Fax"
   },
   "navigation": {
-    "Dashboard": "Dashboard",
+    "Dashboard": "Übersicht",
     "Projects": "Projekte",
     "Map": "Karte",
     "Events": "Veranstaltungen",
@@ -215,18 +286,24 @@ interface Resources {
     "DeletedSuccess": "Projekt erfolgreich gelöscht",
     "Title": "Projekte",
     "Add": "Projekt hinzufügen",
+    "Remove": "Entfernen",
     "Edit": "Projekt bearbeiten",
     "Highlighted": "Hervorgehoben",
     "MyProjects": "Meine Projekte",
     "Published": "Veröffentlicht",
     "AddBusiness": "Geschäft hinzufügen",
+    "AddSchool": "Schule hinzufügen",
+    "AddPdfs": "Pdfs hinzufügen",
+    "AttachedPdfs": "Anhänge (PDF)",
+    "AddImages": "Bilder hinzufügen",
     "IsBusiness": "ist ein Geschäft",
+    "IsSchool": "ist eine Schule",
     "Publish": "Veröffentlichen",
     "Unpublish": "Offline nehmen",
-    "PublishSuccess": "Projekt/Geschäft erfolgreich veröffentlicht",
-    "UnpublishSuccess": "Projekt/Geschäft erfolgreich offline genommen",
-    "PublishConfirmation": "Mit dieser Aktion wird das Projekt/Geschäft veröffentlicht und ist für alle sichtbar.",
-    "UnpublishConfirmation": "Mit dieser Aktion wird das Projekt/Geschäft Offline genommen und ist nicht mehr für alle sichtbar."
+    "PublishSuccess": "Projekt/Geschäft/Schule erfolgreich veröffentlicht",
+    "UnpublishSuccess": "Projekt/Geschäft/Schule erfolgreich offline genommen",
+    "PublishConfirmation": "Mit dieser Aktion wird das Projekt/Geschäft/Schule veröffentlicht und ist für alle sichtbar.",
+    "UnpublishConfirmation": "Mit dieser Aktion wird das Projekt/Geschäft/Schule Offline genommen und ist nicht mehr für alle sichtbar."
   },
   "users": {
     "Title": "Benutzer"

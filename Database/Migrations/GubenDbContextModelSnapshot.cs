@@ -23,6 +23,20 @@ namespace Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Booking.Booking", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Booking", "Guben");
+                });
+
             modelBuilder.Entity("Domain.Category.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -71,6 +85,9 @@ namespace Database.Migrations
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
@@ -123,6 +140,29 @@ namespace Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FooterItem", "Guben");
+                });
+
+            modelBuilder.Entity("Domain.GeoDataSource.GeoDataSource", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsValidated")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GeoDataSource", "Guben");
                 });
 
             modelBuilder.Entity("Domain.Locations.Location", b =>
@@ -182,6 +222,9 @@ namespace Database.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -224,6 +267,10 @@ namespace Database.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("TopicId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Version")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

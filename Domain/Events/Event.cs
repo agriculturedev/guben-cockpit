@@ -16,6 +16,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
   public Location Location { get; private set; } = null!;
   public bool Published { get; private set; }
   public Guid CreatedBy { get; private set; }
+  public bool Deleted { get; private set; }
   public Dictionary<string, EventI18NData> Translations { get; private set; } = new();
   public Coordinates.Coordinates? Coordinates { get; private set; }
 
@@ -39,6 +40,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     Coordinates = coordinates;
     Published = false;
     CreatedBy = createdBy;
+    Deleted = false;
     _urls = [];
     _categories = [];
     _images = [];
@@ -72,6 +74,13 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     return Create(Guid.CreateVersion7().ToString(), Guid.CreateVersion7().ToString(),
       title, description, startDate, endDate, location, coordinates,
       urls, categories, cultureInfo, createdBy, images);
+  }
+
+  //does not really delete the Object in the DB, but we need this flag for every event that is periodically importet but the user wants to delete
+  public void Delete()
+  {
+    Published = false;
+    Deleted = true;
   }
 
   public void SetPublishedState(bool publish)
@@ -141,10 +150,23 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     return Result.Ok();
   }
 
-  private Result UpdateCategories(IEnumerable<Category.Category> categories)
+  private Result UpdateCategories(IEnumerable<Category.Category> newCategories)
   {
-    _categories.Clear();
-    return AddCategories(categories);
+    var toRemove = _categories.Where(c => !newCategories.Any(nc => nc.Id == c.Id)).ToList();
+    foreach (var category in toRemove)
+    {
+      _categories.Remove(category);
+    }
+
+    foreach (var category in newCategories)
+    {
+      if (!_categories.Any(c => c.Id == category.Id))
+      {
+        _categories.Add(category);
+      }
+    }
+
+    return Result.Ok();
   }
 
   private Result AddCategories(IEnumerable<Category.Category> categories)
@@ -173,7 +195,7 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
   private Result AddImages(IEnumerable<EventImage> images)
   {
     List<Result> results = [];
-    foreach(var image in images) results.Add(AddImage(image));
+    foreach (var image in images) results.Add(AddImage(image));
     return results.MergeResults();
   }
 

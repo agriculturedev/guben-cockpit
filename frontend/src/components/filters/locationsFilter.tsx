@@ -9,30 +9,36 @@ type LocationsFilterProps = {
   className?: string;
   onChange: (values: string[]) => unknown;
   value: string[];
+  customLocations?: { city: string | null | undefined }[];
 }
 
 export function LocationsFilter({
   className,
   onChange,
-  value
+  value,
+  customLocations = []
 }: LocationsFilterProps
 ) {
   const { data } = useLocationsGetAll({});
   const { t } = useTranslation();
 
   const options: ComboboxOption[] = useMemo(() => {
-    if(!data?.locations) return [];
-    const red = data.locations.reduce((acc: Record<string, ComboboxOption>, loc) => {
-      if(loc.city == null) return acc;
-      if(acc[loc.city] == undefined) acc[loc.city] = {
-        value: loc.city,
-        label: loc.city,
-        hasPriority: false
-      };
-      return acc;
-    }, {});
-    return Object.values(red);
-  }, [data?.locations]);
+    const backendCities = (data?.locations ?? [])
+      .map(loc => loc.city)
+      .filter((city): city is string => !!city);
+
+    const customCities = customLocations
+      .map(loc => loc.city)
+      .filter((city): city is string => !!city);
+
+    const allCities = Array.from(new Set([...backendCities, ...customCities]));
+
+    return allCities.map(city => ({
+      value: city,
+      label: city,
+      hasPriority: false
+    }));
+  }, [data?.locations, customLocations]);
 
   return (
     <div className={cn("flex flex-col gap-2", className ?? "")}>
@@ -44,5 +50,5 @@ export function LocationsFilter({
         onSelect={onChange}
       />
     </div>
-  )
+  );
 }

@@ -8,21 +8,33 @@ interface CategoryFilterProps {
   value: string | null;
   onChange: (value: string | null) => unknown;
   className?: string;
+  categories?: { id: string; name: string }[];
 }
 
 export const CategoryFilter = ({
   value,
   onChange,
-  className
+  className,
+  categories: customCategories = []
 }: CategoryFilterProps) => {
   const { t } = useTranslation("common");
   const { data } = useCategoriesGetAll({});
+
+  const backendCategories = data?.categories ?? [];
+  const mergedCategories = Array.from(
+    new Map([...backendCategories, ...customCategories].map(c => [c.name, c])).values()
+  );
+
+  const options = mergedCategories.map(c => ({
+    label: c.name,
+    value: c.id
+  }));
 
   return (
     <div className={cn("flex flex-col gap-2", className ?? "")}>
       <Label>{t("Category")}</Label>
       <Combobox
-        options={data?.categories.map(c => ({ label: c.name, value: c.id })) ?? []}
+        options={options}
         value={value}
         onSelect={onChange}
         placeholder={t("Category")}

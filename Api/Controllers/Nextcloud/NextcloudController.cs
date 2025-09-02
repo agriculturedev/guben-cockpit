@@ -21,22 +21,22 @@ public class NextcloudController : ControllerBase
 
   [HttpGet("files")]
   [EndpointName("NextcloudGetFiles")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(IList<string>))]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IList<string>))]
   public async Task<IActionResult> GetFiles([FromQuery] string? directory = "", [FromQuery] string? path = "")
   {
-    string fullPath = string.IsNullOrWhiteSpace(directory) ? (path ?? "") : $"{directory}/{path}";
+    string fullPath = string.IsNullOrWhiteSpace(directory) ? (path ?? "") : $"{NextcloudManager.ImagesDirectory}/{directory}/{path}";
 
     var files = await _nextcloudManager.GetFilesAsync(fullPath ?? "");
-    return Ok(files.Select(f => f.DisplayName));
+    return Ok(files.Select(f => Path.GetFileName(f.Uri)));
   }
 
 
   [HttpGet("images")]
   [EndpointName("NextcloudGetImages")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type=typeof(IEnumerable<FilesResponse>))]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FilesResponse>))]
   public async Task<IActionResult> GetImages([FromQuery] string? directory = "", [FromQuery] string? path = "")
   {
-    string fullPath = string.IsNullOrWhiteSpace(directory) ? (path ?? "") : $"{directory}/{path}";
+    string fullPath = string.IsNullOrWhiteSpace(directory) ? (path ?? "") : $"{NextcloudManager.ImagesDirectory}/{directory}/{path}";
 
     var files = await _nextcloudManager.GetFilesAsync(fullPath);
 
@@ -62,10 +62,23 @@ public class NextcloudController : ControllerBase
 
   [HttpGet("image")]
   [EndpointName("NextcloudGetImage")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type=typeof(FileContentResult))]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileContentResult))]
   public async Task<IActionResult> GetImage([FromQuery] string filename, [FromQuery] string? directory = "")
   {
-    string fullPath = string.IsNullOrWhiteSpace(directory) ? filename : $"{directory}/{filename}";
+    string fullPath;
+    if (filename.Contains("remote.php/webdav", StringComparison.OrdinalIgnoreCase))
+    {
+      fullPath = filename;
+    }
+    else
+    {
+
+      var basePath = string.IsNullOrWhiteSpace(directory)
+            ? $"{NextcloudManager.ImagesDirectory}"
+            : $"{NextcloudManager.ImagesDirectory}/{directory}";
+
+      fullPath = $"{basePath}/{filename}";
+    }
     var fileBytes = await _nextcloudManager.GetFileAsync(fullPath);
     return File(fileBytes, MimeHelper.GetMimeTypeForFile(filename), filename);
   }
@@ -73,13 +86,14 @@ public class NextcloudController : ControllerBase
   [HttpGet]
   [EndpointName("NextcloudGetFile")]
   [Produces(MediaTypeNames.Application.Octet)]
-  [ProducesResponseType(StatusCodes.Status200OK, Type=typeof(FileContentResult))]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileContentResult))]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   public async Task<IActionResult> GetFile([FromQuery] string filename)
   {
     try
     {
-      var fileBytes = await _nextcloudManager.GetFileAsync(filename);
+      string path = $"{NextcloudManager.ImagesDirectory}/{filename}";
+      var fileBytes = await _nextcloudManager.GetFileAsync(path);
       return File(fileBytes, MediaTypeNames.Application.Octet, filename);
     }
     catch (FileNotFoundException)
@@ -107,7 +121,26 @@ public class NextcloudController : ControllerBase
 
     using var ms = new MemoryStream();
     await file.CopyToAsync(ms);
-    await _nextcloudManager.CreateFileAsync(ms.ToArray(), filename, extension, directory);
+    var path = $"{NextcloudManager.ImagesDirectory}/{directory}/{filename}";
+    await _nextcloudManager.CreateFileAsync(ms.ToArray(), path, extension);
+    return Ok();
+  }
+
+  [HttpDelete]
+  [EndpointName("NextcloudDeleteFile")]
+  [Authorize]
+  public async Task<IActionResult> DeleteFile([FromQuery] string filename, [FromQuery] string directory)
+  {
+    if (string.IsNullOrWhiteSpace(filename))
+      return BadRequest("filename is required");
+
+    if (string.IsNullOrWhiteSpace(directory))
+      return BadRequest("directory is required");
+
+    var fullPath = $"{NextcloudManager.ImagesDirectory}/{directory}/{filename}";
+
+    var success = await _nextcloudManager.DeleteFileAsync(fullPath);
+    if (!success) return NotFound();
     return Ok();
   }
 }

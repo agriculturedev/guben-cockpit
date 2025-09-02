@@ -1,8 +1,15 @@
 using System.Net.Mime;
 using Api.Controllers.Geo.AddTopic;
+using Api.Controllers.Geo.GetGeoDataSources;
 using Api.Controllers.Geo.GetTopics;
+using Api.Controllers.Geo.UploadWfs;
+using Api.Controllers.Geo.ValidateGeoDataSource;
+using Domain;
+using Domain.GeoDataSource;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api;
 
 namespace Api.Controllers.Geo;
 
@@ -32,6 +39,18 @@ public class GeoController : ControllerBase
     return Results.Ok(result);
   }
 
+  // For now the same as the Topics above. Until the Geoupload is added or when we have private data
+  [HttpGet("topicsPrivate")]
+  [EndpointName("GetTopicsPrivate")]
+  [Authorize(Policy = "OnlyResiFormClient")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetTopicsResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> GetTopicsPrivate()
+  {
+    var result = await _mediator.Send(new GetTopicsQuery());
+    return Results.Ok(result);
+  }
+
   [HttpPost("topics")]
   [EndpointName("AddTopics")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddTopicsResponse))]
@@ -39,6 +58,51 @@ public class GeoController : ControllerBase
   public async Task<IResult> AddTopics([FromBody] AddTopicsQuery query)
   {
     var result = await _mediator.Send(query);
+    return Results.Ok(result);
+  }
+
+  [HttpPost("geodata/upload")]
+  [EndpointName("GeoUploadGeoDataSource")]
+  [Authorize]
+  [Consumes("multipart/form-data")]
+  async public Task<IResult> CreateGeoDataFile([FromForm] UploadWfsQuery query)
+  {
+    if (query.File == null || query.File.Length == 0)
+      return Results.BadRequest("No file content provided.");
+
+    var result = await _mediator.Send(new UploadWfsQuery()
+    {
+      IsPublic = query.IsPublic,
+      File = query.File,
+      Type = query.Type
+    });
+
+    return Results.Ok(result);
+  }
+
+  [HttpGet("geodata")]
+  [EndpointName("GeoGetAllGeoDataSources")]
+  [Authorize]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetGeoDataSourcesResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> GetAllGeoDataSources()
+  {
+    var result = await _mediator.Send(new GetGeoDataSourcesQuery());
+    return Results.Ok(result);
+  }
+
+  [HttpPatch("validate/{Id:guid}")]
+  [EndpointName("GeoValidate")]
+  [Authorize] // TODO@JOREN: new role for data protection officer
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ValidateGeoDataSourceResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> ValidateGeoDataSource([FromRoute] Guid id, [FromBody] ValidateRequest req)
+  {
+    var result = await _mediator.Send(new ValidateGeoDataSourceQuery()
+    {
+      Id = id,
+      IsValid = req.IsValid
+    });
     return Results.Ok(result);
   }
 }

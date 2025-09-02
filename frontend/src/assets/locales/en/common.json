@@ -20,7 +20,8 @@
     "ThisWeek": "This week",
     "ThisYear": "This year",
     "Today": "Today",
-    "Tomorrow": "Tomorrow"
+    "Tomorrow": "Tomorrow",
+    "ConfirmDate": "Apply Date"
   },
   "Clear": "Clear",
   "Delete": "Delete",
@@ -40,6 +41,7 @@
   "Location": "Location",
   "Longitude": "Longitude",
   "Marktplatz": "Gubener Marktplatz",
+  "Schools": "Schools",
   "MoreInformation": "More Information",
   "Name": "Name",
   "No": "No",
@@ -68,5 +70,20 @@
   "Total": "total",
   "Url": "Url",
   "Urls": "Urls",
-  "Yes": "Yes"
+  "Yes": "Yes",
+  "Radius": "Radius",
+  "Type": "Type",
+  "Requested": "Requested",
+  "State": "State",
+  "Loading": "Loading",
+  "DragAndDrop": {
+    "Label": "Drag & drop your file here",
+    "Hint": "Click or drop to upload",
+    "Accepted": "Accepted: {{extensions}}",
+    "Browse": "Browse files",
+    "Selected": "Selected:",
+    "Remove": "Remove",
+    "ErrorUnsupported": "Unsupported file type. Allowed: {{extensions}}",
+    "ErrorTooLarge": "File too large. Max {{max}} MB"
+  }
 }

@@ -13,6 +13,8 @@ import { routePermissionCheck } from "@/guards/routeGuardChecks";
 import { Permissions } from "@/auth/permissions";
 import PublishProjectDialog from "@/components/admin/projects/publishProjectDialog";
 import { ProjectType } from "@/types/ProjectType";
+import AddSchoolDialog from "@/components/admin/projects/addSchoolDialog";
+import { useState } from "react";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   beforeLoad: async ({context, location}) => {
@@ -25,6 +27,7 @@ function Page() {
   const {t} = useTranslation(["common", "projects"]);
   const {data: myProjects, refetch} = useProjectsGetMyProjects({});
   const onSuccess = async () => void await refetch();
+  const [editProjectId, setEditProjectId] = useState<string | null>(null);
 
   return (
     <div className="w-full">
@@ -46,6 +49,15 @@ function Page() {
             </div>
           </Button>
         </AddProjectDialog>
+
+        <AddSchoolDialog onCreateSuccess={onSuccess}>
+          <Button>
+            <div className="flex gap-2 items-center">
+              <PlusIcon className="size-4" />
+              <p>{t("projects:AddSchool")}</p>
+            </div>
+          </Button>
+        </AddSchoolDialog>
       </div>
       <Table>
         <TableHeader>
@@ -54,6 +66,7 @@ function Page() {
             <TableHead>{t("Description")}</TableHead>
             <TableHead>{t("projects:Published")}</TableHead>
             <TableHead>{t("projects:IsBusiness")}</TableHead>
+            <TableHead>{t("projects:IsSchool")}</TableHead>
             <TableHead className="w-min">{t("Actions")}</TableHead>
           </TableRow>
         </TableHeader>
@@ -64,18 +77,27 @@ function Page() {
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[50ch]">{p.description}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.published ? <CheckIcon /> : <XIcon />}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.type == ProjectType.GubenerMarktplatz ? <CheckIcon /> : <XIcon />}</TableCell>
+              <TableCell className={"text-neutral-500"}>{p.type == ProjectType.Schule ? <CheckIcon /> : <XIcon />}</TableCell>
               <TableCell>
                 <TooltipProvider>
                   <div className="h-full flex items-center gap-2">
-                    <EditProjectDialog project={p} onCreateSuccess={onSuccess}>
+                    <button onClick={() => setEditProjectId(p.id)}>
                       <EditIcon className="size-4 hover:text-red-500"/>
-                    </EditProjectDialog>
+                    </button>
+                    {editProjectId === p.id && (
+                      <EditProjectDialog
+                        project={p}
+                        onCreateSuccess={onSuccess}
+                        open={true}
+                        onOpenChange={(open) => { if (!open) setEditProjectId(null) }}>
+                      </EditProjectDialog>
+                    )}
 
                     <PublishProjectDialog projectId={p.id} isPublished={p.published} onToggleSuccess={onSuccess}>
                       <FileUpIcon className="size-4 hover:text-red-500"/>
                     </PublishProjectDialog>
 
-                    <DeleteProjectDialog projectId={p.id} onDeleteSuccess={onSuccess}>
+                    <DeleteProjectDialog projectId={p.id} type={ProjectType[p.type]} onDeleteSuccess={onSuccess}>
                       <TrashIcon className="size-4 hover:text-red-500"/>
                     </DeleteProjectDialog>
                   </div>

@@ -32,6 +32,22 @@ public class EventImporter
 
   private readonly System.Net.Http.HttpClient _httpClient;
 
+  // Zip Codes of Guben and surrounding are, make this configurable later
+  private static readonly HashSet<string> AllowedZips = new()
+  {
+      "03058",
+      "03096",
+      "03099",
+      "03116",
+      "03119",
+      "03130",
+      "03149",
+      "03159",
+      "03172",
+      "03185",
+      "03197"
+  };
+
   private readonly string _xmlUrl =
     "https://eingabe.events-in-brandenburg.de/exportdata/tmbevents_custom_stadtguben.xml";
 
@@ -93,6 +109,10 @@ public class EventImporter
     var (locationResult, location) = await _locationImporter.ImportLocation(e);
     if (locationResult.IsFailure)
       throw new Exception("Location import failed");
+
+    //only keep relevant Events
+    if (string.IsNullOrWhiteSpace(location.Zip) || !AllowedZips.Contains(location.Zip))
+      return;
 
     await _categoryImporter.ImportCategory(e);
     await SaveEventAsync(e, location, cultureInfo);
@@ -205,14 +225,24 @@ public class EventImporter
 
   private async Task<List<Category>> GetCategoriesAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)
   {
-    var categoryNames = xmlEvent.GetUserCategories(cultureInfo)
-      .Select(details => details.Item2)
-      .Where(name => !string.IsNullOrWhiteSpace(name))
-      .Distinct()
-      .ToList();
+    var importedCategories = xmlEvent.GetUserCategories(cultureInfo)
+        .Select(details => details.Item2)
+        .Where(name => !string.IsNullOrWhiteSpace(name))
+        .Distinct();
+
+    var resolvedCategoryNames = importedCategories
+        .Select(original =>
+            CategoryMapping.Map.TryGetValue(original, out var mapped)
+                ? mapped.Name
+                : original
+        )
+        .Where(name => !string.IsNullOrWhiteSpace(name))
+        .Distinct()
+        .ToList();
 
     var categories = new List<Category>();
-    foreach (var name in categoryNames)
+
+    foreach (var name in resolvedCategoryNames)
     {
       var category = await _categoryRepository.GetByName(name);
       if (category != null)
@@ -226,9 +256,13 @@ public class EventImporter
 
   private async Task UpsertEventAsync(Event @event, CultureInfo cultureInfo)
   {
-    var existingEvent = await _eventRepository.GetByEventIdAndTerminIdIncludingUnpublished(@event.EventId, @event.TerminId);
+    var existingEvent = await _eventRepository.GetByEventIdAndTerminIdIncludingDeletedAndUnpublished(@event.EventId, @event.TerminId);
     if (existingEvent != null)
     {
+      if (existingEvent.Deleted)
+      {
+        return;
+      }
       // TODO@JOREN: Update seems to be buggy, it is not properly adding new translations on update, perhaps ef comparison of json
       var updateResult = existingEvent.Update(@event, cultureInfo);
       if (updateResult.IsFailure)

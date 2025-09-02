@@ -28,6 +28,18 @@ public class EventRepository
       .FirstOrDefaultAsync(a => a.Id.Equals(id));
   }
 
+  public Task<Event?> GetWithEverythingById(Guid id)
+  {
+    return Set
+      .TagWith(GetType().Name + '.' + nameof(GetWithEverythingById))
+      .Include(e => e.Categories)
+      .Include(e => e.Location)
+      .Include(e => e.Images)
+      .Include(e => e.Urls)
+      .IgnoreAutoIncludes()
+      .FirstOrDefaultAsync(e => e.Id.Equals(id));
+  }
+
   public Task<Event?> GetById(Guid id)
   {
     return Set
@@ -70,11 +82,12 @@ public class EventRepository
       .FirstOrDefaultAsync(e => e.EventId == eventId && e.TerminId == terminId);
   }
 
-  public Task<Event?> GetByEventIdAndTerminIdIncludingUnpublished(string eventId, string terminId)
+  public Task<Event?> GetByEventIdAndTerminIdIncludingDeletedAndUnpublished(string eventId, string terminId)
   {
     return Set
       .AsSplitQuery()
-      .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminIdIncludingUnpublished))
+      .TagWith(nameof(EventRepository) + "." + nameof(GetByEventIdAndTerminIdIncludingDeletedAndUnpublished))
+      .IgnoreQueryFilters()
       .Include(e => e.Location)
       .Include(e => e.Urls)
       .Include(e => e.Categories)
@@ -108,6 +121,52 @@ public class EventRepository
 
   public async Task<PagedResult<Event>> GetAllEventsPaged(
     PagedCriteria pagination,
+    CultureInfo cultureInfo)
+  {
+    IQueryable<Event> query = Set
+        .Include(e => e.Location)
+        .Include(e => e.Urls)
+        .Include(e => e.Categories);
+
+    var totalCount = await query.CountAsync();
+
+    var results = await query
+        .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+        .Take(pagination.PageSize)
+        .ToListAsync();
+
+    return new PagedResult<Event>(
+        pagination,
+        totalCount,
+        results);
+  }
+
+  public async Task<PagedResult<Event>> GetAllEventsPaged(
+    PagedCriteria pagination,
+    CultureInfo cultureInfo,
+    Guid userId)
+  {
+    IQueryable<Event> query = Set
+        .Include(e => e.Location)
+        .Include(e => e.Urls)
+        .Include(e => e.Categories)
+        .Where(e => e.CreatedBy == userId);
+
+    var totalCount = await query.CountAsync();
+
+    var results = await query
+        .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+        .Take(pagination.PageSize)
+        .ToListAsync();
+
+    return new PagedResult<Event>(
+        pagination,
+        totalCount,
+        results);
+  }
+
+  public async Task<PagedResult<Event>> GetAllEventsPaged(
+    PagedCriteria pagination,
     EventFilterCriteria filter,
     CultureInfo cultureInfo)
   {
@@ -136,9 +195,8 @@ public class EventRepository
       query = query.Where(e => e.Categories.Any(c => c.Id == filter.CategoryIdQuery.Value));
     }
 
-    // For title and location searches that need JSON path, use custom SQL
-    if (!string.IsNullOrWhiteSpace(filter.TitleQuery) ||
-        filter.LocationQuery?.Length > 0)
+    // For title searches that need JSON path, use custom SQL
+    if (!string.IsNullOrWhiteSpace(filter.TitleQuery))
     {
       var parameters = new List<NpgsqlParameter>();
       var whereConditions = new List<string>();
@@ -163,32 +221,6 @@ public class EventRepository
                   )::jsonpath
               )::text
           ) LIKE LOWER(@titleQuery)");
-      }
-
-      // Location filter
-      if (filter.LocationQuery?.Length > 0)
-      {
-        var locationConditions = new List<string>();
-        for (var i = 0; i < filter.LocationQuery.Length; i++)
-        {
-          var paramName = $"location{i}";
-          parameters.Add(new NpgsqlParameter(paramName, $"%{filter.LocationQuery[i].ToLowerInvariant()}%"));
-
-          locationConditions.Add($@"
-            LOWER(
-                jsonb_path_query_first(
-                    l.""Translations"",
-                    CONCAT(
-                        '$.',
-                        '{languageKey}',
-                        '.Name'
-                    )::jsonpath
-                )::text
-            ) LIKE @{paramName}
-            OR LOWER(l.""City"") LIKE @{paramName}");
-        }
-
-        whereConditions.Add($"({string.Join(" OR ", locationConditions)})");
       }
 
       // Add WHERE clause if we have conditions
@@ -284,18 +316,59 @@ public class EventRepository
       }
     }
 
+    var allEvents = await query.ToListAsync();
+
+    if (filter.DistanceInKm.HasValue)
+    {
+      // Guben City Center, maybe make this configurabel...
+      const double cityCenterLat = 51.95042;
+      const double cityCenterLon = 14.7143;
+
+      allEvents = allEvents.Where(e =>
+      {
+        if (e.Coordinates == null) return false;
+
+        var distance = CalculateDistanceInKm(
+          cityCenterLat,
+          cityCenterLon,
+          e.Coordinates.Latitude,
+          e.Coordinates.Longitude
+        );
+        return distance <= filter.DistanceInKm.Value;
+      }).ToList();
+    }
+
+    var filteredCount = allEvents.Count;
+
     // Apply pagination (if we haven't already returned for title sorting)
-    var pagedItems = await query
+    var pagedItems = allEvents
       .Skip((pagination.PageNumber - 1) * pagination.PageSize)
       .Take(pagination.PageSize)
-      .ToListAsync();
+      .ToList();
 
     return new PagedResult<Event>(
       pagination,
       totalCount,
       pagedItems);
+  }
 
+  public static double CalculateDistanceInKm(double lat1, double lon1, double lat2, double lon2)
+  {
+    double R = 6371;
+    double dLat = ToRadians(lat2 - lat1);
+    double dLon = ToRadians(lon2 - lon1);
 
+    double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+              Math.Cos(ToRadians(lat1)) * Math.Cos(ToRadians(lat2)) *
+              Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+
+    double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+    return R * c;
+  }
+
+  private static double ToRadians(double angle)
+  {
+    return Math.PI * angle / 180.0;
   }
 
   private static string GetSortDirection(SortDirection direction) =>

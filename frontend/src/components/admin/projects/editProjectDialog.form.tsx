@@ -9,11 +9,14 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { formSchema, formDefaults, FormSchema } from "./editProjectDialog.formSchema";
 import { Checkbox } from "@/components/ui/checkbox";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface IProps {
   defaultData?: FormSchema;
   onSubmit: (form: FormSchema) => void;
   onClose: () => void;
+  disabled: boolean;
 }
 
 export default function EditProjectDialogForm(props: IProps) {
@@ -23,6 +26,9 @@ export default function EditProjectDialogForm(props: IProps) {
     resolver: zodResolver(formSchema),
     defaultValues: formDefaults
   })
+
+  const isBusiness = form.watch("isBusiness");
+  const isSchool = form.watch("isSchool");
 
   //ensure form is reset on mount
   useEffect(() => form.reset(props.defaultData ?? formDefaults), [props.defaultData]);
@@ -37,7 +43,7 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("Title")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("Title")} {...field} value={field.value ?? undefined} />
+                <Input placeholder={t("Title")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -51,7 +57,7 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("Description")}</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("Description")} {...field} value={field.value ?? undefined} />
+                <Textarea placeholder={t("Description")} {...field} value={field.value ?? ''} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,7 +72,7 @@ export default function EditProjectDialogForm(props: IProps) {
               <FormLabel>{t("ImageUrl")}</FormLabel>
               <FormControl>
                 <EditableImage
-                  imageUrl={field.value ?? undefined}
+                  imageUrl={field.value || ''}
                   onChange={field.onChange}
                   startInEditingState
                 />
@@ -83,7 +89,7 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("ImageCredits")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? undefined} />
+                <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? ''} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -97,7 +103,7 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("ImageCaption")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? undefined} />
+                <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? ''} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -111,7 +117,12 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("FullText")}</FormLabel>
               <FormControl>
-                <Textarea placeholder={t("FullText")} {...field} value={field.value ?? undefined} />
+                <ReactQuill
+                  theme="snow"
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                  placeholder={t("FullText")}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -121,21 +132,40 @@ export default function EditProjectDialogForm(props: IProps) {
         <FormField
           control={form.control}
           name="isBusiness"
-          render={({ field }) => {
-            return (
-              <FormItem className="flex gap-2 items-center">
-                <FormControl>
-                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                </FormControl>
-                <FormLabel>{t("projects:IsBusiness")}</FormLabel>
-              </FormItem>
-            )
-          }
-        }/>
+          render={({ field }) => (
+            <FormItem className="flex gap-2 items-center">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  disabled={isSchool}
+                />
+              </FormControl>
+              <FormLabel>{t("projects:IsBusiness")}</FormLabel>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="isSchool"
+          render={({ field }) => (
+            <FormItem className="flex gap-2 items-center">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  disabled={isBusiness}
+                />
+              </FormControl>
+              <FormLabel>{t("projects:IsSchool")}</FormLabel>
+            </FormItem>
+          )}
+        />
 
         <div className={"flex justify-end gap-2"}>
           <Button className={"bg-transparent text-foreground"} onClick={props.onClose}>{t("Cancel")}</Button>
-          <Button className={"bg-gubenAccent text-gubenAccent-foreground"}>{t("Save")}</Button>
+          <Button className={"bg-gubenAccent text-gubenAccent-foreground"} disabled={props.disabled}>{t("Save")}</Button>
         </div>
       </form>
     </Form>

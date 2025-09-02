@@ -212,6 +212,9 @@ value   : The object must be serialized into a byte array
   <data name="MissingProjectId" xml:space="preserve">
     <value>Brakujący identyfikator projektu</value>
   </data>
+  <data name="MissingEventId" xml:space="preserve">
+    <value>Brak identyfikatora wydarzenia</value>
+  </data>
   <data name="EventNotOwnedByUser" xml:space="preserve">
     <value>Wydarzenie nie będące własnością użytkownika</value>
   </data>
@@ -229,5 +232,17 @@ value   : The object must be serialized into a byte array
   </data>
   <data name="ProjectTypeInvalid" xml:space="preserve">
     <value>Nieprawidłowy typ projektu</value>
+  </data>
+  <data name="GeoDataSourceNotFound" xml:space="preserve">
+    <value>Źródło danych geograficznych nie zostało znalezione.</value>
+  </data>
+  <data name="GeoDataSourceTypeInvalid" xml:space="preserve">
+    <value>Nieprawidłowy typ źródła danych geograficznych.</value>
+  </data>
+  <data name="NoBookingManager" xml:space="preserve">
+    <value>Użytkownik nie jest menedżerem rezerwacji</value>
+  </data>
+  <data name="TenantIdNotFound" xml:space="preserve">
+    <value>Identyfikator najemcy nie został znaleziony</value>
   </data>
 </root>

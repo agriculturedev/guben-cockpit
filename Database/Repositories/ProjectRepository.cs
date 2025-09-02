@@ -35,11 +35,30 @@ public class ProjectRepository
       .AsEnumerable();
   }
 
+  public IEnumerable<Project> GetAllSchools()
+  {
+    return ModifiedSet
+      .TagWith(GetType().Name + '.' + nameof(GetAllSchools))
+      .AsNoTracking()
+      .IgnoreAutoIncludes()
+      .Where(p => p.Type == ProjectType.Schule.Value)
+      .AsEnumerable();
+  }
+
   public Task<Project?> GetIncludingUnpublished(string id)
   {
     return Set
       .TagWith(GetType().Name + '.' + nameof(GetIncludingUnpublished))
       .IgnoreAutoIncludes()
+      .FirstOrDefaultAsync(a => a.Id.Equals(id));
+  }
+
+  public Task<Project?> GetIncludingDeletedAndUnpublished(string id)
+  {
+    return Set
+      .TagWith(GetType().Name + "." + nameof(GetIncludingDeletedAndUnpublished))
+      .IgnoreAutoIncludes()
+      .IgnoreQueryFilters()
       .FirstOrDefaultAsync(a => a.Id.Equals(id));
   }
 

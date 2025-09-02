@@ -36,12 +36,28 @@ public class CategoryImporter
   private async Task SaveCategoriesAsync(XmlEvent xmlEvent, CultureInfo cultureInfo)
   {
     var categories = xmlEvent.GetUserCategories(cultureInfo)
-      .Select(details => Category.Create(details.Item1, details.Item2))
-      .Where(result => result.IsSuccessful)
-      .Select(result => result.Value);
+        .Select(details =>
+        {
+          var id = details.Item1;
+          var original = details.Item2;
 
-    await ImporterTransactions.ExecuteTransactionAsync(_dbContextFactory, async (_) => { await UpsertCategoriesAsync(categories.ToList()); });
+          if (CategoryMapping.Map.TryGetValue(original, out var mapped) &&
+              !string.IsNullOrWhiteSpace(mapped.Name))
+          {
+            return Category.Create(mapped.Id, mapped.Name);
+          }
+
+          return Category.Create(id, original);
+        })
+        .Where(result => result.IsSuccessful)
+        .Select(result => result.Value);
+
+    await ImporterTransactions.ExecuteTransactionAsync(
+        _dbContextFactory,
+        async (_) => await UpsertCategoriesAsync(categories.ToList())
+    );
   }
+
 
   private async Task UpsertCategoriesAsync(IEnumerable<Category> categories)
   {

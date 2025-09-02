@@ -99,10 +99,14 @@ public class ProjectImporter
 
     if (result.IsSuccessful)
     {
-      var existingProject = await _projectRepository.GetIncludingUnpublished(project.Id);
+      var existingProject = await _projectRepository.GetIncludingDeletedAndUnpublished(project.Id);
 
       if (existingProject is not null)
       {
+        if (existingProject.Deleted)
+        {
+          return;
+        }
         existingProject.Update(
           project.Type,
           project.Title,

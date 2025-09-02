@@ -3,10 +3,12 @@ using Api.Controllers.Projects.CreateProject;
 using Api.Controllers.Projects.DeleteProject;
 using Api.Controllers.Projects.GetAllBusinesses;
 using Api.Controllers.Projects.GetAllNonBusinesses;
+using Api.Controllers.Projects.GetAllSchools;
 using Api.Controllers.Projects.GetMyProjects;
 using Api.Controllers.Projects.PublishProjects;
 using Api.Controllers.Projects.UpdateProject;
 using Api.Infrastructure.Keycloak;
+using Api.Infrastructure.Nextcloud;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +25,12 @@ namespace Api.Controllers.Projects;
 public class ProjectController : ControllerBase
 {
   private readonly IMediator _mediator;
+  private readonly NextcloudManager _nextcloudManager;
 
-  public ProjectController(IMediator mediator)
+  public ProjectController(IMediator mediator, NextcloudManager nextcloudManager)
   {
-    _mediator = mediator;
+      _mediator = mediator;
+      _nextcloudManager = nextcloudManager;
   }
 
   [HttpGet("businsesses")]
@@ -49,9 +53,20 @@ public class ProjectController : ControllerBase
     return Results.Ok(result);
   }
 
+  [HttpGet("schools")]
+  [EndpointName("ProjectsGetSchools")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllSchoolsResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> GetAllSchools()
+  {
+    var result = await _mediator.Send(new GetAllSchoolsQuery());
+    return Results.Ok(result);
+  }
+
   [HttpGet("owned")]
   [EndpointName("ProjectsGetMyProjects")]
   [Authorize(KeycloakPolicies.ProjectContributor)]
+  [Authorize(KeycloakPolicies.PublishProjects)]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMyProjectsResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> GetMyProjects([FromQuery] GetMyProjectsQuery query)
@@ -84,6 +99,7 @@ public class ProjectController : ControllerBase
 
   [HttpPut("{id}")]
   [Authorize(KeycloakPolicies.ProjectContributor)]
+  [Authorize(KeycloakPolicies.EditProjects)]
   [EndpointName("ProjectsUpdateProject")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProjectResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -96,12 +112,18 @@ public class ProjectController : ControllerBase
 
   [HttpDelete("{id}")]
   [Authorize(KeycloakPolicies.ProjectContributor)]
+  [Authorize(KeycloakPolicies.DeleteProjects)]
   [EndpointName("ProjectsDeleteProject")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteProjectResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
-  public async Task<IResult> DeleteProject([FromRoute] string id)
+  public async Task<IResult> DeleteProject([FromRoute] string id, [FromQuery] string? type = null)
   {
     var query = new DeleteProjectQuery { Id = id };
+
+    if (type != null)
+    {
+      await _nextcloudManager.DeleteProjectFolderAsync(id, type);
+    }
     var result = await _mediator.Send(query);
     return Results.Ok(result);
   }

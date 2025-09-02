@@ -38,7 +38,7 @@ public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyP
 
     // if the user is a publisher, allow access to all projects
     IEnumerable<Project> projects = [];
-    if(isPublisher) projects = await _projectRepository.GetAll();
+    if(isPublisher) projects = _projectRepository.GetAllIncludingUnpublished();
     else projects = _projectRepository.GetAllOwnedBy(user.Id);
 
     return new GetMyProjectsResponse()

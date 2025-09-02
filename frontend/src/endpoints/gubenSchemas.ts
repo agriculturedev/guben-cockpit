@@ -111,7 +111,16 @@ export type CreateProjectQuery = {
   imageCredits?: string | null;
 };
 
-export type CreateProjectResponse = Record<string, any>;
+export type CreateProjectResponse = {
+  id?: string;
+  type?: ProjectType;
+};
+
+export type CreateTenantIdQuery = {
+  tenantId: string;
+};
+
+export type CreateTenantIdResponse = Record<string, any>;
 
 export type CreateTopicQuery = {
   id?: string;
@@ -142,6 +151,7 @@ export type DashboardTabResponse = {
 export type DataSourceResponse = {
   id: string;
   name: string;
+  version: string;
   sources: SourceResponse[];
 };
 
@@ -154,6 +164,8 @@ export type DeleteEventResponse = Record<string, any>;
 export type DeleteFooterItemResponse = Record<string, any>;
 
 export type DeleteProjectResponse = Record<string, any>;
+
+export type DeleteTenantIdResponse = Record<string, any>;
 
 export type EntityTagHeaderValue = {
   tag?: StringSegment;
@@ -219,6 +231,25 @@ export type FooterItemResponse = {
   id: string;
   name: string;
   content: string;
+};
+
+export type GeoDataSourceResponse = {
+  id: string;
+  path: string;
+  isValidated: boolean;
+  isPublic: boolean;
+  /**
+   * @format int32
+   */
+  type: number;
+};
+
+export type GeoDataSourceType = {
+  name: string | null;
+  /**
+   * @format int32
+   */
+  value: number;
 };
 
 export type GetAllBusinessesResponse = {
@@ -305,6 +336,14 @@ export type GetAllPagesResponse = {
   pages: PageResponse[];
 };
 
+export type GetAllSchoolsResponse = {
+  projects: ProjectResponse[];
+};
+
+export type GetAllTenantIdsResponse = {
+  tenants: TenantResponse[];
+};
+
 export type GetAllUsersResponse = {
   /**
    * @format int32
@@ -329,7 +368,27 @@ export type GetEventByIdResponse = {
   result?: EventResponse;
 };
 
+export type GetGeoDataSourcesResponse = {
+  sources: GeoDataSourceResponse[];
+};
+
 export type GetMyEventsResponse = {
+  /**
+   * @format int32
+   */
+  pageNumber: number;
+  /**
+   * @format int32
+   */
+  pageSize: number;
+  /**
+   * @format int32
+   */
+  totalCount: number;
+  /**
+   * @format int32
+   */
+  pageCount: number;
   results: EventResponse[];
 };
 
@@ -340,6 +399,11 @@ export type GetMyProjectsResponse = {
 export type GetTopicsResponse = {
   topics: TopicResponse[];
 };
+
+/**
+ * @format binary
+ */
+export type IFormFile = Blob;
 
 export type InformationCardResponse = {
   /**
@@ -414,6 +478,13 @@ export type ProjectType = {
   value?: number;
 };
 
+export type PublishEventQuery = {
+  publish?: boolean;
+  ids?: string[];
+};
+
+export type PublishEventResponse = Record<string, any>;
+
 export type PublishProjectsQuery = {
   publish?: boolean;
   projectIds: string[];
@@ -439,6 +510,14 @@ export type StringSegment = {
   length?: number;
   value?: string | null;
   hasValue?: boolean;
+};
+
+export type TenantResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  tenantId: string;
 };
 
 export type TopicResponse = {
@@ -476,6 +555,40 @@ export type UpdateDashboardTabQuery = {
 
 export type UpdateDashboardTabResponse = Record<string, any>;
 
+export type UpdateEventQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  title: string;
+  description: string;
+  /**
+   * @format date-time
+   */
+  startDate?: string;
+  /**
+   * @format date-time
+   */
+  endDate?: string;
+  /**
+   * @format double
+   */
+  latitude?: number;
+  /**
+   * @format double
+   */
+  longitude?: number;
+  urls: CreateUrlQuery[];
+  categoryIds: string[];
+  images: CreateEventImageQuery[];
+  /**
+   * @format uuid
+   */
+  locationId?: string;
+};
+
+export type UpdateEventResponse = Record<string, any>;
+
 export type UpdatePageQuery = {
   id: string;
   title: string;
@@ -486,13 +599,22 @@ export type UpdatePageResponse = Record<string, any>;
 
 export type UpdateProjectQuery = {
   id?: string | null;
-  type: ProjectType;
+  /**
+   * @format int32
+   */
+  type: number;
   title: string;
   description?: string | null;
   fullText?: string | null;
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
+};
+
+export type UploadWfsQuery = {
+  isPublic: boolean;
+  file: IFormFile;
+  type: GeoDataSourceType;
 };
 
 export type UpsertButtonQuery = {
@@ -527,3 +649,5 @@ export type UserResponse = {
   lastName: string;
   email: string;
 };
+
+export type ValidateGeoDataSourceResponse = Record<string, any>;

@@ -48,6 +48,10 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
 
     await _projectRepository.SaveAsync(project);
 
-    return new CreateProjectResponse();
+    return new CreateProjectResponse
+    {
+      Id = project.Id,
+      Type = project.Type,
+    };
   }
 }

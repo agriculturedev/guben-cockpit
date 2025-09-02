@@ -1,4 +1,6 @@
-﻿using Domain.Users;
+﻿using Domain.Events;
+using Domain.Projects;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SmartEnum.EFCore;
 
@@ -26,6 +28,8 @@ public class GubenDbContext : DbContext
     modelBuilder.HasDefaultSchema(DefaultSchema);
     modelBuilder.ApplyConfigurationsFromAssembly(typeof(GubenDbContext).Assembly);
 
+    modelBuilder.Entity<Project>().HasQueryFilter(p => !p.Deleted);
+    modelBuilder.Entity<Event>().HasQueryFilter(p => !p.Deleted);
     modelBuilder.Entity<User>().HasData(User.SystemUser);
   }
 

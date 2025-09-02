@@ -15,6 +15,8 @@ using Jobs.EventImporter;
 using Jobs.ProjectImporter;
 using Microsoft.EntityFrameworkCore;
 using Shared.Database;
+using Api.Options;
+using Api.Services.Masterportal;
 
 namespace Api;
 
@@ -37,6 +39,14 @@ public class Startup(IConfiguration configuration)
     services.Configure<Configuration>(Configuration);
     MappedConfiguration = Configuration.Get<Configuration>();
 
+    services.AddOptions<MasterportalOptions>()
+            .Bind(Configuration.GetSection("Masterportal"))
+            .Validate(o => !string.IsNullOrWhiteSpace(o.ServicesPath),
+                      "Masterportal.ServicesPath is missing or empty");
+    
+    services.AddSingleton<IMasterportalServicesWriter, MasterportalServicesWriter>();
+    services.AddSingleton<IMasterportalConfigWriter, MasterportalConfigWriter>();
+
     if (MappedConfiguration is null)
       throw new NullReferenceException("Configuration is null");
 
@@ -54,6 +64,7 @@ public class Startup(IConfiguration configuration)
       .AddJsonConverters();
 
     services.AddNextCloud(MappedConfiguration.Nextcloud);
+    services.AddTopic(MappedConfiguration.Topic);
 
     services.AddKeycloak(Configuration);
     services.AddCustomCors(MappedConfiguration);

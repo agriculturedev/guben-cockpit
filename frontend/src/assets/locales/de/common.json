@@ -20,7 +20,8 @@
     "ThisWeek": "Diese Woche",
     "ThisYear": "Dieses Jahr",
     "Today": "Heute",
-    "Tomorrow": "Morgen"
+    "Tomorrow": "Morgen",
+    "ConfirmDate": "Datum anwenden"
   },
   "Clear": "Zurücksetzen",
   "Delete": "Löschen",
@@ -40,6 +41,7 @@
   "Location": "Adresse",
   "Longitude": "Longitude",
   "Marktplatz": "Gubener Marktplatz",
+  "Schools": "Schulen",
   "MoreInformation": "Weitere Informationen",
   "Name": "Name",
   "No": "Nein",
@@ -68,5 +70,20 @@
   "Total": "total",
   "Url": "Url",
   "Urls": "Urls",
-  "Yes": "Ja"
+  "Yes": "Ja",
+  "Radius": "Radius",
+  "Type": "Typ",
+  "Requested": "Angefordert",
+  "State": "Status",
+  "Loading": "Wird geladen",
+  "DragAndDrop": {
+    "Label": "Datei hierher ziehen und ablegen",
+    "Hint": "Klicken oder ablegen zum Hochladen",
+    "Accepted": "Erlaubt: {{extensions}}",
+    "Browse": "Dateien durchsuchen",
+    "Selected": "Ausgewählt:",
+    "Remove": "Entfernen",
+    "ErrorUnsupported": "Nicht unterstützter Dateityp. Erlaubt: {{extensions}}",
+    "ErrorTooLarge": "Datei zu groß. Maximal {{max}} MB"
+  }
 }

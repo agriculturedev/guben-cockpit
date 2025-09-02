@@ -21,13 +21,17 @@ import { Route as AdminIndexImport } from './routes/admin/index'
 import { Route as EventsEventIdImport } from './routes/events/$eventId'
 import { Route as BookingTitleImport } from './routes/booking/$title'
 import { Route as AdminLayoutImport } from './routes/admin/_layout'
+import { Route as BookingRoomTitleImport } from './routes/booking/room/$title'
 import { Route as AdminLayoutUsersImport } from './routes/admin/_layout/users'
 import { Route as AdminLayoutProjectsImport } from './routes/admin/_layout/projects'
 import { Route as AdminLayoutPagesImport } from './routes/admin/_layout/pages'
 import { Route as AdminLayoutLocationsImport } from './routes/admin/_layout/locations'
+import { Route as AdminLayoutGeodatamanageImport } from './routes/admin/_layout/geodatamanage'
+import { Route as AdminLayoutGeodataImport } from './routes/admin/_layout/geodata'
 import { Route as AdminLayoutFooterImport } from './routes/admin/_layout/footer'
 import { Route as AdminLayoutEventsImport } from './routes/admin/_layout/events'
 import { Route as AdminLayoutDashboardImport } from './routes/admin/_layout/dashboard'
+import { Route as AdminLayoutBookingImport } from './routes/admin/_layout/booking'
 
 // Create Virtual Routes
 
@@ -86,6 +90,11 @@ const AdminLayoutRoute = AdminLayoutImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
+const BookingRoomTitleRoute = BookingRoomTitleImport.update({
+  path: '/booking/room/$title',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AdminLayoutUsersRoute = AdminLayoutUsersImport.update({
   path: '/users',
   getParentRoute: () => AdminLayoutRoute,
@@ -106,6 +115,16 @@ const AdminLayoutLocationsRoute = AdminLayoutLocationsImport.update({
   getParentRoute: () => AdminLayoutRoute,
 } as any)
 
+const AdminLayoutGeodatamanageRoute = AdminLayoutGeodatamanageImport.update({
+  path: '/geodatamanage',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+
+const AdminLayoutGeodataRoute = AdminLayoutGeodataImport.update({
+  path: '/geodata',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+
 const AdminLayoutFooterRoute = AdminLayoutFooterImport.update({
   path: '/footer',
   getParentRoute: () => AdminLayoutRoute,
@@ -118,6 +137,11 @@ const AdminLayoutEventsRoute = AdminLayoutEventsImport.update({
 
 const AdminLayoutDashboardRoute = AdminLayoutDashboardImport.update({
   path: '/dashboard',
+  getParentRoute: () => AdminLayoutRoute,
+} as any)
+
+const AdminLayoutBookingRoute = AdminLayoutBookingImport.update({
+  path: '/booking',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
 
@@ -195,6 +219,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/admin/_layout/booking': {
+      id: '/admin/_layout/booking'
+      path: '/booking'
+      fullPath: '/admin/booking'
+      preLoaderRoute: typeof AdminLayoutBookingImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/admin/_layout/dashboard': {
       id: '/admin/_layout/dashboard'
       path: '/dashboard'
@@ -214,6 +245,20 @@ declare module '@tanstack/react-router' {
       path: '/footer'
       fullPath: '/admin/footer'
       preLoaderRoute: typeof AdminLayoutFooterImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/admin/_layout/geodata': {
+      id: '/admin/_layout/geodata'
+      path: '/geodata'
+      fullPath: '/admin/geodata'
+      preLoaderRoute: typeof AdminLayoutGeodataImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/admin/_layout/geodatamanage': {
+      id: '/admin/_layout/geodatamanage'
+      path: '/geodatamanage'
+      fullPath: '/admin/geodatamanage'
+      preLoaderRoute: typeof AdminLayoutGeodatamanageImport
       parentRoute: typeof AdminLayoutImport
     }
     '/admin/_layout/locations': {
@@ -244,15 +289,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutUsersImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/booking/room/$title': {
+      id: '/booking/room/$title'
+      path: '/booking/room/$title'
+      fullPath: '/booking/room/$title'
+      preLoaderRoute: typeof BookingRoomTitleImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 interface AdminLayoutRouteChildren {
+  AdminLayoutBookingRoute: typeof AdminLayoutBookingRoute
   AdminLayoutDashboardRoute: typeof AdminLayoutDashboardRoute
   AdminLayoutEventsRoute: typeof AdminLayoutEventsRoute
   AdminLayoutFooterRoute: typeof AdminLayoutFooterRoute
+  AdminLayoutGeodataRoute: typeof AdminLayoutGeodataRoute
+  AdminLayoutGeodatamanageRoute: typeof AdminLayoutGeodatamanageRoute
   AdminLayoutLocationsRoute: typeof AdminLayoutLocationsRoute
   AdminLayoutPagesRoute: typeof AdminLayoutPagesRoute
   AdminLayoutProjectsRoute: typeof AdminLayoutProjectsRoute
@@ -260,9 +315,12 @@ interface AdminLayoutRouteChildren {
 }
 
 const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
+  AdminLayoutBookingRoute: AdminLayoutBookingRoute,
   AdminLayoutDashboardRoute: AdminLayoutDashboardRoute,
   AdminLayoutEventsRoute: AdminLayoutEventsRoute,
   AdminLayoutFooterRoute: AdminLayoutFooterRoute,
+  AdminLayoutGeodataRoute: AdminLayoutGeodataRoute,
+  AdminLayoutGeodatamanageRoute: AdminLayoutGeodatamanageRoute,
   AdminLayoutLocationsRoute: AdminLayoutLocationsRoute,
   AdminLayoutPagesRoute: AdminLayoutPagesRoute,
   AdminLayoutProjectsRoute: AdminLayoutProjectsRoute,
@@ -295,13 +353,17 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/booking': typeof BookingIndexRoute
   '/events': typeof EventsIndexRoute
+  '/admin/booking': typeof AdminLayoutBookingRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
   '/admin/footer': typeof AdminLayoutFooterRoute
+  '/admin/geodata': typeof AdminLayoutGeodataRoute
+  '/admin/geodatamanage': typeof AdminLayoutGeodatamanageRoute
   '/admin/locations': typeof AdminLayoutLocationsRoute
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
   '/admin/users': typeof AdminLayoutUsersRoute
+  '/booking/room/$title': typeof BookingRoomTitleRoute
 }
 
 export interface FileRoutesByTo {
@@ -313,13 +375,17 @@ export interface FileRoutesByTo {
   '/events/$eventId': typeof EventsEventIdRoute
   '/booking': typeof BookingIndexRoute
   '/events': typeof EventsIndexRoute
+  '/admin/booking': typeof AdminLayoutBookingRoute
   '/admin/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/events': typeof AdminLayoutEventsRoute
   '/admin/footer': typeof AdminLayoutFooterRoute
+  '/admin/geodata': typeof AdminLayoutGeodataRoute
+  '/admin/geodatamanage': typeof AdminLayoutGeodatamanageRoute
   '/admin/locations': typeof AdminLayoutLocationsRoute
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
   '/admin/users': typeof AdminLayoutUsersRoute
+  '/booking/room/$title': typeof BookingRoomTitleRoute
 }
 
 export interface FileRoutesById {
@@ -334,13 +400,17 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/booking/': typeof BookingIndexRoute
   '/events/': typeof EventsIndexRoute
+  '/admin/_layout/booking': typeof AdminLayoutBookingRoute
   '/admin/_layout/dashboard': typeof AdminLayoutDashboardRoute
   '/admin/_layout/events': typeof AdminLayoutEventsRoute
   '/admin/_layout/footer': typeof AdminLayoutFooterRoute
+  '/admin/_layout/geodata': typeof AdminLayoutGeodataRoute
+  '/admin/_layout/geodatamanage': typeof AdminLayoutGeodatamanageRoute
   '/admin/_layout/locations': typeof AdminLayoutLocationsRoute
   '/admin/_layout/pages': typeof AdminLayoutPagesRoute
   '/admin/_layout/projects': typeof AdminLayoutProjectsRoute
   '/admin/_layout/users': typeof AdminLayoutUsersRoute
+  '/booking/room/$title': typeof BookingRoomTitleRoute
 }
 
 export interface FileRouteTypes {
@@ -355,13 +425,17 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/booking'
     | '/events'
+    | '/admin/booking'
     | '/admin/dashboard'
     | '/admin/events'
     | '/admin/footer'
+    | '/admin/geodata'
+    | '/admin/geodatamanage'
     | '/admin/locations'
     | '/admin/pages'
     | '/admin/projects'
     | '/admin/users'
+    | '/booking/room/$title'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -372,13 +446,17 @@ export interface FileRouteTypes {
     | '/events/$eventId'
     | '/booking'
     | '/events'
+    | '/admin/booking'
     | '/admin/dashboard'
     | '/admin/events'
     | '/admin/footer'
+    | '/admin/geodata'
+    | '/admin/geodatamanage'
     | '/admin/locations'
     | '/admin/pages'
     | '/admin/projects'
     | '/admin/users'
+    | '/booking/room/$title'
   id:
     | '__root__'
     | '/'
@@ -391,13 +469,17 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/booking/'
     | '/events/'
+    | '/admin/_layout/booking'
     | '/admin/_layout/dashboard'
     | '/admin/_layout/events'
     | '/admin/_layout/footer'
+    | '/admin/_layout/geodata'
+    | '/admin/_layout/geodatamanage'
     | '/admin/_layout/locations'
     | '/admin/_layout/pages'
     | '/admin/_layout/projects'
     | '/admin/_layout/users'
+    | '/booking/room/$title'
   fileRoutesById: FileRoutesById
 }
 
@@ -410,6 +492,7 @@ export interface RootRouteChildren {
   EventsEventIdRoute: typeof EventsEventIdRoute
   BookingIndexRoute: typeof BookingIndexRoute
   EventsIndexRoute: typeof EventsIndexRoute
+  BookingRoomTitleRoute: typeof BookingRoomTitleRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -421,6 +504,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventsEventIdRoute: EventsEventIdRoute,
   BookingIndexRoute: BookingIndexRoute,
   EventsIndexRoute: EventsIndexRoute,
+  BookingRoomTitleRoute: BookingRoomTitleRoute,
 }
 
 export const routeTree = rootRoute
@@ -442,7 +526,8 @@ export const routeTree = rootRoute
         "/booking/$title",
         "/events/$eventId",
         "/booking/",
-        "/events/"
+        "/events/",
+        "/booking/room/$title"
       ]
     },
     "/": {
@@ -465,9 +550,12 @@ export const routeTree = rootRoute
       "filePath": "admin/_layout.tsx",
       "parent": "/admin",
       "children": [
+        "/admin/_layout/booking",
         "/admin/_layout/dashboard",
         "/admin/_layout/events",
         "/admin/_layout/footer",
+        "/admin/_layout/geodata",
+        "/admin/_layout/geodatamanage",
         "/admin/_layout/locations",
         "/admin/_layout/pages",
         "/admin/_layout/projects",
@@ -490,6 +578,10 @@ export const routeTree = rootRoute
     "/events/": {
       "filePath": "events/index.tsx"
     },
+    "/admin/_layout/booking": {
+      "filePath": "admin/_layout/booking.tsx",
+      "parent": "/admin/_layout"
+    },
     "/admin/_layout/dashboard": {
       "filePath": "admin/_layout/dashboard.tsx",
       "parent": "/admin/_layout"
@@ -500,6 +592,14 @@ export const routeTree = rootRoute
     },
     "/admin/_layout/footer": {
       "filePath": "admin/_layout/footer.tsx",
+      "parent": "/admin/_layout"
+    },
+    "/admin/_layout/geodata": {
+      "filePath": "admin/_layout/geodata.tsx",
+      "parent": "/admin/_layout"
+    },
+    "/admin/_layout/geodatamanage": {
+      "filePath": "admin/_layout/geodatamanage.tsx",
       "parent": "/admin/_layout"
     },
     "/admin/_layout/locations": {
@@ -517,6 +617,9 @@ export const routeTree = rootRoute
     "/admin/_layout/users": {
       "filePath": "admin/_layout/users.tsx",
       "parent": "/admin/_layout"
+    },
+    "/booking/room/$title": {
+      "filePath": "booking/room/$title.tsx"
     }
   }
 }

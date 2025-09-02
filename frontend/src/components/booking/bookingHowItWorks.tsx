@@ -24,7 +24,7 @@ export default function() {
                 </div>
               </div>
               {index < steps.length -1 && (
-                <ArrowBigRightDash className="text-gubenAccent size-12" />
+                <ArrowBigRightDash className="text-gubenAccent size-12 ml-3" />
               )}
             </div>
           ))}

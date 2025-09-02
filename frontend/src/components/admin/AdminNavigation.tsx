@@ -6,7 +6,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 export const AdminNavigation = () => {
-  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations", "footer"]);
+  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations", "footer", "booking", "geodata"]);
 
   return (
     <Nav className="col-span-2 h-fit">
@@ -37,6 +37,26 @@ export const AdminNavigation = () => {
       <PermissionGuard permissions={[Permissions.FooterManager]}>
         <Nav.Item href={"/admin/footer"} label={t("Title", {ns: "footer"})}/>
       </PermissionGuard>
+
+      <PermissionGuard permissions={[Permissions.BookingManager]}>
+        <Nav.Item href={"/admin/booking"} label={t("Title", {ns: "booking"})} />
+      </PermissionGuard>
+
+      <PermissionGuard permissions={[Permissions.BookingPlatform]}>
+        <Nav.Item 
+          href={import.meta.env.VITE_BOOKING_LOGIN}
+          label={t('bookingPlatform', {ns: "booking"})} 
+          external
+        />
+      </PermissionGuard>
+
+      <PermissionGuard permissions={[Permissions.UploadGeodata]}>
+        <Nav.Item href={"/admin/geodata"} label={t("Title", {ns: "geodata"})}/>
+      </PermissionGuard>
+
+      <PermissionGuard permissions={[Permissions.ManageGeoData]}>
+        <Nav.Item href={"/admin/geodatamanage"} label={t("ManageGeodata", {ns: "geodata"})}/>
+      </PermissionGuard>
     </Nav>
   )
 }
@@ -58,10 +78,28 @@ function Nav({children, ...props}: NavProps) {
 type NavItemProps = {
   href: string;
   label: string;
+  external?: boolean;
 }
 
 Nav.Item = (props: NavItemProps) => {
   const location = useLocation();
+
+  if (props.external) {
+    return (
+      <li>
+        <a
+          className={cn(
+            "py-2 px-1 flex justify-center items-center rounded-lg hover:bg-gray-100 hover:cursor-pointer"
+          )}
+          href={props.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {props.label}
+        </a>
+      </li>
+    )
+  }
 
   return (
     <li>

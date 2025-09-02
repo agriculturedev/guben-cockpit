@@ -1,5 +1,5 @@
 import { CircleCheckIcon } from "lucide-react";
-import { Card } from "../ui/card";
+import { Card, CardContent } from "../ui/card";
 import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
 
@@ -11,20 +11,21 @@ type PriceCardProps = {
   description?: string;
   location?: string;
   autoCommitNote?: string;
+  imgUrl?: string;
 }
 
-export default function ({ bookingUrl, price, title, flags, description, location, autoCommitNote }: PriceCardProps) {
+export default function ({ bookingUrl, price, title, flags, description, location, autoCommitNote, imgUrl }: PriceCardProps) {
   const { t } = useTranslation("booking");
 
-  return (
-    <div className="p-5">
-      <a 
-          href={bookingUrl}
-          target="_blank"
-          rel="noopener noreferrer" >
+  const isValidUrl = bookingUrl && bookingUrl.startsWith("http");
+
+  const cardContent = (
         <Card className="hover:shadow-xl cursor-pointer">
           <div className="grid grid-cols-3 gap-5 h-full">
             <div className="col-span-2 bg-gubenAccent-foreground h-full">
+              {!isValidUrl &&
+                <div className="px-5 py-1 font-bold text-gubenAccent">{t('notBookable')}</div>
+              }
               <div className="p-5 font-bold text-xl">
                 {title}
               </div>
@@ -56,18 +57,27 @@ export default function ({ bookingUrl, price, title, flags, description, locatio
               )}
 
             </div>
-            <div className="col-span-1 bg-red-600/70 h-full font-bold place-content-center p-5 text-gubenAccent-foreground">
-              <p>{t("priceCard.price")}: {price}</p>
-              { location && (
-                <p>{t("priceCard.place")}: {location}</p>
-              )}
-              { autoCommitNote && (
-                <p>{autoCommitNote}</p>
-              )}
+            <div
+              className="col-span-1 relative h-full font-bold text-gubenAccent-foreground"
+              style={{
+                backgroundImage: imgUrl ? `url(${imgUrl})` : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}>
+              <div className="absolute inset-0 bg-red-600/50" />
+              <div className="relative z-10 h-full flex flex-col justify-center items-start p-5">
+                <p>{t("priceCard.price")}: {price}</p>
+                { location && (
+                  <p>{t("priceCard.place")}: {location}</p>
+                )}
+                { autoCommitNote && (
+                  <p>{autoCommitNote}</p>
+                )}
+              </div>
             </div>
           </div>
         </Card>
-      </a>
-    </div>
-  )
+      )
+  
+  return <div className="p-5">{isValidUrl ? <a href={bookingUrl} target="_blank" rel="noopener noreferrer">{cardContent}</a> : cardContent}</div>;
 }
