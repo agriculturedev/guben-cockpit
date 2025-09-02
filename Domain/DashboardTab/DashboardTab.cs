@@ -15,16 +15,17 @@ public sealed class DashboardTab : Entity<Guid>
   private readonly List<InformationCard> _informationCards = [];
   public IReadOnlyCollection<InformationCard> InformationCards => new ReadOnlyCollection<InformationCard>(_informationCards);
 
-  private DashboardTab(int sequence, string mapUrl)
+  private DashboardTab(int sequence, string mapUrl, Guid? dropdownId)
   {
     Id = Guid.CreateVersion7();
     Sequence = sequence;
     MapUrl = mapUrl;
+    DropdownId = dropdownId;
   }
 
-  public static Result<DashboardTab> Create(string title, int sequence, string mapUrl, List<InformationCard> informationCards, CultureInfo cultureInfo)
+  public static Result<DashboardTab> Create(string title, int sequence, string mapUrl, Guid? dropdownId, List<InformationCard> informationCards, CultureInfo cultureInfo)
   {
-    var dashboardTab = new DashboardTab(sequence, mapUrl);
+    var dashboardTab = new DashboardTab(sequence, mapUrl, dropdownId);
     dashboardTab.AddInformationCards(informationCards);
 
     var updateResult = dashboardTab.UpdateTranslation(title, cultureInfo);

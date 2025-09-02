@@ -31,7 +31,7 @@ const ViewHeader = ({pageKey}: ViewHeaderProps) => {
       </div>
     ) : (
       <div className={"flex gap-3 flex-col"}>
-        {homePage?.title && <h1 className={"text-gubenAccent text-h1 font-bold"}>{homePage.title}</h1>}
+        {homePage?.title && <h1 className={"text-gubenAccent font-poppins text-h1 font-bold"}>{homePage.title}</h1>}
         {homePage?.description && <Markdown>{homePage.description}</Markdown>}
       </div>
     ))

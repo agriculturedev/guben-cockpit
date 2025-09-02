@@ -1,0 +1,60 @@
+import { WalletCardsIcon } from "lucide-react";
+import { useState } from "react";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { CustomTooltip } from "@/components/general/Tooltip";
+import { Button } from "@/components/ui/button";
+import { InformationCardResponse } from "@/endpoints/gubenSchemas";
+
+import { DropdownTabCardsList } from "./DropdownTabCardsList";
+import { CreateDashboardCardButton } from "@/components/dashboard/cards/createDashboardCard/CreateDashboardCardButton";
+
+interface ShowCardsButtonProps {
+  tabId: string;
+  informationCards: InformationCardResponse[];
+  refetch?: () => Promise<any>;
+}
+
+export const ShowCardsButton = ({
+  tabId,
+  informationCards,
+  refetch,
+}: ShowCardsButtonProps) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+        <CustomTooltip text="Cards">
+          <Button type="button" variant="ghost" size="icon" className="h-8 w-8">
+            <WalletCardsIcon className="w-4 h-4" />
+          </Button>
+        </CustomTooltip>
+      </DialogTrigger>
+      <DialogContent className="min-w-[30vw]">
+        <DialogHeader className="mb-4 flex flex-row gap-2 items-center justify-start">
+          <DialogTitle>Cards</DialogTitle>
+          <CreateDashboardCardButton
+            dashboardTabId={tabId}
+            onSuccess={refetch}
+          />
+        </DialogHeader>
+
+        <DropdownTabCardsList
+          tabId={tabId}
+          informationCards={informationCards}
+          refetch={refetch}
+          onSuccess={() => {
+            setOpen(false);
+          }}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+};

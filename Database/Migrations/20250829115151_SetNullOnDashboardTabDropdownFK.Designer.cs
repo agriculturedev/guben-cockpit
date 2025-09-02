@@ -3,6 +3,7 @@ using System;
 using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Database.Migrations
 {
     [DbContext(typeof(GubenDbContext))]
-    partial class GubenDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250829115151_SetNullOnDashboardTabDropdownFK")]
+    partial class SetNullOnDashboardTabDropdownFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -421,9 +424,6 @@ namespace Database.Migrations
 
                             b1.Property<string>("ImageUrl")
                                 .HasColumnType("text");
-
-                            b1.Property<int>("Sequenece")
-                                .HasColumnType("integer");
 
                             b1.Property<string>("Translations")
                                 .IsRequired()

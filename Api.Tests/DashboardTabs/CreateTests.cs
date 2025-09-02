@@ -18,7 +18,7 @@ public class DashboardTabHandlerTests
       var repository = new DashboardRepository(dbContextFactory);
       var handler = new CreateDashboardTabHandler(repository);
 
-      var query = new CreateDashboardTabQuery { Title = "Test Tab", MapUrl = "https://test.com" };
+      var query = new CreateDashboardTabQuery { Title = "Test Tab", MapUrl = "https://test.com", DropdownId = Guid.NewGuid() };
 
       // Act & Assert
       await Should.NotThrowAsync(async () =>

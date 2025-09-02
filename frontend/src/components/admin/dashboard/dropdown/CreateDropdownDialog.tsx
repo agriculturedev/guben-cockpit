@@ -17,7 +17,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useDashboardDropdownCreate, useDashboardDropdownGetAll } from "@/endpoints/gubenComponents";
+import {
+  useDashboardDropdownCreate,
+  useDashboardDropdownGetAll,
+} from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 
 type DropdownType = "tabs" | "link";

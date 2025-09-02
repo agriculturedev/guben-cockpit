@@ -6,4 +6,5 @@ public class CreateDashboardTabQuery : IAuthenticatedApiRequest, IApiRequest<Cre
 {
   public required string Title { get; set; }
   public required string MapUrl { get; set; }
+  public required Guid DropdownId { get; set; }
 }

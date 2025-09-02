@@ -22,7 +22,7 @@ public class CreateDashboardTabHandler : ApiRequestHandler<CreateDashboardTabQue
   {
     int nextSequence = _dashboardRepository.GetNextSequence();
 
-    var (result, dashboardTab) = DashboardTab.Create(request.Title, nextSequence, request.MapUrl, new List<InformationCard>(), _culture);
+    var (result, dashboardTab) = DashboardTab.Create(request.Title, nextSequence, request.MapUrl, request.DropdownId, new List<InformationCard>(), _culture);
     result.ThrowIfFailure();
 
     await _dashboardRepository.SaveAsync(dashboardTab);

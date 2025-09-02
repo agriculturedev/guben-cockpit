@@ -2,11 +2,16 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useDashboardDropdownGetAll } from "@/endpoints/gubenComponents";
 
+import { DeleteDropdownButton } from "./DeleteDropdownButton";
+import { DropdownTabsList } from "../dropdownTab/DropdownTabsList";
 import { DropdownLinkItem } from "./DropdownLinkItem";
-import { DropdownTabsList } from "./DropdownTabsList";
 
 export default function DropdownList() {
-  const { data: dashboardDropdownResponse, isPending } = useDashboardDropdownGetAll({});
+  const {
+    data: dashboardDropdownResponse,
+    isPending,
+    refetch,
+  } = useDashboardDropdownGetAll({});
 
   const dropdowns = dashboardDropdownResponse?.dashboardDropdowns ?? [];
 
@@ -35,28 +40,33 @@ export default function DropdownList() {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <h2 className="font-medium truncate">{dd.title}</h2>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    ID: <span className="font-mono">{dd.id}</span>
-                  </p>
                 </div>
 
-                <div
-                  className={cn(
-                    "px-2 py-0.5 text-xs font-medium rounded-full border inline-flex items-center justify-center",
-                    dd.link
-                      ? "bg-blue-100 text-blue-700 border-blue-200" :
-                      "bg-gray-100 text-gray-700 border-gray-200"
-                  )}
-                >
-                  {dd.link ? "Link" : "Tabs"}
+                <div className="flex items-center gap-2">
+                  <div
+                    className={cn(
+                      "px-2 py-0.5 text-xs font-medium rounded-full border inline-flex items-center justify-center",
+                      dd.link
+                        ? "bg-blue-100 text-blue-700 border-blue-200"
+                        : "bg-gray-100 text-gray-700 border-gray-200",
+                    )}
+                  >
+                    {dd.link ? "Link" : "Tabs"}
+                  </div>
+
+                  <DeleteDropdownButton dropdownId={dd.id} refetch={refetch} />
                 </div>
               </div>
 
-              {!dd.link && <DropdownTabsList dropdownId={dd.id} tabs={dd.tabs} />}
-
-              {dd.link && (
-                <DropdownLinkItem url={dd.link} />
+              {!dd.link && (
+                <DropdownTabsList
+                  dropdownId={dd.id}
+                  tabs={dd.tabs}
+                  refetch={refetch}
+                />
               )}
+
+              {dd.link && <DropdownLinkItem url={dd.link} />}
             </Card>
           ))}
         </div>

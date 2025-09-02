@@ -88,7 +88,7 @@ export const MapPreviewDialog = ({mapUrl}: MapPreviewProps) => {
   return (
     <Dialog>
       <DialogTrigger disabled={mapUrlIsEmpty}>
-        <Button disabled={mapUrlIsEmpty} type={"button"}>
+        <Button disabled={mapUrlIsEmpty} variant={"outline"} type={"button"}>
           {t("ShowPreview")}
         </Button>
       </DialogTrigger>
