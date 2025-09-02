@@ -188,6 +188,11 @@ public class EventRepository
       query = query.Where(w =>
         w.StartDate <= endDate && w.EndDate >= startDate);
     }
+    else
+    {
+      var currentDate = DateTime.UtcNow.Date;
+      query = query.Where(w => w.EndDate >= currentDate);
+    }
 
     // Apply category filter with LINQ
     if (filter.CategoryIdQuery.HasValue)
@@ -262,6 +267,8 @@ public class EventRepository
     }
 
     var totalCount = await query.CountAsync();
+    
+    List<Event> allEvents = await query.ToListAsync();
 
     if (filter.SortBy.HasValue && filter.SortDirection.HasValue)
     {
@@ -290,7 +297,7 @@ public class EventRepository
                   WHERE e.""Id"" IN ({string.Join(", ", idParams)})
                   ORDER BY (e.""Translations""->'{languageKey}'->>'Title') {sortDirection} NULLS LAST";
 
-          var sortedEvents = await Set
+          allEvents = await Set
             .FromSqlRaw(sqlQuery, parameters.ToArray())
             .Include(e => e.Location)
             .Include(e => e.Urls)
@@ -300,23 +307,20 @@ public class EventRepository
             .Skip((pagination.PageNumber - 1) * pagination.PageSize)
             .Take(pagination.PageSize)
             .ToListAsync();
-
-          return new PagedResult<Event>(
-            pagination,
-            totalCount,
-            sortedEvents);
         }
       }
-      else if (filter.SortBy.Value == EventSortOption.StartDate)
+      else
       {
-        // Use LINQ for date sorting
-        query = filter.SortDirection.Value == SortDirection.Ascending
-          ? query.OrderBy(e => e.StartDate)
-          : query.OrderByDescending(e => e.StartDate);
+        // LINQ for other sorts
+        allEvents = await query.ToListAsync();
+        if (filter.SortBy.HasValue && filter.SortBy.Value == EventSortOption.StartDate)
+        {
+          allEvents = filter.SortDirection.Value == SortDirection.Ascending
+              ? allEvents.OrderBy(e => e.StartDate).ToList()
+              : allEvents.OrderByDescending(e => e.StartDate).ToList();
+        }
       }
     }
-
-    var allEvents = await query.ToListAsync();
 
     if (filter.DistanceInKm.HasValue)
     {
