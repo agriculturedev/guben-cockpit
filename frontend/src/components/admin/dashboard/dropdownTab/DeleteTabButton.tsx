@@ -21,7 +21,7 @@ interface DeleteTabButtonProps {
 }
 
 export const DeleteTabButton = ({ tabId, refetch }: DeleteTabButtonProps) => {
-  const { t } = useTranslation(["dashboard"]);
+  const { t } = useTranslation(["dashboard", "common"]);
   const [open, setOpen] = useState(false);
 
   const mutation = useDashboardDelete({
@@ -51,7 +51,7 @@ export const DeleteTabButton = ({ tabId, refetch }: DeleteTabButtonProps) => {
             variant="ghost"
             size="icon"
             className="h-8 w-8"
-            title="Delete"
+            title={t("common:Delete")}
           >
             <Trash2Icon className="h-4 w-4" />
           </Button>

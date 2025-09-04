@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { routePermissionCheck } from "@/guards/routeGuardChecks";
@@ -15,14 +16,15 @@ export const Route = createFileRoute("/admin/_layout/dashboard")({
 });
 
 function AdminDashboard() {
+  const { t } = useTranslation(["dashboard", "common"]);
   const [open, setOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-8 max-h-full">
       <div className="flex items-center gap-2">
-        <h1 className="text-xl font-semibold">Dropdowns</h1>
+        <h1 className="text-xl font-semibold">{t("Dropdowns")}</h1>
         <div className="ml-auto">
-          <Button onClick={() => setOpen(true)}>Add Dropdown</Button>
+          <Button onClick={() => setOpen(true)}>{t("AddDropdown")}</Button>
         </div>
       </div>
       <DropdownList />

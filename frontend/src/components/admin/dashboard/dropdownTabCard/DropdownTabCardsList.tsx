@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { GripVertical } from "lucide-react";
 
 import { SortableList } from "@/components/dnd/SortableList";
@@ -22,6 +23,7 @@ export function DropdownTabCardsList({
   refetch,
   onSuccess,
 }: DropdownTabCardsListProps) {
+  const { t } = useTranslation(["dashboard", "common"]);
   const [cards, setCards] =
     useState<InformationCardResponse[]>(informationCards);
 
@@ -57,11 +59,14 @@ export function DropdownTabCardsList({
   return (
     <div className="max-h-[80vh]">
       {cards.length === 0 ? (
-        <div className="italic text-sm text-muted-foreground">No cards yet</div>
+        <div className="italic text-sm text-muted-foreground">
+          {t("NoCardsYet")}
+        </div>
       ) : (
         <SortableList
           items={cards}
           getId={(item) => item.id}
+          axis="y"
           renderItem={(item, handle) => (
             <div className="relative">
               <button
@@ -69,8 +74,8 @@ export function DropdownTabCardsList({
                 {...handle.attributes}
                 {...handle.listeners}
                 className="cursor-grab active:cursor-grabbing p-1 rounded hover:bg-accent absolute top-[50%] -translate-y-1/2 right-2 z-10"
-                aria-label="Drag to reorder"
-                title="Drag to reorder"
+                aria-label={t("DragToReorder")}
+                title={t("DragToReorder")}
               >
                 <GripVertical className="h-4 w-4" />
               </button>
@@ -108,7 +113,7 @@ export function DropdownTabCardsList({
           disabled={!isDirty || reorder.isPending}
           onClick={handleSave}
         >
-          Save
+          {t("common:Save")}
         </Button>
       </div>
     </div>

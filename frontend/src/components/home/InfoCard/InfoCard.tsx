@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -8,19 +9,17 @@ import { Card } from "@/components/ui/card";
 import { BaseImgTag } from "@/components/ui/BaseImgTag";
 import { WithClassName } from "@/types/WithClassName";
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface Props extends WithClassName {
   card: InformationCardResponse;
 }
 
 export const InfoCard = ({ card, className }: Props) => {
-  return (
-    <Card
-      className={cn(
-        "flex flex-col bg-white p-4 gap-1 mb-4 rounded-lg shadow-lg break-inside-avoid h-[18rem]",
-        className,
-      )}
-    >
+  const [open, setOpen] = useState(false);
+
+  const infoContent = (fullText: boolean) => (
+    <>
       {card.imageUrl && (
         <BaseImgTag
           src={card.imageUrl}
@@ -33,8 +32,17 @@ export const InfoCard = ({ card, className }: Props) => {
         {card.title}
       </h1>
 
-      <p className="text-gray-500 leading-relaxed line-clamp-2 overflow-hidden">
-        <Markdown className="[&_*]:font-rubik" remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+      <p
+        className={cn(
+          "text-gray-500",
+          !fullText && "leading-relaxed line-clamp-2 overflow-hidden",
+        )}
+      >
+        <Markdown
+          className="[&_*]:font-rubik"
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
+        >
           {card.description}
         </Markdown>
       </p>
@@ -52,6 +60,33 @@ export const InfoCard = ({ card, className }: Props) => {
           </Button>
         </div>
       )}
-    </Card>
+    </>
+  );
+
+  return (
+    <>
+      <Card
+        onClick={() => setOpen(true)}
+        className={cn(
+          "flex flex-col bg-white p-4 gap-1 mb-4 rounded-lg shadow-lg break-inside-avoid h-[18rem]",
+          className,
+        )}
+      >
+        {infoContent(false)}
+      </Card>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="p-0">
+          <Card
+            className={cn(
+              "flex flex-col bg-none p-2 rounded-lg shadow-none break-inside-avoid",
+              className,
+            )}
+          >
+            {infoContent(true)}
+          </Card>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };

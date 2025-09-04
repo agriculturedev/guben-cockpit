@@ -22,7 +22,10 @@ interface CreateTabButtonProps {
   onSuccess?: () => void;
 }
 
-export const CreateTabButton = ({ dropdownId, onSuccess }: CreateTabButtonProps) => {
+export const CreateTabButton = ({
+  dropdownId,
+  onSuccess,
+}: CreateTabButtonProps) => {
   const { t } = useTranslation("dashboard");
   const [open, setOpen] = useState(false);
 
@@ -32,7 +35,7 @@ export const CreateTabButton = ({ dropdownId, onSuccess }: CreateTabButtonProps)
     onSuccess: () => {
       onSuccess?.();
       setOpen(false);
-    }
+    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -40,9 +43,9 @@ export const CreateTabButton = ({ dropdownId, onSuccess }: CreateTabButtonProps)
       dropdownId,
       mapUrl: values.mapUrl,
       title: values.title,
-    }
+    };
 
-    mutation.mutate({body: newTab});
+    mutation.mutate({ body: newTab });
   }
 
   return (
@@ -54,7 +57,7 @@ export const CreateTabButton = ({ dropdownId, onSuccess }: CreateTabButtonProps)
           className="w-fit mt-2 flex items-center gap-1"
         >
           <Plus className="h-4 w-4" />
-          Add Tab
+          {t("Add")}
         </Button>
       </DialogTrigger>
       <DialogContent className={"min-w-fit"}>

@@ -1,4 +1,5 @@
 import { WalletCardsIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
 import {
@@ -26,12 +27,13 @@ export const ShowCardsButton = ({
   informationCards,
   refetch,
 }: ShowCardsButtonProps) => {
+  const { t } = useTranslation("dashboard");
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <CustomTooltip text="Cards">
+        <CustomTooltip text={t("Cards.Cards")}>
           <Button type="button" variant="ghost" size="icon" className="h-8 w-8">
             <WalletCardsIcon className="w-4 h-4" />
           </Button>
@@ -39,7 +41,7 @@ export const ShowCardsButton = ({
       </DialogTrigger>
       <DialogContent className="min-w-[30vw]">
         <DialogHeader className="mb-4 flex flex-row gap-2 items-center justify-start">
-          <DialogTitle>Cards</DialogTitle>
+          <DialogTitle>{t("Cards.Cards")}</DialogTitle>
           <CreateDashboardCardButton
             dashboardTabId={tabId}
             onSuccess={refetch}

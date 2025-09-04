@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useDashboardDropdownGetAll } from "@/endpoints/gubenComponents";
@@ -7,6 +9,7 @@ import { DropdownTabsList } from "../dropdownTab/DropdownTabsList";
 import { DropdownLinkItem } from "./DropdownLinkItem";
 
 export default function DropdownList() {
+  const { t } = useTranslation(["dashboard", "common"]);
   const {
     data: dashboardDropdownResponse,
     isPending,
@@ -18,7 +21,7 @@ export default function DropdownList() {
   if (isPending) {
     return (
       <Card className="p-10 text-center text-sm text-muted-foreground shadow-none">
-        Loading...
+        {t("common:Loading")}...
       </Card>
     );
   }
@@ -27,8 +30,7 @@ export default function DropdownList() {
     <>
       {dropdowns.length === 0 ? (
         <Card className="p-10 text-center text-sm text-muted-foreground shadow-none">
-          No dropdowns yet. Click{" "}
-          <span className="font-bold">Add Dropdown</span> to create one.
+          {t("NoDropdownsYet")} {t("ClickAddDropdownToCreateOne")}
         </Card>
       ) : (
         <div className="grid gap-4">

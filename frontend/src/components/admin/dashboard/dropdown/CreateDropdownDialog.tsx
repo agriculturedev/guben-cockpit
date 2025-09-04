@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FormEvent, useCallback, useRef, useState } from "react";
 
 import {
   Dialog,
@@ -36,10 +37,12 @@ export default function CreateDropdownDialog({
   setOpen,
   defaultType = "tabs",
 }: CreateDropdownDialogProps) {
+  const { t } = useTranslation(["dashboard", "common"]);
   const { refetch } = useDashboardDropdownGetAll({});
   const [title, setTitle] = useState("");
   const [type, setType] = useState<DropdownType>(defaultType);
   const [link, setLink] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
 
   const mutation = useDashboardDropdownCreate({
     onSuccess: async () => {
@@ -50,71 +53,83 @@ export default function CreateDropdownDialog({
   });
 
   const onSubmit = useCallback(
-    () =>
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
       mutation.mutate({
         body: {
           title,
-          link,
+          link: link || undefined,
         },
-      }),
-    [mutation],
+      });
+    },
+    [mutation, title, link],
   );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Dropdown</DialogTitle>
+          <DialogTitle>{t("CreateDropdown")}</DialogTitle>
         </DialogHeader>
 
-        <div className="grid gap-4 py-2 mt-2">
+        <form
+          ref={formRef}
+          onSubmit={onSubmit}
+          className="grid gap-4 py-2 mt-2"
+        >
           <div className="grid gap-2">
-            <Label htmlFor="dropdown-title">Title</Label>
+            <Label htmlFor="dropdown-title">{t("common:Title")}</Label>
             <Input
               id="dropdown-title"
               type="text"
               placeholder="Enter dropdown title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              required
             />
           </div>
 
           <div className="grid gap-2">
-            <Label>Type</Label>
+            <Label>{t("common:Type")}</Label>
             <Select
               value={type}
               onValueChange={(value: DropdownType) => setType(value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select type" />
+                <SelectValue placeholder={t("SelectType")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="tabs">Tabs</SelectItem>
-                <SelectItem value="link">Link</SelectItem>
+                <SelectItem value="tabs">{t("Tabs")}</SelectItem>
+                <SelectItem value="link">{t("Link")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {type === "link" && (
             <div className="grid gap-2">
-              <Label htmlFor="dropdown-link">Link URL</Label>
+              <Label htmlFor="dropdown-link">{t("LinkUrl")}</Label>
               <Input
                 id="dropdown-link"
                 type="text"
                 placeholder="https://example.com"
                 value={link}
                 onChange={(e) => setLink(e.target.value)}
+                required
               />
             </div>
           )}
-        </div>
+        </form>
 
         <DialogFooter className="mt-2">
           <Button variant="outline" onClick={() => setOpen(false)}>
-            Cancel
+            {t("common:Cancel")}
           </Button>
-          <Button onClick={onSubmit} disabled={mutation.isPending}>
-            Create
+          <Button
+            onClick={() => formRef.current?.requestSubmit()}
+            disabled={mutation.isPending}
+          >
+            {t("Create")}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -15,6 +15,10 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import {
+  restrictToVerticalAxis,
+  restrictToHorizontalAxis,
+} from "@dnd-kit/modifiers";
 
 export type DragHandleProps = {
   attributes: ReturnType<typeof useSortable>["attributes"];
@@ -62,6 +66,7 @@ export type SortableListProps<T> = {
   onReorder?: (orderedIds: string[]) => void;
   listClassName?: string;
   itemClassName?: string;
+  axis?: "x" | "y";
 };
 
 export function SortableList<T>({
@@ -71,6 +76,7 @@ export function SortableList<T>({
   onReorder,
   listClassName,
   itemClassName,
+  axis,
 }: SortableListProps<T>) {
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 6 } }),
@@ -108,6 +114,13 @@ export function SortableList<T>({
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
+      modifiers={
+        axis === "x"
+          ? [restrictToHorizontalAxis]
+          : axis === "y"
+            ? [restrictToVerticalAxis]
+            : []
+      }
     >
       <SortableContext
         items={orderedIds}

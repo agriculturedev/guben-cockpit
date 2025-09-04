@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { ConfirmationDialogContent } from "@/components/confirmationDialog/confirmationDialogContent";
 import { DeleteIconButton } from "@/components/iconButtons/DeleteIconButton";
@@ -20,6 +21,7 @@ export const DeleteDropdownButton = ({
   dropdownId,
   refetch,
 }: DeleteDropdownButtonProps) => {
+  const { t } = useTranslation(["dashboard"]);
   const [open, setOpen] = useState(false);
 
   const mutation = useDashboardDropdownDelete({
@@ -44,12 +46,12 @@ export const DeleteDropdownButton = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DeleteIconButton
         disabled={mutation.isPending}
-        tooltip="Delete Dropdown"
+        tooltip={t("DeleteDropdown")}
         dialogTrigger={true}
       />
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Dropdown</DialogTitle>
+          <DialogTitle>{t("DeleteDropdown")}</DialogTitle>
         </DialogHeader>
 
         <ConfirmationDialogContent
