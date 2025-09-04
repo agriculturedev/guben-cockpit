@@ -11,6 +11,7 @@ public sealed class InformationCard : Entity<Guid>
 
   public Button? Button { get; private set; }
   public string? ImageUrl { get; private set; }
+  public int Sequenece { get; private set; }
 
   private InformationCard() { }
 
@@ -19,6 +20,7 @@ public sealed class InformationCard : Entity<Guid>
     Id = Guid.CreateVersion7();
     ImageUrl = imageUrl;
     Button = button;
+    Sequenece = 0;
   }
 
   public static Result<InformationCard> Create(string? title, string? description, string? imageUrl, string? imageAlt,
@@ -54,6 +56,11 @@ public sealed class InformationCard : Entity<Guid>
   public void UpdateButton(Button? button)
   {
     Button = button;
+  }
+
+  public void UpdateSequence(int sequence)
+  {
+    Sequenece = sequence;
   }
 }
 

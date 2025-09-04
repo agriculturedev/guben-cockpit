@@ -10,6 +10,7 @@ public class DashboardTabBuilder
   private string _mapUrl = "https://default.com";
   private List<InformationCard> _informationCards = new();
   private CultureInfo _culture = new CultureInfo("en-US");
+  private Guid? _dropdownId = null;
 
   public DashboardTabBuilder WithTitle(string title)
   {
@@ -41,9 +42,15 @@ public class DashboardTabBuilder
     return this;
   }
 
+  public DashboardTabBuilder WithDropdownId(Guid? dropdownId)
+  {
+    _dropdownId = dropdownId;
+    return this;
+  }
+
   public Domain.DashboardTab.DashboardTab Build()
   {
-    var (result, dashboardTab) = Domain.DashboardTab.DashboardTab.Create(_title, _sequence, _mapUrl, _informationCards, _culture);
+    var (result, dashboardTab) = Domain.DashboardTab.DashboardTab.Create(_title, _sequence, _mapUrl, _dropdownId, _informationCards, _culture);
     if (result.IsFailure)
       throw new ArgumentException(result.ToString());
 

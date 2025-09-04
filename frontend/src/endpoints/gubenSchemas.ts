@@ -45,9 +45,45 @@ export type CoordinatesResponse = {
 export type CreateDashboardTabQuery = {
   title: string;
   mapUrl: string;
+  dropdownId: string;
 };
 
 export type CreateDashboardTabResponse = Record<string, any>;
+
+export type CreateDashboardDropdownQuery = {
+  title: string;
+  link?: string;
+}
+
+export type CreateDashboardDropdownResponse = Record<string, any>;
+
+export type DeleteDashboardDropdownResponse = Record<string, any>;
+
+export type GetAllDashboardDropdownResponse = {
+  dashboardDropdowns: DashboardDropdownResponse[];
+}
+
+export type DashboardDropdownResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  title: string;
+  rank: number;
+  tabs?: DashboardTabResponse[];
+  link?: string | null;
+}
+
+export type UpdateCardSequenceQuery = {
+  orderedCardIds: string[];
+};
+
+export type UpdateCardSequenceResponse = {
+  /** @format uuid */
+  tabId: string;
+  /** @format int32 */
+  updatedCount: number;
+};
 
 export type CreateEventImageQuery = {
   thumbnailUrl: string;
