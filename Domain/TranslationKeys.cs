@@ -43,5 +43,6 @@ public class TranslationKeys
   public const string GeoDataSourceTypeInvalid = "GeoDataSourceTypeInvalid";
   public const string NoBookingManager = "NoBookingManager";
   public const string TenantIdNotFound = "TenantIdNotFound";
+  public const string MissingTenantId = "MissingTenantId";
 
 }

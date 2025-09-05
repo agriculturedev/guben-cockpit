@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface IProps {
 	defaultData?: FormSchema;
@@ -34,6 +35,22 @@ export default function BookingItemDialogForm(props: IProps) {
 							<FormLabel>{t("booking:tenantId")}</FormLabel>
 							<FormControl>
 								<Input placeholder={t("booking:tenantId")} {...field} value={field.value ?? undefined} />
+							</FormControl>
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="forPublicUse"
+					render={({field}) => (
+						<FormItem>
+							<FormLabel>{t("booking:ForPublicUse")}</FormLabel>
+							<FormControl>
+								<Checkbox
+									checked={field.value}
+									onCheckedChange={field.onChange}
+								/>
 							</FormControl>
 						</FormItem>
 					)}

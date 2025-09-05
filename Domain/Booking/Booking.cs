@@ -15,13 +15,19 @@ public sealed class Booking : Entity<Guid>
 		ForPublicUse = forPublicUse;
 	}
 
-	public static Result<Booking> CreateWithGeneratedId(string tenantId, bool forPublicUse = false)
+	public static Result<Booking> CreateWithGeneratedId(string tenantId, bool forPublicUse)
 	{
 		return new Booking(
 			Guid.CreateVersion7(),
 			tenantId,
 			forPublicUse
 		);
+	}
+
+	public void Update(string tenantId, bool forPublicUse)
+	{
+		TenantId = tenantId;
+		ForPublicUse = forPublicUse;
 	}
 
 }

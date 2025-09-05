@@ -3,7 +3,7 @@ import { HouseIcon, InfoIcon, TrophyIcon } from 'lucide-react'
 import { useState, useCallback, useMemo } from 'react'
 import { useBookingStore } from '@/stores/bookingStore'
 import { useTranslation } from 'react-i18next'
-import { useBookingGetAllTenantIds } from '@/endpoints/gubenComponents'
+import { useBookingGetPublicTenantIds } from '@/endpoints/gubenComponents'
 
 import BookingCard from '@/components/booking/bookingCard'
 import BookingDivider from '@/components/booking/bookingDivider'
@@ -28,7 +28,7 @@ function Booking() {
   const resources = useMemo(() => bookables.filter((b) => b.category === 'resource'), [bookables])
   const sports = useMemo(() => bookables.filter((b) => b.category === 'sport'), [bookables])
 
-  const { data: tenantIds } = useBookingGetAllTenantIds({});
+  const { data: tenantIds } = useBookingGetPublicTenantIds({});
 
   const [currentTenantIndex, setCurrentTenantIndex] = useState(0);
 

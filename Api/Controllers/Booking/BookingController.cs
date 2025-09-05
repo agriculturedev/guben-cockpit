@@ -4,6 +4,7 @@ using Api.Controllers.Bookings.DeleteTenantId;
 using Api.Controllers.Bookings.GetAllTenantIds;
 using Api.Controllers.Bookings.GetPrivateTenantIds;
 using Api.Controllers.Bookings.GetPublicTenantIds;
+using Api.Controllers.Bookings.UpdateTenant;
 using Api.Controllers.Projects.DeleteTenantId;
 using Api.Infrastructure.Keycloak;
 using MediatR;
@@ -37,7 +38,7 @@ public class BookingController : ControllerBase
 		return Results.Ok(result);
 	}
 
-	[HttpGet]
+	[HttpGet("public")]
 	[EndpointName("BookingGetPublicTenantIds")]
 	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetPublicTenantIdsResponse))]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -47,7 +48,7 @@ public class BookingController : ControllerBase
 		return Results.Ok(result);
 	}
 
-	[HttpGet]
+	[HttpGet("private")]
 	[Authorize]
 	[EndpointName("BookingGetPrivateTenantIds")]
 	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetPrivateTenantIdsResponse))]
@@ -65,6 +66,18 @@ public class BookingController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<IResult> CreateTenantId([FromBody] CreateTenantIdQuery query)
 	{
+		var result = await _mediator.Send(query);
+		return Results.Ok(result);
+	}
+
+	[HttpPut("{id}")]
+	[Authorize(KeycloakPolicies.BookingManager)]
+	[EndpointName("BookingUpdateTenant")]
+	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateTenantResponse))]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IResult> UpdateTenant([FromRoute] Guid id, [FromBody] UpdateTenantQuery query)
+	{
+		query.SetId(id);
 		var result = await _mediator.Send(query);
 		return Results.Ok(result);
 	}
