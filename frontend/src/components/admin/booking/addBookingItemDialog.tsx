@@ -50,5 +50,6 @@ export default function AddBookingItemDialog({children, onCreateSuccess}: IProps
 function mapFormToCreateTenantId(form: FormSchema): CreateTenantIdQuery {
 	return {
 		tenantId: form.tenantId,
+		forPublicUse: form.forPublicUse,
 	}
 }

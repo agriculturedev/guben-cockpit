@@ -5,9 +5,10 @@ type BookingIntegrationProps = {
   tenantId: string;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   onDone?: () => void;
+  privateTenant?: boolean;
 };
 
-export default function BookingIntegration({ tenantId, setLoading, onDone }: BookingIntegrationProps) {
+export default function BookingIntegration({ tenantId, setLoading, onDone, privateTenant = false }: BookingIntegrationProps) {
   const addBooking = useBookingStore((state) => state.addBookings);
 
   useEffect(() => {
@@ -55,7 +56,9 @@ export default function BookingIntegration({ tenantId, setLoading, onDone }: Boo
           const imgUrl = el.querySelector("img")?.getAttribute("src") || "/images/guben-city-booking-card-placeholder.png";
 
           let category = "room";
-          if (flags.includes("Sport")) {
+          if (privateTenant) {
+            category = "private";
+          } else if (flags.includes("Sport")) {
             category = "sport";
           } else if (el.classList.contains("bt-resource")) {
             category = "resource";

@@ -118,6 +118,7 @@ export type CreateProjectResponse = {
 
 export type CreateTenantIdQuery = {
   tenantId: string;
+  forPublicUse?: boolean | null;
 };
 
 export type CreateTenantIdResponse = Record<string, any>;
@@ -234,7 +235,10 @@ export type FooterItemResponse = {
 };
 
 export type GeoDataSourceResponse = {
-  id: string;
+  /**
+   * @format uuid
+   */
+  id?: string;
   path: string;
   isValidated: boolean;
   isPublic: boolean;
@@ -242,14 +246,6 @@ export type GeoDataSourceResponse = {
    * @format int32
    */
   type: number;
-};
-
-export type GeoDataSourceType = {
-  name: string | null;
-  /**
-   * @format int32
-   */
-  value: number;
 };
 
 export type GetAllBusinessesResponse = {
@@ -396,6 +392,14 @@ export type GetMyProjectsResponse = {
   results: ProjectResponse[];
 };
 
+export type GetPrivateTenantIdsResponse = {
+  tenants: TenantResponse[];
+};
+
+export type GetPublicTenantIdsResponse = {
+  tenants: TenantResponse[];
+};
+
 export type GetTopicsResponse = {
   topics: TopicResponse[];
 };
@@ -518,6 +522,7 @@ export type TenantResponse = {
    */
   id: string;
   tenantId: string;
+  forPublicUse?: boolean | null;
 };
 
 export type TopicResponse = {
@@ -611,11 +616,16 @@ export type UpdateProjectQuery = {
   imageCredits?: string | null;
 };
 
-export type UploadWfsQuery = {
-  isPublic: boolean;
-  file: IFormFile;
-  type: GeoDataSourceType;
+export type UpdateTenantQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  tenantId: string;
+  forPublicUse?: boolean | null;
 };
+
+export type UpdateTenantResponse = Record<string, any>;
 
 export type UpsertButtonQuery = {
   title: string;
@@ -651,3 +661,7 @@ export type UserResponse = {
 };
 
 export type ValidateGeoDataSourceResponse = Record<string, any>;
+
+export type ValidateRequest = {
+  isValid?: boolean;
+};

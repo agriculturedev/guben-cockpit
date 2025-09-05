@@ -66,7 +66,10 @@ interface Resources {
     "deletedSuccess": "Mandanten-ID wurde erfolgreich gelöscht",
     "bookingPlatform": "Buchungs Platform",
     "notBookable": "Das Buchungsobjekt ist aktuell nicht buchbar",
-    "AllBookings": "Alle Buchungen"
+    "AllBookings": "Alle Buchungen",
+    "ForPublicUse": "Für öffentliche Nutzung",
+    "PrivateBookings": "Private Buchungen",
+    "Edit": "Mandanten-ID bearbeiten"
   },
   "common": {
     "Actions": "Aktionen",

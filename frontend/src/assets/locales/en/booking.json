@@ -65,5 +65,8 @@
   "deletedSuccess": "Tenant-ID successfully deleted",
   "bookingPlatform": "Booking Platform",
   "notBookable": "The Bookable Object is currently not bookable",
-  "AllBookings": "All Bookings"
+  "AllBookings": "All Bookings",
+  "ForPublicUse": "For Public Usage",
+  "PrivateBookings": "Private Bookings",
+  "Edit": "Edit Tenant-ID"
 }
