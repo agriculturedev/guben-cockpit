@@ -41,7 +41,6 @@ export default function CreateDropdownDialog({
   const { refetch } = useDashboardDropdownGetAll({});
   const [title, setTitle] = useState("");
   const [type, setType] = useState<DropdownType>(defaultType);
-  const [link, setLink] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
 
   const mutation = useDashboardDropdownCreate({
@@ -59,11 +58,11 @@ export default function CreateDropdownDialog({
       mutation.mutate({
         body: {
           title,
-          link: link || undefined,
+          isLink: type === "link",
         },
       });
     },
-    [mutation, title, link],
+    [mutation, title, type],
   );
 
   return (
@@ -105,20 +104,6 @@ export default function CreateDropdownDialog({
               </SelectContent>
             </Select>
           </div>
-
-          {type === "link" && (
-            <div className="grid gap-2">
-              <Label htmlFor="dropdown-link">{t("LinkUrl")}</Label>
-              <Input
-                id="dropdown-link"
-                type="text"
-                placeholder="https://example.com"
-                value={link}
-                onChange={(e) => setLink(e.target.value)}
-                required
-              />
-            </div>
-          )}
         </form>
 
         <DialogFooter className="mt-2">

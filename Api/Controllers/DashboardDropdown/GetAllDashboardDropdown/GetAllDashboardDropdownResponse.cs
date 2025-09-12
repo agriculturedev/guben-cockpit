@@ -1,5 +1,6 @@
 using System.Globalization;
 using Api.Controllers.DashboardTabs.Shared;
+using Api.Controllers.DropdownLink.Shared;
 using Api.Infrastructure.Translations;
 using Domain;
 using Domain.DashboardDropdown;
@@ -17,14 +18,16 @@ public struct DashboardDropdownResponse
     public required Guid Id { get; set; }
     public required string Title { get; set; }
     public required int Rank { get; set; }
-    public string? Link { get; set; }
-    public IEnumerable<DashboardTabResponse> Tabs { get; set; }
+    public bool IsLink { get; set; }
+    public IEnumerable<DashboardTabResponse>? Tabs { get; set; }
+    public IEnumerable<DropdownLinkResponse>? Links { get; set; }
 
 
     public static DashboardDropdownResponse Map(
         DashbaordDropdown dashbaordDropdown,
         CultureInfo culture,
-        IEnumerable<DashboardTabResponse>? tabs = null
+        IEnumerable<DashboardTabResponse>? tabs = null,
+        IEnumerable<DropdownLinkResponse>? links = null
     )
     {
         var i18NData = dashbaordDropdown.Translations.GetTranslation(culture);
@@ -36,8 +39,9 @@ public struct DashboardDropdownResponse
             Id = dashbaordDropdown.Id,
             Title = i18NData.Title,
             Rank = dashbaordDropdown.Rank,
-            Link = dashbaordDropdown.Link,
-            Tabs = tabs ?? Enumerable.Empty<DashboardTabResponse>()
+            IsLink = dashbaordDropdown.IsLink,
+            Tabs = tabs,
+            Links = links
         };
     }
 }

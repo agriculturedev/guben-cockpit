@@ -245,4 +245,7 @@ value   : The object must be serialized into a byte array
   <data name="TenantIdNotFound" xml:space="preserve">
     <value>Tenant ID could not be found</value>
   </data>
+  <data name="DropdownLinkNotFound" xml:space="preserve">
+    <value>Dropdown link not found</value>
+  </data>
 </root>

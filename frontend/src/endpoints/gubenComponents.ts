@@ -2175,6 +2175,101 @@ export const useDashboardDropdownDelete = (
   });
 };
 
+export type DropdownLinkCreateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DropdownLinkCreateVariables = {
+  body: Schemas.CreateDropdownLinkQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDropdownLinkCreate = (
+  variables: DropdownLinkCreateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateDropdownLinkResponse,
+    DropdownLinkCreateError,
+    Schemas.CreateDropdownLinkQuery,
+    {},
+    {},
+    {}
+  >({ url: "/dropdownlink", method: "post", ...variables, signal });
+
+export const useDropdownLinkCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateDropdownLinkResponse,
+      DropdownLinkCreateError,
+      DropdownLinkCreateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateDropdownLinkResponse,
+    DropdownLinkCreateError,
+    DropdownLinkCreateVariables
+  >({
+    mutationFn: (variables: DropdownLinkCreateVariables) =>
+      fetchDropdownLinkCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DropdownLinkDeletePathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type DropdownLinkDeleteError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DropdownLinkDeleteVariables = {
+  pathParams: DropdownLinkDeletePathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDropdownLinkDelete = (
+  variables: DropdownLinkDeleteVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteDropdownLinkResponse,
+    DropdownLinkDeleteError,
+    undefined,
+    {},
+    {},
+    DropdownLinkDeletePathParams
+  >({ url: "/dropdownlink/{id}", method: "delete", ...variables, signal });
+
+export const useDropdownLinkDelete = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteDropdownLinkResponse,
+      DropdownLinkDeleteError,
+      DropdownLinkDeleteVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteDropdownLinkResponse,
+    DropdownLinkDeleteError,
+    DropdownLinkDeleteVariables
+  >({
+    mutationFn: (variables: DropdownLinkDeleteVariables) =>
+      fetchDropdownLinkDelete({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type CategoriesGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;

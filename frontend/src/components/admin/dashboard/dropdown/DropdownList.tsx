@@ -6,7 +6,7 @@ import { useDashboardDropdownGetAll } from "@/endpoints/gubenComponents";
 
 import { DeleteDropdownButton } from "./DeleteDropdownButton";
 import { DropdownTabsList } from "../dropdownTab/DropdownTabsList";
-import { DropdownLinkItem } from "./DropdownLinkItem";
+import { DropdownLinkList } from "../dropdownLink/DropdownLinkList";
 
 export default function DropdownList() {
   const { t } = useTranslation(["dashboard", "common"]);
@@ -48,27 +48,31 @@ export default function DropdownList() {
                   <div
                     className={cn(
                       "px-2 py-0.5 text-xs font-medium rounded-full border inline-flex items-center justify-center",
-                      dd.link
+                      dd.isLink
                         ? "bg-blue-100 text-blue-700 border-blue-200"
                         : "bg-gray-100 text-gray-700 border-gray-200",
                     )}
                   >
-                    {dd.link ? "Link" : "Tabs"}
+                    {dd.isLink ? "Links" : "Tabs"}
                   </div>
 
                   <DeleteDropdownButton dropdownId={dd.id} refetch={refetch} />
                 </div>
               </div>
 
-              {!dd.link && (
+              {dd.isLink ? (
+                <DropdownLinkList
+                  dropdownId={dd.id}
+                  links={dd.links}
+                  refetch={refetch}
+                />
+              ) : (
                 <DropdownTabsList
                   dropdownId={dd.id}
                   tabs={dd.tabs}
                   refetch={refetch}
                 />
               )}
-
-              {dd.link && <DropdownLinkItem url={dd.link} />}
             </Card>
           ))}
         </div>

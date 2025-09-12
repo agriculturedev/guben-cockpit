@@ -52,7 +52,7 @@ export type CreateDashboardTabResponse = Record<string, any>;
 
 export type CreateDashboardDropdownQuery = {
   title: string;
-  link?: string;
+  isLink: boolean;
 }
 
 export type CreateDashboardDropdownResponse = Record<string, any>;
@@ -63,6 +63,32 @@ export type GetAllDashboardDropdownResponse = {
   dashboardDropdowns: DashboardDropdownResponse[];
 }
 
+export type CreateDropdownLinkQuery = {
+  title: string;
+  link: string;
+  /**
+   * @format uuid
+   */
+  dropdownId: string;
+};
+
+export type CreateDropdownLinkResponse = Record<string, any>;
+
+export type DeleteDropdownLinkResponse = Record<string, any>;
+
+export type DropdownLinkResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  title: string;
+  /**
+   * @format int32
+   */
+  sequence: number;
+  link: string;
+}
+
 export type DashboardDropdownResponse = {
   /**
    * @format uuid
@@ -70,8 +96,9 @@ export type DashboardDropdownResponse = {
   id: string;
   title: string;
   rank: number;
+  isLink: boolean;
   tabs?: DashboardTabResponse[];
-  link?: string | null;
+  links?: DropdownLinkResponse[];
 }
 
 export type UpdateCardSequenceQuery = {

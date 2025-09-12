@@ -22,9 +22,9 @@ public sealed class DashboardDropdownConfiguration : IEntityTypeConfiguration<Da
       .HasConversion(converter)
       .Metadata.SetValueComparer(comparer);
 
-    builder.Property(e => e.Link);        // nullable
+    builder.Property(e => e.IsLink);
     builder.Property(e => e.Rank).IsRequired();
 
-    builder.HasIndex(e => e.Rank);        // ordering
+    builder.HasIndex(e => e.Rank);
   }
 }

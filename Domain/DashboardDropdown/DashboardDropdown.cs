@@ -8,19 +8,19 @@ namespace Domain.DashboardDropdown;
 public sealed class DashbaordDropdown : Entity<Guid>
 {
     public Dictionary<string, DashboardDropdownI18NData> Translations { get; private set; } = new();
-    public string? Link { get; private set; }
+    public bool IsLink { get; private set; }
     public int Rank { get; private set; }
 
-    private DashbaordDropdown(int rank, string? link)
+    private DashbaordDropdown(bool isLink, int rank)
     {
         Id = Guid.CreateVersion7();
+        IsLink = isLink;
         Rank = rank;
-        Link = link;
     }
 
-    public static Result<DashbaordDropdown> Create(string title, CultureInfo cultureInfo, int rank = 0, string? link = null)
+    public static Result<DashbaordDropdown> Create(string title, CultureInfo cultureInfo, bool isLink, int rank = 0)
     {
-        var dd = new DashbaordDropdown(rank, link);
+        var dd = new DashbaordDropdown(isLink, rank);
         var updateResult = dd.UpdateTranslation(title, cultureInfo);
         if (updateResult.IsFailure)
             return updateResult;
@@ -28,13 +28,13 @@ public sealed class DashbaordDropdown : Entity<Guid>
         return dd;
     }
 
-    public Result Update(string title, CultureInfo cultureInfo, string? link, int rank)
+    public Result Update(string title, CultureInfo cultureInfo, bool isLink, int rank)
     {
         var tr = UpdateTranslation(title, cultureInfo);
         if (tr.IsFailure)
             return tr;
 
-        Link = string.IsNullOrWhiteSpace(link) ? null : link;
+        IsLink = isLink;
         Rank = rank;
         return Result.Ok();
     }

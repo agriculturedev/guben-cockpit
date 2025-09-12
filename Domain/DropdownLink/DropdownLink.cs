@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json.Serialization;
 using Shared.Domain;
 using Shared.Domain.Validation;
 
@@ -11,16 +12,17 @@ public sealed class DropdownLink : Entity<Guid>
     public int Sequence { get; private set; }
     public Guid DropdownId { get; private set; }
 
-    private DropdownLink(string link, int sequence)
+    private DropdownLink(string link, int sequence, Guid dropdownId)
     {
         Id = Guid.CreateVersion7();
         Link = link;
         Sequence = sequence;
+        DropdownId = dropdownId;
     }
 
-    public static Result<DropdownLink> Create(string title, CultureInfo cultureInfo, string link, int sequence = 0)
+    public static Result<DropdownLink> Create(string title, CultureInfo cultureInfo, string link, int sequence = 0, Guid dropdownId = default)
     {
-        var dd = new DropdownLink(link, sequence);
+        var dd = new DropdownLink(link, sequence, dropdownId);
         var updateResult = dd.UpdateTranslation(title, cultureInfo);
         if (updateResult.IsFailure)
             return updateResult;
@@ -53,6 +55,8 @@ public sealed class DropdownLink : Entity<Guid>
 public sealed class DropdownLinkI18NData
 {
     public string Title { get; private set; }
+
+    [JsonConstructor]
     private DropdownLinkI18NData(string title) { Title = title; }
 
     public static Result<DropdownLinkI18NData> Create(string title)

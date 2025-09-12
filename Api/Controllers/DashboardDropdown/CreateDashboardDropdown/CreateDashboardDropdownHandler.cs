@@ -21,7 +21,7 @@ public class CreateDashboardDropdownHandler : ApiRequestHandler<CreateDashboardD
     {
         int nextRank = _dashboardDropdownRepository.GetNextRank();
 
-        var (result, dashboardDropdown) = DashbaordDropdown.Create(request.Title, _culture, nextRank, request.Link);
+        var (result, dashboardDropdown) = DashbaordDropdown.Create(request.Title, _culture, request.IsLink, nextRank);
         result.ThrowIfFailure();
 
         await _dashboardDropdownRepository.SaveAsync(dashboardDropdown);
