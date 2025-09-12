@@ -34,7 +34,7 @@ export const DeleteDashboardCardButton = ({dashboardTabId, cardId, refetch}: Del
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DeleteIconButton tooltip={t("Cards.Delete")} dialogTrigger={true} />
-      <DialogContent>
+      <DialogContent overlayClassName="bg-black/40">
         <DialogHeader>
           <DialogTitle>{t("Cards.Delete")}</DialogTitle>
         </DialogHeader>

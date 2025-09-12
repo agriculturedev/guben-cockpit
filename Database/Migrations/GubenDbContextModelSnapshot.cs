@@ -54,9 +54,34 @@ namespace Database.Migrations
                     b.ToTable("Category", "Guben");
                 });
 
+            modelBuilder.Entity("Domain.DashboardDropdown.DashbaordDropdown", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsLink")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Rank")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Translations")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Rank");
+
+                    b.ToTable("DashboardDropdown", "Guben");
+                });
+
             modelBuilder.Entity("Domain.DashboardTab.DashboardTab", b =>
                 {
                     b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("DropdownId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("MapUrl")
@@ -72,7 +97,35 @@ namespace Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DropdownId", "Sequence");
+
                     b.ToTable("DashboardTab", "Guben");
+                });
+
+            modelBuilder.Entity("Domain.DropdownLink.DropdownLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("DropdownId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Sequence")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Translations")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DropdownId", "Sequence");
+
+                    b.ToTable("DropdownLink", "Guben");
                 });
 
             modelBuilder.Entity("Domain.Events.Event", b =>
@@ -379,6 +432,11 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Domain.DashboardTab.DashboardTab", b =>
                 {
+                    b.HasOne("Domain.DashboardDropdown.DashbaordDropdown", null)
+                        .WithMany()
+                        .HasForeignKey("DropdownId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.OwnsMany("Domain.DashboardTab.InformationCard", "InformationCards", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -389,6 +447,9 @@ namespace Database.Migrations
 
                             b1.Property<string>("ImageUrl")
                                 .HasColumnType("text");
+
+                            b1.Property<int>("Sequenece")
+                                .HasColumnType("integer");
 
                             b1.Property<string>("Translations")
                                 .IsRequired()
@@ -427,6 +488,15 @@ namespace Database.Migrations
                         });
 
                     b.Navigation("InformationCards");
+                });
+
+            modelBuilder.Entity("Domain.DropdownLink.DropdownLink", b =>
+                {
+                    b.HasOne("Domain.DashboardDropdown.DashbaordDropdown", null)
+                        .WithMany()
+                        .HasForeignKey("DropdownId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Events.Event", b =>
