@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import {
   DashboardDropdownResponse,
   DashboardTabResponse,
+  DropdownLinkResponse,
 } from "@/endpoints/gubenSchemas";
 import {
   DropdownMenu,
@@ -51,13 +52,14 @@ export const DashboardDropdownTabs = ({
   return (
     <div>
       <div className="flex flex-row font-bold pl-2">
-        {dropdowns.map(({ id, title, link, tabs }) => (
+        {dropdowns.map(({ id, title, tabs, links, isLink }) => (
           <DashboardDropdownMenu
             key={id}
             title={title}
-            link={link}
             activeTab={activeTab}
             tabs={tabs}
+            links={links}
+            isLink={isLink}
             onTabClick={(tabId) => setActiveTab(tabId)}
           />
         ))}
@@ -80,15 +82,17 @@ export const DashboardDropdownTabs = ({
 interface DashboardDropdownMenuProps {
   title: string;
   activeTab: string | null;
-  link?: string | null;
+  isLink: boolean;
   tabs?: { id: string; title: string }[];
+  links?: DropdownLinkResponse[];
   onTabClick?: (tabId: string) => void;
 }
 
 function DashboardDropdownMenu({
   title,
   tabs,
-  link,
+  links,
+  isLink,
   activeTab,
   onTabClick,
 }: DashboardDropdownMenuProps) {
@@ -101,17 +105,27 @@ function DashboardDropdownMenu({
     "transition-colors",
   );
 
-  if (link) {
-    return (
-      <Button
-        variant="ghost"
-        className={baseButtonClasses}
-        onClick={() => window.open(link, "_blank")}
-      >
-        {title}
-      </Button>
-    );
-  }
+  const items = isLink
+    ? (links ?? []).map((l) => ({
+        key: l.id,
+        label: l.title,
+        onSelect: () => {
+          window.open(l.link, "_blank");
+          setOpen(false);
+        },
+        active: false,
+      }))
+    : (tabs ?? []).map((t) => ({
+        key: t.id,
+        label: t.title,
+        onSelect: () => {
+          onTabClick?.(t.id);
+          setOpen(false);
+        },
+        active: t.id === activeTab,
+      }));
+
+  if (!items.length) return null;
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -135,33 +149,23 @@ function DashboardDropdownMenu({
         collisionPadding={8}
         className="w-56 p-1 rounded-md border bg-popover text-popover-foreground shadow-md"
       >
-        {tabs && tabs.length > 0 ? (
-          <ScrollArea className="max-h-72">
-            <div className="py-1">
-              {tabs.map((t, i) => {
-                const active = t.id === activeTab;
-                return (
-                  <DropdownMenuItem
-                    key={t.id}
-                    onClick={() => {
-                      onTabClick?.(t.id);
-                      setOpen(false);
-                    }}
-                    className={cn(
-                      "cursor-pointer rounded-sm",
-                      "focus:bg-accent focus:text-accent-foreground",
-                      active && "font-semibold",
-                    )}
-                  >
-                    <span className="truncate">{t.title}</span>
-                  </DropdownMenuItem>
-                );
-              })}
-            </div>
-          </ScrollArea>
-        ) : (
-          <div className="px-3 py-2 text-sm text-muted-foreground">No tabs</div>
-        )}
+        <ScrollArea className="max-h-72">
+          <div className="py-1">
+            {items.map((item) => (
+              <DropdownMenuItem
+                key={item.key}
+                onClick={item.onSelect}
+                className={cn(
+                  "cursor-pointer rounded-sm",
+                  "focus:bg-accent focus:text-accent-foreground",
+                  item.active && "font-semibold",
+                )}
+              >
+                <span className="truncate">{item.label}</span>
+              </DropdownMenuItem>
+            ))}
+          </div>
+        </ScrollArea>
       </DropdownMenuContent>
     </DropdownMenu>
   );

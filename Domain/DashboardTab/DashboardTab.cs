@@ -12,20 +12,30 @@ public sealed class DashboardTab : Entity<Guid>
   public int Sequence { get; private set; }
   public string MapUrl { get; private set; }
   public Guid? DropdownId { get; private set; }
+  public Guid? EditorUserId { get; private set; }
   private readonly List<InformationCard> _informationCards = [];
   public IReadOnlyCollection<InformationCard> InformationCards => new ReadOnlyCollection<InformationCard>(_informationCards);
 
-  private DashboardTab(int sequence, string mapUrl, Guid? dropdownId)
+  private DashboardTab(int sequence, string mapUrl, Guid? dropdownId, Guid? editorUserId = null)
   {
     Id = Guid.CreateVersion7();
     Sequence = sequence;
     MapUrl = mapUrl;
     DropdownId = dropdownId;
+    EditorUserId = editorUserId;
   }
 
-  public static Result<DashboardTab> Create(string title, int sequence, string mapUrl, Guid? dropdownId, List<InformationCard> informationCards, CultureInfo cultureInfo)
+  public static Result<DashboardTab> Create(
+    string title,
+    int sequence,
+    string mapUrl,
+    Guid? dropdownId,
+    List<InformationCard> informationCards,
+    CultureInfo cultureInfo,
+    Guid? editorUserId = null
+  )
   {
-    var dashboardTab = new DashboardTab(sequence, mapUrl, dropdownId);
+    var dashboardTab = new DashboardTab(sequence, mapUrl, dropdownId, editorUserId);
     dashboardTab.AddInformationCards(informationCards);
 
     var updateResult = dashboardTab.UpdateTranslation(title, cultureInfo);
@@ -63,7 +73,7 @@ public sealed class DashboardTab : Entity<Guid>
 
   public void AssignToDropdown(Guid? dropdownId)
   {
-    DropdownId = dropdownId;  
+    DropdownId = dropdownId;
   }
 
   public void AddInformationCards(List<InformationCard> informationCards)
@@ -88,6 +98,17 @@ public sealed class DashboardTab : Entity<Guid>
     _informationCards.Remove(infoCard);
     return Result.Ok();
   }
+  
+  public Result AssignEditor(Guid editorUserId)
+  {
+    if (editorUserId == Guid.Empty)
+      return Result.Error(TranslationKeys.UserNotFound);
+
+    EditorUserId = editorUserId;
+    return Result.Ok();
+  }
+
+  public void ClearEditor() => EditorUserId = null;
 }
 
 public sealed class DashboardTabI18NData

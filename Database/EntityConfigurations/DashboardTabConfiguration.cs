@@ -30,6 +30,10 @@ public class DashboardTabConfiguration : IEntityTypeConfiguration<DashboardTab>
     builder.Property(e => e.Sequence);
     builder.Property(e => e.MapUrl);
     builder.Property(e => e.DropdownId).IsRequired(false);
+    
+    builder.Property(e => e.EditorUserId).IsRequired(false);
+    builder.HasIndex(e => e.EditorUserId);
+
     builder.HasIndex(e => new { e.DropdownId, e.Sequence });
 
     builder.HasOne<DashbaordDropdown>()

@@ -46,6 +46,7 @@ export type CreateDashboardTabQuery = {
   title: string;
   mapUrl: string;
   dropdownId: string;
+  editorEmail?: string;
 };
 
 export type CreateDashboardTabResponse = Record<string, any>;
@@ -208,6 +209,7 @@ export type DashboardTabResponse = {
    */
   sequence: number;
   mapUrl: string;
+  editorEmail?: string;
   informationCards?: InformationCardResponse[];
 };
 

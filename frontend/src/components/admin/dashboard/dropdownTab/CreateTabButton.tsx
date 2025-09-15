@@ -43,6 +43,7 @@ export const CreateTabButton = ({
       dropdownId,
       mapUrl: values.mapUrl,
       title: values.title,
+      editorEmail: values.editorEmail,
     };
 
     mutation.mutate({ body: newTab });

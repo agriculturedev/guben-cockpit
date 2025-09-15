@@ -18,45 +18,53 @@ interface Props extends WithClassName {
 export const InfoCard = ({ card, className }: Props) => {
   const [open, setOpen] = useState(false);
 
-  const infoContent = (fullText: boolean) => (
-    <>
-      {card.imageUrl && (
+  const ImageBlock = () =>
+    card.imageUrl ? (
+      <div className="relative w-full aspect-video rounded overflow-hidden">
         <BaseImgTag
           src={card.imageUrl}
           alt={card.imageAlt ?? undefined}
-          className={"rounded h-[8rem]"}
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
         />
-      )}
+      </div>
+    ) : null;
 
-      <h1 className="text-xl font-bold text-gubenAccent text-center font-rubik">
+  const infoContent = (fullText: boolean) => (
+    <>
+      <ImageBlock />
+
+      <h1 className="text-xl font-bold text-gubenAccent text-center font-rubik mt-2">
         {card.title}
       </h1>
 
-      <p
+      <Markdown
         className={cn(
-          "text-gray-500",
-          !fullText && "leading-relaxed line-clamp-2 overflow-hidden",
+          "[&_*]:font-rubik text-gray-500",
+          !fullText && "line-clamp-2 leading-relaxed overflow-hidden pb-1",
         )}
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
       >
-        <Markdown
-          className="[&_*]:font-rubik"
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]}
-        >
-          {card.description}
-        </Markdown>
-      </p>
+        {card.description}
+      </Markdown>
 
       {card.button?.url && card.button?.title && (
-        <div className={"flex justify-center"}>
-          <Button variant={"destructive"}>
-            <a
-              href={card.button?.url}
-              target={card.button.openInNewTab ? "_blank" : "_self"}
-              className="font-rubik"
-            >
-              {card.button?.title}
-            </a>
+        <div className={"flex justify-center mt-2"}>
+          <Button
+            variant={"destructive"}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (card.button?.url) {
+                if (card.button.openInNewTab) {
+                  window.open(card.button.url, "_blank");
+                } else {
+                  window.location.href = card.button.url;
+                }
+              }
+            }}
+          >
+            <p className="font-rubik">{card.button?.title}</p>
           </Button>
         </div>
       )}
@@ -68,7 +76,7 @@ export const InfoCard = ({ card, className }: Props) => {
       <Card
         onClick={() => setOpen(true)}
         className={cn(
-          "flex flex-col bg-white p-4 gap-1 mb-4 rounded-lg shadow-lg break-inside-avoid h-[18rem]",
+          "flex flex-col bg-white p-4 gap-1 mb-4 rounded-lg shadow-lg break-inside-avoid h-[20rem]",
           className,
         )}
       >
