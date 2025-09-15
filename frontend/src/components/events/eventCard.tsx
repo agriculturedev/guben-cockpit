@@ -6,6 +6,7 @@ import { createContext, useCallback, useContext, useMemo, useState } from "react
 import { useTranslation } from "react-i18next";
 import { getEventImage } from "@/lib/DefaultEventImage";
 import DOMPurify from "dompurify";
+import { TranslatedHtml, TranslatedText } from "@/utilities/translateUtils";
 
 type TEventCardContext = { event: EventResponse }
 const EventCardContext = createContext<TEventCardContext | undefined>(undefined);
@@ -46,6 +47,14 @@ function EventCard({event}: { event: EventResponse }) {
 
 EventCard.Title = () => {
   const {event} = useEventCard();
+  if ((event as any).isBookingEvent) {
+    return (
+      <h2>
+        <TranslatedText text={event.title}/>
+      </h2>
+    )
+  }
+
   return (
     <h2>{event.title}</h2>
   )
@@ -55,9 +64,9 @@ EventCard.Description = () => {
   const {event} = useEventCard();
   if ((event as any).isBookingEvent) {
     return (
-      <div
-        className="text-muted-foreground line-clamp-2"
-        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(event.description) }}
+      <TranslatedHtml
+        className={"text-muted-foreground line-clamp-2"}
+        text={event.description}
       />
     );
   }
