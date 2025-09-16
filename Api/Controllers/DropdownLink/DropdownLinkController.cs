@@ -1,8 +1,9 @@
 using System.Net.Mime;
 using Api.Controllers.DropdownLink.CreateDropdownLink;
 using Api.Controllers.DropdownLink.DeleteDropdownLink;
-
+using Api.Infrastructure.Keycloak;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.DropdownLink;
@@ -24,6 +25,7 @@ public class DropdownLinkController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(KeycloakPolicies.DashboardManager)]
     [EndpointName("DropdownLinkCreate")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateDropdownLinkResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -34,6 +36,7 @@ public class DropdownLinkController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(KeycloakPolicies.DashboardManager)]
     [EndpointName("DropdownLinkDelete")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteDropdownLinkResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

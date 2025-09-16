@@ -16,7 +16,8 @@ public class DashboardTabHandlerTests
     using (var context = dbContextFactory.CreateDbContext())
     {
       var repository = new DashboardRepository(dbContextFactory);
-      var handler = new CreateDashboardTabHandler(repository);
+      var userRepository = new UserRepository(dbContextFactory);
+      var handler = new CreateDashboardTabHandler(repository, userRepository);
 
       var query = new CreateDashboardTabQuery { Title = "Test Tab", MapUrl = "https://test.com", DropdownId = Guid.NewGuid() };
 

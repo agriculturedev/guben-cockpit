@@ -68,9 +68,10 @@ export function DropdownTabsList({
                   <ShowCardsButton
                     tabId={tab.id}
                     informationCards={tab.informationCards ?? []}
+                    canEdit={tab.canEdit}
                     refetch={refetch}
                   />
-                  <EditTabButton tab={tab} refetch={refetch} />
+                  {tab.canEdit && <EditTabButton tab={tab} refetch={refetch} />}
                   <DeleteTabButton tabId={tab.id} refetch={refetch} />
                 </div>
               </div>

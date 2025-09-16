@@ -2,7 +2,9 @@ using System.Net.Mime;
 using Api.Controllers.DashboardDropdown.CreateDashboardDropdown;
 using Api.Controllers.DashboardDropdown.DeleteDashboardDropdown;
 using Api.Controllers.DashboardDropdown.GetAllDashboardDropdown;
+using Api.Infrastructure.Keycloak;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.DashboardDropdown;
@@ -34,6 +36,7 @@ public class DashbaordDropdownController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(KeycloakPolicies.DashboardManager)]
     [EndpointName("DashboardDropdownCreate")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateDashboardDropdownResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -44,6 +47,7 @@ public class DashbaordDropdownController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(KeycloakPolicies.DashboardManager)]
     [EndpointName("DashboardDropdownDelete")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteDashboardDropdownResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

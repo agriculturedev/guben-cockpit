@@ -13,6 +13,7 @@ import { DeleteDashboardCardButton } from "@/components/dashboard/cards/deleteDa
 interface DropdownTabCardsListProps {
   tabId: string;
   informationCards: InformationCardResponse[];
+  canEdit?: boolean;
   refetch?: () => Promise<any>;
   onSuccess?: () => void;
 }
@@ -20,6 +21,7 @@ interface DropdownTabCardsListProps {
 export function DropdownTabCardsList({
   tabId,
   informationCards,
+  canEdit,
   refetch,
   onSuccess,
 }: DropdownTabCardsListProps) {
@@ -69,30 +71,35 @@ export function DropdownTabCardsList({
           axis="y"
           renderItem={(item, handle) => (
             <div className="relative">
-              <button
-                type="button"
-                {...handle.attributes}
-                {...handle.listeners}
-                className="cursor-grab active:cursor-grabbing p-1 rounded hover:bg-accent absolute top-[50%] -translate-y-1/2 right-2 z-10"
-                aria-label={t("DragToReorder")}
-                title={t("DragToReorder")}
-              >
-                <GripVertical className="h-4 w-4" />
-              </button>
+              {canEdit && (
+                <button
+                  type="button"
+                  {...handle.attributes}
+                  {...handle.listeners}
+                  className="cursor-grab active:cursor-grabbing p-1 rounded hover:bg-accent absolute top-[50%] -translate-y-1/2 right-2 z-10"
+                  aria-label={t("DragToReorder")}
+                  title={t("DragToReorder")}
+                >
+                  <GripVertical className="h-4 w-4" />
+                </button>
+              )}
+
               <InfoCard card={item} />
 
-              <div className="flex absolute top-2 right-10 gap-2">
-                <EditDashboardCardButton
-                  card={item}
-                  dashboardTabId={tabId}
-                  refetch={refetchCards}
-                />
-                <DeleteDashboardCardButton
-                  cardId={item.id}
-                  dashboardTabId={tabId}
-                  refetch={refetchCards}
-                />
-              </div>
+              {canEdit && (
+                <div className="flex absolute top-2 right-10 gap-2">
+                  <EditDashboardCardButton
+                    card={item}
+                    dashboardTabId={tabId}
+                    refetch={refetchCards}
+                  />
+                  <DeleteDashboardCardButton
+                    cardId={item.id}
+                    dashboardTabId={tabId}
+                    refetch={refetchCards}
+                  />
+                </div>
+              )}
             </div>
           )}
           onReorder={(ids: string[]) => {
@@ -106,16 +113,18 @@ export function DropdownTabCardsList({
         />
       )}
 
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          variant="default"
-          disabled={!isDirty || reorder.isPending}
-          onClick={handleSave}
-        >
-          {t("common:Save")}
-        </Button>
-      </div>
+      {canEdit && (
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant="default"
+            disabled={!isDirty || reorder.isPending}
+            onClick={handleSave}
+          >
+            {t("common:Save")}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

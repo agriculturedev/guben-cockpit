@@ -209,7 +209,7 @@ export type DashboardTabResponse = {
    */
   sequence: number;
   mapUrl: string;
-  editorEmail?: string;
+  canEdit?: boolean;
   informationCards?: InformationCardResponse[];
 };
 

@@ -1,9 +1,13 @@
 using System.Globalization;
 using Api.Controllers.DashboardTabs.Shared;
 using Api.Controllers.DropdownLink.Shared;
+using Api.Infrastructure.Extensions;
+using Domain;
 using Domain.DashboardDropdown.repository;
 using Domain.DashboardTab.repository;
 using Domain.DropdownLink.repository;
+using Domain.Users;
+using Domain.Users.repository;
 using Shared.Api;
 
 namespace Api.Controllers.DashboardDropdown.GetAllDashboardDropdown;
@@ -13,22 +17,36 @@ public class GetAllDashboardDropdownHandler : ApiRequestHandler<GetAllDashboardD
     private readonly IDashboardDropdownRepository _dashboardDropdownRepository;
     private readonly IDashboardRepository _dashboardTabRepository;
     private readonly IDropdownLinkRepository _dropdownLinkRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly CultureInfo _cultureInfo;
 
     public GetAllDashboardDropdownHandler(
         IDashboardDropdownRepository dashboardDropdownRepository,
         IDashboardRepository dashboardTabRepository,
-        IDropdownLinkRepository dropdownLinkRepository
+        IDropdownLinkRepository dropdownLinkRepository,
+        IUserRepository userRepository,
+        IHttpContextAccessor httpContextAccessor
     )
     {
         _dashboardDropdownRepository = dashboardDropdownRepository;
         _dashboardTabRepository = dashboardTabRepository;
         _dropdownLinkRepository = dropdownLinkRepository;
+        _userRepository = userRepository;
+        _httpContextAccessor = httpContextAccessor;
         _cultureInfo = CultureInfo.CurrentCulture;
     }
 
     public override async Task<GetAllDashboardDropdownResponse> Handle(GetAllDashboardDropdownQuery request, CancellationToken cancellationToken)
     {
+        var keycloakId = _httpContextAccessor.HttpContext?.User.GetKeycloakId();
+        if (keycloakId is null)
+            throw new UnauthorizedAccessException(TranslationKeys.UserNotLoggedIn);
+
+        var currentUser = await _userRepository.GetByKeycloakId(keycloakId);
+        if (currentUser is null)
+            throw new ProblemDetailsException(TranslationKeys.UserNotFound);
+
         var dashboardDropdowns = await _dashboardDropdownRepository.GetAllNonTracking();
         var dropdownIds = dashboardDropdowns.Select(d => d.Id).ToList();
         
@@ -50,7 +68,7 @@ public class GetAllDashboardDropdownHandler : ApiRequestHandler<GetAllDashboardD
                 IEnumerable<DashboardTabResponse>? mappedTabs = null;
                 if (tabsByDropdownId.TryGetValue(d.Id, out var ts))
                 {
-                    mappedTabs = ts.Select(t => DashboardTabResponse.Map(t, _cultureInfo)).ToList();
+                    mappedTabs = ts.Select(t => DashboardTabResponse.Map(t, _cultureInfo, currentUser)).ToList();
                 }
 
                 IEnumerable<DropdownLinkResponse>? mappedLinks = null;

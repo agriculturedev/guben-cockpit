@@ -19,12 +19,14 @@ import { CreateDashboardCardButton } from "@/components/dashboard/cards/createDa
 interface ShowCardsButtonProps {
   tabId: string;
   informationCards: InformationCardResponse[];
+  canEdit?: boolean;
   refetch?: () => Promise<any>;
 }
 
 export const ShowCardsButton = ({
   tabId,
   informationCards,
+  canEdit,
   refetch,
 }: ShowCardsButtonProps) => {
   const { t } = useTranslation("dashboard");
@@ -42,10 +44,12 @@ export const ShowCardsButton = ({
       <DialogContent className="min-w-[30vw]">
         <DialogHeader className="mb-4 flex flex-row gap-2 items-center justify-start">
           <DialogTitle>{t("Cards.Cards")}</DialogTitle>
-          <CreateDashboardCardButton
-            dashboardTabId={tabId}
-            onSuccess={refetch}
-          />
+          {canEdit && (
+            <CreateDashboardCardButton
+              dashboardTabId={tabId}
+              onSuccess={refetch}
+            />
+          )}
         </DialogHeader>
 
         <DropdownTabCardsList

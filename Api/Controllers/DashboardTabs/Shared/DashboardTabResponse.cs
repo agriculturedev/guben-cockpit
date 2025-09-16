@@ -2,6 +2,7 @@ using System.Globalization;
 using Api.Infrastructure.Translations;
 using Domain;
 using Domain.DashboardTab;
+using Domain.Users;
 using Shared.Api;
 
 namespace Api.Controllers.DashboardTabs.Shared;
@@ -13,8 +14,9 @@ public struct DashboardTabResponse
   public required int Sequence { get; set; }
   public required string MapUrl { get; set; }
   public IEnumerable<InformationCardResponse> InformationCards { get; set; }
+  public bool CanEdit { get; set; }
 
-  public static DashboardTabResponse Map(DashboardTab dashboardTab, CultureInfo culture)
+  public static DashboardTabResponse Map(DashboardTab dashboardTab, CultureInfo culture, User currentUser)
   {
     var i18NData = dashboardTab.Translations.GetTranslation(culture);
     if (i18NData is null)
@@ -30,6 +32,7 @@ public struct DashboardTabResponse
         .OrderBy(c => c.Sequenece)
         .Select(c => InformationCardResponse.Map(c, culture))
         .ToList(),
+      CanEdit = dashboardTab.EditorUserId.HasValue && dashboardTab.EditorUserId == currentUser.Id
     };
   }
 }
