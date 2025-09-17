@@ -19,7 +19,7 @@ export const useDashboardTabFormSchema = (tab?: DashboardTabResponse) => {
     defaultValues: {
       title: tab?.title ?? "",
       mapUrl: tab?.mapUrl ?? "",
-      editorEmail: tab?.editorEmail ?? "",
+      editorEmail: "",
     },
   })
 
@@ -27,7 +27,7 @@ export const useDashboardTabFormSchema = (tab?: DashboardTabResponse) => {
     form.reset({
       title: tab?.title ?? "",
       mapUrl: tab?.mapUrl ?? "",
-      editorEmail: (tab as any)?.editorEmail ?? "",
+      editorEmail: "",
     });
   }, [tab]);
 

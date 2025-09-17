@@ -20,7 +20,7 @@ function AdminPanel() {
     return <div>Loading...</div>;
   }
 
-  if (user && userHasPermissions(user, [Permissions.DashboardManager])) {
+  if (user && userHasPermissions(user, [Permissions.DashboardManager, Permissions.DashboardEditor])) {
     return <Navigate to="/admin/dashboard" />;
   }
 

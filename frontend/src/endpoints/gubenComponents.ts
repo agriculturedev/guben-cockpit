@@ -2270,6 +2270,56 @@ export const useDropdownLinkDelete = (
   });
 };
 
+export type DropdownLinkEditError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DropdownLinkEditVariables = {
+  body: Schemas.EditDropdownLinkQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDropdownLinkEdit = (
+  variables: DropdownLinkEditVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.EditDropdownLinkResponse,
+    DropdownLinkEditError,
+    Schemas.EditDropdownLinkQuery,
+    {},
+    {},
+    {}
+  >({
+    url: "/dropdownlink",
+    method: "put",
+    ...variables,
+    signal,
+  });
+
+export const useDropdownLinkEdit = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.EditDropdownLinkResponse,
+      DropdownLinkEditError,
+      DropdownLinkEditVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.EditDropdownLinkResponse,
+    DropdownLinkEditError,
+    DropdownLinkEditVariables
+  >({
+    mutationFn: (variables: DropdownLinkEditVariables) =>
+      fetchDropdownLinkEdit({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+
 export type CategoriesGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;

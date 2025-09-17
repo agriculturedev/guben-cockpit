@@ -15,16 +15,18 @@ interface DropdownTabsListProps {
   dropdownId: string;
   refetch: () => Promise<any>;
   tabs?: DashboardTabResponse[];
+  isAdmin?: boolean;
 }
 
 export function DropdownTabsList({
   dropdownId,
   tabs,
   refetch,
+  isAdmin,
 }: DropdownTabsListProps) {
   const { t } = useTranslation(["dashboard", "common"]);
 
-  const createTabButtonElement = (
+  const createTabButtonElement = isAdmin && (
     <CreateTabButton dropdownId={dropdownId} onSuccess={refetch} />
   );
 
@@ -68,11 +70,13 @@ export function DropdownTabsList({
                   <ShowCardsButton
                     tabId={tab.id}
                     informationCards={tab.informationCards ?? []}
-                    canEdit={tab.canEdit}
+                    canEdit={isAdmin || tab.canEdit}
                     refetch={refetch}
                   />
-                  {tab.canEdit && <EditTabButton tab={tab} refetch={refetch} />}
-                  <DeleteTabButton tabId={tab.id} refetch={refetch} />
+                  {isAdmin && <EditTabButton tab={tab} refetch={refetch} />}
+                  {isAdmin && (
+                    <DeleteTabButton tabId={tab.id} refetch={refetch} />
+                  )}
                 </div>
               </div>
             </div>

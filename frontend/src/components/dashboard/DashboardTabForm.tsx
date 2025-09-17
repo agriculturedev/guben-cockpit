@@ -79,7 +79,7 @@ export const DashboardTabForm = ({
             name="editorEmail"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>{t("common:Email")} (optional)</FormLabel>
+                <FormLabel>{t("common:Email")}</FormLabel>
                 <FormControl>
                   <Input
                     type="email"

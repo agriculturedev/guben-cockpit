@@ -30,14 +30,13 @@ public sealed class DropdownLink : Entity<Guid>
         return dd;
     }
 
-    public Result Update(string title, CultureInfo cultureInfo, string link, int sequence)
+    public Result Update(string title, string link, CultureInfo cultureInfo)
     {
         var tr = UpdateTranslation(title, cultureInfo);
         if (tr.IsFailure)
             return tr;
 
         Link = link;
-        Sequence = sequence;
         return Result.Ok();
     }
 

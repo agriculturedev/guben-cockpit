@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using Api.Controllers.DropdownLink.CreateDropdownLink;
 using Api.Controllers.DropdownLink.DeleteDropdownLink;
+using Api.Controllers.DropdownLink.EditDropdownLink;
 using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +31,17 @@ public class DropdownLinkController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateDropdownLinkResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IResult> Create([FromBody] CreateDropdownLinkQuery request)
+    {
+        var result = await _mediator.Send(request);
+        return Results.Ok(result);
+    }
+
+    [HttpPut]
+    [Authorize(KeycloakPolicies.DashboardManager)]
+    [EndpointName("DropdownLinkEdit")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EditDropdownLinkResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IResult> Edit(EditDropdownLinkQuery request)
     {
         var result = await _mediator.Send(request);
         return Results.Ok(result);

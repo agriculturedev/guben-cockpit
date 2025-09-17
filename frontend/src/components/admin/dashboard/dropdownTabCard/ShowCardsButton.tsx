@@ -56,6 +56,7 @@ export const ShowCardsButton = ({
           tabId={tabId}
           informationCards={informationCards}
           refetch={refetch}
+          canEdit={canEdit}
           onSuccess={() => {
             setOpen(false);
           }}

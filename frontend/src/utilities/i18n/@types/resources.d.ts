@@ -194,6 +194,10 @@ interface Resources {
     "EditTab": "Registerkarte bearbeiten",
     "NoCardsYet": "Noch keine Karten",
     "DragToReorder": "Zum Neuordnen ziehen",
+    "AddNewLink": "Neuen Link hinzufügen",
+    "DeleteLink": "Link löschen",
+    "NoLinksYet": "Noch keine Links",
+    "EditLink": "Link bearbeiten",
     "Cards": {
       "Cards": "Karten",
       "Title": "Kartentitel",

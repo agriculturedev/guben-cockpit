@@ -35,6 +35,10 @@
   "EditTab": "Edit tab",
   "NoCardsYet": "No cards yet",
   "DragToReorder": "Drag to reorder",
+  "AddNewLink": "Add new link",
+  "DeleteLink": "Delete link",
+  "NoLinksYet": "No links yet",
+  "EditLink": "Edit link",
   "Cards": {
     "Cards": "Cards",
     "Title": "Card title",

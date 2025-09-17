@@ -74,7 +74,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpPost("{id:guid}/card")]
-  [Authorize(KeycloakPolicies.DashboardManager)]
+  [Authorize(Roles = $"{KeycloakPolicies.DashboardManager},{KeycloakPolicies.DashboardEditor}")]
   [EndpointName("DashboardCreateCard")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddCardToTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -86,7 +86,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpPut("{id:guid}/card/{cardId:guid}")]
-  [Authorize(KeycloakPolicies.DashboardManager)]
+  [Authorize(Roles = $"{KeycloakPolicies.DashboardManager},{KeycloakPolicies.DashboardEditor}")]
   [EndpointName("DashboardCardUpdate")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCardOnTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -100,7 +100,7 @@ public class DashboardTabsController : ControllerBase
 
 
   [HttpDelete("{id:guid}/card/{cardId:guid}")]
-  [Authorize(KeycloakPolicies.DashboardManager)]
+  [Authorize(Roles = $"{KeycloakPolicies.DashboardManager},{KeycloakPolicies.DashboardEditor}")]
   [EndpointName("DashboardCardDelete")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteCardFromTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -111,7 +111,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpPut("{id:guid}/card/reorder")]
-  [Authorize(KeycloakPolicies.DashboardManager)]
+  [Authorize(Roles = $"{KeycloakPolicies.DashboardManager},{KeycloakPolicies.DashboardEditor}")]
   [EndpointName("DashboardCardReorder")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCardSequenceResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]

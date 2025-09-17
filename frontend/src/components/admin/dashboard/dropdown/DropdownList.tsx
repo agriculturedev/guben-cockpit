@@ -8,7 +8,11 @@ import { DeleteDropdownButton } from "./DeleteDropdownButton";
 import { DropdownTabsList } from "../dropdownTab/DropdownTabsList";
 import { DropdownLinkList } from "../dropdownLink/DropdownLinkList";
 
-export default function DropdownList() {
+interface DropdownListProps {
+  isAdmin?: boolean;
+}
+
+export default function DropdownList({ isAdmin }: DropdownListProps) {
   const { t } = useTranslation(["dashboard", "common"]);
   const {
     data: dashboardDropdownResponse,
@@ -53,10 +57,15 @@ export default function DropdownList() {
                         : "bg-gray-100 text-gray-700 border-gray-200",
                     )}
                   >
-                    {dd.isLink ? "Links" : "Tabs"}
+                    {dd.isLink ? t("Link") : t("Tabs")}
                   </div>
 
-                  <DeleteDropdownButton dropdownId={dd.id} refetch={refetch} />
+                  {isAdmin && (
+                    <DeleteDropdownButton
+                      dropdownId={dd.id}
+                      refetch={refetch}
+                    />
+                  )}
                 </div>
               </div>
 
@@ -65,12 +74,14 @@ export default function DropdownList() {
                   dropdownId={dd.id}
                   links={dd.links}
                   refetch={refetch}
+                  isAdmin={isAdmin}
                 />
               ) : (
                 <DropdownTabsList
                   dropdownId={dd.id}
                   tabs={dd.tabs}
                   refetch={refetch}
+                  isAdmin={isAdmin}
                 />
               )}
             </Card>

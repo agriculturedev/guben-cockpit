@@ -48,7 +48,7 @@ export const DeleteLinkButton = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <CustomTooltip text="Delete">
+        <CustomTooltip text={t("common:Delete")}>
           <Button
             type="button"
             variant="ghost"
@@ -62,7 +62,7 @@ export const DeleteLinkButton = ({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete link</DialogTitle>
+          <DialogTitle>{t("DeleteLink")}</DialogTitle>
         </DialogHeader>
 
         <ConfirmationDialogContent

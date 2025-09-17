@@ -90,6 +90,17 @@ export type DropdownLinkResponse = {
   link: string;
 }
 
+export type EditDropdownLinkQuery = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  title: string;
+  link: string;
+};
+
+export type EditDropdownLinkResponse = Record<string, any>;
+
 export type DashboardDropdownResponse = {
   /**
    * @format uuid

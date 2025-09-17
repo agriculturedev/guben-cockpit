@@ -59,12 +59,12 @@ export const CreateLinkButton = ({
           className="w-fit mt-2 flex items-center gap-1"
         >
           <Plus className="h-4 w-4" />
-          Add new link
+          {t("AddNewLink")}
         </Button>
       </DialogTrigger>
       <DialogContent className="min-w-fit">
         <DialogHeader>
-          <DialogTitle>Add new link</DialogTitle>
+          <DialogTitle>{t("AddNewLink")}</DialogTitle>
         </DialogHeader>
         <DropdownLinkForm form={form} onSubmit={onSubmit} />
       </DialogContent>
