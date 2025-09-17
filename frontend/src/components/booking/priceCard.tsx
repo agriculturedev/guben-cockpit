@@ -1,7 +1,7 @@
 import { CircleCheckIcon } from "lucide-react";
-import { Card, CardContent } from "../ui/card";
+import { Card } from "../ui/card";
 import { useTranslation } from "react-i18next";
-import DOMPurify from "dompurify";
+import { TranslatedHtml, TranslatedText } from "@/utilities/translateUtils";
 
 type PriceCardProps = {
   bookingUrl: string;
@@ -30,14 +30,14 @@ export default function ({ bookingUrl, price, title, flags, description, locatio
                 {title}
               </div>
               <hr className="border-2 border-gubenAccent w-2/3" />
-              { description &&
-                <div
+              {description && (
+                <TranslatedHtml
+                  text={description}
                   className={
-                    description
-                      ? (!flags || flags.length === 0 ? "px-5 pb-5" : "px-5")
-                      : ""
-                  } dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description).replace(/\n/g, "<br>") }} />
-              }
+                    !flags || flags.length === 0 ? "px-5 pb-5" : "px-5"
+                  }
+                />
+              )}
               { flags && flags.length > 0 && (
                 <div className="p-5">
                   <div className="font-bold">
@@ -48,7 +48,7 @@ export default function ({ bookingUrl, price, title, flags, description, locatio
                       <div className="flex items-center" key={flag}>
                         <CircleCheckIcon className="mr-1 size-4 text-green-700" />
                         <div className="text-gray-700">
-                          {flag}
+                          <TranslatedText text={flag} />
                         </div>
                       </div>
                     ))}
@@ -71,7 +71,7 @@ export default function ({ bookingUrl, price, title, flags, description, locatio
                   <p>{t("priceCard.place")}: {location}</p>
                 )}
                 { autoCommitNote && (
-                  <p>{autoCommitNote}</p>
+                  <TranslatedText text={autoCommitNote}/>
                 )}
               </div>
             </div>

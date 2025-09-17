@@ -1,3 +1,4 @@
+using Database.Comparers;
 using Domain.Projects;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +22,6 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
       .IsRequired();
 
     builder.Property(e => e.Title).IsRequired();
-    builder.Property(e => e.Description);
-    builder.Property(e => e.FullText);
     builder.Property(e => e.ImageCaption);
     builder.Property(e => e.ImageUrl);
     builder.Property(e => e.ImageCredits);
@@ -31,5 +30,16 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
       .WithMany()
       .HasForeignKey(p => p.CreatedBy)
       .OnDelete(DeleteBehavior.Restrict);
+
+    var converter = I18NConverter<ProjectI18NData>.CreateNew();
+
+    // Define a value comparer for the dictionary, EF uses this for change tracking
+    var comparer = I18NComparer<ProjectI18NData>.CreateNew();
+
+    builder.Property(p => p.Translations)
+      .HasColumnType("jsonb")
+      .HasConversion(converter)
+      .Metadata.SetValueComparer(comparer);
+    
   }
 }

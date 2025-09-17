@@ -1,0 +1,69 @@
+{
+  "rooms": "Pokoje",
+  "our_rooms": "Nasze pomieszczenia",
+  "sportFacilities": "Obiekty sportowe",
+  "resources": "Zasoby",
+  "events": "Wydarzenia",
+  "booking": "Rezerwacje",
+  "imageAlt": "Nie można załadować obrazu.",
+  "faq": {
+    "title": "Najczęściej zadawane pytania",
+    "showMore": "Pokaż więcej",
+    "showLess": "Pokaż mniej",
+    "items": [
+      {
+        "question": "Pytanie 1",
+        "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+      },
+      {
+        "question": "Pytanie 2",
+        "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+      },
+      {
+        "question": "Pytanie 3",
+        "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et hendrerit nisl. Suspendisse viverra velit quis augue rhoncus aliquam. Aliquam ante risus, venenatis a tempor sit amet, imperdiet ut leo. Cras varius libero vitae scelerisque hendrerit. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus."
+      }
+    ]
+  },
+  "bookingComponent": {
+    "notFound": "Niestety nie znaleziono żądanej oferty.",
+    "offer": "Nasza oferta"
+  },
+  "priceCard": {
+    "included": "W pokoju zawarte są",
+    "price": "Cena",
+    "place": "Miejsce"
+  },
+  "howItWorks": {
+    "title": "Jak dokonać rezerwacji",
+    "steps": [
+      {
+        "number": 1,
+        "title": "Krok pierwszy",
+        "description": "Wybierz pokój, boisko sportowe lub zasób, który chcesz zarezerwować i kliknij na niego."
+      },
+      {
+        "number": 2,
+        "title": "Krok drugi",
+        "description": "Zapoznaj się z wyposażeniem, godzinami rezerwacji, zasadami i warunkami."
+      },
+      {
+        "number": 3,
+        "title": "Krok trzeci",
+        "description": "Gdy znajdziesz odpowiedni pokój, boisko lub zasób, kliknij przycisk na końcu strony, aby przejść do rezerwacji."
+      },
+      {
+        "number": 4,
+        "title": "Krok czwarty",
+        "description": "Na kolejnej stronie wprowadź swoje dane kontaktowe, sprawdź poprawność i wyślij zgłoszenie. Po jego zatwierdzeniu otrzymasz e-mail."
+      }
+    ]
+  },
+  "tenantId": "ID najemcy",
+  "Title": "ID najemców",
+  "addTenant": "Dodaj ID najemcy",
+  "deletedSuccess": "ID najemcy zostało pomyślnie usunięte",
+  "bookingPlatform": "Platforma rezerwacyjna",
+  "notBookable": "Obiekt rezerwacyjny jest obecnie niedostępny",
+  "AllBookings": "Wszystkie rezerwacje"
+}

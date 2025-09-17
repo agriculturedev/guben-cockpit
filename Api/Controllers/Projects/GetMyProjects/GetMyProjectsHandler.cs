@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Security.Claims;
 using Api.Controllers.Projects.Shared;
 using Api.Infrastructure.Extensions;
@@ -15,12 +16,14 @@ public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyP
   private readonly IProjectRepository _projectRepository;
   private readonly IHttpContextAccessor _httpContextAccessor;
   private readonly IUserRepository _userRepository;
+  private readonly CultureInfo _culture;
 
   public GetMyProjectsHandler(IProjectRepository projectRepository, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
   {
     _projectRepository = projectRepository;
     _httpContextAccessor = httpContextAccessor;
     _userRepository = userRepository;
+    _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<GetMyProjectsResponse> Handle(GetMyProjectsQuery request, CancellationToken
@@ -43,7 +46,7 @@ public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyP
 
     return new GetMyProjectsResponse()
     {
-      Results = projects.Select(ProjectResponse.Map)
+      Results = projects.Select(p => ProjectResponse.Map(p, _culture))
     };
   }
 }
