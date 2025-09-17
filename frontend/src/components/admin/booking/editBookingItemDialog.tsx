@@ -16,7 +16,7 @@ interface IProps {
 export default function EditBookingItemDialog({ tenant, open, onOpenChange, ...props }: IProps) {
   const { t } = useTranslation("booking");
 
-  const {mutateAsync} = useBookingUpdateTenant({
+  const { mutateAsync } = useBookingUpdateTenant({
     onSuccess: async (data) => {
       onOpenChange(false);
       await props.onCreateSuccess(data);
