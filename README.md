@@ -186,5 +186,49 @@ VITE_TRANSLATE_API_KEY=some-api-key
 ### Backend
 - The API will be available at `https://localhost:5000` (or the port specified in your configuration)
 
+### DB
+
 ### Frontend  
 - The frontend will be available at `http://localhost:3000` (or the port specified in your configuration)
+
+
+## Keycloak
+Keycloak is an essential part of the **Guben Cockpit**. It is used to handle authentication, authorization, and user management for the entire platform. The application relies on Keycloak's role-based access control (RBAC) system to manage permissions for different user types and functionalities.
+
+## Keycloak
+Keycloak is an essential part of the **Guben Cockpit**. It is used to handle authentication, authorization, and user management for the CMS Part of the Platform. The application relies on Keycloak's role-based access control (RBAC) system to manage permissions for different user types and functionalities.
+
+### Keycloak Setup
+
+When setting up a local Keycloak instance for the Guben Cockpit, you'll need to:
+
+1. **Create a Realm**: Set up a new realm (e.g., `guben` or `myRealm`)
+2. **Create Clients**: Configure the necessary client
+3. **Define Roles**: Create all required roles for the application
+4. **Configure Users**: Set up users and assign appropriate roles
+
+### Required Roles
+
+The following roles must be created in your Keycloak realm for the Guben Cockpit to function properly:
+
+| Role Name | Description |
+|-----------|-------------|
+| `administrative_staff` | Person can view Private Bookings |
+| `booking_manager` | Can Create and Delete Tenant-Ids used for managing the imported Booking, as well as decide if the importet Bookings are for public or private use |
+| `booking_platform` | Can Access the direct Link to the Booking Platform |
+| `footer_manager` | User can edit footer items |
+| `location_manager` | User can manage locations |
+| `page_manager` | User can edit page title and text |
+| `project_contributor` | User can add, edit or delete own projects but not publish them |
+| `project_deleter` | Person can delete any Project |
+| `project_editor` | Can edit any Projects |
+| `publish_projects` | User can publish any project |
+| `event_contributor` | User can add, edit and delete own events, but not publish them |
+| `event_deleter` | User can delete any Event |
+| `event_editor` | User can edit any Event |
+| `publish_events` | User can publish aby events |
+| `dashboard_editor` | Users can create, update and delete Dasboard Tabs, they are not allowed to delete, create or update Dropdowns |
+| `dashboard_manager` | User can add and edit the Dropdowns for the Dashboard |
+| `upload_geodata` | User can upload geodata, for the manage_geodata check |
+| `manage_geodata` | User can check uploaded Geodata / WMS / WFS, and decide if the data should be available in Masteportal, as well as Edit and Delete uploaded Geodata / WMS / WFS Links |
+| `view_users` | User can access all users |
