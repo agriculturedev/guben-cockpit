@@ -21,7 +21,7 @@ Follow these steps to set up the project locally:
 Set up a PostgreSQL database for the application.
 
 ### 2. Keycloak Setup
-Set up Keycloak for authentication and authorization.
+Set up Keycloak for authentication and authorization. See [Keycloak configuration details](#keycloak).
 
 ### 3. Clone the Repository
 ```bash
@@ -84,6 +84,9 @@ The **Guben Cockpit** uses several different Open Source Projects to display var
 - [Nextcloud](https://nextcloud.com/) for Uploading Images and PDFs
 - [LibreTranslate](https://libretranslate.com/) for Translating into English and Polish, for imported Projects / Events as well as Bookings
 - [Biletado](https://gitlab.opencode.de/biletado) for Displaying and Managing Bookables as well as Events
+
+Please check their respective Webseites for more Information on how to set them up
+>Every Component can be set up using Docker
 
 ## Configuration
 
@@ -229,3 +232,4 @@ The following roles must be created in your Keycloak realm for the Guben Cockpit
 | `upload_geodata` | User can upload geodata, for the manage_geodata check |
 | `manage_geodata` | User can check uploaded Geodata / WMS / WFS, and decide if the data should be available in Masteportal, as well as Edit and Delete uploaded Geodata / WMS / WFS Links |
 | `view_users` | User can access all users |
+
