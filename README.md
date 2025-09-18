@@ -187,12 +187,8 @@ VITE_TRANSLATE_API_KEY=some-api-key
 # Backend
 - The API will be available at `https://localhost:5000` (or the port specified in your configuration)
 
-## DB
-## Database Schema
 
 ## Database Schema
-
-### Booking Table
 
 ### User Table
 
@@ -203,6 +199,8 @@ VITE_TRANSLATE_API_KEY=some-api-key
 | FirstName | varchar(50) | User's first name |
 | LastName | varchar(50) | User's last name |
 | Email | varchar(100) | User's email address |
+
+### Booking Table
 
 | Column Name | Type | Description |
 |-------------|------|-------------|
