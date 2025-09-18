@@ -248,4 +248,7 @@ value   : The object must be serialized into a byte array
   <data name="MissingTenantId" xml:space="preserve">
     <value>Brak identyfikatora dzierżawcy</value>
   </data>
+  <data name="NoAdministrativeStaff_pl" xml:space="preserve">
+    <value>Użytkownik nie jest pracownikiem administracji</value>
+  </data>
 </root>

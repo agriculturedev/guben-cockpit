@@ -49,7 +49,7 @@ public class BookingController : ControllerBase
 	}
 
 	[HttpGet("private")]
-	[Authorize]
+	[Authorize(KeycloakPolicies.AdministrativeStaff)]
 	[EndpointName("BookingGetPrivateTenantIds")]
 	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetPrivateTenantIdsResponse))]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

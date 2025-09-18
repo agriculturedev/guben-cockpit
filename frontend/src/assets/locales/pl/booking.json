@@ -65,5 +65,8 @@
   "deletedSuccess": "ID najemcy zostało pomyślnie usunięte",
   "bookingPlatform": "Platforma rezerwacyjna",
   "notBookable": "Obiekt rezerwacyjny jest obecnie niedostępny",
-  "AllBookings": "Wszystkie rezerwacje"
+  "AllBookings": "Wszystkie rezerwacje",
+  "ForPublicUse": "Do użytku publicznego",
+  "PrivateBookings": "Prywatne rezerwacje",
+  "Edit": "Edytuj ID klienta"
 }
