@@ -70,7 +70,7 @@ Configure environment variables:
 cp .env.example .env
 ```
 
-Adjust the values in `.env` if needed (see [Frontend Configuration(#frontend-configuration-.env)]).
+Adjust the values in `.env` if needed (see [Frontend Configuration](#frontend-configuration-env))
 
 Start the frontend development server:
 ```bash
@@ -184,12 +184,46 @@ VITE_TRANSLATE_API_KEY=some-api-key
 | `VITE_TRANSLATE_URL` | LibreTranslate API endpoint for translation services, used for translating the Booking Page | `http://localhost:5001/translate` |
 | `VITE_TRANSLATE_API_KEY` | API key for LibreTranslate service | `some-api-key` |
 
-## Development
-
-### Backend
+# Backend
 - The API will be available at `https://localhost:5000` (or the port specified in your configuration)
 
-### DB
+## DB
+## Database Schema
+
+## Database Schema
+
+### Booking Table
+
+### User Table
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the user record (PRIMARY KEY) |
+| KeycloakId | varchar(50) | Keycloak user identifier for authentication |
+| FirstName | varchar(50) | User's first name |
+| LastName | varchar(50) | User's last name |
+| Email | varchar(100) | User's email address |
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the booking record (PRIMARY KEY) |
+| TenantId | text | Tenant identifier for multi-tenant support |
+| ForPublicUse | boolean | Flag indicating if the booking is available for public use (default: false) |
+
+### Project Table
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | text | Unique identifier for the project record (PRIMARY KEY) |
+| Title | text | Project title |
+| ImageCaption | text | Caption for the project image (optional) |
+| ImageUrl | text | URL to the project image (optional) |
+| ImageCredits | text | Credits for the project image (optional) |
+| Published | boolean | Flag indicating if the project is published |
+| CreatedBy | uuid | Reference to the user who created the project (FOREIGN KEY → User.Id) |
+| Type | integer | Project type identifier (default: 0) |
+| Deleted | boolean | Soft delete flag (default: false) |
+| Translations | jsonb | JSON object containing translations (default: empty object) |
 
 ### Frontend  
 - The frontend will be available at `http://localhost:3000` (or the port specified in your configuration)
