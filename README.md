@@ -47,7 +47,7 @@ dotnet build
 
 Configure the application settings:
 - Check the `appsettings.json` file
-- Adjust values if needed (see configuration section below)
+- Adjust values if needed (see [Backend Configuration](#backend-configuration-appsettingsjson))
 
 Run the backend:
 ```bash
@@ -70,7 +70,7 @@ Configure environment variables:
 cp .env.example .env
 ```
 
-Adjust the values in `.env` if needed (see configuration section below).
+Adjust the values in `.env` if needed (see [Frontend Configuration(#frontend-configuration-.env)]).
 
 Start the frontend development server:
 ```bash
