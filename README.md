@@ -193,9 +193,6 @@ VITE_TRANSLATE_API_KEY=some-api-key
 
 
 ## Keycloak
-Keycloak is an essential part of the **Guben Cockpit**. It is used to handle authentication, authorization, and user management for the entire platform. The application relies on Keycloak's role-based access control (RBAC) system to manage permissions for different user types and functionalities.
-
-## Keycloak
 Keycloak is an essential part of the **Guben Cockpit**. It is used to handle authentication, authorization, and user management for the CMS Part of the Platform. The application relies on Keycloak's role-based access control (RBAC) system to manage permissions for different user types and functionalities.
 
 ### Keycloak Setup
