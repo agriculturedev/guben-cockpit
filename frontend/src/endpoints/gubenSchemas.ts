@@ -202,6 +202,7 @@ export type EventResponse = {
   categories: CategoryResponse[];
   images: EventImageResponse[];
   published: boolean;
+  cultureInfo?: string;
 };
 
 export type FileContentResult = {
@@ -665,3 +666,4 @@ export type ValidateGeoDataSourceResponse = Record<string, any>;
 export type ValidateRequest = {
   isValid?: boolean;
 };
+

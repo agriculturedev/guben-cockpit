@@ -1,0 +1,23 @@
+{
+  "DeletedSuccess": "Projekt został pomyślnie usunięty",
+  "Title": "Projekty",
+  "Add": "Dodaj projekt",
+  "Remove": "Usuń",
+  "Edit": "Edytuj projekt",
+  "Highlighted": "Wyróżniony",
+  "MyProjects": "Moje projekty",
+  "Published": "Opublikowane",
+  "AddBusiness": "Dodaj firmę",
+  "AddSchool": "Dodaj szkołę",
+  "AddPdfs": "Dodaj PDF-y",
+  "AttachedPdfs": "Załączniki (PDF)",
+  "AddImages": "Dodaj obrazy",
+  "IsBusiness": "jest firmą",
+  "IsSchool": "jest szkołą",
+  "Publish": "Opublikuj",
+  "Unpublish": "Wycofaj",
+  "PublishSuccess": "Projekt/Firma/Szkoła została pomyślnie opublikowana",
+  "UnpublishSuccess": "Projekt/Firma/Szkoła została pomyślnie wycofana",
+  "PublishConfirmation": "Ta akcja spowoduje opublikowanie projektu/firmy/szkoły i będzie widoczne dla wszystkich.",
+  "UnpublishConfirmation": "Ta akcja spowoduje wycofanie projektu/firmy/szkoły i nie będzie już widoczne dla wszystkich."
+}
