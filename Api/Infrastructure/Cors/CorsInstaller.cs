@@ -9,7 +9,7 @@ public static class CorsInstaller
       options.AddPolicy("Cors",
         builder =>
         {
-          builder.WithOrigins("http://localhost:5000", configuration.Frontend.BaseUri)
+          builder.WithOrigins("http://localhost:5000", configuration.Frontend.BaseUri, configuration.ResiForm.BaseUri)
             .AllowAnyHeader()
             .AllowAnyMethod();
         });

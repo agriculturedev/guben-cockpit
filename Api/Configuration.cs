@@ -6,6 +6,7 @@ public class Configuration
   public FrontendConfiguration Frontend { get; set; } = null!;
   public NextcloudConfiguration Nextcloud { get; set; } = null!;
   public TopicConfiguration Topic { get; set; } = null!;
+  public ResiFormConfiguration ResiForm { get; set; } = null!;
 }
 
 public class ConnectionStrings
@@ -14,6 +15,11 @@ public class ConnectionStrings
 }
 
 public class FrontendConfiguration
+{
+  public string BaseUri { get; set; } = null!;
+}
+
+public class ResiFormConfiguration
 {
   public string BaseUri { get; set; } = null!;
 }
