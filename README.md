@@ -80,10 +80,10 @@ npm run dev
 
 ### Additional Setup
 The **Guben Cockpit** uses several different Open Source Projects to display various Information. This includes:
-- Masterportal[https://www.masterportal.org/] for Geo related Data
-- Nextcloud[https://nextcloud.com/] for Uploading Images and PDFs
-- LibreTranslate[https://libretranslate.com/] for Translating into English and Polish, for imported Projects / Events as well as Bookings
-- Biletado[https://gitlab.opencode.de/biletado] for Displaying and Managing Bookables as well as Events
+- [Masterportal](https://www.masterportal.org/) for Geo related Data
+- [Nextcloud](https://nextcloud.com/) for Uploading Images and PDFs
+- [LibreTranslate](https://libretranslate.com/) for Translating into English and Polish, for imported Projects / Events as well as Bookings
+- [Biletado](https://gitlab.opencode.de/biletado) for Displaying and Managing Bookables as well as Events
 
 ## Configuration
 
@@ -111,7 +111,7 @@ The **Guben Cockpit** uses several different Open Source Projects to display var
       "BearerToken": "test"
     },
     "LibreTranslate": {
-      "TranslateUrl": "http://libreTranslate/translate",
+      "TranslateUrl": "http://localhost:5001/translate",
       "ApiKey": "Some-api-key"
     }
   },
@@ -137,7 +137,7 @@ The **Guben Cockpit** uses several different Open Source Projects to display var
 ```
 
 | Configuration Key | Description | Default/Example Value |
-|------------------|-------------|----------------------|
+|------------------|--------------------|--------------|
 | `ConnectionStrings.DefaultConnection` | PostgreSQL database connection string | `Server=localhost;Port=5432;Database=Guben;User Id=postgres;Password=admin;` |
 | `Keycloak.realm` | Keycloak realm name for authentication | `myRealm` |
 | `Keycloak.auth-server-url` | Keycloak server base URL | `http://localhost:8080` |
@@ -147,7 +147,7 @@ The **Guben Cockpit** uses several different Open Source Projects to display var
 | `Frontend.BaseUri` | Base URI for the frontend application | `http://localhost:3000` |
 | `ResiForm.Baseuri` | Base URI for ResiForm, this will allow ResiForm to access the Topics API | `http://singular-it` |
 | `Jobs.ProjectImporter.BearerToken` | Authentication token for project import job | `test` |
-| `Jobs.LibreTranslate.TranslateUrl` | LibreTranslate API endpoint for translation services, used for translating all Projects and Events when they are first imported | `http://libreTranslate/translate` |
+| `Jobs.LibreTranslate.TranslateUrl` | LibreTranslate API endpoint for translation services, used for translating all Projects and Events when they are first imported | `http://localhost:5001/translate` |
 | `Jobs.LibreTranslate.ApiKey` | API key for LibreTranslate service | `Some-api-key` |
 | `Debugging.EnableQueryLogging` | Enable/disable database query logging for debugging | `false` |
 | `Nextcloud.BaseUri` | Nextcloud server base URI | `http://localhost:9500` |
@@ -161,8 +161,25 @@ The **Guben Cockpit** uses several different Open Source Projects to display var
 | `Masterportal.ThemeConfigSection` | Configuration section name for themes | `Fachdaten` |
 
 ### Frontend Configuration (`.env`)
-*Description of all environment variables will be documented here*
-
+```
+VITE_API_URL=http://localhost:5000
+VITE_AUTHORITY=http://localhost:8080
+VITE_AUDIENCE=react-client
+VITE_BOOKING_URL=http://localhost:8081
+VITE_BOOKING_SDK=http://localhost:8082/cdn/current/booking-manager.min.js
+VITE_BOOKING_LOGIN=http://localhost:8081/login/sso
+VITE_TRANSLATE_URL=http://localhost:5001/translate
+VITE_TRANSLATE_API_KEY=some-api-key
+```
+| Configuration Key | Description | Default/Example Value |
+|------------------|--------------------|--------------|
+| `VITE_API_URL` | Base URL for the backend API endpoints | `http://localhost:5000` |
+| `VITE_AUTHORITY` | Keycloak server URL for authentication authority | `http://localhost:8080` |
+| `VITE_AUDIENCE` | Keycloak client/resource identifier for token validation | `react-client` |
+| `VITE_BOOKING_URL` | Base URL for the booking service, used to import the bookings | `http://localhost:8081` |
+| `VITE_BOOKING_SDK` | URL to the booking manager JavaScript SDK library | `http://localhost:8082/cdn/current/booking-manager.min.js` |
+| `VITE_TRANSLATE_URL` | LibreTranslate API endpoint for translation services, used for translating the Booking Page | `http://localhost:5001/translate` |
+| `VITE_TRANSLATE_API_KEY` | API key for LibreTranslate service | `some-api-key` |
 
 ## Development
 
