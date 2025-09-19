@@ -88,6 +88,45 @@ The **Guben Cockpit** uses several different Open Source Projects to display var
 Please check their respective Webseites for more Information on how to set them up
 >Every Component can be set up using Docker
 
+## Keycloak
+Keycloak is an essential part of the **Guben Cockpit**. It is used to handle authentication, authorization, and user management for the CMS Part of the Platform. The application relies on Keycloak's role-based access control (RBAC) system to manage permissions for different user types and functionalities.
+
+### Keycloak Setup
+
+When setting up a local Keycloak instance for the Guben Cockpit, you'll need to:
+
+1. **Create a Realm**: Set up a new realm (e.g., `guben` or `myRealm`)
+2. **Create Clients**: Configure the necessary client
+3. **Define Roles**: Create all required roles for the application
+4. **Configure Users**: Set up users and assign appropriate roles
+
+### Required Roles
+
+The following roles must be created in your Keycloak realm for the Guben Cockpit to function properly:
+
+| Role Name | Description |
+|-----------|-------------|
+| `administrative_staff` | Person can view Private Bookings |
+| `booking_manager` | Can Create and Delete Tenant-Ids used for managing the imported Booking, as well as decide if the importet Bookings are for public or private use |
+| `booking_platform` | Can Access the direct Link to the Booking Platform |
+| `footer_manager` | User can edit footer items |
+| `location_manager` | User can manage locations |
+| `page_manager` | User can edit page title and text |
+| `project_contributor` | User can add, edit or delete own projects but not publish them |
+| `project_deleter` | Person can delete any Project |
+| `project_editor` | Can edit any Projects |
+| `publish_projects` | User can publish any project |
+| `event_contributor` | User can add, edit and delete own events, but not publish them |
+| `event_deleter` | User can delete any Event |
+| `event_editor` | User can edit any Event |
+| `publish_events` | User can publish aby events |
+| `dashboard_editor` | Users can create, update and delete Dasboard Tabs, they are not allowed to delete, create or update Dropdowns |
+| `dashboard_manager` | User can add and edit the Dropdowns for the Dashboard |
+| `upload_geodata` | User can upload geodata, for the manage_geodata check |
+| `manage_geodata` | User can check uploaded Geodata / WMS / WFS, and decide if the data should be available in Masteportal, as well as Edit and Delete uploaded Geodata / WMS / WFS Links |
+| `view_users` | User can access all users |
+
+
 ## Configuration
 
 ### Backend Configuration (`appsettings.json`)
@@ -187,10 +226,10 @@ VITE_TRANSLATE_API_KEY=some-api-key
 # Backend
 - The API will be available at `https://localhost:5000` (or the port specified in your configuration)
 
-
 ## Database Schema
 
 ### User Table
+Holds User Information
 
 | Column Name | Type | Description |
 |-------------|------|-------------|
@@ -201,6 +240,7 @@ VITE_TRANSLATE_API_KEY=some-api-key
 | Email | varchar(100) | User's email address |
 
 ### Booking Table
+The Bookable Table is used to save Ids from the Biletado Booking Platform, to display the bookings for public or private use.
 
 | Column Name | Type | Description |
 |-------------|------|-------------|
@@ -209,6 +249,7 @@ VITE_TRANSLATE_API_KEY=some-api-key
 | ForPublicUse | boolean | Flag indicating if the booking is available for public use (default: false) |
 
 ### Project Table
+The Table is used to save Projects of different Types, `Stadtentwicklung` (city planning), `Gubener Marktplatz` (business) or `Schulen` (schools).
 
 | Column Name | Type | Description |
 |-------------|------|-------------|
@@ -223,45 +264,187 @@ VITE_TRANSLATE_API_KEY=some-api-key
 | Deleted | boolean | Soft delete flag (default: false) |
 | Translations | jsonb | JSON object containing translations (default: empty object) |
 
+### Page Table
+Holds Information displayed on Dashboard, Projects and Event pages.
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | text | Unique identifier for the page record (PRIMARY KEY) |
+| Translations | jsonb | JSON object containing page translations (optional) |
+
+### FooterItem Table
+Holds Footer Information.
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the footer item record (PRIMARY KEY) |
+| Name | text | Name/title of the footer item |
+| Content | text | Content/body text of the footer item |
+
+### Event Table
+Holds Information about imported Events from the TMB. This does NOT include Events created in the Biletado Booking Platform.
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the event record (PRIMARY KEY) |
+| EventId | text | External event identifier |
+| TerminId | text | Term/appointment identifier |
+| StartDate | timestamp with time zone | Event start date and time |
+| EndDate | timestamp with time zone | Event end date and time |
+| LocationId | uuid | Reference to the event location (FOREIGN KEY → Location.Id) |
+| Coordinates | text | Geographic coordinates for the event (optional) |
+| Published | boolean | Flag indicating if the event is published (optional) |
+| Translations | jsonb | JSON object containing event translations (optional) |
+| CreatedBy | uuid | Reference to the user who created the event (FOREIGN KEY → User.Id) |
+| Deleted | boolean | Soft delete flag (default: false) |
+
+### EventCategory Table
+Table to connect Categories with Events
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| CategoriesId | uuid | Reference to the category (FOREIGN KEY → Category.Id, PRIMARY KEY) |
+| EventsId | uuid | Reference to the event (FOREIGN KEY → Event.Id, PRIMARY KEY) |
+
+>Note: This is a many-to-many relationship table between Events and Categories
+
+### Category Table
+Holds Information about the Categories for the Events.
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the category record (PRIMARY KEY) |
+| CategoryId | integer | External category identifier |
+| Name | text | Category name |
+
+### EventImages Table
+Holds Information about the Images for the events
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| OriginalUrl | text | URL to the original image file (PRIMARY KEY) |
+| EventId | uuid | Reference to the event (FOREIGN KEY → Event.Id, PRIMARY KEY) |
+| ThumbnailUrl | text | URL to the thumbnail version of the image |
+| PreviewUrl | text | URL to the preview version of the image |
+| Width | integer | Image width in pixels (optional) |
+| Height | integer | Image height in pixels (optional) |
+
+### Url Table
+Holds Information about the Urls from the Events
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| EventId | uuid | Reference to the event (FOREIGN KEY → Event.Id, PRIMARY KEY) |
+| Id | integer | Auto-generated identifier (PRIMARY KEY) |
+| Link | text | URL link |
+| Description | text | Description of the URL/link |
+
+### Location Table
+Holds Information about Locations. Referenced by the Events Table.
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the location record (PRIMARY KEY) |
+| City | text | City name (optional) |
+| Street | text | Street address (optional) |
+| TelephoneNumber | text | Contact telephone number (optional) |
+| Fax | text | Fax number (optional) |
+| Email | text | Contact email address (optional) |
+| Website | text | Website URL (optional) |
+| Zip | text | ZIP/postal code (optional) |
+| Translations | jsonb | JSON object containing location translations (optional) |
+
+### DashboardDropdown Table
+Holds Information about the Dropdowns used in the Dashboard
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the dropdown record (PRIMARY KEY) |
+| Translations | jsonb | JSON object containing dropdown translations |
+| Rank | integer | Display order/ranking of the dropdown |
+| IsLink | boolean | Flag indicating if dropdown item is a link (default: false) |
+
+### DashboardTab Table
+Holds Information about a single Tab from a Dropdown for the Dashboard
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the dashboard tab record (PRIMARY KEY) |
+| Sequence | integer | Display sequence/order of the tab |
+| MapUrl | text | URL for the map associated with this tab |
+| Translations | jsonb | JSON object containing tab translations (default: empty object) |
+| DropdownId | uuid | Reference to the dropdown this tab belongs to (FOREIGN KEY → DashboardDropdown.Id, optional) |
+| EditorUserId | uuid | Reference to the user who can edit this tab (optional) |
+
+### DropdownLink Table
+Holds Information about a single Link from a Dropdown for the Dashboard
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the dropdown link record (PRIMARY KEY) |
+| Translations | jsonb | JSON object containing link translations |
+| Link | text | URL or link destination |
+| Sequence | integer | Display sequence/order of the link within the dropdown |
+| DropdownId | uuid | Reference to the dropdown this link belongs to (FOREIGN KEY → DashboardDropdown.Id) |
+
+### InformationCard Table
+Holds Information about a Card in a Tab displayed in the Dashboard
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the information card record (PRIMARY KEY) |
+| Button_OpenInNewTab | boolean | Flag indicating if button should open in new tab (optional) |
+| ImageUrl | text | URL to the card's image (optional) |
+| DashboardTabId | uuid | Reference to the dashboard tab this card belongs to (FOREIGN KEY → DashboardTab.Id) |
+| Translations | jsonb | JSON object containing card translations (default: empty object) |
+| Button_Translations | jsonb | JSON object containing button translations (optional) |
+| Sequenece | integer | Display sequence/order of the card (default: 0) |
+
+### GeoDataSource Table
+>The following Table will be reworked in the Masterportal rework and updated accordingly after
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the geo data source record (PRIMARY KEY) |
+| Path | text | File path to the geo data |
+| IsValidated | boolean | Flag indicating if the geo data has been validated |
+| IsPublic | boolean | Flag indicating if the geo data is publicly accessible |
+| Type | integer | Type identifier for the geo data (default: 0) |
+
+### DataSource Table
+>The following Table will be reworked in the Masterportal rework and updated accordingly after
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | text | Unique identifier for the data source record (PRIMARY KEY) |
+| Name | text | Name of the data source |
+| TopicId | text | Reference to the topic this data source belongs to (FOREIGN KEY → Topic.Id, optional) |
+| Version | text | Version of the data source (default: empty string) |
+
+### Source Table
+>The following Table will be reworked in the Masterportal rework and updated accordingly after
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | uuid | Unique identifier for the source record (PRIMARY KEY) |
+| LayerName | text | Name of the map layer |
+| Url | text | URL to the source data |
+| Type | integer | Type identifier for the source |
+| DataSourceId | text | Reference to the data source (FOREIGN KEY → DataSource.Id, optional) |
+
+### Topic Table
+>The following Table will be reworked in the Masterportal rework and updated accordingly after
+
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| Id | text | Unique identifier for the topic record (PRIMARY KEY) |
+| Name | text | Name of the topic |
+
+
+
+
 ### Frontend  
 - The frontend will be available at `http://localhost:3000` (or the port specified in your configuration)
 
 
-## Keycloak
-Keycloak is an essential part of the **Guben Cockpit**. It is used to handle authentication, authorization, and user management for the CMS Part of the Platform. The application relies on Keycloak's role-based access control (RBAC) system to manage permissions for different user types and functionalities.
-
-### Keycloak Setup
-
-When setting up a local Keycloak instance for the Guben Cockpit, you'll need to:
-
-1. **Create a Realm**: Set up a new realm (e.g., `guben` or `myRealm`)
-2. **Create Clients**: Configure the necessary client
-3. **Define Roles**: Create all required roles for the application
-4. **Configure Users**: Set up users and assign appropriate roles
-
-### Required Roles
-
-The following roles must be created in your Keycloak realm for the Guben Cockpit to function properly:
-
-| Role Name | Description |
-|-----------|-------------|
-| `administrative_staff` | Person can view Private Bookings |
-| `booking_manager` | Can Create and Delete Tenant-Ids used for managing the imported Booking, as well as decide if the importet Bookings are for public or private use |
-| `booking_platform` | Can Access the direct Link to the Booking Platform |
-| `footer_manager` | User can edit footer items |
-| `location_manager` | User can manage locations |
-| `page_manager` | User can edit page title and text |
-| `project_contributor` | User can add, edit or delete own projects but not publish them |
-| `project_deleter` | Person can delete any Project |
-| `project_editor` | Can edit any Projects |
-| `publish_projects` | User can publish any project |
-| `event_contributor` | User can add, edit and delete own events, but not publish them |
-| `event_deleter` | User can delete any Event |
-| `event_editor` | User can edit any Event |
-| `publish_events` | User can publish aby events |
-| `dashboard_editor` | Users can create, update and delete Dasboard Tabs, they are not allowed to delete, create or update Dropdowns |
-| `dashboard_manager` | User can add and edit the Dropdowns for the Dashboard |
-| `upload_geodata` | User can upload geodata, for the manage_geodata check |
-| `manage_geodata` | User can check uploaded Geodata / WMS / WFS, and decide if the data should be available in Masteportal, as well as Edit and Delete uploaded Geodata / WMS / WFS Links |
-| `view_users` | User can access all users |
 
