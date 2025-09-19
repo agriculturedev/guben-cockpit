@@ -929,8 +929,14 @@ export const useGetTopicsPrivate = <TData = Schemas.GetTopicsResponse,>(
 
 export type GeoUploadGeoDataSourceError = Fetcher.ErrorWrapper<undefined>;
 
+export type GeoUploadGeoDataSourceRequestBody = {
+  IsPublic?: boolean;
+  File?: Schemas.IFormFile;
+  Type?: string;
+};
+
 export type GeoUploadGeoDataSourceVariables = {
-  body: Schemas.UploadWfsQuery;
+  body?: GeoUploadGeoDataSourceRequestBody;
 } & GubenContext["fetcherOptions"];
 
 export const fetchGeoUploadGeoDataSource = (
@@ -940,7 +946,7 @@ export const fetchGeoUploadGeoDataSource = (
   gubenFetch<
     undefined,
     GeoUploadGeoDataSourceError,
-    Schemas.UploadWfsQuery,
+    GeoUploadGeoDataSourceRequestBody,
     {},
     {},
     {}
@@ -1032,7 +1038,7 @@ export type GeoValidateError = Fetcher.ErrorWrapper<{
 }>;
 
 export type GeoValidateVariables = {
-  body?: { isValid: boolean };
+  body?: Schemas.ValidateRequest;
   pathParams: GeoValidatePathParams;
 } & GubenContext["fetcherOptions"];
 
@@ -1043,7 +1049,7 @@ export const fetchGeoValidate = (
   gubenFetch<
     Schemas.ValidateGeoDataSourceResponse,
     GeoValidateError,
-    { isValid: boolean },
+    Schemas.ValidateRequest,
     {},
     {},
     GeoValidatePathParams

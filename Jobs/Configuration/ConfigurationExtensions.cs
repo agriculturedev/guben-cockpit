@@ -13,4 +13,22 @@ public static class ConfigurationExtensions
 
     return token;
   }
+
+  public static string? GetLibreTranslateUrl(this IConfiguration configuration, string section)
+  {
+    var url = configuration?.GetSection("Jobs").GetSection(section)["TranslateUrl"];
+    if (string.IsNullOrWhiteSpace(url))
+      throw new InvalidConfigurationException("Libre Translate Url is missing");
+
+    return url;
+  }
+
+  public static string? GetLibreTranslateApiKey(this IConfiguration configuration, string section)
+  {
+    var apiKey = configuration?.GetSection("Jobs").GetSection(section)["ApiKey"];
+    if (string.IsNullOrWhiteSpace(apiKey))
+      throw new InvalidConfigurationException("ApiKey for Libre Translate is missing");
+
+    return apiKey;
+  }
 }

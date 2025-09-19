@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
 import { Button } from "../ui/button";
 import { ArrowLeftIcon } from "lucide-react";
+import { TranslatedHtml } from "@/utilities/translateUtils";
 
 export default function BookingComponent() {
   const { t } = useTranslation("booking");
@@ -47,11 +48,9 @@ export default function BookingComponent() {
         <BookingDivider text={title} />
         <div className="p-5 grid grid-cols-3 gap-5">
           <div className="col-span-2">
-              <div
+              <TranslatedHtml
                 className="prose max-w-none"
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(booking.description || "").replace(/\n/g, "<br>"),
-                }} />
+                text={booking.description} />
           </div>
           <div className="col-span-1 flex items-center justify-center">
             <img

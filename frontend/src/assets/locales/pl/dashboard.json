@@ -1,0 +1,36 @@
+{
+  "Title": "Panel sterowania",
+  "MapUrl": "URL mapy",
+  "Add": "Dodaj kartę",
+  "Delete": "Usuń kartę",
+  "TabInformation": "Informacje o karcie",
+  "UploadImage": "Dodaj obraz",
+  "UploadPdf": "Dodaj PDF",
+  "Filename": "Nazwa pliku",
+  "SelectImage": "Wybierz obraz",
+  "SelectPdf": "Wybierz PDF",
+  "Alert": "Proszę podać nazwę pliku i wybrać plik",
+  "UploadSuccesful": "Przesyłanie zakończone sukcesem",
+  "UploadFailed": "Przesyłanie nie powiodło się",
+  "DownloadFailed": "Pobieranie nie powiodło się",
+  "UploadFailedTryAgain": "Przesyłanie nie powiodło się. Spróbuj ponownie.",
+  "Uploading": "Przesyłanie...",
+  "Cards": {
+    "Cards": "Karty",
+    "Title": "Tytuł karty",
+    "Edit": "Edytuj kartę",
+    "Add": "Dodaj kartę",
+    "Delete": "Usuń kartę",
+    "Description": "Opis karty",
+    "Image": "Obraz",
+    "ImageUrl": "URL obrazu",
+    "ImageAlt": "Alternatywny tekst obrazu",
+    "ImageAltExplanation": "Tekst wyświetlany, gdy obraz nie może zostać znaleziony",
+    "Button": {
+      "Add": "Dodaj przycisk",
+      "Title": "Tekst przycisku",
+      "Url": "URL przycisku",
+      "OpenInNewTab": "Otwórz URL w nowej karcie"
+    }
+  }
+}

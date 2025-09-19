@@ -1,3 +1,4 @@
+using System.Globalization;
 using Api.Infrastructure.Extensions;
 using Api.Infrastructure.Keycloak;
 using Domain;
@@ -13,12 +14,14 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
   private readonly IProjectRepository _projectRepository;
   private readonly IUserRepository _userRepository;
   private readonly IHttpContextAccessor _httpContextAccessor;
+  private readonly CultureInfo _culture;
 
   public UpdateProjectHandler(IProjectRepository projectRepository, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
   {
     _projectRepository = projectRepository;
     _httpContextAccessor = httpContextAccessor;
     _userRepository = userRepository;
+    _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<UpdateProjectResponse> Handle(UpdateProjectQuery request, CancellationToken cancellationToken)
@@ -47,14 +50,17 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
     if (!ProjectType.TryFromValue(request.Type, out var type))
       throw new ProblemDetailsException(TranslationKeys.ProjectTypeInvalid);
 
+    var (i18NResult, i18NData) = ProjectI18NData.Create(request.FullText, request.Description);
+    i18NResult.ThrowIfFailure();
+
     project.Update(
       type,
       request.Title,
-      request.Description,
-      request.FullText,
       request.ImageCaption,
       request.ImageUrl,
-      request.ImageCredits
+      request.ImageCredits,
+      _culture,
+      i18NData
     );
 
     return new UpdateProjectResponse();

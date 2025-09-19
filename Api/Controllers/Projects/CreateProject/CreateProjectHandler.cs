@@ -1,3 +1,4 @@
+using System.Globalization;
 using Api.Infrastructure.Extensions;
 using Domain;
 using Domain.Projects;
@@ -12,12 +13,15 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
   private readonly IProjectRepository _projectRepository;
   private readonly IUserRepository _userRepository;
   private readonly IHttpContextAccessor _httpContextAccessor;
+  private readonly CultureInfo _culture;
 
-  public CreateProjectHandler(IProjectRepository projectRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+  public CreateProjectHandler(IProjectRepository projectRepository, IUserRepository userRepository,
+    IHttpContextAccessor httpContextAccessor)
   {
     _projectRepository = projectRepository;
     _userRepository = userRepository;
     _httpContextAccessor = httpContextAccessor;
+    _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<CreateProjectResponse> Handle(CreateProjectQuery request, CancellationToken cancellationToken)
@@ -41,7 +45,8 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
       request.ImageCaption,
       request.ImageUrl,
       request.ImageCredits,
-      user.Id
+      user.Id,
+      _culture
     );
 
     projectResult.ThrowIfFailure();

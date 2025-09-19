@@ -1,6 +1,7 @@
 export enum Language {
   de = "de",
-  en = "en"
+  en = "en",
+  pl = "pl"
 }
 
 export const getLanguage = (lang: string | null): Language => {
@@ -9,6 +10,8 @@ export const getLanguage = (lang: string | null): Language => {
       return Language.de;
     case 'en':
       return Language.en;
+    case 'pl':
+      return Language.pl;
     default:
       return Language.de; // Default to 'nl' if the language is not supported
   }

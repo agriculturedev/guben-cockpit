@@ -277,6 +277,7 @@ export type EventResponse = {
   categories: CategoryResponse[];
   images: EventImageResponse[];
   published: boolean;
+  cultureInfo?: string;
 };
 
 export type FileContentResult = {
@@ -310,7 +311,10 @@ export type FooterItemResponse = {
 };
 
 export type GeoDataSourceResponse = {
-  id: string;
+  /**
+   * @format uuid
+   */
+  id?: string;
   path: string;
   isValidated: boolean;
   isPublic: boolean;
@@ -318,14 +322,6 @@ export type GeoDataSourceResponse = {
    * @format int32
    */
   type: number;
-};
-
-export type GeoDataSourceType = {
-  name: string | null;
-  /**
-   * @format int32
-   */
-  value: number;
 };
 
 export type GetAllBusinessesResponse = {
@@ -687,12 +683,6 @@ export type UpdateProjectQuery = {
   imageCredits?: string | null;
 };
 
-export type UploadWfsQuery = {
-  isPublic: boolean;
-  file: IFormFile;
-  type: GeoDataSourceType;
-};
-
 export type UpsertButtonQuery = {
   title: string;
   url: string;
@@ -727,3 +717,7 @@ export type UserResponse = {
 };
 
 export type ValidateGeoDataSourceResponse = Record<string, any>;
+
+export type ValidateRequest = {
+  isValid?: boolean;
+};

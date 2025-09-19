@@ -1,4 +1,8 @@
+using System.Globalization;
+using Api.Infrastructure.Translations;
+using Domain;
 using Domain.Projects;
+using Shared.Api;
 
 namespace Api.Controllers.Projects.Shared;
 
@@ -14,19 +18,23 @@ public struct ProjectResponse
   public string? ImageCredits { get; set; }
   public required bool Published { get; set; }
 
-  public static ProjectResponse Map(Project project)
+  public static ProjectResponse Map(Project @project, CultureInfo cultureInfo)
   {
+    var i18NData = @project.Translations.GetTranslation(cultureInfo);
+    if (i18NData is null)
+      throw new ProblemDetailsException(TranslationKeys.NoValidTranslationsFound);
+
     return new ProjectResponse()
     {
-      Id = project.Id,
-      Type = project.Type.Value,
-      Title = project.Title,
-      Description = project.Description,
-      FullText = project.FullText,
-      ImageCaption = project.ImageCaption,
-      ImageUrl = project.ImageUrl,
-      ImageCredits = project.ImageCredits,
-      Published = project.Published
+      Id = @project.Id,
+      Type = @project.Type.Value,
+      Title = @project.Title,
+      Description = i18NData.Description,
+      FullText = i18NData.FullText,
+      ImageCaption = @project.ImageCaption,
+      ImageUrl = @project.ImageUrl,
+      ImageCredits = @project.ImageCredits,
+      Published = @project.Published
     };
   }
 }
