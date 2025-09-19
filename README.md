@@ -15,6 +15,17 @@
 
 ---
 
+# Overview
+
+1. [Local Setup](#local-setup)
+1.1 [Keycloak](#keycloak-setup)
+1.2 [Configuration](#configuration)
+2. [Backend](#bakend)
+2.1 [Database Schema](#database-schema)
+3. [Frontend](#frontend)
+
+---
+
 ## Local Setup
 
 Follow these steps to set up the project locally:
