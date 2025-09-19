@@ -68,6 +68,11 @@ export default {
       },
       fontSize: {
         h1: 'var(--font-size-h1)', // Add this line
+      },
+      fontFamily: {
+        rubik: ['Rubik', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        nunito: ['Nunito', 'sans-serif']
       }
     }
   },

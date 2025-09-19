@@ -10,7 +10,7 @@ export const AdminNavigation = () => {
 
   return (
     <Nav className="col-span-2 h-fit">
-      <PermissionGuard permissions={[Permissions.DashboardManager]}>
+      <PermissionGuard permissions={[Permissions.DashboardManager, Permissions.DashboardEditor]}>
         <Nav.Item href={"/admin/dashboard"} label={t("Title", {ns: "dashboard"})}/>
       </PermissionGuard>
 

@@ -1,31 +1,41 @@
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { WithClassName } from "@/types/WithClassName";
 import { useTranslation } from "react-i18next";
 import { DashboardTabFormType } from "./useDashboardTabFormSchema";
 import { isNullOrUndefinedOrWhiteSpace } from "@/utilities/nullabilityUtils";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { MapComponent } from "@/components/home/MapComponent";
 
-type OnSubmitFnArgs = { title: string, mapUrl: string }
+type OnSubmitFnArgs = { title: string; mapUrl: string };
 
 interface DashboardFormProps extends WithClassName {
   form: DashboardTabFormType;
   onSubmit: (values: OnSubmitFnArgs) => void;
 }
 
-export const DashboardTabForm = ({ form, onSubmit, className }: DashboardFormProps) => {
+export const DashboardTabForm = ({
+  form,
+  onSubmit,
+  className,
+}: DashboardFormProps) => {
   const { t } = useTranslation(["dashboard", "common"]);
 
   return (
     <Form {...form}>
       <form
-        className={cn('flex flex-col gap-4', className)}
+        className={cn("flex flex-col gap-4", className)}
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className='flex gap-4 min-w-[20rem] w-fit'>
+        <div className="grid grid-cols-2 gap-4 min-w-[20rem] w-fit">
           <FormField
             control={form.control}
             name="title"
@@ -63,32 +73,50 @@ export const DashboardTabForm = ({ form, onSubmit, className }: DashboardFormPro
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="editorEmail"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>{t("common:Email")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder={t("common:Email")}
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
         </div>
 
         <Button
           type="submit"
           disabled={!form.formState.isDirty}
-          className='w-32 bg-gubenAccent hover:bg-red-400'
+          className="w-32 bg-gubenAccent hover:bg-red-400"
         >
           {t("common:Save")}
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
 interface MapPreviewProps {
   mapUrl: string;
 }
 
-export const MapPreviewDialog = ({mapUrl}: MapPreviewProps) => {
+export const MapPreviewDialog = ({ mapUrl }: MapPreviewProps) => {
   const mapUrlIsEmpty = isNullOrUndefinedOrWhiteSpace(mapUrl);
   const { t } = useTranslation(["common"]);
 
   return (
     <Dialog>
       <DialogTrigger disabled={mapUrlIsEmpty}>
-        <Button disabled={mapUrlIsEmpty} type={"button"}>
+        <Button disabled={mapUrlIsEmpty} variant={"outline"} type={"button"}>
           {t("ShowPreview")}
         </Button>
       </DialogTrigger>
@@ -96,5 +124,5 @@ export const MapPreviewDialog = ({mapUrl}: MapPreviewProps) => {
         <MapComponent src={mapUrl} className={"h-full"} />
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

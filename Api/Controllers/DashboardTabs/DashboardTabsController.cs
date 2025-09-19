@@ -5,6 +5,7 @@ using Api.Controllers.DashboardTabs.DeleteCardFromTab;
 using Api.Controllers.DashboardTabs.DeleteDashboardTab;
 using Api.Controllers.DashboardTabs.GetAllDashboardTabs;
 using Api.Controllers.DashboardTabs.UpdateCardOnTab;
+using Api.Controllers.DashboardTabs.UpdateCardSequence;
 using Api.Controllers.DashboardTabs.UpdateDashboardTab;
 using Api.Infrastructure.Keycloak;
 using MediatR;
@@ -73,7 +74,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpPost("{id:guid}/card")]
-  [Authorize(KeycloakPolicies.DashboardManager)]
+  [Authorize(Roles = $"{KeycloakPolicies.DashboardManager},{KeycloakPolicies.DashboardEditor}")]
   [EndpointName("DashboardCreateCard")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AddCardToTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -85,7 +86,7 @@ public class DashboardTabsController : ControllerBase
   }
 
   [HttpPut("{id:guid}/card/{cardId:guid}")]
-  [Authorize(KeycloakPolicies.DashboardManager)]
+  [Authorize(Roles = $"{KeycloakPolicies.DashboardManager},{KeycloakPolicies.DashboardEditor}")]
   [EndpointName("DashboardCardUpdate")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCardOnTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -99,13 +100,25 @@ public class DashboardTabsController : ControllerBase
 
 
   [HttpDelete("{id:guid}/card/{cardId:guid}")]
-  [Authorize(KeycloakPolicies.DashboardManager)]
+  [Authorize(Roles = $"{KeycloakPolicies.DashboardManager},{KeycloakPolicies.DashboardEditor}")]
   [EndpointName("DashboardCardDelete")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteCardFromTabResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> DeleteCard([FromRoute] Guid id, [FromRoute] Guid cardId)
   {
-    var result = await _mediator.Send(new DeleteCardFromTabQuery() { Id = id, CardId = cardId});
+    var result = await _mediator.Send(new DeleteCardFromTabQuery() { Id = id, CardId = cardId });
+    return Results.Ok(result);
+  }
+
+  [HttpPut("{id:guid}/card/reorder")]
+  [Authorize(Roles = $"{KeycloakPolicies.DashboardManager},{KeycloakPolicies.DashboardEditor}")]
+  [EndpointName("DashboardCardReorder")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateCardSequenceResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> ReorderCards([FromRoute] Guid id, [FromBody] UpdateCardSequenceQuery request)
+  {
+    request.TabId = id;
+    var result = await _mediator.Send(request);
     return Results.Ok(result);
   }
 }
