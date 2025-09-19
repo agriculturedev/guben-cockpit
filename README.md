@@ -13,6 +13,8 @@
 
 > This Repository contains both the Frontend as well as the Backend of the Application
 
+---
+
 ## Local Setup
 
 Follow these steps to set up the project locally:
@@ -88,6 +90,8 @@ The **Guben Cockpit** uses several different Open Source Projects to display var
 Please check their respective Webseites for more Information on how to set them up
 >Every Component can be set up using Docker
 
+---
+
 ## Keycloak
 Keycloak is an essential part of the **Guben Cockpit**. It is used to handle authentication, authorization, and user management for the CMS Part of the Platform. The application relies on Keycloak's role-based access control (RBAC) system to manage permissions for different user types and functionalities.
 
@@ -126,6 +130,7 @@ The following roles must be created in your Keycloak realm for the Guben Cockpit
 | `manage_geodata` | User can check uploaded Geodata / WMS / WFS, and decide if the data should be available in Masteportal, as well as Edit and Delete uploaded Geodata / WMS / WFS Links |
 | `view_users` | User can access all users |
 
+---
 
 ## Configuration
 
@@ -202,6 +207,8 @@ The following roles must be created in your Keycloak realm for the Guben Cockpit
 | `Masterportal.UploadedFolderTitle` | Title/name for uploaded geodata folder | `Uploaded_Geodata` |
 | `Masterportal.ThemeConfigSection` | Configuration section name for themes | `Fachdaten` |
 
+---
+
 ### Frontend Configuration (`.env`)
 ```
 VITE_API_URL=http://localhost:5000
@@ -223,8 +230,52 @@ VITE_TRANSLATE_API_KEY=some-api-key
 | `VITE_TRANSLATE_URL` | LibreTranslate API endpoint for translation services, used for translating the Booking Page | `http://localhost:5001/translate` |
 | `VITE_TRANSLATE_API_KEY` | API key for LibreTranslate service | `some-api-key` |
 
+---
+
 # Backend
 - The API will be available at `https://localhost:5000` (or the port specified in your configuration)
+
+---
+
+## Generell Information
+The backend project is structured into the following folders:
+
+- **Api**  
+  Contains all controllers and API endpoints.
+
+- **Api.Tests**  
+  Contains tests for the API.
+
+- **Database**  
+  Contains repositories (concrete implementations) for PostgreSQL as well as database migrations.
+
+- **Database.Tests**  
+  Contains tests for the database layer.
+
+- **Domain**  
+  Contains entities and repository interfaces.
+
+- **Domain.Tests**  
+  Contains tests for the domain layer.
+
+- **Jobs**  
+  Contains importers for Projects and Events.
+
+- **Shared.Api / Shared.Database / Shared.Domain**  
+  Contains shared classes and utilities for the respective layers.
+
+>If the Applications runs locally, all Endpoints can be checked under: `http://localhost:5000/openapi/v1.json`. Note: If you make changes to the API, you must rebuild the frontend schema. This can be done automatically from the frontend folder with: `npx openapi-codegen gen --config ./openapi-codegen.config.ts guben` from the Frontend folder.
+
+## Database Migrations
+
+If you make changes to entities, apply migrations using the following commands:
+
+```bash
+dotnet ef migrations add NAME_OF_MIGRATION --project Database --startup-project Api
+dotnet ef database update --project Database --startup-project Api
+```
+
+---
 
 ## Database Schema
 
