@@ -21,4 +21,22 @@ public class BookingRepository
 			.TagWith(nameof(BookingRepository) + "." + nameof(GetAllTenants))
 			.ToListAsync();
 	}
+
+	public Task<List<Booking>> GetAllPublicTenants()
+	{
+		return Set
+			.AsNoTracking()
+			.TagWith(nameof(BookingRepository) + "." + nameof(GetAllPublicTenants))
+			.Where(t => t.ForPublicUse == true)
+			.ToListAsync();
+	}
+
+	public Task<List<Booking>> GetAllPrivateTenants()
+	{
+		return Set
+			.AsNoTracking()
+			.TagWith(nameof(BookingRepository) + "." + nameof(GetAllPrivateTenants))
+			.Where(t => t.ForPublicUse == false)
+			.ToListAsync();
+	}
 }

@@ -118,6 +118,7 @@ export type CreateProjectResponse = {
 
 export type CreateTenantIdQuery = {
   tenantId: string;
+  forPublicUse?: boolean | null;
 };
 
 export type CreateTenantIdResponse = Record<string, any>;
@@ -392,6 +393,14 @@ export type GetMyProjectsResponse = {
   results: ProjectResponse[];
 };
 
+export type GetPrivateTenantIdsResponse = {
+  tenants: TenantResponse[];
+};
+
+export type GetPublicTenantIdsResponse = {
+  tenants: TenantResponse[];
+};
+
 export type GetTopicsResponse = {
   topics: TopicResponse[];
 };
@@ -514,6 +523,7 @@ export type TenantResponse = {
    */
   id: string;
   tenantId: string;
+  forPublicUse?: boolean | null;
 };
 
 export type TopicResponse = {
@@ -607,6 +617,17 @@ export type UpdateProjectQuery = {
   imageCredits?: string | null;
 };
 
+export type UpdateTenantQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  tenantId: string;
+  forPublicUse?: boolean | null;
+};
+
+export type UpdateTenantResponse = Record<string, any>;
+
 export type UpsertButtonQuery = {
   title: string;
   url: string;
@@ -645,3 +666,4 @@ export type ValidateGeoDataSourceResponse = Record<string, any>;
 export type ValidateRequest = {
   isValid?: boolean;
 };
+

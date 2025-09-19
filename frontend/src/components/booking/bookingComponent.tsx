@@ -8,11 +8,18 @@ import { Button } from "../ui/button";
 import { ArrowLeftIcon } from "lucide-react";
 import { TranslatedHtml } from "@/utilities/translateUtils";
 
-export default function BookingComponent() {
+type IProps = {
+  isPrivate?: boolean;
+}
+
+export default function BookingComponent({ isPrivate = false }: IProps) {
   const { t } = useTranslation("booking");
 
   const navigate = useNavigate();
-  const { title } = useParams({ from: '/booking/$title' });
+  const { title } = useParams({ from:
+    isPrivate
+     ? '/admin/_layout/privateBookings/$title'
+     : '/booking/$title' });
   const bookings = useBookingStore(state => state.bookings);
   let booking = bookings.find(b => b.title === title) || bookings.flatMap(b => b.bookings || []).find(b => b.title === title);
 
@@ -26,24 +33,26 @@ export default function BookingComponent() {
 
   return (
     <div>
-      <div className="relative w-full h-72 overflow-hidden">
-        <Button
-          variant="ghost"
-          className='z-10 text-white gap-2 absolute top-4 left-4 flex items-center hover:bg-none'
-          onClick={() => navigate({ to: "/booking" })}
-        >
-          <ArrowLeftIcon className='size-4' />
-          <p>{t('AllBookings')}</p>
-        </Button>
-        <img
-          src={booking.imgUrl}
-          className="w-full h-full object-cover absolute top-0 left-0" />
-        <div className="absolute bottom-0 left-0 w-full h-1/3 flex flex-col items-center justify-center bg-red-600/70">
-          <div className="mt-1 text-gubenAccent-foreground font-bold italic text-6xl tracking-tight">
-            {title}
+      {isPrivate === false && (
+        <div className="relative w-full h-72 overflow-hidden">
+          <Button
+            variant="ghost"
+            className='z-10 text-white gap-2 absolute top-4 left-4 flex items-center hover:bg-none'
+            onClick={() => navigate({ to: "/booking" })}
+          >
+            <ArrowLeftIcon className='size-4' />
+            <p>{t('AllBookings')}</p>
+          </Button>
+          <img
+            src={booking.imgUrl}
+            className="w-full h-full object-cover absolute top-0 left-0" />
+          <div className="absolute bottom-0 left-0 w-full h-1/3 flex flex-col items-center justify-center bg-red-600/70">
+            <div className="mt-1 text-gubenAccent-foreground font-bold italic text-6xl tracking-tight">
+              {title}
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <div>
         <BookingDivider text={title} />
         <div className="p-5 grid grid-cols-3 gap-5">
