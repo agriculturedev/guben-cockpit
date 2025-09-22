@@ -82,7 +82,7 @@ export default function AddSchoolDialog({ children, ...props }: IProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2"}>
+      <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2 max-w-screen-2xl"}>
         <DialogHeader>
           <DialogTitle>{t("AddSchool")}</DialogTitle>
         </DialogHeader>
@@ -92,6 +92,7 @@ export default function AddSchoolDialog({ children, ...props }: IProps) {
           disabled={isUploading}
           onSubmit={handleSubmit}
           onClose={() => setOpen(false)}
+          isSchool={true}
         />
       </DialogContent>
     </Dialog>
@@ -102,11 +103,11 @@ function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
   return {
     type: ProjectType.Schule,
     title: form.title,
-    description: form.description,
+    description: null,
     fullText: form.fullText,
-    imageCaption: form.imageCaption,
-    imageCredits: form.imageCredits,
-    imageUrl: form.imageUrl
+    imageCaption: null,
+    imageCredits: null,
+    imageUrl: null
   }
 }
 

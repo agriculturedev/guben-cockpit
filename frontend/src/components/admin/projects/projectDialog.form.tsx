@@ -10,12 +10,14 @@ import {EditableImage} from "@/components/ui/editableImage";
 import {useTranslation} from "react-i18next";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import HtmlEditor from "@/components/htmlEditor/editor";
 
 interface IProps {
   defaultData?: FormSchema;
   onSubmit: (form: FormSchema) => void;
   onClose: () => void;
   disabled: boolean;
+  isSchool?: boolean;
 }
 
 export default function ProjectDialogForm(props: IProps) {
@@ -46,65 +48,69 @@ export default function ProjectDialogForm(props: IProps) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel>{t("Description")}</FormLabel>
-              <FormControl>
-                <Textarea placeholder={t("Description")} {...field} value={field.value ?? undefined}/>
-              </FormControl>
-              <FormMessage/>
-            </FormItem>
-          )}
-        />
+        {!props.isSchool &&
+          <div>
+            <FormField
+              control={form.control}
+              name="description"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>{t("Description")}</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder={t("Description")} {...field} value={field.value ?? undefined}/>
+                  </FormControl>
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={form.control}
-          name="imageUrl"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel>{t("ImageUrl")}</FormLabel>
-              <FormControl>
-                <EditableImage
-                  imageUrl={field.value ?? undefined}
-                  onChange={field.onChange}
-                  startInEditingState
-                />
-              </FormControl>
-              <FormMessage/>
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>{t("ImageUrl")}</FormLabel>
+                  <FormControl>
+                    <EditableImage
+                      imageUrl={field.value ?? undefined}
+                      onChange={field.onChange}
+                      startInEditingState
+                    />
+                  </FormControl>
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={form.control}
-          name="imageCredits"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel>{t("ImageCredits")}</FormLabel>
-              <FormControl>
-                <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? undefined}/>
-              </FormControl>
-              <FormMessage/>
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="imageCredits"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>{t("ImageCredits")}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? undefined}/>
+                  </FormControl>
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={form.control}
-          name="imageCaption"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel>{t("ImageCaption")}</FormLabel>
-              <FormControl>
-                <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? undefined}/>
-              </FormControl>
-              <FormMessage/>
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="imageCaption"
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel>{t("ImageCaption")}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? undefined}/>
+                  </FormControl>
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
+          </div>
+        }
 
         <FormField
           control={form.control}
@@ -113,12 +119,9 @@ export default function ProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("FullText")}</FormLabel>
               <FormControl>
-                <ReactQuill
-                  theme="snow"
-                  value={field.value || ''}
-                  onChange={field.onChange}
-                  placeholder={t("FullText")}
-                />
+                <HtmlEditor
+                  {...field}
+                  content={field.value ?? ''} />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -15,6 +15,7 @@ import PublishProjectDialog from "@/components/admin/projects/publishProjectDial
 import { ProjectType } from "@/types/ProjectType";
 import AddSchoolDialog from "@/components/admin/projects/addSchoolDialog";
 import { useState } from "react";
+import { PermissionGuard } from "@/guards/permissionGuard";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   beforeLoad: async ({context, location}) => {
@@ -31,34 +32,36 @@ function Page() {
 
   return (
     <div className="w-full">
-      <div className={"mb-4 flex gap-2 justify-end"}>
-        <AddBusinessDialog onCreateSuccess={onSuccess}>
-          <Button>
-            <div className="flex gap-2 items-center">
-              <PlusIcon className="size-4" />
-              <p>{t("projects:AddBusiness")}</p>
-            </div>
-          </Button>
-        </AddBusinessDialog>
+      <PermissionGuard permissions={[Permissions.ProjectContributor]}>
+        <div className={"mb-4 flex gap-2 justify-end"}>
+          <AddBusinessDialog onCreateSuccess={onSuccess}>
+            <Button>
+              <div className="flex gap-2 items-center">
+                <PlusIcon className="size-4" />
+                <p>{t("projects:AddBusiness")}</p>
+              </div>
+            </Button>
+          </AddBusinessDialog>
 
-        <AddProjectDialog onCreateSuccess={onSuccess}>
-          <Button>
-            <div className="flex gap-2 items-center">
-              <PlusIcon className="size-4" />
-              <p>{t("projects:Add")}</p>
-            </div>
-          </Button>
-        </AddProjectDialog>
+          <AddProjectDialog onCreateSuccess={onSuccess}>
+            <Button>
+              <div className="flex gap-2 items-center">
+                <PlusIcon className="size-4" />
+                <p>{t("projects:Add")}</p>
+              </div>
+            </Button>
+          </AddProjectDialog>
 
-        <AddSchoolDialog onCreateSuccess={onSuccess}>
-          <Button>
-            <div className="flex gap-2 items-center">
-              <PlusIcon className="size-4" />
-              <p>{t("projects:AddSchool")}</p>
-            </div>
-          </Button>
-        </AddSchoolDialog>
-      </div>
+          <AddSchoolDialog onCreateSuccess={onSuccess}>
+            <Button>
+              <div className="flex gap-2 items-center">
+                <PlusIcon className="size-4" />
+                <p>{t("projects:AddSchool")}</p>
+              </div>
+            </Button>
+          </AddSchoolDialog>
+        </div>
+      </PermissionGuard>
       <Table>
         <TableHeader>
           <TableRow>

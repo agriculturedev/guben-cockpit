@@ -11,6 +11,9 @@ import { formSchema, formDefaults, FormSchema } from "./editProjectDialog.formSc
 import { Checkbox } from "@/components/ui/checkbox";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Permissions } from "@/auth/permissions";
+import { PermissionGuard } from "@/guards/permissionGuard";
+import HtmlEditor from "@/components/htmlEditor/editor";
 
 interface IProps {
   defaultData?: FormSchema;
@@ -50,65 +53,67 @@ export default function EditProjectDialogForm(props: IProps) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("Description")}</FormLabel>
-              <FormControl>
-                <Textarea placeholder={t("Description")} {...field} value={field.value ?? ''} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.ProjectEditor]}>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("Description")}</FormLabel>
+                <FormControl>
+                  <Textarea placeholder={t("Description")} {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="imageUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("ImageUrl")}</FormLabel>
-              <FormControl>
-                <EditableImage
-                  imageUrl={field.value || ''}
-                  onChange={field.onChange}
-                  startInEditingState
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("ImageUrl")}</FormLabel>
+                <FormControl>
+                  <EditableImage
+                    imageUrl={field.value || ''}
+                    onChange={field.onChange}
+                    startInEditingState
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="imageCredits"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("ImageCredits")}</FormLabel>
-              <FormControl>
-                <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? ''} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="imageCredits"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("ImageCredits")}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="imageCaption"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("ImageCaption")}</FormLabel>
-              <FormControl>
-                <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? ''} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="imageCaption"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("ImageCaption")}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? ''} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </PermissionGuard>
 
         <FormField
           control={form.control}
@@ -117,51 +122,50 @@ export default function EditProjectDialogForm(props: IProps) {
             <FormItem>
               <FormLabel>{t("FullText")}</FormLabel>
               <FormControl>
-                <ReactQuill
-                  theme="snow"
-                  value={field.value || ''}
-                  onChange={field.onChange}
-                  placeholder={t("FullText")}
-                />
+                <HtmlEditor
+                  {...field}
+                  content={field.value ?? ''} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="isBusiness"
-          render={({ field }) => (
-            <FormItem className="flex gap-2 items-center">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  disabled={isSchool}
-                />
-              </FormControl>
-              <FormLabel>{t("projects:IsBusiness")}</FormLabel>
-            </FormItem>
-          )}
-        />
+        <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.ProjectEditor]}>
+          <FormField
+            control={form.control}
+            name="isBusiness"
+            render={({ field }) => (
+              <FormItem className="flex gap-2 items-center">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={isSchool}
+                  />
+                </FormControl>
+                <FormLabel>{t("projects:IsBusiness")}</FormLabel>
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="isSchool"
-          render={({ field }) => (
-            <FormItem className="flex gap-2 items-center">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  disabled={isBusiness}
-                />
-              </FormControl>
-              <FormLabel>{t("projects:IsSchool")}</FormLabel>
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="isSchool"
+            render={({ field }) => (
+              <FormItem className="flex gap-2 items-center">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={isBusiness}
+                  />
+                </FormControl>
+                <FormLabel>{t("projects:IsSchool")}</FormLabel>
+              </FormItem>
+            )}
+          />
+        </PermissionGuard>
 
         <div className={"flex justify-end gap-2"}>
           <Button className={"bg-transparent text-foreground"} onClick={props.onClose}>{t("Cancel")}</Button>

@@ -17,6 +17,7 @@ public struct ProjectResponse
   public string? ImageUrl { get; set; }
   public string? ImageCredits { get; set; }
   public required bool Published { get; set; }
+  public Guid? EditorId { get; set; }
 
   public static ProjectResponse Map(Project @project, CultureInfo cultureInfo)
   {
@@ -34,7 +35,8 @@ public struct ProjectResponse
       ImageCaption = @project.ImageCaption,
       ImageUrl = @project.ImageUrl,
       ImageCredits = @project.ImageCredits,
-      Published = @project.Published
+      Published = @project.Published,
+      EditorId = @project.EditorId
     };
   }
 }
