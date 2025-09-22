@@ -2,6 +2,7 @@ export enum Permissions {
   EventContributor = "event_contributor",
   PublishEvents = "publish_events",
   DashboardManager = "dashboard_manager",
+  DashboardEditor = "dashboard_editor",
   LocationManager = "location_manager",
   PageManager = "page_manager",
   ProjectContributor = "project_contributor",
