@@ -107,7 +107,8 @@ function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
     fullText: form.fullText,
     imageCaption: null,
     imageCredits: null,
-    imageUrl: null
+    imageUrl: null,
+    editorEmail: form.editorEmail
   }
 }
 

@@ -29,4 +29,9 @@ public class UserRepository
     var normalized = email.ToLowerInvariant();
     return ModifiedSet.FirstOrDefaultAsync(u => u.Email.ToLower() == normalized, ct);
   }
+
+  public Task<User?> GetById(Guid id)
+  {
+    return ModifiedSet.FirstOrDefaultAsync(u => u.Id == id);
+  }
 }

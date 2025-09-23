@@ -128,6 +128,24 @@ export default function ProjectDialogForm(props: IProps) {
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="editorEmail"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("common:EditorEmail")}</FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder={t("common:EditorEmail")}
+                  {...field}
+                  value={field.value ?? ""}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
         <div className={"flex justify-end gap-2"}>
           <Button className={"bg-transparent text-foreground"} onClick={props.onClose}>{t("Cancel")}</Button>
           <Button className={"bg-gubenAccent text-gubenAccent-foreground"} disabled={props.disabled}>{t("Save")}</Button>

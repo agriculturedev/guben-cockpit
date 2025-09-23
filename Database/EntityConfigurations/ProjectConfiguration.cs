@@ -30,6 +30,11 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
       .WithMany()
       .HasForeignKey(p => p.CreatedBy)
       .OnDelete(DeleteBehavior.Restrict);
+    
+    builder.HasOne<User>()
+      .WithMany()
+      .HasForeignKey(p => p.EditorId)
+      .OnDelete(DeleteBehavior.Restrict);
 
     var converter = I18NConverter<ProjectI18NData>.CreateNew();
 

@@ -14,6 +14,7 @@ public class ProjectBuilder
   private string? _imageUrl;
   private string? _imageCredits;
   private Guid _createdBy = Guid.NewGuid();
+  private Guid? _editorId = null;
   private CultureInfo _cultureInfo = CultureInfo.GetCultureInfo("de");
 
   public ProjectBuilder WithId(string id)
@@ -70,9 +71,15 @@ public class ProjectBuilder
     return this;
   }
 
+  public ProjectBuilder WithEditorId(Guid editorId)
+  {
+    _editorId = editorId;
+    return this;
+  }
+
   public Projects.Project Build()
   {
-    var (result, project) = Projects.Project.Create(_id, _type, _title, _description, _fullText, _imageCaption, _imageUrl, _imageCredits, _createdBy, _cultureInfo);
+    var (result, project) = Projects.Project.Create(_id, _type, _title, _description, _fullText, _imageCaption, _imageUrl, _imageCredits, _createdBy, _editorId, _cultureInfo);
     if (result.IsFailure)
       throw new ArgumentException(result.ToString());
 
@@ -81,7 +88,7 @@ public class ProjectBuilder
 
   public Projects.Project BuildWithGeneratedId()
   {
-    var (result, project) = Projects.Project.CreateWithGeneratedId(_type, _title, _description, _fullText, _imageCaption, _imageUrl, _imageCredits, _createdBy, _cultureInfo);
+    var (result, project) = Projects.Project.CreateWithGeneratedId(_type, _title, _description, _fullText, _imageCaption, _imageUrl, _imageCredits, _createdBy, _editorId, _cultureInfo);
     if (result.IsFailure)
       throw new ArgumentException(result.ToString());
 

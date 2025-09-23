@@ -103,6 +103,7 @@ public class ProjectImporter
       rawProject.ImageUrl,
       rawProject.ImageCredits,
       User.SystemUserId,
+      null,
       German
     );
 
@@ -138,7 +139,8 @@ public class ProjectImporter
         @project.Title,
         @project.ImageCaption,
         @project.ImageUrl,
-        @project.ImageCredits
+        @project.ImageCredits,
+        null
       );
 
       await _projectRepository.SaveAsync(existingProject);

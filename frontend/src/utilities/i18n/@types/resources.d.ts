@@ -100,6 +100,7 @@ interface Resources {
     "Delete": "Löschen",
     "Description": "Beschreibung",
     "Email": "E-Mail",
+    "EditorEmail": "Editor E-Mail",
     "EndDate": "Enddatum",
     "EventDetails": "Details zu der Veranstaltung",
     "FullText": "Volltext",
@@ -296,7 +297,7 @@ interface Resources {
   },
   "navigation": {
     "Dashboard": "Übersicht",
-    "Projects": "Projekte",
+    "Projects": "Mein Guben",
     "Map": "Karte",
     "Events": "Veranstaltungen",
     "LogOut": "Abmelden",

@@ -1,7 +1,7 @@
 import {ProjectResponse} from "@/endpoints/gubenSchemas";
 import {ExternalLinkIcon} from "lucide-react";
 import ProjectDialog from "@/components/projects/projectDialog";
-import { useNextcloudGetFile, useNextcloudGetFiles } from "@/endpoints/gubenComponents";
+import { useNextcloudGetFiles } from "@/endpoints/gubenComponents";
 import { ProjectType } from "@/types/ProjectType";
 
 interface IProps {
@@ -9,7 +9,7 @@ interface IProps {
   school?: boolean;
 }
 
-export default function ProjectCard({project, school}: IProps){
+export default function ProjectCard({ project, school }: IProps){
   const imagesQuery = useNextcloudGetFiles({
     queryParams: {
       directory: `${ProjectType[project.type]}/${project.id}/images`,
@@ -19,16 +19,12 @@ export default function ProjectCard({project, school}: IProps){
 
   const imageFilename = (imagesQuery.data ?? [])[0];
   const filenamesAsStrings = imagesQuery.data;
-  const image = useNextcloudGetFile({
-    queryParams: {
-      filename: `${ProjectType[project.type]}/${project.id}/images/${imageFilename}`
-    }
-  }, {
-    enabled: !!imageFilename
-  });
 
-  const imageUrl = image.data ? URL.createObjectURL(image.data as Blob) : undefined;
-  const imageUrlToUse = project.imageUrl ? project.imageUrl : imageUrl;
+  let previewImage;
+  if (!project.imageUrl)
+    previewImage = imageFilename ? `${import.meta.env.VITE_NEXTCLOUD_URL}/index.php/core/preview.png?file=Guben/Images/${ProjectType[project.type]}/${project.id}/images/${imageFilename}&x=800&y=600&a=true` : undefined;
+
+  const imageUrlToUse = project.imageUrl ? project.imageUrl : previewImage;
 
   return (
     <ProjectDialog project={project} school={school} imageFilenames={filenamesAsStrings}>

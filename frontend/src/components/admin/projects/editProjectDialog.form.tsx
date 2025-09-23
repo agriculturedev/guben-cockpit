@@ -20,6 +20,7 @@ interface IProps {
   onSubmit: (form: FormSchema) => void;
   onClose: () => void;
   disabled: boolean;
+  isSchool?: boolean;
 }
 
 export default function EditProjectDialogForm(props: IProps) {
@@ -53,67 +54,69 @@ export default function EditProjectDialogForm(props: IProps) {
           )}
         />
 
-        <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.ProjectEditor]}>
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("Description")}</FormLabel>
-                <FormControl>
-                  <Textarea placeholder={t("Description")} {...field} value={field.value ?? ''} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        {!props.isSchool &&
+          <div>
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("Description")}</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder={t("Description")} {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("ImageUrl")}</FormLabel>
-                <FormControl>
-                  <EditableImage
-                    imageUrl={field.value || ''}
-                    onChange={field.onChange}
-                    startInEditingState
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("ImageUrl")}</FormLabel>
+                  <FormControl>
+                    <EditableImage
+                      imageUrl={field.value || ''}
+                      onChange={field.onChange}
+                      startInEditingState
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="imageCredits"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("ImageCredits")}</FormLabel>
-                <FormControl>
-                  <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? ''} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="imageCredits"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("ImageCredits")}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t("ImageCredits")} {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="imageCaption"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("ImageCaption")}</FormLabel>
-                <FormControl>
-                  <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? ''} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </PermissionGuard>
+            <FormField
+              control={form.control}
+              name="imageCaption"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("ImageCaption")}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t("ImageCaption")} {...field} value={field.value ?? ''} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        }
 
         <FormField
           control={form.control}
@@ -132,6 +135,24 @@ export default function EditProjectDialogForm(props: IProps) {
         />
 
         <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.ProjectEditor]}>
+          <FormField
+            control={form.control}
+            name="editorEmail"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("common:EditorEmail")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder={t("common:EditorEmail")}
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="isBusiness"

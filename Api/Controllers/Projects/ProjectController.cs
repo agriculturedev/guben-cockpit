@@ -65,8 +65,7 @@ public class ProjectController : ControllerBase
 
   [HttpGet("owned")]
   [EndpointName("ProjectsGetMyProjects")]
-  [Authorize(KeycloakPolicies.ProjectContributor)]
-  [Authorize(KeycloakPolicies.PublishProjects)]
+  [Authorize(Roles = $"{KeycloakPolicies.ProjectContributor},{KeycloakPolicies.PublishProjects},{KeycloakPolicies.School}")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMyProjectsResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   public async Task<IResult> GetMyProjects([FromQuery] GetMyProjectsQuery query)
@@ -98,8 +97,7 @@ public class ProjectController : ControllerBase
   }
 
   [HttpPut("{id}")]
-  [Authorize(KeycloakPolicies.ProjectContributor)]
-  [Authorize(KeycloakPolicies.EditProjects)]
+  [Authorize(Roles = $"{KeycloakPolicies.ProjectContributor},{KeycloakPolicies.EditProjects},{KeycloakPolicies.School}")]
   [EndpointName("ProjectsUpdateProject")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateProjectResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -111,8 +109,7 @@ public class ProjectController : ControllerBase
   }
 
   [HttpDelete("{id}")]
-  [Authorize(KeycloakPolicies.ProjectContributor)]
-  [Authorize(KeycloakPolicies.DeleteProjects)]
+  [Authorize(Roles = $"{KeycloakPolicies.ProjectContributor},{KeycloakPolicies.DeleteProjects}")]
   [EndpointName("ProjectsDeleteProject")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteProjectResponse))]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]

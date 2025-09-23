@@ -1,19 +1,19 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { CreateProjectResponse, ProjectResponse, UpdateProjectQuery } from "@/endpoints/gubenSchemas";
-import { ReactNode, useState } from "react";
+import { CreateProjectResponse, GetMyProjectsResponseItem, UpdateProjectQuery } from "@/endpoints/gubenSchemas";
+import { useState } from "react";
 import { FormSchema } from "./editProjectDialog.formSchema";
-
 import { useNextcloudDeleteFile, useNextcloudGetFiles, useProjectsUpdateProject } from "@/endpoints/gubenComponents";
 import { useErrorToast } from "@/hooks/useErrorToast";
 import { useTranslation } from "react-i18next";
-import EditProjectDialogForm from "./editProjectDialog.form";
 import { ProjectType } from "@/types/ProjectType";
 import { useNextcloudCreateFile } from "@/endpoints/gubenComponents";
 import { FileInput } from "@/components/inputs/FileInput";
 import { Button } from "@/components/ui/button";
 
+import EditProjectDialogForm from "./editProjectDialog.form";
+
 interface IProps {
-  project: ProjectResponse;
+  project: GetMyProjectsResponseItem;
   onCreateSuccess: (data: CreateProjectResponse) => Promise<void>;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -87,6 +87,7 @@ export default function EditProjectDialog({ project, open, onOpenChange, ...prop
 
   const handleSubmit = async (form: FormSchema) => {
     setIsUploading(true);
+    console.log(form);
     await mutateAsync({
       pathParams: { id: project.id },
       body: mapFormToEditProjectQuery(form)
@@ -107,6 +108,8 @@ export default function EditProjectDialog({ project, open, onOpenChange, ...prop
       useErrorToast(error);
     }
   };
+
+  const isSchool = project.type === 2;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -153,13 +156,14 @@ export default function EditProjectDialog({ project, open, onOpenChange, ...prop
           defaultData={mapProjectToForm(project)}
           onSubmit={handleSubmit}
           onClose={() => onOpenChange(false)}
+          isSchool={isSchool}
         />
       </DialogContent>
     </Dialog>
   )
 }
 
-function mapProjectToForm(project: ProjectResponse): FormSchema {
+function mapProjectToForm(project: GetMyProjectsResponseItem): FormSchema {
   return {
     title: project.title,
     description: project.description ?? '',
@@ -167,6 +171,7 @@ function mapProjectToForm(project: ProjectResponse): FormSchema {
     imageCaption: project.imageCaption ?? '',
     imageUrl: project.imageUrl ?? '',
     imageCredits: project.imageCredits ?? '',
+    editorEmail: project.editorEmail ?? '',
     isBusiness: project.type === ProjectType.GubenerMarktplatz,
     isSchool: project.type === ProjectType.Schule
   }
@@ -190,6 +195,7 @@ function mapFormToEditProjectQuery(form: FormSchema): UpdateProjectQuery {
     fullText: form.fullText || null,
     imageCaption: form.imageCaption || null,
     imageCredits: form.imageCredits || null,
-    imageUrl: form.imageUrl || null
+    imageUrl: form.imageUrl || null,
+    editorEmail: form.editorEmail || null
   }
 }

@@ -19,7 +19,7 @@ import { PermissionGuard } from "@/guards/permissionGuard";
 
 export const Route = createFileRoute('/admin/_layout/projects')({
   beforeLoad: async ({context, location}) => {
-    await routePermissionCheck(context.auth, [Permissions.ProjectContributor, Permissions.PublishProjects])
+    await routePermissionCheck(context.auth, [Permissions.ProjectContributor, Permissions.PublishProjects, Permissions.School])
   },
   component: Page
 })
@@ -67,6 +67,7 @@ function Page() {
           <TableRow>
             <TableHead>{t("Title")}</TableHead>
             <TableHead>{t("Description")}</TableHead>
+            <TableHead>{t('EditorEmail')}</TableHead>
             <TableHead>{t("projects:Published")}</TableHead>
             <TableHead>{t("projects:IsBusiness")}</TableHead>
             <TableHead>{t("projects:IsSchool")}</TableHead>
@@ -78,6 +79,7 @@ function Page() {
             <TableRow key={p.id}>
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[20ch]">{p.title}</TableCell>
               <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap max-w-[50ch]">{p.description}</TableCell>
+              <TableCell className="overflow-ellipsis overflow-hidden whitespace-nowrap map-w-[20ch]">{p.editorEmail}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.published ? <CheckIcon /> : <XIcon />}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.type == ProjectType.GubenerMarktplatz ? <CheckIcon /> : <XIcon />}</TableCell>
               <TableCell className={"text-neutral-500"}>{p.type == ProjectType.Schule ? <CheckIcon /> : <XIcon />}</TableCell>
@@ -96,13 +98,15 @@ function Page() {
                       </EditProjectDialog>
                     )}
 
-                    <PublishProjectDialog projectId={p.id} isPublished={p.published} onToggleSuccess={onSuccess}>
-                      <FileUpIcon className="size-4 hover:text-red-500"/>
-                    </PublishProjectDialog>
+                    <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.PublishProjects]}>
+                      <PublishProjectDialog projectId={p.id} isPublished={p.published} onToggleSuccess={onSuccess}>
+                        <FileUpIcon className="size-4 hover:text-red-500"/>
+                      </PublishProjectDialog>
 
-                    <DeleteProjectDialog projectId={p.id} type={ProjectType[p.type]} onDeleteSuccess={onSuccess}>
-                      <TrashIcon className="size-4 hover:text-red-500"/>
-                    </DeleteProjectDialog>
+                      <DeleteProjectDialog projectId={p.id} type={ProjectType[p.type]} onDeleteSuccess={onSuccess}>
+                        <TrashIcon className="size-4 hover:text-red-500"/>
+                      </DeleteProjectDialog>
+                    </PermissionGuard>
                   </div>
                 </TooltipProvider>
               </TableCell>
