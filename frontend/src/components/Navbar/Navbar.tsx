@@ -13,6 +13,7 @@ import { getLocalizedLanguagename, Language } from "@/utilities/i18n/Languages";
 import { WithClassName } from "@/types/WithClassName";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { useLanguageUpdater } from "@/hooks/useLanguageUpdater";
+import { MyGubenIcon } from "../icons/MyGubenIcon";
 
 type TNavContext = { location: string }
 const NavContext = createContext<TNavContext>({ location: "/" });
@@ -89,7 +90,7 @@ export const Navbar = () => {
           </NavLink>
           <NavLink to="/projects" name={t("Projects")}>
             <div className="flex flex-col items-center w-24">
-              <LayoutGridIcon className={iconStyle} />
+              <MyGubenIcon className={iconStyle} />
               <span className="mt-1 font-nunito">{t('Projects')}</span>
             </div>
           </NavLink>

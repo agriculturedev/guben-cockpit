@@ -37,6 +37,21 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
     if (!ProjectType.TryFromValue(request.Type, out var type))
       throw new ProblemDetailsException(TranslationKeys.ProjectTypeInvalid);
 
+    Guid? editorId = null;
+
+    if (!string.IsNullOrWhiteSpace(request.EditorEmail))
+    {
+      var normalizedEmail = request.EditorEmail.Trim().ToLowerInvariant();
+      var editor = await _userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
+
+      if (editor is null)
+      {
+        throw new ArgumentException("User with this email does not exist.", nameof(request.EditorEmail));
+      }
+
+      editorId = editor.Id;
+    }
+
     var (projectResult, project) = Project.CreateWithGeneratedId(
       type,
       request.Title,
@@ -46,6 +61,7 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
       request.ImageUrl,
       request.ImageCredits,
       user.Id,
+      editorId,
       _culture
     );
 

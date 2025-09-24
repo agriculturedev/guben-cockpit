@@ -15,10 +15,11 @@ public sealed class Project : Entity<string>
   public bool Published { get; private set; }
   public Guid CreatedBy { get; private set; }
   public bool Deleted { get; private set; }
+  public Guid? EditorId { get; private set; }
   public Dictionary<string, ProjectI18NData> Translations { get; private set; } = new();
 
   private Project(string id, ProjectType type, string title, string? imageCaption, string? imageUrl, string?
-    imageCredits, Guid createdBy)
+    imageCredits, Guid createdBy, Guid? editorId)
   {
     Id = id;
     Type = type;
@@ -29,10 +30,11 @@ public sealed class Project : Entity<string>
     Published = false;
     CreatedBy = createdBy;
     Deleted = false;
+    EditorId = editorId;
   }
 
   public static Result<Project> Create(string id, ProjectType type, string title, string? description, string? fullText, string? imageCaption,
-    string? imageUrl, string? imageCredits, Guid createdBy, CultureInfo cultureInfo)
+    string? imageUrl, string? imageCredits, Guid createdBy, Guid? editorId, CultureInfo cultureInfo)
   {
     var @project = new Project(
       id,
@@ -41,7 +43,8 @@ public sealed class Project : Entity<string>
       imageCaption,
       imageUrl,
       imageCredits,
-      createdBy
+      createdBy,
+      editorId
     );
 
     var (translationResult, translation) = ProjectI18NData.Create(fullText, description);
@@ -54,7 +57,7 @@ public sealed class Project : Entity<string>
   }
 
   public static Result<Project> CreateWithGeneratedId(ProjectType type, string title, string? description, string? fullText, string? imageCaption,
-    string? imageUrl, string? imageCredits, Guid createdBy, CultureInfo cultureInfo)
+    string? imageUrl, string? imageCredits, Guid createdBy, Guid? editorId, CultureInfo cultureInfo)
   {
     return Create(
       Guid.CreateVersion7().ToString(),
@@ -66,12 +69,13 @@ public sealed class Project : Entity<string>
       imageUrl,
       imageCredits,
       createdBy,
+      editorId,
       cultureInfo
     );
   }
 
   public void Update(ProjectType type, string title, string? imageCaption, string? imageUrl,
-    string? imageCredits, CultureInfo cultureInfo, ProjectI18NData translations)
+    string? imageCredits, Guid? editorId, CultureInfo cultureInfo, ProjectI18NData translations)
   {
     UpdateTranslation(translations, cultureInfo);
     Type = type;
@@ -79,16 +83,18 @@ public sealed class Project : Entity<string>
     ImageCaption = imageCaption;
     ImageUrl = imageUrl;
     ImageCredits = imageCredits;
+    EditorId = editorId;
   }
 
   public void Update(ProjectType type, string title, string? imageCaption, string? imageUrl,
-    string? imageCredit)
+    string? imageCredit, Guid? editorId)
   {
     Type = type;
     Title = title;
     ImageCaption = imageCaption;
     ImageUrl = imageUrl;
     ImageCredits = imageCredit;
+    EditorId = editorId;
   }
 
   // Does not truly delete the entity in the DB, but we need this for Projects that we fetch every 24h or so

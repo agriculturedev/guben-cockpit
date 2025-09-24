@@ -7,11 +7,14 @@ export enum Permissions {
   PageManager = "page_manager",
   ProjectContributor = "project_contributor",
   PublishProjects = "publish_projects",
+  ProjectEditor = "project_editor",
+  ProjectDeleter = "project_deleter",
   ViewUsers = "view_users",
   FooterManager = "footer_manager",
   UploadGeodata = "upload_geodata",
   ManageGeoData = "manage_geodata",
   BookingManager = "booking_manager",
   BookingPlatform = "booking_platform",
-  AdministrativeStaff = "administrative_staff"
+  AdministrativeStaff = "administrative_staff",
+  School = "school"
 }

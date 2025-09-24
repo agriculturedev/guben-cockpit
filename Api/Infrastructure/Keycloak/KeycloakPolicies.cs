@@ -6,7 +6,7 @@ public static class KeycloakPolicies
   [
     ViewUsers, ProjectContributor, PublishProjects, EventContributor, PublishEvents, DashboardManager, PageManager,
     LocationManager, FooterManager, EditProjects, DeleteProjects, DeleteEvent, EditEvents, BookingManager, UploadGeodata, ManageGeodata,
-    DashboardEditor, AdministrativeStaff
+    DashboardEditor, AdministrativeStaff, School
   ];
 
   #region Users
@@ -21,6 +21,7 @@ public static class KeycloakPolicies
   public const string PublishProjects = "publish_projects";
   public const string EditProjects = "project_editor";
   public const string DeleteProjects = "project_deleter";
+  public const string School = "school";
 
   #endregion
 

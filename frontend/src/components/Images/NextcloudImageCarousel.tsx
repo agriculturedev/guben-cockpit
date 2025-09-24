@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { useNextcloudGetImage } from "@/endpoints/gubenComponents";
-import { BaseImgTag } from "../ui/BaseImgTag";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { NextCloudClickableImage } from "@/components/Images/NextcloudImageGallery";
 
@@ -8,6 +6,7 @@ export interface Image {
   filename: string;   //full url if external is set to true
   directory?: string;
   external?: boolean;
+  previewUrl?: string;
 }
 
 interface IProps {
@@ -18,7 +17,32 @@ export function NextcloudImageCarousel({ images }: IProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentImage = images[currentIndex];
 
+  const handlePrevious = () => setCurrentIndex(i => Math.max(0, i - 1));
+  const handleNext = () => setCurrentIndex(i => Math.min(images.length - 1, i + 1));
+
   if (!images.length) return <div>No images available</div>;
+
+  const carouselProps = {
+    currentIndex,
+    totalImages: images.length,
+    onPrevious: currentIndex > 0 ? handlePrevious : undefined,
+    onNext: currentIndex < images.length - 1 ? handleNext : undefined,
+    images: images.map(img => {
+      const fullUrl = img.external
+        ? img.filename : img.filename.includes("remote.php/webdav")
+        ? img.filename : `${img.directory}/${img.filename}`;
+
+      const previewUrl = img.external
+        ? img.filename
+        : `${import.meta.env.VITE_NEXTCLOUD_URL}/index.php/core/preview.png?file=Guben/Images/${img.directory}/${img.filename}&x=800&y=600&a=true`;
+
+      return {
+        filename: fullUrl,
+        previewUrl,
+        isExternal: img.external
+      };
+    })
+  };
 
   return (
     <div className="block max-w-md mx-auto text-center relative" style={{ breakInside: "avoid" }}>
@@ -27,16 +51,18 @@ export function NextcloudImageCarousel({ images }: IProps) {
           image={currentImage}
           currentIndex={currentIndex}
           total={images.length}
-          onPrevious={() => setCurrentIndex(i => Math.max(0, i - 1))}
-          onNext={() => setCurrentIndex(i => Math.min(images.length - 1, i + 1))}
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+          carouselProps={carouselProps}
         />
       ) : (
         <InternalImageCarousel
           image={currentImage}
           currentIndex={currentIndex}
           total={images.length}
-          onPrevious={() => setCurrentIndex(i => Math.max(0, i - 1))}
-          onNext={() => setCurrentIndex(i => Math.min(images.length - 1, i + 1))}
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+          carouselProps={carouselProps}
         />
       )}
     </div>
@@ -49,37 +75,29 @@ const InternalImageCarousel = ({
   total,
   onPrevious,
   onNext,
+  carouselProps,
 }: {
   image: Image;
   currentIndex: number;
   total: number;
   onPrevious: () => void;
   onNext: () => void;
+  carouselProps: any;
 }) => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-  const { data: imageData, isLoading, isError } = useNextcloudGetImage({
-    queryParams: { filename: image.filename, directory: image.directory },
-  });
+  const previewImage = image.previewUrl ?? `${import.meta.env.VITE_NEXTCLOUD_URL}/index.php/core/preview.png?file=/Guben/Images/${image.directory}/${image.filename}&x=800&y=600&a=true`;
 
-  useEffect(() => {
-    if (imageData instanceof Blob) {
-      const url = URL.createObjectURL(imageData);
-      setImageUrl(url);
-      return () => URL.revokeObjectURL(url);
-    }
-  }, [imageData]);
-
-  const fullFilename = image.filename.includes("remote.php/webdav") ? image.filename : `${image.directory}/${image.filename}`;
+  const fullFilename = image.filename.includes("remote.php/webdav") 
+    ? image.filename 
+    : `${image.directory}/${image.filename}`;
 
   return (
     <>
-      {isLoading && <div>Loading image...</div>}
-      {isError && <div>Failed to load image</div>}
-
-      {!isLoading && !isError && imageUrl && (
-        <NextCloudClickableImage imageFilename={fullFilename} />
-      )}
+      <NextCloudClickableImage 
+        previewImage={previewImage}
+        imageFilename={fullFilename}
+        carouselProps={carouselProps}
+      />
 
       <CarouselControls
         currentIndex={currentIndex}
@@ -98,16 +116,23 @@ const ExternalImageCarousel = ({
   total,
   onPrevious,
   onNext,
+  carouselProps,
 }: {
   image: Image;
   currentIndex: number;
   total: number;
   onPrevious: () => void;
   onNext: () => void;
+  carouselProps: any;
 }) => {
   return (
     <>
-      <NextCloudClickableImage imageFilename={image.filename} isExternal={true} />
+      <NextCloudClickableImage 
+        imageFilename={image.filename}
+        previewImage="" //not used for external Images
+        isExternal={true}
+        carouselProps={carouselProps}
+      />
       <CarouselControls
         currentIndex={currentIndex}
         total={total}

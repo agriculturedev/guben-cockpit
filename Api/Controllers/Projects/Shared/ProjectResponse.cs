@@ -34,7 +34,7 @@ public struct ProjectResponse
       ImageCaption = @project.ImageCaption,
       ImageUrl = @project.ImageUrl,
       ImageCredits = @project.ImageCredits,
-      Published = @project.Published
+      Published = @project.Published,
     };
   }
 }

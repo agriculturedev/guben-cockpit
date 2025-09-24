@@ -26,7 +26,7 @@ export const AdminNavigation = () => {
         <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})}/>
       </PermissionGuard>
 
-      <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.PublishProjects]}>
+      <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.PublishProjects, Permissions.School]}>
         <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})}/>
       </PermissionGuard>
 

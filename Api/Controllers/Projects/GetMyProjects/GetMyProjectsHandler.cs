@@ -41,12 +41,19 @@ public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyP
 
     // if the user is a publisher, allow access to all projects
     IEnumerable<Project> projects = [];
-    if(isPublisher) projects = _projectRepository.GetAllIncludingUnpublished();
-    else projects = _projectRepository.GetAllOwnedBy(user.Id);
+    if (isPublisher) projects = _projectRepository.GetAllIncludingUnpublished();
+    else projects = _projectRepository.GetAllOwnedByOrEditor(user.Id);
 
-    return new GetMyProjectsResponse()
+    var results = new List<GetMyProjectsResponseItem>();
+    foreach (var project in projects)
     {
-      Results = projects.Select(p => ProjectResponse.Map(p, _culture))
+      var mapped = await GetMyProjectsResponseItem.MapAsync(project, _culture, _userRepository);
+      results.Add(mapped);
+    }
+
+    return new GetMyProjectsResponse
+    {
+      Results = results
     };
   }
 }

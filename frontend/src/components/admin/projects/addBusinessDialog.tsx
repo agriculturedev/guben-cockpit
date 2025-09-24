@@ -83,7 +83,7 @@ export default function AddBusinessDialog({children, ...props}: IProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2"}>
+      <DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2 max-w-screen-2xl"}>
         <DialogHeader>
           <DialogTitle>{t("AddBusiness")}</DialogTitle>
         </DialogHeader>
@@ -107,6 +107,7 @@ function mapFormToCreateProjectQuery(form: FormSchema): CreateProjectQuery {
     fullText: form.fullText,
     imageCaption: form.imageCaption,
     imageCredits: form.imageCredits,
-    imageUrl: form.imageUrl
+    imageUrl: form.imageUrl,
+    editorEmail: form.editorEmail
   }
 }
