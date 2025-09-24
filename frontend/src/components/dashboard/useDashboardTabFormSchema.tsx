@@ -8,6 +8,10 @@ export const useDashboardTabFormSchema = (tab?: DashboardTabResponse) => {
   const formSchema = z.object({
     title: z.string(),
     mapUrl: z.string(),
+    editorEmail: z.string()
+      .email("Invalid email")
+      .optional()
+      .or(z.literal(""))
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -15,6 +19,7 @@ export const useDashboardTabFormSchema = (tab?: DashboardTabResponse) => {
     defaultValues: {
       title: tab?.title ?? "",
       mapUrl: tab?.mapUrl ?? "",
+      editorEmail: "",
     },
   })
 
@@ -22,6 +27,7 @@ export const useDashboardTabFormSchema = (tab?: DashboardTabResponse) => {
     form.reset({
       title: tab?.title ?? "",
       mapUrl: tab?.mapUrl ?? "",
+      editorEmail: "",
     });
   }, [tab]);
 
@@ -34,4 +40,5 @@ export const useDashboardTabFormSchema = (tab?: DashboardTabResponse) => {
 export type DashboardTabFormType = UseFormReturn<{
   title: string;
   mapUrl: string;
+  editorEmail?: string;
 }, any, undefined>
