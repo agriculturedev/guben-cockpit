@@ -27,8 +27,11 @@ public struct GetMyProjectsResponseItem
 
   public static async Task<GetMyProjectsResponseItem> MapAsync(Project project, CultureInfo cultureInfo, IUserRepository userRepository)
   {
-    var translation = project.Translations.GetTranslation(cultureInfo)
-        ?? throw new ProblemDetailsException(TranslationKeys.NoValidTranslationsFound);
+    var translation = project.Translations.GetTranslation(cultureInfo);
+
+    // If translations is not there and no Fallback as well, just send empty string
+    string description = !string.IsNullOrWhiteSpace(translation?.Description) ? translation.Description : "";
+    string fullText    = !string.IsNullOrWhiteSpace(translation?.FullText) ? translation.FullText : "";
 
     string? editorEmail = null;
     if (project.EditorId.HasValue)
@@ -42,8 +45,8 @@ public struct GetMyProjectsResponseItem
       Id = project.Id,
       Type = project.Type.Value,
       Title = project.Title,
-      Description = translation.Description,
-      FullText = translation.FullText,
+      Description = description,
+      FullText = fullText,
       ImageCaption = project.ImageCaption,
       ImageUrl = project.ImageUrl,
       ImageCredits = project.ImageCredits,
