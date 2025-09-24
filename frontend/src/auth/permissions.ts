@@ -12,5 +12,6 @@ export enum Permissions {
   UploadGeodata = "upload_geodata",
   ManageGeoData = "manage_geodata",
   BookingManager = "booking_manager",
-  BookingPlatform = "booking_platform"
+  BookingPlatform = "booking_platform",
+  AdministrativeStaff = "administrative_staff"
 }

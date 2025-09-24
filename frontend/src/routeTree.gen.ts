@@ -32,6 +32,9 @@ import { Route as AdminLayoutFooterImport } from './routes/admin/_layout/footer'
 import { Route as AdminLayoutEventsImport } from './routes/admin/_layout/events'
 import { Route as AdminLayoutDashboardImport } from './routes/admin/_layout/dashboard'
 import { Route as AdminLayoutBookingImport } from './routes/admin/_layout/booking'
+import { Route as AdminLayoutPrivateBookingsIndexImport } from './routes/admin/_layout/privateBookings/index'
+import { Route as AdminLayoutPrivateBookingsTitleImport } from './routes/admin/_layout/privateBookings/$title'
+import { Route as AdminLayoutPrivateBookingsRoomTitleImport } from './routes/admin/_layout/privateBookings/room/$title'
 
 // Create Virtual Routes
 
@@ -144,6 +147,24 @@ const AdminLayoutBookingRoute = AdminLayoutBookingImport.update({
   path: '/booking',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
+
+const AdminLayoutPrivateBookingsIndexRoute =
+  AdminLayoutPrivateBookingsIndexImport.update({
+    path: '/privateBookings/',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutPrivateBookingsTitleRoute =
+  AdminLayoutPrivateBookingsTitleImport.update({
+    path: '/privateBookings/$title',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutPrivateBookingsRoomTitleRoute =
+  AdminLayoutPrivateBookingsRoomTitleImport.update({
+    path: '/privateBookings/room/$title',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -296,6 +317,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookingRoomTitleImport
       parentRoute: typeof rootRoute
     }
+    '/admin/_layout/privateBookings/$title': {
+      id: '/admin/_layout/privateBookings/$title'
+      path: '/privateBookings/$title'
+      fullPath: '/admin/privateBookings/$title'
+      preLoaderRoute: typeof AdminLayoutPrivateBookingsTitleImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/admin/_layout/privateBookings/': {
+      id: '/admin/_layout/privateBookings/'
+      path: '/privateBookings'
+      fullPath: '/admin/privateBookings'
+      preLoaderRoute: typeof AdminLayoutPrivateBookingsIndexImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/admin/_layout/privateBookings/room/$title': {
+      id: '/admin/_layout/privateBookings/room/$title'
+      path: '/privateBookings/room/$title'
+      fullPath: '/admin/privateBookings/room/$title'
+      preLoaderRoute: typeof AdminLayoutPrivateBookingsRoomTitleImport
+      parentRoute: typeof AdminLayoutImport
+    }
   }
 }
 
@@ -312,6 +354,9 @@ interface AdminLayoutRouteChildren {
   AdminLayoutPagesRoute: typeof AdminLayoutPagesRoute
   AdminLayoutProjectsRoute: typeof AdminLayoutProjectsRoute
   AdminLayoutUsersRoute: typeof AdminLayoutUsersRoute
+  AdminLayoutPrivateBookingsTitleRoute: typeof AdminLayoutPrivateBookingsTitleRoute
+  AdminLayoutPrivateBookingsIndexRoute: typeof AdminLayoutPrivateBookingsIndexRoute
+  AdminLayoutPrivateBookingsRoomTitleRoute: typeof AdminLayoutPrivateBookingsRoomTitleRoute
 }
 
 const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
@@ -325,6 +370,10 @@ const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
   AdminLayoutPagesRoute: AdminLayoutPagesRoute,
   AdminLayoutProjectsRoute: AdminLayoutProjectsRoute,
   AdminLayoutUsersRoute: AdminLayoutUsersRoute,
+  AdminLayoutPrivateBookingsTitleRoute: AdminLayoutPrivateBookingsTitleRoute,
+  AdminLayoutPrivateBookingsIndexRoute: AdminLayoutPrivateBookingsIndexRoute,
+  AdminLayoutPrivateBookingsRoomTitleRoute:
+    AdminLayoutPrivateBookingsRoomTitleRoute,
 }
 
 const AdminLayoutRouteWithChildren = AdminLayoutRoute._addFileChildren(
@@ -364,6 +413,9 @@ export interface FileRoutesByFullPath {
   '/admin/projects': typeof AdminLayoutProjectsRoute
   '/admin/users': typeof AdminLayoutUsersRoute
   '/booking/room/$title': typeof BookingRoomTitleRoute
+  '/admin/privateBookings/$title': typeof AdminLayoutPrivateBookingsTitleRoute
+  '/admin/privateBookings': typeof AdminLayoutPrivateBookingsIndexRoute
+  '/admin/privateBookings/room/$title': typeof AdminLayoutPrivateBookingsRoomTitleRoute
 }
 
 export interface FileRoutesByTo {
@@ -386,6 +438,9 @@ export interface FileRoutesByTo {
   '/admin/projects': typeof AdminLayoutProjectsRoute
   '/admin/users': typeof AdminLayoutUsersRoute
   '/booking/room/$title': typeof BookingRoomTitleRoute
+  '/admin/privateBookings/$title': typeof AdminLayoutPrivateBookingsTitleRoute
+  '/admin/privateBookings': typeof AdminLayoutPrivateBookingsIndexRoute
+  '/admin/privateBookings/room/$title': typeof AdminLayoutPrivateBookingsRoomTitleRoute
 }
 
 export interface FileRoutesById {
@@ -411,6 +466,9 @@ export interface FileRoutesById {
   '/admin/_layout/projects': typeof AdminLayoutProjectsRoute
   '/admin/_layout/users': typeof AdminLayoutUsersRoute
   '/booking/room/$title': typeof BookingRoomTitleRoute
+  '/admin/_layout/privateBookings/$title': typeof AdminLayoutPrivateBookingsTitleRoute
+  '/admin/_layout/privateBookings/': typeof AdminLayoutPrivateBookingsIndexRoute
+  '/admin/_layout/privateBookings/room/$title': typeof AdminLayoutPrivateBookingsRoomTitleRoute
 }
 
 export interface FileRouteTypes {
@@ -436,6 +494,9 @@ export interface FileRouteTypes {
     | '/admin/projects'
     | '/admin/users'
     | '/booking/room/$title'
+    | '/admin/privateBookings/$title'
+    | '/admin/privateBookings'
+    | '/admin/privateBookings/room/$title'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -457,6 +518,9 @@ export interface FileRouteTypes {
     | '/admin/projects'
     | '/admin/users'
     | '/booking/room/$title'
+    | '/admin/privateBookings/$title'
+    | '/admin/privateBookings'
+    | '/admin/privateBookings/room/$title'
   id:
     | '__root__'
     | '/'
@@ -480,6 +544,9 @@ export interface FileRouteTypes {
     | '/admin/_layout/projects'
     | '/admin/_layout/users'
     | '/booking/room/$title'
+    | '/admin/_layout/privateBookings/$title'
+    | '/admin/_layout/privateBookings/'
+    | '/admin/_layout/privateBookings/room/$title'
   fileRoutesById: FileRoutesById
 }
 
@@ -559,7 +626,10 @@ export const routeTree = rootRoute
         "/admin/_layout/locations",
         "/admin/_layout/pages",
         "/admin/_layout/projects",
-        "/admin/_layout/users"
+        "/admin/_layout/users",
+        "/admin/_layout/privateBookings/$title",
+        "/admin/_layout/privateBookings/",
+        "/admin/_layout/privateBookings/room/$title"
       ]
     },
     "/booking/$title": {
@@ -620,6 +690,18 @@ export const routeTree = rootRoute
     },
     "/booking/room/$title": {
       "filePath": "booking/room/$title.tsx"
+    },
+    "/admin/_layout/privateBookings/$title": {
+      "filePath": "admin/_layout/privateBookings/$title.tsx",
+      "parent": "/admin/_layout"
+    },
+    "/admin/_layout/privateBookings/": {
+      "filePath": "admin/_layout/privateBookings/index.tsx",
+      "parent": "/admin/_layout"
+    },
+    "/admin/_layout/privateBookings/room/$title": {
+      "filePath": "admin/_layout/privateBookings/room/$title.tsx",
+      "parent": "/admin/_layout"
     }
   }
 }

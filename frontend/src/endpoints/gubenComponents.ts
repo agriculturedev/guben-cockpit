@@ -2891,6 +2891,167 @@ export const useBookingCreateTenantId = (
   });
 };
 
+export type BookingGetPublicTenantIdsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type BookingGetPublicTenantIdsVariables = GubenContext["fetcherOptions"];
+
+export const fetchBookingGetPublicTenantIds = (
+  variables: BookingGetPublicTenantIdsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetPublicTenantIdsResponse,
+    BookingGetPublicTenantIdsError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/bookings/public", method: "get", ...variables, signal });
+
+export const useBookingGetPublicTenantIds = <
+  TData = Schemas.GetPublicTenantIdsResponse,
+>(
+  variables: BookingGetPublicTenantIdsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetPublicTenantIdsResponse,
+      BookingGetPublicTenantIdsError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetPublicTenantIdsResponse,
+    BookingGetPublicTenantIdsError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/bookings/public",
+      operationId: "bookingGetPublicTenantIds",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchBookingGetPublicTenantIds(
+        { ...fetcherOptions, ...variables },
+        signal,
+      ),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type BookingGetPrivateTenantIdsError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type BookingGetPrivateTenantIdsVariables =
+  GubenContext["fetcherOptions"];
+
+export const fetchBookingGetPrivateTenantIds = (
+  variables: BookingGetPrivateTenantIdsVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetPrivateTenantIdsResponse,
+    BookingGetPrivateTenantIdsError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/bookings/private", method: "get", ...variables, signal });
+
+export const useBookingGetPrivateTenantIds = <
+  TData = Schemas.GetPrivateTenantIdsResponse,
+>(
+  variables: BookingGetPrivateTenantIdsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetPrivateTenantIdsResponse,
+      BookingGetPrivateTenantIdsError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetPrivateTenantIdsResponse,
+    BookingGetPrivateTenantIdsError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/bookings/private",
+      operationId: "bookingGetPrivateTenantIds",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchBookingGetPrivateTenantIds(
+        { ...fetcherOptions, ...variables },
+        signal,
+      ),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type BookingUpdateTenantPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type BookingUpdateTenantError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type BookingUpdateTenantVariables = {
+  body: Schemas.UpdateTenantQuery;
+  pathParams: BookingUpdateTenantPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchBookingUpdateTenant = (
+  variables: BookingUpdateTenantVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpdateTenantResponse,
+    BookingUpdateTenantError,
+    Schemas.UpdateTenantQuery,
+    {},
+    {},
+    BookingUpdateTenantPathParams
+  >({ url: "/bookings/{id}", method: "put", ...variables, signal });
+
+export const useBookingUpdateTenant = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpdateTenantResponse,
+      BookingUpdateTenantError,
+      BookingUpdateTenantVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpdateTenantResponse,
+    BookingUpdateTenantError,
+    BookingUpdateTenantVariables
+  >({
+    mutationFn: (variables: BookingUpdateTenantVariables) =>
+      fetchBookingUpdateTenant({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type BookingDeleteTenantIdPathParams = {
   /**
    * @format uuid
@@ -3072,4 +3233,14 @@ export type QueryOperation =
       path: "/bookings";
       operationId: "bookingGetAllTenantIds";
       variables: BookingGetAllTenantIdsVariables;
+    }
+  | {
+      path: "/bookings/public";
+      operationId: "bookingGetPublicTenantIds";
+      variables: BookingGetPublicTenantIdsVariables;
+    }
+  | {
+      path: "/bookings/private";
+      operationId: "bookingGetPrivateTenantIds";
+      variables: BookingGetPrivateTenantIdsVariables;
     };

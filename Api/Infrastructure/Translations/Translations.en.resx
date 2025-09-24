@@ -248,4 +248,10 @@ value   : The object must be serialized into a byte array
   <data name="DropdownLinkNotFound" xml:space="preserve">
     <value>Dropdown link not found</value>
   </data>
+  <data name="MissingTenantId" xml:space="preserve">
+    <value>Missing tenant ID</value>
+  </data>
+  <data name="NoAdministrativeStaff" xml:space="preserve">
+    <value>User is not an administrative staff member</value>
+  </data>
 </root>
