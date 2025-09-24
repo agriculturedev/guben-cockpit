@@ -52,84 +52,25 @@ export type CreateDashboardDropdownResponse = Record<string, any>;
 export type CreateDashboardTabQuery = {
   title: string;
   mapUrl: string;
+  /**
+   * @format uuid
+   */
   dropdownId: string;
-  editorEmail?: string;
+  editorEmail?: string | null;
 };
 
 export type CreateDashboardTabResponse = Record<string, any>;
 
-export type CreateDashboardDropdownQuery = {
-  title: string;
-  isLink: boolean;
-}
-
-export type CreateDashboardDropdownResponse = Record<string, any>;
-
-export type DeleteDashboardDropdownResponse = Record<string, any>;
-
-export type GetAllDashboardDropdownResponse = {
-  dashboardDropdowns: DashboardDropdownResponse[];
-}
-
 export type CreateDropdownLinkQuery = {
-  title: string;
-  link: string;
   /**
    * @format uuid
    */
   dropdownId: string;
+  title: string;
+  link: string;
 };
 
 export type CreateDropdownLinkResponse = Record<string, any>;
-
-export type DeleteDropdownLinkResponse = Record<string, any>;
-
-export type DropdownLinkResponse = {
-  /**
-   * @format uuid
-   */
-  id: string;
-  title: string;
-  /**
-   * @format int32
-   */
-  sequence: number;
-  link: string;
-}
-
-export type EditDropdownLinkQuery = {
-  /**
-   * @format uuid
-   */
-  id: string;
-  title: string;
-  link: string;
-};
-
-export type EditDropdownLinkResponse = Record<string, any>;
-
-export type DashboardDropdownResponse = {
-  /**
-   * @format uuid
-   */
-  id: string;
-  title: string;
-  rank: number;
-  isLink: boolean;
-  tabs?: DashboardTabResponse[];
-  links?: DropdownLinkResponse[];
-}
-
-export type UpdateCardSequenceQuery = {
-  orderedCardIds: string[];
-};
-
-export type UpdateCardSequenceResponse = {
-  /** @format uuid */
-  tabId: string;
-  /** @format int32 */
-  updatedCount: number;
-};
 
 export type CreateEventImageQuery = {
   thumbnailUrl: string;
@@ -244,7 +185,6 @@ export type DashboardTabResponse = {
    */
   sequence: number;
   mapUrl: string;
-  canEdit?: boolean;
   informationCards?: InformationCardResponse[];
   canEdit?: boolean;
 };
