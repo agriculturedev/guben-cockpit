@@ -2118,40 +2118,38 @@ export const useDashboardCardDelete = (
   });
 };
 
-export type DashboardCardReorderPathParams = {
-  /**
-   * @format uuid
-   */
-  id: string;
-};
-
 export type DashboardCardReorderError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
 }>;
 
 export type DashboardCardReorderVariables = {
-  body?: Schemas.UpdateCardSequenceQuery;
-  pathParams: DashboardCardReorderPathParams;
+  /**
+   * @format uuid
+   */
+  tabId: string;
+  body: Schemas.UpdateCardSequenceQuery;
 } & GubenContext["fetcherOptions"];
 
 export const fetchDashboardCardReorder = (
   variables: DashboardCardReorderVariables,
   signal?: AbortSignal,
-) =>
-  gubenFetch<
+) => {
+  const { tabId, ...rest } = variables;
+  return gubenFetch<
     Schemas.UpdateCardSequenceResponse,
     DashboardCardReorderError,
     Schemas.UpdateCardSequenceQuery,
     {},
     {},
-    DashboardCardReorderPathParams
+    {}
   >({
-    url: "/dashboard/{id}/card/reorder",
+    url: `/dashboard/${tabId}/card/reorder`,
     method: "put",
-    ...variables,
+    ...rest,
     signal,
   });
+};
 
 export const useDashboardCardReorder = (
   options?: Omit<
@@ -2171,6 +2169,50 @@ export const useDashboardCardReorder = (
   >({
     mutationFn: (variables: DashboardCardReorderVariables) =>
       fetchDashboardCardReorder({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DashboardDropdownCreateError = Fetcher.ErrorWrapper<{
+  status: 400,
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardDropdownCreateVariables = {
+  body: Schemas.CreateDashboardDropdownQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardDropdownCreate = (
+  variables: DashboardDropdownCreateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateDashboardDropdownResponse,
+    DashboardCreateError,
+    Schemas.CreateDashboardDropdownQuery,
+    {},
+    {},
+    {}
+  >({ url: "/dashboarddropdown", method: "post", ...variables, signal });
+
+export const useDashboardDropdownCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateDashboardDropdownResponse,
+      DashboardDropdownCreateError,
+      DashboardDropdownCreateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateDashboardDropdownResponse,
+    DashboardDropdownCreateError,
+    DashboardDropdownCreateVariables
+  >({
+    mutationFn: (variables: DashboardDropdownCreateVariables) =>
+      fetchDashboardDropdownCreate({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -2226,49 +2268,6 @@ export const useDashboardDropdownGetAll = <
   });
 };
 
-export type DashboardDropdownCreateError = Fetcher.ErrorWrapper<{
-  status: 400;
-  payload: Schemas.ProblemDetails;
-}>;
-
-export type DashboardDropdownCreateVariables = {
-  body: Schemas.CreateDashboardDropdownQuery;
-} & GubenContext["fetcherOptions"];
-
-export const fetchDashboardDropdownCreate = (
-  variables: DashboardDropdownCreateVariables,
-  signal?: AbortSignal,
-) =>
-  gubenFetch<
-    Schemas.CreateDashboardDropdownResponse,
-    DashboardDropdownCreateError,
-    Schemas.CreateDashboardDropdownQuery,
-    {},
-    {},
-    {}
-  >({ url: "/dashboarddropdown", method: "post", ...variables, signal });
-
-export const useDashboardDropdownCreate = (
-  options?: Omit<
-    reactQuery.UseMutationOptions<
-      Schemas.CreateDashboardDropdownResponse,
-      DashboardDropdownCreateError,
-      DashboardDropdownCreateVariables
-    >,
-    "mutationFn"
-  >,
-) => {
-  const { fetcherOptions } = useGubenContext();
-  return reactQuery.useMutation<
-    Schemas.CreateDashboardDropdownResponse,
-    DashboardDropdownCreateError,
-    DashboardDropdownCreateVariables
-  >({
-    mutationFn: (variables: DashboardDropdownCreateVariables) =>
-      fetchDashboardDropdownCreate({ ...fetcherOptions, ...variables }),
-    ...options,
-  });
-};
 
 export type DashboardDropdownDeletePathParams = {
   /**
@@ -2320,6 +2319,151 @@ export const useDashboardDropdownDelete = (
     ...options,
   });
 };
+
+export type DropdownLinkCreateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DropdownLinkCreateVariables = {
+  body: Schemas.CreateDropdownLinkQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDropdownLinkCreate = (
+  variables: DropdownLinkCreateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateDropdownLinkResponse,
+    DropdownLinkCreateError,
+    Schemas.CreateDropdownLinkQuery,
+    {},
+    {},
+    {}
+  >({ url: "/dropdownlink", method: "post", ...variables, signal });
+
+export const useDropdownLinkCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateDropdownLinkResponse,
+      DropdownLinkCreateError,
+      DropdownLinkCreateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateDropdownLinkResponse,
+    DropdownLinkCreateError,
+    DropdownLinkCreateVariables
+  >({
+    mutationFn: (variables: DropdownLinkCreateVariables) =>
+      fetchDropdownLinkCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DropdownLinkDeletePathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type DropdownLinkDeleteError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DropdownLinkDeleteVariables = {
+  pathParams: DropdownLinkDeletePathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDropdownLinkDelete = (
+  variables: DropdownLinkDeleteVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.DeleteDropdownLinkResponse,
+    DropdownLinkDeleteError,
+    undefined,
+    {},
+    {},
+    DropdownLinkDeletePathParams
+  >({ url: "/dropdownlink/{id}", method: "delete", ...variables, signal });
+
+export const useDropdownLinkDelete = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.DeleteDropdownLinkResponse,
+      DropdownLinkDeleteError,
+      DropdownLinkDeleteVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.DeleteDropdownLinkResponse,
+    DropdownLinkDeleteError,
+    DropdownLinkDeleteVariables
+  >({
+    mutationFn: (variables: DropdownLinkDeleteVariables) =>
+      fetchDropdownLinkDelete({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DropdownLinkEditError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DropdownLinkEditVariables = {
+  body: Schemas.EditDropdownLinkQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDropdownLinkEdit = (
+  variables: DropdownLinkEditVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.EditDropdownLinkResponse,
+    DropdownLinkEditError,
+    Schemas.EditDropdownLinkQuery,
+    {},
+    {},
+    {}
+  >({
+    url: "/dropdownlink",
+    method: "put",
+    ...variables,
+    signal,
+  });
+
+export const useDropdownLinkEdit = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.EditDropdownLinkResponse,
+      DropdownLinkEditError,
+      DropdownLinkEditVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.EditDropdownLinkResponse,
+    DropdownLinkEditError,
+    DropdownLinkEditVariables
+  >({
+    mutationFn: (variables: DropdownLinkEditVariables) =>
+      fetchDropdownLinkEdit({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 
 export type CategoriesGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
