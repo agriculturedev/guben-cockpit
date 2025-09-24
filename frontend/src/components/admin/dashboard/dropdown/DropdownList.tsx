@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useDashboardDropdownGetAll } from "@/endpoints/gubenComponents";
+import { useDashbaordDropdownGetMy } from "@/endpoints/gubenComponents";
 
 import { DeleteDropdownButton } from "./DeleteDropdownButton";
 import { DropdownTabsList } from "../dropdownTab/DropdownTabsList";
@@ -18,7 +18,7 @@ export default function DropdownList({ isAdmin }: DropdownListProps) {
     data: dashboardDropdownResponse,
     isPending,
     refetch,
-  } = useDashboardDropdownGetAll({});
+  } = useDashbaordDropdownGetMy({});
 
   const dropdowns = dashboardDropdownResponse?.dashboardDropdowns ?? [];
 

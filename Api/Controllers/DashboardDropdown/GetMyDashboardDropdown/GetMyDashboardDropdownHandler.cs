@@ -1,15 +1,18 @@
 using System.Globalization;
 using Api.Controllers.DashboardTabs.Shared;
 using Api.Controllers.DropdownLink.Shared;
+using Api.Infrastructure.Extensions;
+using Domain;
 using Domain.DashboardDropdown.repository;
 using Domain.DashboardTab.repository;
 using Domain.DropdownLink.repository;
+using Domain.Users;
 using Domain.Users.repository;
 using Shared.Api;
 
-namespace Api.Controllers.DashboardDropdown.GetAllDashboardDropdown;
+namespace Api.Controllers.DashboardDropdown.GetMyDashboardDropdown;
 
-public class GetAllDashboardDropdownHandler : ApiRequestHandler<GetAllDashboardDropdownQuery, GetAllDashboardDropdownResponse>
+public class GetMyDashboardDropdownHandler : ApiRequestHandler<GetMyDashboardDropdownQuery, GetMyDashboardDropdownResponse>
 {
     private readonly IDashboardDropdownRepository _dashboardDropdownRepository;
     private readonly IDashboardRepository _dashboardTabRepository;
@@ -18,7 +21,7 @@ public class GetAllDashboardDropdownHandler : ApiRequestHandler<GetAllDashboardD
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly CultureInfo _cultureInfo;
 
-    public GetAllDashboardDropdownHandler(
+    public GetMyDashboardDropdownHandler(
         IDashboardDropdownRepository dashboardDropdownRepository,
         IDashboardRepository dashboardTabRepository,
         IDropdownLinkRepository dropdownLinkRepository,
@@ -34,11 +37,20 @@ public class GetAllDashboardDropdownHandler : ApiRequestHandler<GetAllDashboardD
         _cultureInfo = CultureInfo.CurrentCulture;
     }
 
-    public override async Task<GetAllDashboardDropdownResponse> Handle(GetAllDashboardDropdownQuery request, CancellationToken cancellationToken)
+    //TODO: if Role is DashboardManager show everything, else only what is relevant for Editor.
+    public override async Task<GetMyDashboardDropdownResponse> Handle(GetMyDashboardDropdownQuery request, CancellationToken cancellationToken)
     {
+        var keycloakId = _httpContextAccessor.HttpContext?.User.GetKeycloakId();
+        if (keycloakId is null)
+            throw new UnauthorizedAccessException(TranslationKeys.UserNotLoggedIn);
+
+        var currentUser = await _userRepository.GetByKeycloakId(keycloakId);
+        if (currentUser is null)
+            throw new ProblemDetailsException(TranslationKeys.UserNotFound);
+
         var dashboardDropdowns = await _dashboardDropdownRepository.GetAllNonTracking();
         var dropdownIds = dashboardDropdowns.Select(d => d.Id).ToList();
-        
+
         var dashboardTabs = await _dashboardTabRepository.GetByDropdownIdsAsync(dropdownIds, cancellationToken);
         var tabsByDropdownId = dashboardTabs
             .Where(t => t.DropdownId.HasValue)
@@ -57,7 +69,7 @@ public class GetAllDashboardDropdownHandler : ApiRequestHandler<GetAllDashboardD
                 IEnumerable<DashboardTabResponse>? mappedTabs = null;
                 if (tabsByDropdownId.TryGetValue(d.Id, out var ts))
                 {
-                    mappedTabs = ts.Select(t => DashboardTabResponse.Map(t, _cultureInfo, null)).ToList();
+                    mappedTabs = ts.Select(t => DashboardTabResponse.Map(t, _cultureInfo, currentUser)).ToList();
                 }
 
                 IEnumerable<DropdownLinkResponse>? mappedLinks = null;
@@ -70,6 +82,6 @@ public class GetAllDashboardDropdownHandler : ApiRequestHandler<GetAllDashboardD
             })
             .ToList();
 
-        return new GetAllDashboardDropdownResponse(){ DashboardDropdowns = items };
+        return new GetMyDashboardDropdownResponse() { DashboardDropdowns = items };
     }
 }
