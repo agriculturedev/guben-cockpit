@@ -1,6 +1,4 @@
 using System.Globalization;
-using System.Security.Claims;
-using Api.Controllers.Projects.Shared;
 using Api.Infrastructure.Extensions;
 using Api.Infrastructure.Keycloak;
 using Domain;

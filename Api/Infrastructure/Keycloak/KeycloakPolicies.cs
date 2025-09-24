@@ -40,14 +40,14 @@ public static class KeycloakPolicies
 
   #endregion
 
-  #region Dashboard
-
   #region Booking
 
   public const string BookingManager = "booking_manager";
   public const string AdministrativeStaff = "administrative_staff";
-  
+
   #endregion
+
+  #region Dashboard
 
   public const string DashboardManager = "dashboard_manager";
 

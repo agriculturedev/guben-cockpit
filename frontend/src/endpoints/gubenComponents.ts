@@ -2193,7 +2193,7 @@ export const fetchDashboardDropdownGetAll = (
     {},
     {},
     {}
-  >({ url: "/dashboarddropdown", method: "get", ...variables, signal });
+  >({ url: "/dashboarddropdown/all", method: "get", ...variables, signal });
 
 export const useDashboardDropdownGetAll = <
   TData = Schemas.GetAllDashboardDropdownResponse,
@@ -2215,12 +2215,63 @@ export const useDashboardDropdownGetAll = <
     TData
   >({
     queryKey: queryKeyFn({
-      path: "/dashboarddropdown",
+      path: "/dashboarddropdown/all",
       operationId: "dashboardDropdownGetAll",
       variables,
     }),
     queryFn: ({ signal }) =>
       fetchDashboardDropdownGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type DashbaordDropdownGetMyError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashbaordDropdownGetMyVariables = GubenContext["fetcherOptions"];
+
+export const fetchDashbaordDropdownGetMy = (
+  variables: DashbaordDropdownGetMyVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetMyDashboardDropdownResponse,
+    DashbaordDropdownGetMyError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/dashboarddropdown/my", method: "get", ...variables, signal });
+
+export const useDashbaordDropdownGetMy = <
+  TData = Schemas.GetMyDashboardDropdownResponse,
+>(
+  variables: DashbaordDropdownGetMyVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetMyDashboardDropdownResponse,
+      DashbaordDropdownGetMyError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetMyDashboardDropdownResponse,
+    DashbaordDropdownGetMyError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/dashboarddropdown/my",
+      operationId: "dashbaordDropdownGetMy",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchDashbaordDropdownGetMy({ ...fetcherOptions, ...variables }, signal),
     ...options,
     ...queryOptions,
   });
@@ -3195,9 +3246,14 @@ export type QueryOperation =
       variables: DashboardGetAllVariables;
     }
   | {
-      path: "/dashboarddropdown";
+      path: "/dashboarddropdown/all";
       operationId: "dashboardDropdownGetAll";
       variables: DashboardDropdownGetAllVariables;
+    }
+  | {
+      path: "/dashboarddropdown/my";
+      operationId: "dashbaordDropdownGetMy";
+      variables: DashbaordDropdownGetMyVariables;
     }
   | {
       path: "/categories";

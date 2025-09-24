@@ -186,7 +186,7 @@ export type DashboardTabResponse = {
   sequence: number;
   mapUrl: string;
   informationCards?: InformationCardResponse[];
-  canEdit?: boolean;
+  canEdit?: boolean | null;
 };
 
 export type DataSourceResponse = {
@@ -438,6 +438,10 @@ export type GetEventByIdResponse = {
 
 export type GetGeoDataSourcesResponse = {
   sources: GeoDataSourceResponse[];
+};
+
+export type GetMyDashboardDropdownResponse = {
+  dashboardDropdowns: DashboardDropdownResponse[];
 };
 
 export type GetMyEventsResponse = {

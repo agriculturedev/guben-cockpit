@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Api.Controllers.DashboardDropdown.CreateDashboardDropdown;
 using Api.Controllers.DashboardDropdown.DeleteDashboardDropdown;
 using Api.Controllers.DashboardDropdown.GetAllDashboardDropdown;
+using Api.Controllers.DashboardDropdown.GetMyDashboardDropdown;
 using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,13 +26,24 @@ public class DashbaordDropdownController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet]
+    [HttpGet("all")]
     [EndpointName("DashboardDropdownGetAll")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllDashboardDropdownResponse))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IResult> GetAll()
     {
         var result = await _mediator.Send(new GetAllDashboardDropdownQuery());
+        return Results.Ok(result);
+    }
+
+    [HttpGet("my")]
+    [Authorize(Roles = $"{KeycloakPolicies.DashboardManager},{KeycloakPolicies.DashboardEditor}")]
+    [EndpointName("DashbaordDropdownGetMy")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetMyDashboardDropdownResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IResult> GetMy()
+    {
+        var result = await _mediator.Send(new GetMyDashboardDropdownQuery());
         return Results.Ok(result);
     }
 

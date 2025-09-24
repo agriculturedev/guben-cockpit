@@ -14,14 +14,16 @@ public struct DashboardTabResponse
   public required int Sequence { get; set; }
   public required string MapUrl { get; set; }
   public IEnumerable<InformationCardResponse> InformationCards { get; set; }
-  public bool CanEdit { get; set; }
+  public bool? CanEdit { get; set; }
 
-  public static DashboardTabResponse Map(DashboardTab dashboardTab, CultureInfo culture, User currentUser)
+  public static DashboardTabResponse Map(DashboardTab dashboardTab, CultureInfo culture, User? currentUser)
   {
     var i18NData = dashboardTab.Translations.GetTranslation(culture);
     if (i18NData is null)
       throw new ProblemDetailsException(TranslationKeys.NoValidTranslationsFound);
 
+    // if currentUser is null, the Request is coming from the GetAllDashboardDropdownHandler not from the GetMyDashboardDropdownHandler which is for the CMS Part,
+    // meaning we do not need CanEdit
     return new DashboardTabResponse()
     {
       Id = dashboardTab.Id,
@@ -32,7 +34,7 @@ public struct DashboardTabResponse
         .OrderBy(c => c.Sequenece)
         .Select(c => InformationCardResponse.Map(c, culture))
         .ToList(),
-      CanEdit = dashboardTab.EditorUserId.HasValue && dashboardTab.EditorUserId == currentUser.Id
+      CanEdit = currentUser == null ? false : dashboardTab.EditorUserId.HasValue && dashboardTab.EditorUserId == currentUser.Id
     };
   }
 }
