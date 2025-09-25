@@ -52,6 +52,7 @@ jobs:
           tags: ${{ steps.meta-web.outputs.tags }}
           labels: ${{ steps.meta-web.outputs.labels }}
           build-args: |
+            VITE_API_URL=${{ vars.VITE_API_URL }}
             VITE_AUTHORITY=${{ vars.VITE_AUTHORITY }}
             VITE_AUDIENCE=${{ vars.VITE_AUDIENCE }}
             VITE_BOOKING_SDK=${{ vars.VITE_BOOKING_SDK }}
