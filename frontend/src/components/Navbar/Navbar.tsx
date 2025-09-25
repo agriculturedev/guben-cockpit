@@ -13,6 +13,7 @@ import { getLocalizedLanguagename, Language } from "@/utilities/i18n/Languages";
 import { WithClassName } from "@/types/WithClassName";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { useLanguageUpdater } from "@/hooks/useLanguageUpdater";
+import { MyGubenIcon } from "../icons/MyGubenIcon";
 
 type TNavContext = { location: string }
 const NavContext = createContext<TNavContext>({ location: "/" });
@@ -84,37 +85,37 @@ export const Navbar = () => {
           <NavLink to="/" name={t("Dashboard")}>
             <div className="flex flex-col items-center w-24">
               <HomeIcon className={iconStyle} />
-              <span className="mt-1">{t('Dashboard')}</span>
+              <span className="mt-1 font-nunito">{t('Dashboard')}</span>
             </div>
           </NavLink>
           <NavLink to="/projects" name={t("Projects")}>
             <div className="flex flex-col items-center w-24">
-              <LayoutGridIcon className={iconStyle} />
-              <span className="mt-1">{t('Projects')}</span>
+              <MyGubenIcon className={iconStyle} />
+              <span className="mt-1 font-nunito">{t('Projects')}</span>
             </div>
           </NavLink>
           <NavLink to="/map" name={t("Map")}>
             <div className="flex flex-col items-center w-24">
               <MapIcon className={iconStyle} />
-              <span className="mt-1">{t('Map')}</span>
+              <span className="mt-1 font-nunito">{t('Map')}</span>
             </div>
           </NavLink>
           <NavLink to="/events" name={t("Events")}>
             <div className="flex flex-col items-center w-24">
               <CalendarDaysIcon className={iconStyle} />
-              <span className="mt-1">{t('Events')}</span>
+              <span className="mt-1 font-nunito">{t('Events')}</span>
             </div>
           </NavLink>
           <NavLink to="/booking" name={t("Booking")}>
             <div className="flex flex-col items-center w-24">
               <PlaneIcon className={iconStyle} />
-              <span className="mt-1">{t('Booking')}</span>
+              <span className="mt-1 font-nunito">{t('Booking')}</span>
             </div>
           </NavLink>
           <NavLink name={t("ServicePortal")} to="https://serviceportal.dikom-bb.de/stadt-guben" target="_blank">
             <div className="flex flex-col items-center w-24">
               <ServicePortalIcon className={iconStyle} />
-              <span className="mt-1 whitespace-nowrap">{t('ServicePortal')}</span>
+              <span className="mt-1 whitespace-nowrap font-nunito">{t('ServicePortal')}</span>
             </div>
           </NavLink>
         </NavList>

@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -14,11 +15,17 @@ namespace Jobs.ProjectImporter;
 
 public class ProjectImporter
 {
+  public static readonly CultureInfo German = new CultureInfo("de");
+  public static readonly CultureInfo English = new CultureInfo("en");
+  public static readonly CultureInfo Polish = new CultureInfo("pl");
+  public static readonly List<CultureInfo> Cultures = [German, English, Polish];
+
   private readonly ICustomDbContextFactory<GubenDbContext> _dbContextFactory;
   private readonly IProjectRepository _projectRepository;
   private readonly IConfiguration _configuration;
   private readonly System.Net.Http.HttpClient _httpClient;
   private readonly string _url = "https://www.guben.de/index.php?option=com_api&app=guben&resource=articles";
+  private readonly LibreTranslator _libreTranslator;
 
   public ProjectImporter(
     ICustomDbContextFactory<GubenDbContext> dbContextFactory,
@@ -28,6 +35,7 @@ public class ProjectImporter
     _projectRepository = projectRepository;
     _configuration = configuration;
     _httpClient = new System.Net.Http.HttpClient();
+    _libreTranslator = new LibreTranslator(configuration);
   }
 
   public async Task Import()
@@ -84,8 +92,8 @@ public class ProjectImporter
     if (!ProjectType.TryFromName(rawProject.CatName, out var type))
       throw new InvalidCastException("Invalid project type: " + rawProject.CatName);
 
-
-    var (result, project) = Project.Create(
+    //initial creation will always be German, as we only get Germand Data from the URL
+    var (result, @project) = Project.Create(
       rawProject.Id,
       type,
       rawProject.Title,
@@ -94,40 +102,76 @@ public class ProjectImporter
       rawProject.ImageCaption,
       rawProject.ImageUrl,
       rawProject.ImageCredits,
-      User.SystemUserId
+      User.SystemUserId,
+      null,
+      German
     );
 
     if (result.IsSuccessful)
     {
-      var existingProject = await _projectRepository.GetIncludingDeletedAndUnpublished(project.Id);
-
-      if (existingProject is not null)
-      {
-        if (existingProject.Deleted)
-        {
-          return;
-        }
-        existingProject.Update(
-          project.Type,
-          project.Title,
-          project.Description,
-          project.FullText,
-          project.ImageCaption,
-          project.ImageUrl,
-          project.ImageCredits
-        );
-        return;
-      }
-
-      // newly imported projects should be set to true, but we do not want to overwrite existing project's published state
-      project.SetPublishedState(true);
-      await _projectRepository.SaveAsync(project);
-      Console.WriteLine("Project saved.");
+      await UpsertProjectWithAllTranslationsAsync(@project, rawProject.Fulltext, rawProject.Introtext);
     }
     else
     {
-      Console.Error.WriteLine($"Failed to create project");
+      throw new Exception("failed to create project");  
     }
+
+    Console.WriteLine("Project saved.");
+  }
+
+  private async Task UpsertProjectWithAllTranslationsAsync(Project @project, string? fullText, string? description)
+  {
+    var existingProject = await _projectRepository.GetIncludingDeletedAndUnpublished(@project.Id);
+
+    if (existingProject != null)
+    {
+      if (existingProject.Deleted)
+        return;
+
+      //we do not want to change translations other then the German one
+      if (!string.IsNullOrWhiteSpace(fullText) || !string.IsNullOrWhiteSpace(description))
+      {
+        existingProject.UpsertTranslation(fullText, description, German);
+      }
+
+      existingProject.Update(
+        @project.Type,
+        @project.Title,
+        @project.ImageCaption,
+        @project.ImageUrl,
+        @project.ImageCredits,
+        null
+      );
+
+      await _projectRepository.SaveAsync(existingProject);
+      return;
+    }
+
+    var gerFullText = string.IsNullOrWhiteSpace(fullText) ? "" : fullText;
+    var gerDes = string.IsNullOrWhiteSpace(description) ? "" : description;
+
+    //if it is a new Project, add Translations
+    foreach (var cultureInfo in Cultures)
+    {
+      if (cultureInfo != German)
+      {
+        string? fullTextTranslated = null;
+        string? desTranslated = null;
+        if (!string.IsNullOrWhiteSpace(gerFullText))
+        {
+          fullTextTranslated = await _libreTranslator.TranslateHtmlAsync(gerFullText, cultureInfo);
+        }
+        if (!string.IsNullOrWhiteSpace(gerDes))
+        {
+          desTranslated = await _libreTranslator.TranslateHtmlAsync(gerDes, cultureInfo);
+        }
+
+        @project.UpsertTranslation(fullTextTranslated, desTranslated, cultureInfo);
+      }
+    }
+
+    @project.SetPublishedState(true);
+    await _projectRepository.SaveAsync(@project);
   }
 
   private static HttpRequestMessage CopyRequest(HttpResponseMessage response)

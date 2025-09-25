@@ -245,4 +245,13 @@ value   : The object must be serialized into a byte array
   <data name="TenantIdNotFound" xml:space="preserve">
     <value>Identyfikator najemcy nie został znaleziony</value>
   </data>
+  <data name="DropdownLinkNotFound" xml:space="preserve">
+    <value>Nie znaleziono linku w rozwijanym menu</value>
+  </data>
+  <data name="MissingTenantId" xml:space="preserve">
+    <value>Brak identyfikatora dzierżawcy</value>
+  </data>
+  <data name="NoAdministrativeStaff" xml:space="preserve">
+    <value>Użytkownik nie jest pracownikiem administracji</value>
+  </data>
 </root>

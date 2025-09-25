@@ -10,8 +10,12 @@ export const AdminNavigation = () => {
 
   return (
     <Nav className="col-span-2 h-fit">
-      <PermissionGuard permissions={[Permissions.DashboardManager]}>
+      <PermissionGuard permissions={[Permissions.DashboardManager, Permissions.DashboardEditor]}>
         <Nav.Item href={"/admin/dashboard"} label={t("Title", {ns: "dashboard"})}/>
+      </PermissionGuard>
+
+      <PermissionGuard permissions={[Permissions.AdministrativeStaff]}>
+        <Nav.Item href={"/admin/privateBookings"} label={t("PrivateBookings", {ns: "booking"})} />
       </PermissionGuard>
 
       <PermissionGuard permissions={[Permissions.ViewUsers]}>
@@ -22,7 +26,7 @@ export const AdminNavigation = () => {
         <Nav.Item href={"/admin/pages"} label={t("Title", {ns: "pages"})}/>
       </PermissionGuard>
 
-      <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.PublishProjects]}>
+      <PermissionGuard permissions={[Permissions.ProjectContributor, Permissions.PublishProjects, Permissions.School]}>
         <Nav.Item href={"/admin/projects"} label={t("Title", {ns: "projects"})}/>
       </PermissionGuard>
 

@@ -238,6 +238,18 @@ public sealed class Event : Entity<Guid>, IEquatable<Event>
     return results.MergeResults();
   }
 
+  public void Update(DateTime startDate, DateTime endDate, Coordinates.Coordinates? coordinates, Location location,
+    IList<Category.Category> categories, IList<Url> urls, IList<EventImage> images)
+  {
+    UpdateStartDate(startDate);
+    UpdateEndDate(endDate);
+    UpdateCoordinates(coordinates);
+    UpdateLocation(location);
+    UpdateCategories(categories);
+    UpdateUrls(urls);
+    UpdateImages(images);
+  }
+
   public bool Equals(Event? other)
   {
     if (other is null) return false;

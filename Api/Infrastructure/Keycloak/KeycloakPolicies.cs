@@ -5,7 +5,8 @@ public static class KeycloakPolicies
   public static string[] AllRoles =
   [
     ViewUsers, ProjectContributor, PublishProjects, EventContributor, PublishEvents, DashboardManager, PageManager,
-    LocationManager, FooterManager, EditProjects, DeleteProjects, DeleteEvent, EditEvents, BookingManager, UploadGeodata, ManageGeodata
+    LocationManager, FooterManager, EditProjects, DeleteProjects, DeleteEvent, EditEvents, BookingManager, UploadGeodata, ManageGeodata,
+    DashboardEditor, AdministrativeStaff, School
   ];
 
   #region Users
@@ -20,6 +21,7 @@ public static class KeycloakPolicies
   public const string PublishProjects = "publish_projects";
   public const string EditProjects = "project_editor";
   public const string DeleteProjects = "project_deleter";
+  public const string School = "school";
 
   #endregion
 
@@ -38,13 +40,14 @@ public static class KeycloakPolicies
 
   #endregion
 
-  #region Dashboard
-
   #region Booking
 
   public const string BookingManager = "booking_manager";
-  
+  public const string AdministrativeStaff = "administrative_staff";
+
   #endregion
+
+  #region Dashboard
 
   public const string DashboardManager = "dashboard_manager";
 
@@ -71,6 +74,12 @@ public static class KeycloakPolicies
   #region ManageGeodata
 
   public const string ManageGeodata = "manage_geodata";
+
+  #endregion
+  
+  #region DashboardEditor
+
+  public const string DashboardEditor = "dashboard_editor";
 
   #endregion
 }

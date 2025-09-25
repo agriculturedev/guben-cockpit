@@ -53,7 +53,7 @@ export default function EditEventDialog({ event, onCreateSuccess, open, onOpenCh
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2"}>
+			<DialogContent className={"bg-white px-4 py-8 flex flex-col gap-2 max-w-screen-2xl"}>
 				<DialogHeader>
 					<DialogTitle>{t("Edit")}</DialogTitle>
 				</DialogHeader>

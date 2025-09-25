@@ -1,5 +1,4 @@
-using System.Security.Claims;
-using Api.Controllers.Projects.Shared;
+using System.Globalization;
 using Api.Infrastructure.Extensions;
 using Api.Infrastructure.Keycloak;
 using Domain;
@@ -15,12 +14,14 @@ public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyP
   private readonly IProjectRepository _projectRepository;
   private readonly IHttpContextAccessor _httpContextAccessor;
   private readonly IUserRepository _userRepository;
+  private readonly CultureInfo _culture;
 
   public GetMyProjectsHandler(IProjectRepository projectRepository, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
   {
     _projectRepository = projectRepository;
     _httpContextAccessor = httpContextAccessor;
     _userRepository = userRepository;
+    _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<GetMyProjectsResponse> Handle(GetMyProjectsQuery request, CancellationToken
@@ -38,12 +39,19 @@ public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyP
 
     // if the user is a publisher, allow access to all projects
     IEnumerable<Project> projects = [];
-    if(isPublisher) projects = _projectRepository.GetAllIncludingUnpublished();
-    else projects = _projectRepository.GetAllOwnedBy(user.Id);
+    if (isPublisher) projects = _projectRepository.GetAllIncludingUnpublished();
+    else projects = _projectRepository.GetAllOwnedByOrEditor(user.Id);
 
-    return new GetMyProjectsResponse()
+    var results = new List<GetMyProjectsResponseItem>();
+    foreach (var project in projects)
     {
-      Results = projects.Select(ProjectResponse.Map)
+      var mapped = await GetMyProjectsResponseItem.MapAsync(project, _culture, _userRepository);
+      results.Add(mapped);
+    }
+
+    return new GetMyProjectsResponse
+    {
+      Results = results
     };
   }
 }

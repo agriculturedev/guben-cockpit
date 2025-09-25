@@ -35,7 +35,7 @@ public class CreateTenantIdHandler : ApiRequestHandler<CreateTenantIdQuery, Crea
 		if (!isBookingManager)
 			throw new UnauthorizedAccessException(TranslationKeys.NoBookingManager);
 
-		var (bookingResult, booking) = Booking.CreateWithGeneratedId(request.TenantId);
+		var (bookingResult, booking) = Booking.CreateWithGeneratedId(request.TenantId, request.ForPublicUse ?? false);
 
 		bookingResult.ThrowIfFailure();
 

@@ -16,6 +16,9 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { CategoryResponse, LocationResponse, EventImageResponse, EventResponse } from '@/endpoints/gubenSchemas'
 import { DistanceFilter } from '@/components/filters/DistanceFilter'
 import { useEventStore } from '@/stores/eventStore'
+import { Language } from '@/utilities/i18n/Languages'
+import i18next from 'i18next'
+import { translateBatchedMultiple, translateHtmlBatchedMultiple } from '@/utilities/translateUtils'
 
 export const Route = createFileRoute('/events/')({
   component: RouteComponent,
@@ -204,6 +207,42 @@ function RouteComponent() {
   const filteredNormalizedEvents = filterEvents(normalizedEvents, filters);
 
   const allEvents = mergeEventsWithCustom(data?.results ?? [], filteredNormalizedEvents);
+  
+  const currentLang = i18next.language as Language;
+  const [translationsReady, setTranslationsReady] = useState(false);
+
+  useEffect(() => {
+    setTranslationsReady(false);
+    if (!shouldShowIntegration && currentLang !== "de") {
+      const customEvents = (allEvents as (EventResponse & { isBookingEvent?: boolean })[])
+        .filter(e => e.isBookingEvent && e.cultureInfo !== currentLang);
+
+      const translateAll = async () => {
+        const descriptions = customEvents
+          .filter(e => e.cultureInfo !== currentLang)
+          .map(e => e.description)
+          .filter(desc => desc && desc.trim());
+        
+        if (descriptions.length > 0) {
+          await translateHtmlBatchedMultiple(descriptions, currentLang);
+        }
+
+        const titles = customEvents
+          .filter(e => e.cultureInfo !== currentLang)
+          .map(e => e.title)
+          .filter(title => title && title.trim() !== '');
+
+        if (titles.length > 0) {
+          await translateBatchedMultiple([...new Set(titles)], currentLang);
+        }
+        setTranslationsReady(true);
+      };
+
+      translateAll();
+    } else {
+      setTranslationsReady(true);
+    }
+  }, [shouldShowIntegration, currentLang]);
 
   return (
     <main className="relative space-y-8 mb-8">
@@ -272,7 +311,15 @@ function RouteComponent() {
           pageSize={pageSize}
           page={page}
         >
-          {allEvents.map(r => <EventCard key={r.id} event={r} />)}
+          {translationsReady
+            ? allEvents.map(r => <EventCard key={r.id} event={r} />)
+            : Array.from({ length: pageSize }).map((_, i) => (
+                <Skeleton
+                  key={i}
+                  className="w-full h-48 sm:h-60 md:h-64 lg:h-72 rounded-md p-4 mb-4"
+                />
+              ))
+        }
         </PaginationContainer>
       </section>
     </main>

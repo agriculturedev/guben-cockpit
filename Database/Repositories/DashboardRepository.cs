@@ -25,4 +25,17 @@ public class DashboardRepository
 
     return 0;
   }
+
+  public async Task<List<DashboardTab>> GetByDropdownIdsAsync(
+  IEnumerable<Guid> dropdownIds,
+  CancellationToken cancellationToken)
+  {
+    var ids = dropdownIds.Distinct().ToList();
+
+    return await Set
+      .TagWith($"{nameof(DashboardRepository)}.{nameof(GetByDropdownIdsAsync)}")
+      .Where(t => t.DropdownId.HasValue && ids.Contains(t.DropdownId.Value))
+      .AsNoTracking()
+      .ToListAsync(cancellationToken);
+  }
 }

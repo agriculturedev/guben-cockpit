@@ -2,14 +2,19 @@ export enum Permissions {
   EventContributor = "event_contributor",
   PublishEvents = "publish_events",
   DashboardManager = "dashboard_manager",
+  DashboardEditor = "dashboard_editor",
   LocationManager = "location_manager",
   PageManager = "page_manager",
   ProjectContributor = "project_contributor",
   PublishProjects = "publish_projects",
+  ProjectEditor = "project_editor",
+  ProjectDeleter = "project_deleter",
   ViewUsers = "view_users",
   FooterManager = "footer_manager",
   UploadGeodata = "upload_geodata",
   ManageGeoData = "manage_geodata",
   BookingManager = "booking_manager",
-  BookingPlatform = "booking_platform"
+  BookingPlatform = "booking_platform",
+  AdministrativeStaff = "administrative_staff",
+  School = "school"
 }

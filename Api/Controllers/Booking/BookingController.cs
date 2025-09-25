@@ -2,11 +2,15 @@ using System.Net.Mime;
 using Api.Controllers.Bookings.CreateTenantId;
 using Api.Controllers.Bookings.DeleteTenantId;
 using Api.Controllers.Bookings.GetAllTenantIds;
+using Api.Controllers.Bookings.GetPrivateTenantIds;
+using Api.Controllers.Bookings.GetPublicTenantIds;
+using Api.Controllers.Bookings.UpdateTenant;
 using Api.Controllers.Projects.DeleteTenantId;
 using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Domain.Validation;
 
 namespace Api.Controllers.Bookings;
 
@@ -24,12 +28,34 @@ public class BookingController : ControllerBase
 	}
 
 	[HttpGet]
+	[Authorize(KeycloakPolicies.BookingManager)]
 	[EndpointName("BookingGetAllTenantIds")]
 	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllTenantIdsResponse))]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<IResult> GetAllTenantIds()
 	{
 		var result = await _mediator.Send(new GetAllTenantIdsQuery());
+		return Results.Ok(result);
+	}
+
+	[HttpGet("public")]
+	[EndpointName("BookingGetPublicTenantIds")]
+	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetPublicTenantIdsResponse))]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IResult> GetPublicTenantIds()
+	{
+		var result = await _mediator.Send(new GetPublicTenantIdsQuery());
+		return Results.Ok(result);
+	}
+
+	[HttpGet("private")]
+	[Authorize(KeycloakPolicies.AdministrativeStaff)]
+	[EndpointName("BookingGetPrivateTenantIds")]
+	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetPrivateTenantIdsResponse))]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IResult> GetPrivateTenantIds()
+	{
+		var result = await _mediator.Send(new GetPrivateTenantIdsQuery());
 		return Results.Ok(result);
 	}
 
@@ -40,6 +66,18 @@ public class BookingController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<IResult> CreateTenantId([FromBody] CreateTenantIdQuery query)
 	{
+		var result = await _mediator.Send(query);
+		return Results.Ok(result);
+	}
+
+	[HttpPut("{id}")]
+	[Authorize(KeycloakPolicies.BookingManager)]
+	[EndpointName("BookingUpdateTenant")]
+	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateTenantResponse))]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IResult> UpdateTenant([FromRoute] Guid id, [FromBody] UpdateTenantQuery query)
+	{
+		query.SetId(id);
 		var result = await _mediator.Send(query);
 		return Results.Ok(result);
 	}

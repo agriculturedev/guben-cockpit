@@ -14,6 +14,6 @@ public interface IProjectRepository : IRepository<Project, string>
   IEnumerable<Project> GetAllProjects();
   Task<List<Project>> GetAllByIds(IList<string> ids);
   Task<List<Project>> GetAllByIdsIncludingUnpublished(IList<string> ids);
-  IEnumerable<Project> GetAllOwnedBy(Guid userId);
+  IEnumerable<Project> GetAllOwnedByOrEditor(Guid userId);
   Task<PagedResult<Project>> GetAllOwnedByUserPaged(Guid userId, PagedCriteria pagination);
 }

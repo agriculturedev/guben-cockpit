@@ -42,12 +42,35 @@ export type CoordinatesResponse = {
   longitude?: number;
 } | null;
 
+export type CreateDashboardDropdownQuery = {
+  title: string;
+  isLink?: boolean;
+};
+
+export type CreateDashboardDropdownResponse = Record<string, any>;
+
 export type CreateDashboardTabQuery = {
   title: string;
   mapUrl: string;
+  /**
+   * @format uuid
+   */
+  dropdownId: string;
+  editorEmail?: string | null;
 };
 
 export type CreateDashboardTabResponse = Record<string, any>;
+
+export type CreateDropdownLinkQuery = {
+  /**
+   * @format uuid
+   */
+  dropdownId: string;
+  title: string;
+  link: string;
+};
+
+export type CreateDropdownLinkResponse = Record<string, any>;
 
 export type CreateEventImageQuery = {
   thumbnailUrl: string;
@@ -109,6 +132,7 @@ export type CreateProjectQuery = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
+  editorEmail?: string | null;
 };
 
 export type CreateProjectResponse = {
@@ -118,6 +142,7 @@ export type CreateProjectResponse = {
 
 export type CreateTenantIdQuery = {
   tenantId: string;
+  forPublicUse?: boolean | null;
 };
 
 export type CreateTenantIdResponse = Record<string, any>;
@@ -134,6 +159,21 @@ export type CreateUrlQuery = {
   description: string;
 };
 
+export type DashboardDropdownResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  title: string;
+  /**
+   * @format int32
+   */
+  rank: number;
+  isLink?: boolean;
+  tabs?: DashboardTabResponse[] | null;
+  links?: DropdownLinkResponse[] | null;
+};
+
 export type DashboardTabResponse = {
   /**
    * @format uuid
@@ -146,6 +186,7 @@ export type DashboardTabResponse = {
   sequence: number;
   mapUrl: string;
   informationCards?: InformationCardResponse[];
+  canEdit?: boolean | null;
 };
 
 export type DataSourceResponse = {
@@ -157,7 +198,11 @@ export type DataSourceResponse = {
 
 export type DeleteCardFromTabResponse = Record<string, any>;
 
+export type DeleteDashboardDropdownResponse = Record<string, any>;
+
 export type DeleteDashboardTabResponse = Record<string, any>;
+
+export type DeleteDropdownLinkResponse = Record<string, any>;
 
 export type DeleteEventResponse = Record<string, any>;
 
@@ -166,6 +211,30 @@ export type DeleteFooterItemResponse = Record<string, any>;
 export type DeleteProjectResponse = Record<string, any>;
 
 export type DeleteTenantIdResponse = Record<string, any>;
+
+export type DropdownLinkResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  title: string;
+  link: string;
+  /**
+   * @format int32
+   */
+  sequence: number;
+};
+
+export type EditDropdownLinkQuery = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  title: string;
+  link: string;
+};
+
+export type EditDropdownLinkResponse = Record<string, any>;
 
 export type EntityTagHeaderValue = {
   tag?: StringSegment;
@@ -234,7 +303,10 @@ export type FooterItemResponse = {
 };
 
 export type GeoDataSourceResponse = {
-  id: string;
+  /**
+   * @format uuid
+   */
+  id?: string;
   path: string;
   isValidated: boolean;
   isPublic: boolean;
@@ -242,14 +314,6 @@ export type GeoDataSourceResponse = {
    * @format int32
    */
   type: number;
-};
-
-export type GeoDataSourceType = {
-  name: string | null;
-  /**
-   * @format int32
-   */
-  value: number;
 };
 
 export type GetAllBusinessesResponse = {
@@ -274,6 +338,10 @@ export type GetAllBusinessesResponse = {
 
 export type GetAllCategoriesResponse = {
   categories: CategoryResponse[];
+};
+
+export type GetAllDashboardDropdownResponse = {
+  dashboardDropdowns: DashboardDropdownResponse[];
 };
 
 export type GetAllDashboardTabsResponse = {
@@ -372,6 +440,10 @@ export type GetGeoDataSourcesResponse = {
   sources: GeoDataSourceResponse[];
 };
 
+export type GetMyDashboardDropdownResponse = {
+  dashboardDropdowns: DashboardDropdownResponse[];
+};
+
 export type GetMyEventsResponse = {
   /**
    * @format int32
@@ -393,7 +465,31 @@ export type GetMyEventsResponse = {
 };
 
 export type GetMyProjectsResponse = {
-  results: ProjectResponse[];
+  results: GetMyProjectsResponseItem[];
+};
+
+export type GetMyProjectsResponseItem = {
+  id: string;
+  /**
+   * @format int32
+   */
+  type: number;
+  title: string;
+  description?: string | null;
+  fullText?: string | null;
+  imageCaption?: string | null;
+  imageUrl?: string | null;
+  imageCredits?: string | null;
+  published: boolean;
+  editorEmail?: string | null;
+};
+
+export type GetPrivateTenantIdsResponse = {
+  tenants: TenantResponse[];
+};
+
+export type GetPublicTenantIdsResponse = {
+  tenants: TenantResponse[];
 };
 
 export type GetTopicsResponse = {
@@ -518,6 +614,7 @@ export type TenantResponse = {
    */
   id: string;
   tenantId: string;
+  forPublicUse?: boolean | null;
 };
 
 export type TopicResponse = {
@@ -543,6 +640,25 @@ export type UpdateCardOnTabQuery = {
 };
 
 export type UpdateCardOnTabResponse = Record<string, any>;
+
+export type UpdateCardSequenceQuery = {
+  /**
+   * @format uuid
+   */
+  tabId?: string;
+  orderedCardIds?: string[];
+};
+
+export type UpdateCardSequenceResponse = {
+  /**
+   * @format uuid
+   */
+  tabId?: string;
+  /**
+   * @format int32
+   */
+  updatedCount?: number;
+};
 
 export type UpdateDashboardTabQuery = {
   /**
@@ -609,13 +725,19 @@ export type UpdateProjectQuery = {
   imageCaption?: string | null;
   imageUrl?: string | null;
   imageCredits?: string | null;
+  editorEmail?: string | null;
 };
 
-export type UploadWfsQuery = {
-  isPublic: boolean;
-  file: IFormFile;
-  type: GeoDataSourceType;
+export type UpdateTenantQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  tenantId: string;
+  forPublicUse?: boolean | null;
 };
+
+export type UpdateTenantResponse = Record<string, any>;
 
 export type UpsertButtonQuery = {
   title: string;
@@ -651,3 +773,7 @@ export type UserResponse = {
 };
 
 export type ValidateGeoDataSourceResponse = Record<string, any>;
+
+export type ValidateRequest = {
+  isValid?: boolean;
+};

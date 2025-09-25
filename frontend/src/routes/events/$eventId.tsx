@@ -5,8 +5,8 @@ import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router'
 import { ArrowLeftIcon, ClockIcon, MapPinIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import DOMPurify from 'dompurify';
 import { MapComponent } from '@/components/home/MapComponent';
+import { TranslatedHtml, TranslatedText } from '@/utilities/translateUtils';
 
 export const Route = createFileRoute('/events/$eventId')({
   component: RouteComponent,
@@ -52,7 +52,13 @@ function RouteComponent() {
             ))}
           </div>
 
-          <h1 className='font-bold'>{data.title}</h1>
+          {(data as any)?.isBookingEvent ? (
+            <h1 className='font-bold'>
+              <TranslatedText text={data.title}/>
+            </h1>
+          ) : (
+            <h1 className='font-bold'>{data.title}</h1>            
+          )}
 
           <div className='space-y-1'>
             <p className='flex gap-2 flex-nowrap items-center text-neutral-500'><ClockIcon className='size-4' /> {t("DateAndTime")}</p>
@@ -73,8 +79,8 @@ function RouteComponent() {
           <div className='w-full lg:w-1/2 space-y-2'>
             <h2 className='font-bold'>{t("EventDetails")}</h2>
               {(data as any)?.isBookingEvent ? (
-                <div className="text-muted-foreground line-clamp-2"
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(data.description) }} />
+                <TranslatedHtml className={"text-muted-foreground line-clamp-2"}
+                  text={data.description} />
               ) : (
                 <p className="text-neutral-600">{data.description}</p>
               )}

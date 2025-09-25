@@ -96,12 +96,12 @@ public class ProjectRepository
       .ToListAsync();
   }
 
-  public IEnumerable<Project> GetAllOwnedBy(Guid userId)
+  public IEnumerable<Project> GetAllOwnedByOrEditor(Guid userId)
   {
     return Set
-      .TagWith(GetType().Name + '.' + nameof(GetAllOwnedBy))
+      .TagWith(GetType().Name + '.' + nameof(GetAllOwnedByOrEditor))
       .IgnoreAutoIncludes()
-      .Where(a => a.CreatedBy.Equals(userId))
+      .Where(a => a.CreatedBy.Equals(userId) || a.EditorId.Equals(userId))
       .AsEnumerable();
   }
 

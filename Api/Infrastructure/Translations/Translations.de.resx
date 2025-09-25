@@ -246,4 +246,13 @@ value   : The object must be serialized into a byte array
   <data name="TenantIdNotFound" xml:space="preserve">
     <value>Mandanten-ID konnte nicht gefunden werden</value>
   </data>
+  <data name="DropdownLinkNotFound" xml:space="preserve">
+    <value>Dropdown-Link nicht gefunden</value>
+  </data>
+  <data name="MissingTenantId" xml:space="preserve">
+    <value>Fehlende Mandanten-ID</value>
+  </data>
+  <data name="NoAdministrativeStaff" xml:space="preserve">
+    <value>Nutzer ist kein Mitarbeiter der Verwaltung</value>
+  </data>
 </root>

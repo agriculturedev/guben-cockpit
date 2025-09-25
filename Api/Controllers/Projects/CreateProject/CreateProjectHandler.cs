@@ -1,3 +1,4 @@
+using System.Globalization;
 using Api.Infrastructure.Extensions;
 using Domain;
 using Domain.Projects;
@@ -12,12 +13,15 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
   private readonly IProjectRepository _projectRepository;
   private readonly IUserRepository _userRepository;
   private readonly IHttpContextAccessor _httpContextAccessor;
+  private readonly CultureInfo _culture;
 
-  public CreateProjectHandler(IProjectRepository projectRepository, IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+  public CreateProjectHandler(IProjectRepository projectRepository, IUserRepository userRepository,
+    IHttpContextAccessor httpContextAccessor)
   {
     _projectRepository = projectRepository;
     _userRepository = userRepository;
     _httpContextAccessor = httpContextAccessor;
+    _culture = CultureInfo.CurrentCulture;
   }
 
   public override async Task<CreateProjectResponse> Handle(CreateProjectQuery request, CancellationToken cancellationToken)
@@ -33,6 +37,21 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
     if (!ProjectType.TryFromValue(request.Type, out var type))
       throw new ProblemDetailsException(TranslationKeys.ProjectTypeInvalid);
 
+    Guid? editorId = null;
+
+    if (!string.IsNullOrWhiteSpace(request.EditorEmail))
+    {
+      var normalizedEmail = request.EditorEmail.Trim().ToLowerInvariant();
+      var editor = await _userRepository.GetByEmailAsync(normalizedEmail, cancellationToken);
+
+      if (editor is null)
+      {
+        throw new ArgumentException("User with this email does not exist.", nameof(request.EditorEmail));
+      }
+
+      editorId = editor.Id;
+    }
+
     var (projectResult, project) = Project.CreateWithGeneratedId(
       type,
       request.Title,
@@ -41,7 +60,9 @@ public class CreateProjectHandler : ApiRequestHandler<CreateProjectQuery, Create
       request.ImageCaption,
       request.ImageUrl,
       request.ImageCredits,
-      user.Id
+      user.Id,
+      editorId,
+      _culture
     );
 
     projectResult.ThrowIfFailure();

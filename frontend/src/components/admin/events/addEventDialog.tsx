@@ -38,7 +38,7 @@ export default function AddEventDialog({children, ...props}: IProps) {
       <DialogTrigger>
         {children}
       </DialogTrigger>
-      <DialogContent className={"bg-white px-4 py-8"}>
+      <DialogContent className={"bg-white px-4 py-8 max-w-screen-2xl"}>
         <h1>{t("Add")}</h1>
         <EventForm
           onSubmit={handleSubmit}

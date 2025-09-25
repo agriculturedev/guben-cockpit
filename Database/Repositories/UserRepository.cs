@@ -23,4 +23,15 @@ public class UserRepository
   {
     return ModifiedSet.Any(u => u.KeycloakId == keycloakId);
   }
+
+  public Task<User?> GetById(Guid id)
+  {
+    return ModifiedSet.FirstOrDefaultAsync(u => u.Id == id);
+  }
+
+  public Task<User?> GetByEmailAsync(string email, CancellationToken ct = default)
+  {
+    var normalized = email.ToLowerInvariant();
+    return ModifiedSet.FirstOrDefaultAsync(u => u.Email.ToLower() == normalized, ct);
+  }
 }

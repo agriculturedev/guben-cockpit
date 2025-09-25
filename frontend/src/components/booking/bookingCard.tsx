@@ -2,20 +2,26 @@ import { MapPinnedIcon } from "lucide-react";
 import { CardHeaderImage, Card, CardHeader, CardContent } from "../ui/card";
 import { Link } from "@tanstack/react-router";
 import { Booking } from "@/stores/bookingStore";
-import DOMPurify from "dompurify";
+import { TranslatedHtml } from "@/utilities/translateUtils";
 
 type BookingCardProps = {
   booking: Booking;
+  isPrivate?: boolean;
 };
 
-export default function BookingCard({booking}: BookingCardProps) {
+export default function BookingCard({booking, isPrivate = false }: BookingCardProps) {
+  const to = isPrivate
+    ? (booking.bookings?.length ?? 0) > 0
+      ? `/admin/privateBookings/room/${booking.title}`
+      : `/admin/privateBookings/${booking.title}`
+    : (booking.bookings?.length ?? 0) > 0
+      ? `/booking/room/${booking.title}`
+      : `/booking/${booking.title}`;
+
   return (
     <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4">
       <Link
-        to={(booking.bookings?.length ?? 0) > 0
-          ? `/booking/room/${booking.title}`
-          : `/booking/${booking.title}`
-        }
+        to={to}
         className="text-gubenAccent">
         <Card className="h-full transition-transform transform hover:scale-95 hover:shadow-xl cursor-pointer">
           <CardHeaderImage
@@ -34,9 +40,9 @@ export default function BookingCard({booking}: BookingCardProps) {
               </div>
             )}
             <hr className="my-2" />
-            <div
+            <TranslatedHtml
               className="prose line-clamp-3 mt-2 break-words max-w-full"
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(booking.description) }} />
+              text={booking.description} />
           </CardContent>
         </Card>
       </Link>
