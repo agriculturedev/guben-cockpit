@@ -42,6 +42,7 @@ public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyP
     if (isPublisher) projects = await _projectRepository.GetAllIncludingUnpublished();
     else projects = await _projectRepository.GetAllOwnedByOrEditor(user.Id);
 
+
     var results = new List<GetMyProjectsResponseItem>();
     foreach (var project in projects)
     {
