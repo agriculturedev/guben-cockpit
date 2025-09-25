@@ -255,4 +255,28 @@ value   : The object must be serialized into a byte array
   <data name="NoAdministrativeStaff" xml:space="preserve">
     <value>Nutzer ist kein Mitarbeiter der Verwaltung</value>
   </data>
+  <data name="MasterportalLinkNotFound" xml:space="preserve">
+    <value>Masterportal-Link wurde nicht gefunden</value>
+  </data>
+  <data name="MasterportalLinkNameRequired" xml:space="preserve">
+    <value>Name für den Masterportal-Link ist erforderlich</value>
+  </data>
+  <data name="MasterportalLinkUrlRequired" xml:space="preserve">
+    <value>URL für den Masterportal-Link ist erforderlich</value>
+  </data>
+  <data name="MasterportalLinkFolderRequired" xml:space="preserve">
+    <value>Ordnerauswahl für den Masterportal-Link ist erforderlich</value>
+  </data>
+  <data name="MasterportalLinkWmsLayersRequired" xml:space="preserve">
+    <value>Mindestens ein WMS-Layer ist erforderlich</value>
+  </data>
+  <data name="MasterportalLinkWfsFeatureTypeRequired" xml:space="preserve">
+    <value>FeatureType ist für den WFS-Masterportal-Link erforderlich</value>
+  </data>
+  <data name="MasterportalLinkTypeInvalid" xml:space="preserve">
+    <value>Der angegebene Linktyp ist ungültig (muss WMS oder WFS sein)</value>
+  </data>
+  <data name="MasterportalLinkApprovalFailed" xml:space="preserve">
+    <value>Genehmigung des Masterportal-Links ist fehlgeschlagen</value>
+  </data>
 </root>
