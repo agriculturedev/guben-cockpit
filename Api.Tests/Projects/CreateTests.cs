@@ -37,7 +37,7 @@ public class ProjectHandlerTests
       });
 
       // Assert
-      var itemsInRepo = projectRepository.GetAllIncludingUnpublished().ToList();
+      var itemsInRepo = await projectRepository.GetAllIncludingUnpublished();
       itemsInRepo.ShouldNotBeNull().ShouldNotBeEmpty();
       itemsInRepo.Count().ShouldBe(1);
     }
@@ -67,7 +67,7 @@ public class ProjectHandlerTests
       }, typeof(UnauthorizedAccessException));
 
       // Assert
-      var itemsInRepo = projectRepository.GetAllIncludingUnpublished().ToList();
+      var itemsInRepo = await projectRepository.GetAllIncludingUnpublished();
       itemsInRepo.ShouldBeEmpty();
     }
   }
