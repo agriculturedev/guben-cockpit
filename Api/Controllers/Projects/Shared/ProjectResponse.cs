@@ -20,17 +20,19 @@ public struct ProjectResponse
 
   public static ProjectResponse Map(Project @project, CultureInfo cultureInfo)
   {
-    var i18NData = @project.Translations.GetTranslation(cultureInfo);
-    if (i18NData is null)
-      throw new ProblemDetailsException(TranslationKeys.NoValidTranslationsFound);
+    var translation = project.Translations.GetTranslation(cultureInfo);
+
+    // If translations is not there and no Fallback as well, just send empty string
+    string description = !string.IsNullOrWhiteSpace(translation?.Description) ? translation.Description : "";
+    string fullText    = !string.IsNullOrWhiteSpace(translation?.FullText) ? translation.FullText : "";
 
     return new ProjectResponse()
     {
       Id = @project.Id,
       Type = @project.Type.Value,
       Title = @project.Title,
-      Description = i18NData.Description,
-      FullText = i18NData.FullText,
+      Description = description,
+      FullText = fullText,
       ImageCaption = @project.ImageCaption,
       ImageUrl = @project.ImageUrl,
       ImageCredits = @project.ImageCredits,
