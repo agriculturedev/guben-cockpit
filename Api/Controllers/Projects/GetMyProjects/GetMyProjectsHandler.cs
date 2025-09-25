@@ -38,9 +38,10 @@ public class GetMyProjectsHandler : ApiRequestHandler<GetMyProjectsQuery, GetMyP
     var isPublisher = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.PublishProjects) ?? false;
 
     // if the user is a publisher, allow access to all projects
-    IEnumerable<Project> projects = [];
-    if (isPublisher) projects = _projectRepository.GetAllIncludingUnpublished();
-    else projects = _projectRepository.GetAllOwnedByOrEditor(user.Id);
+    List<Project> projects;
+    if (isPublisher) projects = await _projectRepository.GetAllIncludingUnpublished();
+    else projects = await _projectRepository.GetAllOwnedByOrEditor(user.Id);
+
 
     var results = new List<GetMyProjectsResponseItem>();
     foreach (var project in projects)
