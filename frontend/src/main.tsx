@@ -1,15 +1,26 @@
 import ReactDOM from 'react-dom/client'
+
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
-import "./utilities"
-import "./index.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthContextProps, AuthProvider, AuthState, useAuth } from "react-oidc-context";
 import { User } from "oidc-client-ts";
+import {FetchInterceptor} from "./utilities/fetchApiExtensions";
+import { useEffect } from 'react'
 
+import "./utilities"
+import "./index.css"
 import "./utilities/i18n/initializeTranslations.ts";
 import "./utilities/dateExtensions";
-import {FetchInterceptor} from "./utilities/fetchApiExtensions";
+
+// Type declaration for Matomo Tag Manager
+declare global {
+  interface Window {
+    _mtm: any[];
+  }
+}
+
+
 FetchInterceptor.register();
 
 const queryClient = new QueryClient();
@@ -59,6 +70,23 @@ if (!rootElement.innerHTML) {
 
 function App() {
   const auth = useAuth();
+
+  useEffect(() => {
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({
+      'mtm.startTime': (new Date().getTime()),
+      'event': 'mtm.Start'
+    });
+
+    var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+    g.async = true;
+    g.src = 'https://matomo.guben.elie.de/js/container_104CZK1x.js';
+
+    if (s.parentNode) {
+      s.parentNode.insertBefore(g, s);
+    }
+  }, [])
+
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} context={{queryClient, auth}}/>
