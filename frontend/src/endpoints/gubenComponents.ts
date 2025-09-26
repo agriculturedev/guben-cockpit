@@ -304,6 +304,61 @@ export const usePagesUpdate = (
   });
 };
 
+export type NextcloudPreviewQueryParams = {
+  /**
+   * @default
+   */
+  pathToImage?: string;
+};
+
+export type NextcloudPreviewError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudPreviewVariables = {
+  queryParams?: NextcloudPreviewQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudPreview = (
+  variables: NextcloudPreviewVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.FileContentResult,
+    NextcloudPreviewError,
+    undefined,
+    {},
+    NextcloudPreviewQueryParams,
+    {}
+  >({ url: "/nextcloud/preview", method: "get", ...variables, signal });
+
+export const useNextcloudPreview = <TData = Schemas.FileContentResult,>(
+  variables: NextcloudPreviewVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.FileContentResult,
+      NextcloudPreviewError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.FileContentResult,
+    NextcloudPreviewError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/preview",
+      operationId: "nextcloudPreview",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudPreview({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type NextcloudGetFilesQueryParams = {
   /**
    * @default
@@ -3174,6 +3229,11 @@ export type QueryOperation =
       path: "/pages/${id}";
       operationId: "pagesGet";
       variables: PagesGetVariables;
+    }
+  | {
+      path: "/nextcloud/preview";
+      operationId: "nextcloudPreview";
+      variables: NextcloudPreviewVariables;
     }
   | {
       path: "/nextcloud/files";

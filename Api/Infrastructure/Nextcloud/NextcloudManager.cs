@@ -13,6 +13,7 @@ namespace Api.Infrastructure.Nextcloud
     public abstract Task CreateFileAsync(byte[] fileContents, string path, string? extension = null);
     public abstract Task<bool> DeleteFileAsync(string filename);
     public abstract Task<bool> DeleteProjectFolderAsync(string projectId, string type);
+    public abstract Task<byte[]> GetPreview(string rootPath);
   }
 
   public static class NextCloudInstaller
@@ -30,9 +31,11 @@ namespace Api.Infrastructure.Nextcloud
     public const string ImagesDirectory = "Images";
 
     private readonly IWebDavClient _client;
+    private readonly HttpClient _httpClient;
     private readonly string _baseFolder;
+    private readonly string _baseUri;
 
-    public NextcloudManager(NextcloudConfiguration config)
+    public NextcloudManager(NextcloudConfiguration config, HttpClient httpClient)
     {
       var clientParams = new WebDavClientParams
       {
@@ -42,6 +45,21 @@ namespace Api.Infrastructure.Nextcloud
       _client = new WebDavClient(clientParams);
 
       _baseFolder = config.BaseDirectory;
+      _baseUri = config.BaseUri;
+
+      _httpClient = httpClient;
+      var byteArray = System.Text.Encoding.ASCII.GetBytes($"{config.Username}:{config.Password}");
+      _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+    }
+
+    public async Task<byte[]> GetPreview(string pathToImage)
+    {
+      var previewUrl = $"{_baseUri}/index.php/core/preview.png?file={_baseFolder}/{ImagesDirectory}/{pathToImage}&x=800&y=600&a=true";
+
+      var response = await _httpClient.GetAsync(previewUrl);
+      response.EnsureSuccessStatusCode();
+    
+      return await response.Content.ReadAsByteArrayAsync();
     }
 
     public async Task<IList<WebDavResource>> GetFilesAsync(string rootPath)
@@ -59,11 +77,11 @@ namespace Api.Infrastructure.Nextcloud
 
       if (!result.IsSuccessful)
       {
-          if ((int)result.StatusCode == 404 || (int)result.StatusCode == 403)
-          {
-              return new List<WebDavResource>();
-          }
-          throw new Exception($"Failed to get directory contents: {result.StatusCode}");
+        if ((int)result.StatusCode == 404 || (int)result.StatusCode == 403)
+        {
+          return new List<WebDavResource>();
+        }
+        throw new Exception($"Failed to get directory contents: {result.StatusCode}");
       }
 
       return result.Resources

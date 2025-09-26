@@ -34,7 +34,7 @@ export function NextcloudImageCarousel({ images }: IProps) {
 
       const previewUrl = img.external
         ? img.filename
-        : `${import.meta.env.VITE_NEXTCLOUD_URL}/index.php/core/preview.png?file=Guben/Images/${img.directory}/${img.filename}&x=800&y=600&a=true`;
+        : `${import.meta.env.VITE_API_URL}/nextcloud/preview?pathToImage=${encodeURIComponent(`${img.directory}/${img.filename}`)}`;
 
       return {
         filename: fullUrl,
@@ -85,7 +85,7 @@ const InternalImageCarousel = ({
   carouselProps: any;
 }) => {
 
-  const previewImage = image.previewUrl ?? `${import.meta.env.VITE_NEXTCLOUD_URL}/index.php/core/preview.png?file=/Guben/Images/${image.directory}/${image.filename}&x=800&y=600&a=true`;
+  const previewImage = image.previewUrl ?? `${import.meta.env.VITE_API_URL}/nextcloud/preview?pathToImage=${encodeURIComponent(`${image.directory}/${image.filename}`)}`;
 
   const fullFilename = image.filename.includes("remote.php/webdav") 
     ? image.filename 

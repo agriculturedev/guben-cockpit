@@ -19,6 +19,18 @@ public class NextcloudController : ControllerBase
     _nextcloudManager = nextcloudManager;
   }
 
+  [HttpGet("preview")]
+  [EndpointName("NextcloudPreview")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileContentResult))]
+  public async Task<IActionResult> GetPreview([FromQuery] string pathToImage = "")
+  {
+    if (string.IsNullOrWhiteSpace(pathToImage))
+      return BadRequest("pathToImage cannot be empty.");
+
+    var previewFile = await _nextcloudManager.GetPreview(pathToImage);
+    return File(previewFile, "image/png");
+  }
+
   [HttpGet("files")]
   [EndpointName("NextcloudGetFiles")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IList<string>))]
