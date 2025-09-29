@@ -55,7 +55,10 @@ export function DropdownTabCardsList({
   const handleSave = () => {
     if (!isDirty || cards.length === 0) return;
     const orderedCardIds = cards.map((c) => c.id);
-    reorder.mutate({ tabId, body: { orderedCardIds } });
+    reorder.mutate({
+      pathParams: { id: tabId },
+      body: { orderedCardIds },
+    });
   };
 
   return (
