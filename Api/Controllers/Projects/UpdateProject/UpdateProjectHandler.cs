@@ -45,7 +45,7 @@ public class UpdateProjectHandler : ApiRequestHandler<UpdateProjectQuery, Update
     var isEditor = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.EditProjects) ?? false;
     var isSchool = _httpContextAccessor.HttpContext?.User.IsInRole(KeycloakPolicies.School) ?? false;
 
-    if (!isEditor || user.Id == project.CreatedBy || (user.Id == project.EditorId && isSchool))
+    if (!isEditor && user.Id != project.CreatedBy && !(user.Id == project.EditorId && isSchool))
       throw new UnauthorizedAccessException(TranslationKeys.ProjectNotOwnedByUser);
 
     if (!ProjectType.TryFromValue(request.Type, out var type))
