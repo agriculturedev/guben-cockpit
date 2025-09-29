@@ -69,24 +69,29 @@ namespace Domain.MasterportalLinks
             Status = MasterportalLinkStatus.Pending;
             Type = InferTypeFromUrl(url);
 
-            // wms defaults
-            WmsGfiTheme = "default";
-            WmsSupported = "2D,3D";
-            WmsVisibility = false;
-            WmsTransparent = true;
-            WmsFeatureCount = "1";
-            WmsTransparency = 0;
-            WmsGfiAttributes = "ignore";
-            WmsLayerAttribution = "nicht vorhanden";
-            WmsTileSize = 512;
-            WmsFormat = "image/png";
-            WmsVersion = "1.3.0";
-            WmsMaxScale = "2500000";
-            WmsMinScale = "0";
-
-            // wfs defaults
-            WfsFeatureNs = "http://www.deegree.org/app";
-            WfsVersion = "1.1.0";
+            if (Type == MasterportalLinkType.WMS)
+            {
+                // wms defaults
+                WmsGfiTheme = "default";
+                WmsSupported = "2D,3D";
+                WmsVisibility = false;
+                WmsTransparent = true;
+                WmsFeatureCount = "1";
+                WmsTransparency = 0;
+                WmsGfiAttributes = "ignore";
+                WmsLayerAttribution = "nicht vorhanden";
+                WmsTileSize = 512;
+                WmsFormat = "image/png";
+                WmsVersion = "1.3.0";
+                WmsMaxScale = "2500000";
+                WmsMinScale = "0";
+            }
+            else if (Type == MasterportalLinkType.WFS)
+            {
+                // wfs defaults
+                WfsFeatureNs = "http://www.deegree.org/app";
+                WfsVersion = "1.1.0";
+            }
         }
 
         public static Result<MasterportalLink> Create(string name, string url, string folder, string? createdByUserId)
@@ -128,7 +133,7 @@ namespace Domain.MasterportalLinks
             string? legendUrl
         )
         {
-            EnsureOrSetType(MasterportalLinkType.WFS);
+            EnsureOrSetType(MasterportalLinkType.WMS);
 
             if (string.IsNullOrWhiteSpace(layers))
                 return Result.Error(TranslationKeys.MasterportalLinkWmsLayersRequired);
@@ -166,8 +171,19 @@ namespace Domain.MasterportalLinks
         private static MasterportalLinkType InferTypeFromUrl(string url)
         {
             var u = url.ToLowerInvariant();
-            if (u.Contains("service=wms") || u.Contains("/wms")) return MasterportalLinkType.WMS;
-            if (u.Contains("service=wfs") || u.Contains("/wfs")) return MasterportalLinkType.WFS;
+
+            bool looksWms =
+                u.Contains("service=wms") ||
+                System.Text.RegularExpressions.Regex.IsMatch(u, @"(^|[\/_\-])wms([\/_\-]|$)");
+
+            if (looksWms) return MasterportalLinkType.WMS;
+
+            bool looksWfs =
+                u.Contains("service=wfs") ||
+                System.Text.RegularExpressions.Regex.IsMatch(u, @"(^|[\/_\-])wfs([\/_\-]|$)");
+
+            if (looksWfs) return MasterportalLinkType.WFS;
+
             return MasterportalLinkType.Unknown;
         }
 

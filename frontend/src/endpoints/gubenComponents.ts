@@ -3149,6 +3149,50 @@ export const useBookingDeleteTenantId = (
   });
 };
 
+export type MasterportalLinkCreateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type MasterportalLinkCreateVariables = {
+  body: Schemas.CreateMasterportalLinkQuery;
+} & GubenContext["fetcherOptions"];
+
+export const fetchMasterportalLinkCreate = (
+  variables: MasterportalLinkCreateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.CreateMasterportalLinkResponse,
+    MasterportalLinkCreateError,
+    Schemas.CreateMasterportalLinkQuery,
+    {},
+    {},
+    {}
+  >({ url: "/masterportal-links", method: "post", ...variables, signal });
+
+export const useMasterportalLinkCreate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.CreateMasterportalLinkResponse,
+      MasterportalLinkCreateError,
+      MasterportalLinkCreateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.CreateMasterportalLinkResponse,
+    MasterportalLinkCreateError,
+    MasterportalLinkCreateVariables
+  >({
+    mutationFn: (variables: MasterportalLinkCreateVariables) =>
+      fetchMasterportalLinkCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+}
+
 export type QueryOperation =
   | {
       path: "/users";

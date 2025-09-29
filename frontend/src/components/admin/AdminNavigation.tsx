@@ -54,8 +54,8 @@ export const AdminNavigation = () => {
         />
       </PermissionGuard>
 
-      <PermissionGuard permissions={[Permissions.UploadGeodata]}>
-        <Nav.Item href={"/admin/geodata"} label={t("Title", {ns: "geodata"})}/>
+      <PermissionGuard permissions={[Permissions.DashboardManager]}>
+        <Nav.Item href={"/admin/masterportal-links"} label={"Masterportal Links"} />
       </PermissionGuard>
 
       <PermissionGuard permissions={[Permissions.ManageGeoData]}>
