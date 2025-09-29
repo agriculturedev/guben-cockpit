@@ -6,7 +6,7 @@ import SortFilter, { SortOption, SortOrder } from '@/components/events/sortFilte
 import { CategoryFilter } from '@/components/filters/categoryFilter'
 import { DateRangeFilter } from '@/components/filters/dateRangeFilter'
 import { SearchFilter } from '@/components/filters/searchFilter'
-import { useBookingGetAllTenantIds, useEventsGetAll } from '@/endpoints/gubenComponents'
+import { useBookingGetPublicTenantIds, useEventsGetAll } from '@/endpoints/gubenComponents'
 import { defaultPaginationProps, usePagination } from '@/hooks/usePagination'
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
@@ -46,7 +46,7 @@ function RouteComponent() {
   const processedTenants = useEventStore((state) => state.processedTenants);
   const markProcessedTenants = useEventStore((state) => state.markProcessedTenants);
 
-  const { data: tenantIds } = useBookingGetAllTenantIds({});
+  const { data: tenantIds } = useBookingGetPublicTenantIds({});
   
   const [currentTenantIndex, setCurrentTenantIndex] = useState(0);
 
@@ -215,11 +215,10 @@ function RouteComponent() {
     setTranslationsReady(false);
     if (!shouldShowIntegration && currentLang !== "de") {
       const customEvents = (allEvents as (EventResponse & { isBookingEvent?: boolean })[])
-        .filter(e => e.isBookingEvent && e.cultureInfo !== currentLang);
+        .filter(e => e.isBookingEvent);
 
       const translateAll = async () => {
         const descriptions = customEvents
-          .filter(e => e.cultureInfo !== currentLang)
           .map(e => e.description)
           .filter(desc => desc && desc.trim());
         
@@ -228,7 +227,6 @@ function RouteComponent() {
         }
 
         const titles = customEvents
-          .filter(e => e.cultureInfo !== currentLang)
           .map(e => e.title)
           .filter(title => title && title.trim() !== '');
 

@@ -80,7 +80,7 @@ function App() {
 
     var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
     g.async = true;
-    g.src = 'https://matomo.guben.elie.de/js/container_104CZK1x.js';
+    g.src = import.meta.env.VITE_MATOMO_JS;
 
     if (s.parentNode) {
       s.parentNode.insertBefore(g, s);
