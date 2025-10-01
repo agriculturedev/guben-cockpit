@@ -24,9 +24,27 @@ export type EventDetails = {
   agenda?: string[];
   teaserImage?: string;
   street?: string;
-	houseNumber?: string;
+  houseNumber?: string;
   zip?: string;
   city?: string;
+  tickets?: Ticket[];
+};
+
+export type Ticket = {
+  title: string;
+  description?: string;
+  location?: string;
+  type?: string;
+  flags?: string[];
+  autoCommitNote?: string;
+  prices: {
+    price: string;
+    interval?: string;
+    category?: string;
+  }[];
+  bookingUrl: string;
+  bkid: string;
+  imgUrl: string;
 };
 
 type EventStore = {
@@ -35,9 +53,10 @@ type EventStore = {
 	setEvents: (events: BookingEvent[]) => void;
 	addEvents: (events: BookingEvent[]) => void;
 	markProcessedTenants: (tenantId: string) => void;
+  getTicketsByBkid: (bkid: string) => Ticket[];
 }
 
-export const useEventStore = create<EventStore>((set) => ({
+export const useEventStore = create<EventStore>((set, get) => ({
 	processedTenants: new Set<string>(),
 	markProcessedTenants: (tenantId) =>
 		set((state) => ({
@@ -55,4 +74,8 @@ export const useEventStore = create<EventStore>((set) => ({
 
 			return { events: unique };
 		}),
+  getTicketsByBkid: (bkid: string) => {
+    const event = get().events.find(e => e.bkid === bkid);
+    return event?.details?.tickets || [];
+  },
 }));
