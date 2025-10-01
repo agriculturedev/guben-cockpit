@@ -108,11 +108,6 @@ function RouteComponent() {
     else setFilters(filtersSchema.parse(undefined));
   };
 
-  useEffect(() => {
-    setTotal(data?.totalCount ?? defaultPaginationProps.total);
-    setPageCount(data?.pageCount ?? defaultPaginationProps.pageCount);
-  }, [data]);
-
   const [loading, setLoading] = useState(true);
 
   const normalizedEvents = bookingEvents.map(e => {
@@ -120,7 +115,19 @@ function RouteComponent() {
 
     const start = startDateStr.replace(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5");
 
-    const end = endDateStr.replace(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5");
+    // End Date might only contain Time and not Date, if the event is only 1 day
+    let end: string;
+    if (endDateStr.includes('.')) {
+      end = endDateStr.replace(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5");
+    } else {
+      const startDate = startDateStr.match(/(\d{2})\.(\d{2})\.(\d{4})/)?.[0];
+      if (startDate) {
+        const fullEndDate = `${startDate} ${endDateStr}`;
+        end = fullEndDate.replace(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5");
+      } else {
+        end = start;
+      }
+    }
 
     const location: LocationResponse = {
       id: crypto.randomUUID(),
@@ -189,16 +196,16 @@ function RouteComponent() {
           return false;
         }
       }
-      if (filters.category && !event.categories.some(c => c.name === filters.category)) {
-        return false;
-      }
-      if (filters.dateRange?.from) {
+      if (filters.dateRange?.from || filters.dateRange?.to) {
         const eventStart = new Date(event.startDate);
-        if (eventStart < filters.dateRange.from) return false;
-      }
-      if (filters.dateRange?.to) {
         const eventEnd = new Date(event.endDate);
-        if (eventEnd > filters.dateRange.to) return false;
+
+        const filterStart = filters.dateRange?.from ?? new Date(-8640000000000000);
+        const filterEnd = filters.dateRange?.to ?? new Date(8640000000000000);
+
+        if (!(eventStart <= filterEnd && eventEnd >= filterStart)) {
+          return false;
+        }
       }
       return true;
     });
@@ -206,8 +213,14 @@ function RouteComponent() {
 
   const filteredNormalizedEvents = filterEvents(normalizedEvents, filters);
 
+  console.log(data?.results);
   const allEvents = mergeEventsWithCustom(data?.results ?? [], filteredNormalizedEvents);
   
+  useEffect(() => {
+    setTotal(allEvents.length ?? defaultPaginationProps.total);
+    setPageCount(data?.pageCount ?? defaultPaginationProps.pageCount);
+  }, [data]);
+
   const currentLang = i18next.language as Language;
   const [translationsReady, setTranslationsReady] = useState(false);
 
@@ -339,6 +352,13 @@ function mergeEventsWithCustom(
 
   const filteredCustom = bookingEvents.filter(event => {
     const start = new Date(event.startDate).getTime();
+    const end = new Date(event.endDate).getTime();
+
+    // only filtered Events should end up here
+    if (backendEvents.length < 25) {
+      return true;
+    }
+
     return start >= earliest && start <= latest;
   });
 
