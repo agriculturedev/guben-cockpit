@@ -213,7 +213,6 @@ function RouteComponent() {
 
   const filteredNormalizedEvents = filterEvents(normalizedEvents, filters);
 
-  console.log(data?.results);
   const allEvents = mergeEventsWithCustom(data?.results ?? [], filteredNormalizedEvents);
   
   useEffect(() => {

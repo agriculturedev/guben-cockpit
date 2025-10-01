@@ -5,16 +5,17 @@ import { TranslatedHtml, TranslatedText } from "@/utilities/translateUtils";
 
 type PriceCardProps = {
   bookingUrl: string;
-  price: string;
+  price?: string;
   title: string;
   flags?: string[];
   description?: string;
   location?: string;
   autoCommitNote?: string;
   imgUrl?: string;
+  prices?: { price: string; interval?: string; category?: string }[];
 }
 
-export default function ({ bookingUrl, price, title, flags, description, location, autoCommitNote, imgUrl }: PriceCardProps) {
+export default function ({ bookingUrl, price, title, flags, description, location, autoCommitNote, imgUrl, prices }: PriceCardProps) {
   const { t } = useTranslation("booking");
 
   const isValidUrl = bookingUrl && bookingUrl.startsWith("http");
@@ -66,7 +67,18 @@ export default function ({ bookingUrl, price, title, flags, description, locatio
               }}>
               <div className="absolute inset-0 bg-red-600/50" />
               <div className="relative z-10 h-full flex flex-col justify-center items-start p-5">
-                <p>{t("priceCard.price")}: {price}</p>
+                {prices && prices.length > 0 ? (
+                  prices.map((p, idx) => (
+                    <p key={idx}>
+                      {t("priceCard.price")}: {p.price}
+                      {p.interval && ` (${p.interval})`}
+                      {p.category && ` - ${p.category}`}
+                    </p>
+                  ))
+                ) : (
+                  <p>{t("priceCard.price")}: {price}</p>
+                )}
+
                 { location && (
                   <p>{t("priceCard.place")}: {location}</p>
                 )}

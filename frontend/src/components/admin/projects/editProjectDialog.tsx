@@ -87,7 +87,6 @@ export default function EditProjectDialog({ project, open, onOpenChange, ...prop
 
   const handleSubmit = async (form: FormSchema) => {
     setIsUploading(true);
-    console.log(form);
     await mutateAsync({
       pathParams: { id: project.id },
       body: mapFormToEditProjectQuery(form)
