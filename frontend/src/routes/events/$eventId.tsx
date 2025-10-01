@@ -88,7 +88,7 @@ function RouteComponent() {
         </div>
 
         <div className={"flex min-h-[70vh] h-full"}>
-          <MapComponent src="https://guben.elie.de/" lat={data?.coordinates?.latitude} lon={data?.coordinates?.longitude} />
+          <MapComponent src={import.meta.env.VITE_MASTERPORTAL_URL} lat={data?.coordinates?.latitude} lon={data?.coordinates?.longitude} />
         </div>
       </section>
     </main>
