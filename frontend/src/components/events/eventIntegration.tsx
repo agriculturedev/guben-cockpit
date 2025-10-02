@@ -138,11 +138,11 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
         }));
 
         addEvent(events);
-        onDone?.();
       } catch (error) {
         console.error("Failed to fetch events.", error);
       } finally {
         setLoading(false);
+        onDone?.();
       }
     };
 

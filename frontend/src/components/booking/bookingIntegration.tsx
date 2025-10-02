@@ -163,11 +163,11 @@ export default function BookingIntegration({ tenantId, setLoading, onDone, priva
         const parentBookings = bookables.filter((b) => !nestedBkids.has(b.bkid || ""));
 
         addBooking(parentBookings);
-        if (onDone) onDone();
       } catch (error) {
         console.error("Error fetching bookings:", error);
       } finally {
         setLoading(false);
+        if (onDone) onDone();
       }
     };
 
