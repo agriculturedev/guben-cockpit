@@ -777,3 +777,11 @@ export type ValidateGeoDataSourceResponse = Record<string, any>;
 export type ValidateRequest = {
   isValid?: boolean;
 };
+
+export type CreateMasterportalLinkQuery = {
+  url: string;
+  folder: string;
+  name: string;
+}
+
+export type CreateMasterportalLinkResponse = Record<string, any>;
