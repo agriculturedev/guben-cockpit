@@ -188,6 +188,11 @@ public class EventRepository
       query = query.Where(w =>
         w.StartDate <= endDate && w.EndDate >= startDate);
     }
+    else if (filter.StartDateQuery.HasValue)
+    {
+      var startDate = filter.StartDateQuery.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+      query = query.Where(w => w.EndDate >= startDate);
+    }
     else
     {
       var currentDate = DateTime.UtcNow.Date;
@@ -352,7 +357,7 @@ public class EventRepository
 
     return new PagedResult<Event>(
       pagination,
-      totalCount,
+      filteredCount,
       pagedItems);
   }
 
