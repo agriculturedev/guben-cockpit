@@ -76,6 +76,7 @@ export default function BookingComponent({ isPrivate = false }: IProps) {
               bookingUrl={ticket.bookingUrl}
               description={ticket.description}
               price={ticket.price}
+              prices={ticket.prices || []}
               title={ticket.title || title}
               flags={ticket.flags || booking.flags}
               location={ticket.location || booking.location}
@@ -87,6 +88,7 @@ export default function BookingComponent({ isPrivate = false }: IProps) {
           <PriceCard
             bookingUrl={booking.bookingUrl}
             price={booking.price}
+            prices={booking.prices || []}
             title={title}
             flags={booking.flags}
             location={booking.location}

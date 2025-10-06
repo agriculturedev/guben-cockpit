@@ -85,8 +85,7 @@ function RouteComponent() {
           <div className='w-full lg:w-1/2 space-y-2'>
             <h2 className='font-bold'>{t("EventDetails")}</h2>
               {(data as any)?.isBookingEvent ? (
-                <TranslatedHtml className={"text-muted-foreground line-clamp-2"}
-                  text={data.description} />
+                <TranslatedHtml text={data.description} />
               ) : (
                 <p className="text-neutral-600">{data.description}</p>
               )}

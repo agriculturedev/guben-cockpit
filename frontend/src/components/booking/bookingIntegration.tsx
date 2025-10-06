@@ -51,6 +51,11 @@ export default function BookingIntegration({ tenantId, setLoading, onDone, priva
           const flags = Array.from(el.querySelectorAll(".flags .flag")).map((f) => f.textContent?.trim() || "");
           const autoCommitNote = el.querySelector(".autoCommitBooking")?.textContent?.trim() || "";
           const price = el.querySelector(".price")?.textContent?.trim() || "";
+          const prices = Array.from(el.querySelectorAll(".price-category-list li")).map(li => ({
+            price: li.querySelector(".price-category-item-price")?.textContent?.trim() || "",
+            interval: li.querySelector(".price-category-interval")?.textContent?.trim() || "",
+            category: li.querySelector(".price-category")?.textContent?.trim() || ""
+          }));
           const bookingUrl = el.querySelector(".btn-booking")?.getAttribute("href") || "";
           const bkid = el.querySelector(".btn-detail")?.getAttribute("href")?.split("bkid=")[1] || "";
           const imgUrl = el.querySelector("img")?.getAttribute("src") || "/images/guben-city-booking-card-placeholder.png";
@@ -72,6 +77,7 @@ export default function BookingIntegration({ tenantId, setLoading, onDone, priva
             flags,
             autoCommitNote,
             price,
+            prices,
             bookingUrl,
             bkid,
             imgUrl,
@@ -116,6 +122,11 @@ export default function BookingIntegration({ tenantId, setLoading, onDone, priva
               const ticketType = ticketEl.querySelector(".type")?.textContent?.trim() || "";
               const ticketAutoNote = ticketEl.querySelector(".autoCommitBooking")?.textContent?.trim() || "";
               const ticketPrice = ticketEl.querySelector(".price")?.textContent?.trim() || "";
+              const ticketPrices = Array.from(ticketEl.querySelectorAll(".price-category-list li")).map(li => ({
+                price: li.querySelector(".price-category-item-price")?.textContent?.trim() || "",
+                interval: li.querySelector(".price-category-interval")?.textContent?.trim() || "",
+                category: li.querySelector(".price-category")?.textContent?.trim() || ""
+              }));
               const ticketBookingUrl = ticketEl.querySelector("a")?.getAttribute("href") || "";
               const ticketBkid = ticketEl.querySelector(".btn-detail")?.getAttribute("href")?.split("bkid=")[1] || "";
               const ticketFlags = Array.from(ticketEl.querySelectorAll(".flag")).map((f) => f.textContent?.trim() || "");
@@ -129,6 +140,7 @@ export default function BookingIntegration({ tenantId, setLoading, onDone, priva
                 flags: ticketFlags,
                 autoCommitNote: ticketAutoNote,
                 price: ticketPrice,
+                prices: ticketPrices,
                 bookingUrl: ticketBookingUrl,
                 bkid: ticketBkid,
                 imgUrl: ticketImgUrl,
