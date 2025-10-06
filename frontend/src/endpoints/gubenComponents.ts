@@ -2230,6 +2230,63 @@ export const useDashboardCardReorder = (
   });
 };
 
+export type DashboardDropdownReorderPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type DashboardDropdownReorderError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardDropdownReorderVariables = {
+  body?: Schemas.UpdateSequencesQuery;
+  pathParams: DashboardDropdownReorderPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardDropdownReorder = (
+  variables: DashboardDropdownReorderVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpdateSequencesResponse,
+    DashboardDropdownReorderError,
+    Schemas.UpdateSequencesQuery,
+    {},
+    {},
+    DashboardDropdownReorderPathParams
+  >({
+    url: "/dashboard/{id}/dropdown/reorder",
+    method: "put",
+    ...variables,
+    signal,
+  });
+
+export const useDashboardDropdownReorder = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpdateSequencesResponse,
+      DashboardDropdownReorderError,
+      DashboardDropdownReorderVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpdateSequencesResponse,
+    DashboardDropdownReorderError,
+    DashboardDropdownReorderVariables
+  >({
+    mutationFn: (variables: DashboardDropdownReorderVariables) =>
+      fetchDashboardDropdownReorder({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type DashboardDropdownGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -2372,6 +2429,58 @@ export const useDashboardDropdownCreate = (
   >({
     mutationFn: (variables: DashboardDropdownCreateVariables) =>
       fetchDashboardDropdownCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DashboardDropdownUpdatePathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type DashboardDropdownUpdateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardDropdownUpdateVariables = {
+  body: Schemas.UpdateDashboardDropdownQuery;
+  pathParams: DashboardDropdownUpdatePathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardDropdownUpdate = (
+  variables: DashboardDropdownUpdateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpdateDashboardDropdownResponse,
+    DashboardDropdownUpdateError,
+    Schemas.UpdateDashboardDropdownQuery,
+    {},
+    {},
+    DashboardDropdownUpdatePathParams
+  >({ url: "/dashboarddropdown/{id}", method: "put", ...variables, signal });
+
+export const useDashboardDropdownUpdate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpdateDashboardDropdownResponse,
+      DashboardDropdownUpdateError,
+      DashboardDropdownUpdateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpdateDashboardDropdownResponse,
+    DashboardDropdownUpdateError,
+    DashboardDropdownUpdateVariables
+  >({
+    mutationFn: (variables: DashboardDropdownUpdateVariables) =>
+      fetchDashboardDropdownUpdate({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };

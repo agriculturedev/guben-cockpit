@@ -46,5 +46,8 @@ public class TranslationKeys
   public const string DropdownLinkNotFound = "DropdownLinkNotFound";
   public const string MissingTenantId = "MissingTenantId";
   public const string NoAdministrativeStaff = "NoAdministrativeStaff";
+  public const string MissingDashboardDropdownId = "MissingDashboardDropdownId";
+  public const string DashboardDropdownNotFound = "DashboardDropdownNotFound";
+  public const string NoDashboardManager = "NoDashboardManager";
 
 }

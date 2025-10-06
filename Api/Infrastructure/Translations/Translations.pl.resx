@@ -254,4 +254,13 @@ value   : The object must be serialized into a byte array
   <data name="NoAdministrativeStaff" xml:space="preserve">
     <value>Użytkownik nie jest pracownikiem administracji</value>
   </data>
+  <data name="MissingDashboardDropdownId" xml:space="preserve">
+    <value>Brak identyfikatora rozwijanego menu pulpitu</value>
+  </data>
+  <data name="DashboardDropdownNotFound" xml:space="preserve">
+    <value>Nie znaleziono rozwijanego menu pulpitu</value>
+  </data>
+  <data name="NoDashboardManager" xml:space="preserve">
+    <value>Brak menedżera pulpitu</value>
+  </data>
 </root>
