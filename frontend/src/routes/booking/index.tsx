@@ -45,7 +45,6 @@ function Booking() {
     const hasMoreTenants = currentTenantIndex < (tenantIds?.tenants?.length ?? 0) - 1;
     if (hasMoreTenants) {
       setCurrentTenantIndex(i => i + 1);
-      setLoading(true);
     } else {
       setLoading(false);
     }
@@ -53,6 +52,12 @@ function Booking() {
 
   const currentTenant = tenantIds?.tenants[currentTenantIndex];
   const shouldShowIntegration = currentTenant && !processedTenants.has(currentTenant.tenantId);
+
+  useEffect(() => {
+    if (shouldShowIntegration) {
+      setLoading(true);
+    }
+  }, [shouldShowIntegration]);
 
   const [translationsReady, setTranslationsReady] = useState(false);
   const currentLang = i18next.language as Language;

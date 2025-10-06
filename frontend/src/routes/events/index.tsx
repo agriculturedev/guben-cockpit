@@ -51,7 +51,7 @@ function RouteComponent() {
   const [currentTenantIndex, setCurrentTenantIndex] = useState(0);
 
   const handleTenantDone = useCallback(() => {
-  const currentTenant = tenantIds?.tenants[currentTenantIndex];
+    const currentTenant = tenantIds?.tenants[currentTenantIndex];
     if (currentTenant) {
       markProcessedTenants(currentTenant.tenantId);
     }
@@ -60,7 +60,6 @@ function RouteComponent() {
 
     if (hasMoreTenants) {
       setCurrentTenantIndex(i => i + 1);
-      setLoading(true);
     } else {
       setLoading(false);
     }
@@ -68,6 +67,12 @@ function RouteComponent() {
 
   const currentTenant = tenantIds?.tenants[currentTenantIndex];
   const shouldShowIntegration = currentTenant && !processedTenants.has(currentTenant.tenantId);
+
+  useEffect(() => {
+    if (shouldShowIntegration) {
+      setLoading(true);
+    }
+  }, [shouldShowIntegration]);
 
   const {
     page,
