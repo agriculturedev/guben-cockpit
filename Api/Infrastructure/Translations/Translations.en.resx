@@ -254,4 +254,13 @@ value   : The object must be serialized into a byte array
   <data name="NoAdministrativeStaff" xml:space="preserve">
     <value>User is not an administrative staff member</value>
   </data>
+  <data name="MissingDashboardDropdownId" xml:space="preserve">
+    <value>Missing dashboard dropdown ID</value>
+  </data>
+  <data name="DashboardDropdownNotFound" xml:space="preserve">
+    <value>Dashboard dropdown not found</value>
+  </data>
+  <data name="NoDashboardManager" xml:space="preserve">
+    <value>No dashboard manager available</value>
+  </data>
 </root>

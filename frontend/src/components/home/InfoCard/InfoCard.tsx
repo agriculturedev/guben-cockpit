@@ -50,7 +50,7 @@ export const InfoCard = ({ card, className }: Props) => {
       </Markdown>
 
       {card.button?.url && card.button?.title && (
-        <div className={"flex justify-center mt-2"}>
+        <div className={"flex justify-center mt-4"}>
           <Button
             variant={"destructive"}
             onClick={(e) => {

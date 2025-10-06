@@ -8,37 +8,42 @@ using Shared.Domain.Validation;
 
 namespace Api.Controllers.DashboardTabs.UpdateSequences;
 
-public class UpdateSequenceshandler : ApiRequestHandler<UpdateSequencesQuery, UpdateSequencesResponse>
+public class UpdateSequencesHandler : ApiRequestHandler<UpdateSequencesQuery, UpdateSequencesResponse>
 {
   private readonly IDashboardRepository _dashboardRepository;
-  private readonly CultureInfo _culture;
 
-  public UpdateSequenceshandler(IDashboardRepository dashboardRepository)
+  public UpdateSequencesHandler(IDashboardRepository dashboardRepository)
   {
     _dashboardRepository = dashboardRepository;
-    _culture = CultureInfo.CurrentCulture;
   }
 
-  public override async Task<UpdateSequencesResponse> Handle(UpdateSequencesQuery request,
-    CancellationToken cancellationToken)
+  public override async Task<UpdateSequencesResponse> Handle(UpdateSequencesQuery request, CancellationToken cancellationToken)
   {
-    var dashboardTabs = await _dashboardRepository.GetAll();
-    if (dashboardTabs is null)
-      throw new ProblemDetailsException(TranslationKeys.NoDashboardTabsFound);
+    var tabs = await _dashboardRepository.GetTrackedByDropdownIdsAsync(request.DropdownId, cancellationToken);
+    if (tabs == null || tabs.Count == 0)
+      throw new ProblemDetailsException(TranslationKeys.DashboardDropdownNotFound);
 
-    foreach (var tab in dashboardTabs)
+    if (tabs.Count != request.OrderedTabIds.Count)
+      throw new ProblemDetailsException(TranslationKeys.SequenceInterrupted);
+
+    var unique = request.OrderedTabIds.Distinct().Count();
+    if (unique != request.OrderedTabIds.Count)
+      throw new ProblemDetailsException(TranslationKeys.SequenceInterrupted);
+
+    var validIds = tabs.Select(t => t.Id).ToHashSet();
+    if (!request.OrderedTabIds.All(validIds.Contains))
+      throw new ProblemDetailsException(TranslationKeys.DashboardTabNotFound);
+
+    var byId = tabs.ToDictionary(t => t.Id);
+    for (int i = 0; i < request.OrderedTabIds.Count; i++)
     {
-      var newSequence = request.Sequences.FirstOrDefault(s => s.TabId == tab.Id);
-      if (newSequence is null)
-        throw new ProblemDetailsException(ValidationMessage.CreateError(TranslationKeys.SequenceNotFoundForTab,
-          tab.Translations[_culture.TwoLetterISOLanguageName].Title));
-
-      tab.UpdateSequence(newSequence.Sequence);
+      byId[request.OrderedTabIds[i]].UpdateSequence(i);
     }
 
-    var sequenceResult = dashboardTabs.CheckSequenceIsValid();
-    sequenceResult.ThrowIfFailure();
-
-    return new UpdateSequencesResponse();
+    return new UpdateSequencesResponse
+    {
+      DropdownId = request.DropdownId,
+      UpdatedCount = request.OrderedTabIds.Count
+    };
   }
 }

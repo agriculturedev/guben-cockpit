@@ -660,6 +660,16 @@ export type UpdateCardSequenceResponse = {
   updatedCount?: number;
 };
 
+export type UpdateDashboardDropdownQuery = {
+  /**
+   * @format uuid
+   */
+  id?: string | null;
+  title: string;
+};
+
+export type UpdateDashboardDropdownResponse = Record<string, any>;
+
 export type UpdateDashboardTabQuery = {
   /**
    * @format uuid
@@ -726,6 +736,25 @@ export type UpdateProjectQuery = {
   imageUrl?: string | null;
   imageCredits?: string | null;
   editorEmail?: string | null;
+};
+
+export type UpdateSequencesQuery = {
+  /**
+   * @format uuid
+   */
+  dropdownId?: string;
+  orderedTabIds?: string[];
+};
+
+export type UpdateSequencesResponse = {
+  /**
+   * @format uuid
+   */
+  dropdownId?: string;
+  /**
+   * @format int32
+   */
+  updatedCount?: number;
 };
 
 export type UpdateTenantQuery = {

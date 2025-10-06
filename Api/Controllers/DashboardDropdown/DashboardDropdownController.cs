@@ -3,6 +3,7 @@ using Api.Controllers.DashboardDropdown.CreateDashboardDropdown;
 using Api.Controllers.DashboardDropdown.DeleteDashboardDropdown;
 using Api.Controllers.DashboardDropdown.GetAllDashboardDropdown;
 using Api.Controllers.DashboardDropdown.GetMyDashboardDropdown;
+using Api.Controllers.DashboardDropdown.UpdateDashboardDropdown;
 using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -55,6 +56,18 @@ public class DashbaordDropdownController : ControllerBase
     public async Task<IResult> Create([FromBody] CreateDashboardDropdownQuery request)
     {
         var result = await _mediator.Send(request);
+        return Results.Ok(result);
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(KeycloakPolicies.DashboardManager)]
+    [EndpointName("DashboardDropdownUpdate")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateDashboardDropdownResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IResult> Update([FromRoute] Guid id, [FromBody] UpdateDashboardDropdownQuery query)
+    {
+        query.SetId(id);
+        var result = await _mediator.Send(query);
         return Results.Ok(result);
     }
 
