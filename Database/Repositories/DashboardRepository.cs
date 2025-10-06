@@ -38,4 +38,14 @@ public class DashboardRepository
       .AsNoTracking()
       .ToListAsync(cancellationToken);
   }
+
+  public async Task<List<DashboardTab>> GetTrackedByDropdownIdsAsync(
+    Guid dropdownId,
+    CancellationToken cancellationToken)
+  {
+    return await Set
+        .TagWith($"{nameof(DashboardRepository)}.{nameof(GetTrackedByDropdownIdsAsync)}")
+        .Where(t => t.DropdownId.HasValue && t.DropdownId.Value == dropdownId)
+        .ToListAsync(cancellationToken);
+  }
 }
