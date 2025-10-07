@@ -3313,6 +3313,56 @@ export const useBookingDeleteTenantId = (
   });
 };
 
+export type MasterportalLinkGetAllError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type MasterportalLinkGetAllVariables = GubenContext["fetcherOptions"];
+
+export const fetchMasterportalLinksGetAll = (
+  variables: MasterportalLinkGetAllVariables,
+  signal?: AbortSignal,
+) => gubenFetch<
+    Schemas.GetAllMasterportalLinksResponse,
+    MasterportalLinkGetAllError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/masterportal-links", method: "get", ...variables, signal });
+
+export const useMasterportalLinksGetAll = <
+  TData = Schemas.GetAllMasterportalLinksResponse,
+>(
+  variables: MasterportalLinkGetAllVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetAllMasterportalLinksResponse,
+      MasterportalLinkGetAllError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetAllMasterportalLinksResponse,
+    MasterportalLinkGetAllError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/masterportal-links",
+      operationId: "masterportalLinksGetAll",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchMasterportalLinksGetAll({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type MasterportalLinkCreateError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -3356,6 +3406,170 @@ export const useMasterportalLinkCreate = (
     ...options,
   });
 }
+
+export type MasterportalLinkGetMyError = Fetcher.ErrorWrapper<
+  | { status: 400; payload: Schemas.ProblemDetails }
+  | { status: 401; payload: Schemas.ProblemDetails }
+>;
+
+export type MasterportalLinkGetMyVariables = GubenContext["fetcherOptions"];
+
+export const fetchMasterportalLinksGetMy = (
+  variables: MasterportalLinkGetMyVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.GetMyMasterportalLinksResponse,
+    MasterportalLinkGetMyError,
+    undefined,
+    {},
+    {},
+    {}
+  >({
+    url: "/masterportal-links/my",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useMasterportalLinksGetMy = <
+  TData = Schemas.GetMyMasterportalLinksResponse,
+>(
+  variables: MasterportalLinkGetMyVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.GetMyMasterportalLinksResponse,
+      MasterportalLinkGetMyError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.GetMyMasterportalLinksResponse,
+    MasterportalLinkGetMyError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/masterportal-links/my",
+      operationId: "masterportalLinksGetMy",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchMasterportalLinksGetMy({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
+export type MasterportalLinkApprovePathParams = {
+  /** @format uuid */
+  id: string;
+};
+
+export type MasterportalLinkApproveError = Fetcher.ErrorWrapper<{ 
+  status: 400; 
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type MasterportalLinkApproveVariables = {
+  pathParams: MasterportalLinkApprovePathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchMasterportalLinkApprove = (
+  variables: MasterportalLinkApproveVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.ApproveMasterportalLinkResponse,
+    MasterportalLinkApproveError,
+    {},
+    {},
+    {},
+    MasterportalLinkApprovePathParams
+  >({
+    url: "/masterportal-links/{id}/approve",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useMasterportalLinkApprove = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.ApproveMasterportalLinkResponse,
+      MasterportalLinkApproveError,
+      MasterportalLinkApproveVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.ApproveMasterportalLinkResponse,
+    MasterportalLinkApproveError,
+    MasterportalLinkApproveVariables
+  >({
+    mutationFn: (variables: MasterportalLinkApproveVariables) =>
+      fetchMasterportalLinkApprove({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type MasterportalLinkRejectPathParams = {
+  /** @format uuid */
+  id: string;
+};
+
+export type MasterportalLinkRejectError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type MasterportalLinkRejectVariables = {
+  pathParams: MasterportalLinkRejectPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchMasterportalLinkReject = (
+  variables: MasterportalLinkRejectVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.RejectMasterportalLinkResponse,
+    MasterportalLinkRejectError,
+    {},
+    {},
+    {},
+    MasterportalLinkRejectPathParams
+  >({
+    url: "/masterportal-links/{id}/reject",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useMasterportalLinkReject = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.RejectMasterportalLinkResponse,
+      MasterportalLinkRejectError,
+      MasterportalLinkRejectVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.RejectMasterportalLinkResponse,
+    MasterportalLinkRejectError,
+    MasterportalLinkRejectVariables
+  >({
+    mutationFn: (variables: MasterportalLinkRejectVariables) =>
+      fetchMasterportalLinkReject({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
 
 export type QueryOperation =
   | {
@@ -3507,4 +3721,14 @@ export type QueryOperation =
       path: "/bookings/private";
       operationId: "bookingGetPrivateTenantIds";
       variables: BookingGetPrivateTenantIdsVariables;
-    };
+    }
+  | {
+      path: "/masterportal-links";
+      operationId: "masterportalLinksGetAll";
+      variables: MasterportalLinkGetAllVariables;
+  }
+  | {
+    path: "/masterportal-links/my";
+    operationId: "masterportalLinksGetMy";
+    variables: MasterportalLinkGetAllVariables;
+  };

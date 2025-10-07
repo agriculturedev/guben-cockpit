@@ -814,3 +814,28 @@ export type CreateMasterportalLinkQuery = {
 }
 
 export type CreateMasterportalLinkResponse = Record<string, any>;
+
+export type GetAllMasterportalLinksResponse = {
+  links: MasterportalLinkResponse[];
+}
+
+export type MasterportalLinkStatus = "Pending" | "Approved" | "Rejected";
+
+export type MasterportalLinkResponse = {
+  /**
+   * @format uuid
+   */
+  id: string;
+  url: string;
+  folder: string;
+  name: string;
+  status: MasterportalLinkStatus;
+}
+
+export type GetMyMasterportalLinksResponse = {
+  links: MasterportalLinkResponse[];
+}
+
+export type ApproveMasterportalLinkResponse = Record<string, any>;
+
+export type RejectMasterportalLinkResponse = Record<string, any>;

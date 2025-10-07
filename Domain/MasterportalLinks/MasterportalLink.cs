@@ -168,6 +168,20 @@ namespace Domain.MasterportalLinks
             return Result.Ok();
         }
 
+        public void Approve(string userId)
+        {
+            Status = MasterportalLinkStatus.Approved;
+            UpdatedByUserId = userId;
+            Touch();
+        }
+
+        public void Reject(string userId)
+        {
+            Status = MasterportalLinkStatus.Rejected;
+            UpdatedByUserId = userId;
+            Touch();
+        }
+
         private static MasterportalLinkType InferTypeFromUrl(string url)
         {
             var u = url.ToLowerInvariant();

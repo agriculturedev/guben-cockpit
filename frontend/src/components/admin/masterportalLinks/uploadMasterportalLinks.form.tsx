@@ -20,7 +20,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useMasterportalLinkCreate } from "@/endpoints/gubenComponents";
+import {
+  useMasterportalLinkCreate,
+  useMasterportalLinksGetMy,
+} from "@/endpoints/gubenComponents";
 import { CreateMasterportalLinkQuery } from "@/endpoints/gubenSchemas";
 
 const folders = [
@@ -45,9 +48,12 @@ type FormReturn = UseFormReturn<
   undefined
 >;
 
-interface IProps {}
+interface IProps {
+  onSuccess?: () => void;
+}
 
-export default function UploadMasterportalLinksForm(props: IProps) {
+export default function UploadMasterportalLinksForm({ onSuccess }: IProps) {
+  const { refetch } = useMasterportalLinksGetMy({});
   const form: FormReturn = useForm({
     resolver: zodResolver(
       z.object({
@@ -65,8 +71,10 @@ export default function UploadMasterportalLinksForm(props: IProps) {
 
   const mutation = useMasterportalLinkCreate({
     onSuccess: () => {
+      refetch();
       toast("Masterportal link created successfully");
       form.reset({ url: "", folder: "", name: "" });
+      onSuccess?.();
     },
     onError: () => {
       toast.error("Error creating masterportal link");

@@ -54,12 +54,12 @@ export const AdminNavigation = () => {
         />
       </PermissionGuard>
 
-      <PermissionGuard permissions={[Permissions.DashboardManager]}>
+      <PermissionGuard permissions={[Permissions.MasterportalLinkEditor, Permissions.MasterportalLinkManager]}>
         <Nav.Item href={"/admin/masterportal-links"} label={"Masterportal Links"} />
       </PermissionGuard>
 
-      <PermissionGuard permissions={[Permissions.ManageGeoData]}>
-        <Nav.Item href={"/admin/geodatamanage"} label={t("ManageGeodata", {ns: "geodata"})}/>
+      <PermissionGuard permissions={[Permissions.MasterportalLinkManager]}>
+        <Nav.Item href={"/admin/masterportal-manage"} label={"Manage Masterportal"} />
       </PermissionGuard>
     </Nav>
   )

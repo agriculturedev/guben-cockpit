@@ -10,18 +10,22 @@ namespace Api.Services.Masterportal;
 public sealed class MasterportalConfigWriter : IMasterportalConfigWriter
 {
   private readonly string _configPath;
+  private readonly string _outputPath;
   private readonly string _folderTitle;
   private readonly string _themenSection;
   private static readonly SemaphoreSlim _lock = new(1, 1);
 
   public MasterportalConfigWriter(IOptions<MasterportalOptions> opts)
   {
-    _configPath    = opts.Value.ConfigPath;
-    _folderTitle   = string.IsNullOrWhiteSpace(opts.Value.UploadedFolderTitle) ? "Uploaded_Geodata" : opts.Value.UploadedFolderTitle;
+    _configPath = opts.Value.ConfigPath;
+    _folderTitle = string.IsNullOrWhiteSpace(opts.Value.UploadedFolderTitle) ? "Uploaded_Geodata" : opts.Value.UploadedFolderTitle;
     _themenSection = string.IsNullOrWhiteSpace(opts.Value.ThemeConfigSection) ? "Fachdaten" : opts.Value.ThemeConfigSection;
 
     if (string.IsNullOrWhiteSpace(_configPath))
       throw new InvalidOperationException("Masterportal.ConfigPath is not configured.");
+
+    var baseDir = Path.GetDirectoryName(_configPath)!;
+    _outputPath = Path.Combine(baseDir, "config.json");
   }
 
   public async Task EnsureFolderAndAddLayerAsync(string layerId, CancellationToken ct)
@@ -119,6 +123,66 @@ public sealed class MasterportalConfigWriter : IMasterportalConfigWriter
         File.Replace(tmp, _configPath, bak);
       else
         File.Move(tmp, _configPath);
+    }
+    finally
+    {
+      _lock.Release();
+    }
+  }
+
+  public async Task WriteFreshAsync(IEnumerable<string> layerIds, CancellationToken ct)
+  {
+    var ids = layerIds?.Where(s => !string.IsNullOrWhiteSpace(s))
+      .Distinct(StringComparer.OrdinalIgnoreCase)
+      .ToList() ?? new List<string>();
+
+    Directory.CreateDirectory(Path.GetDirectoryName(_outputPath)!);
+
+    await _lock.WaitAsync(ct);
+    try
+    {
+      var root = new JsonObject
+      {
+        ["Portalconfig"] = new JsonObject(),
+        ["Themenconfig"] = new JsonObject()
+      };
+
+      var themen = new JsonObject();
+      root["Themenconfig"] = themen;
+
+      var section = new JsonObject
+      {
+        ["Layer"] = new JsonArray(),
+        ["Ordner"] = new JsonArray()
+      };
+      themen[_themenSection] = section;
+
+      var ordner = new JsonArray();
+      section["Ordner"] = ordner;
+
+      var folder = new JsonObject
+      {
+        ["Layer"] = new JsonArray(),
+        ["Ordner"] = new JsonArray(),
+        ["Titel"] = _folderTitle,
+        ["isFolderSelectable"] = true
+      };
+      ordner.Add(folder);
+
+      var layerArr = (JsonArray)folder["Layer"]!;
+      foreach (var id in ids)
+        layerArr.Add(new JsonObject { ["id"] = id });
+
+      var tmp = _outputPath + ".tmp";
+      var bak = _outputPath + "." + DateTime.UtcNow.ToString("yyyyMMddHHmmss") + ".bak";
+      var opts = new JsonSerializerOptions { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, WriteIndented = true };
+
+      await File.WriteAllTextAsync(tmp, root.ToJsonString(opts), Encoding.UTF8, ct);
+
+      if (File.Exists(_outputPath))
+        File.Replace(tmp, _outputPath, bak);
+      else
+        File.Move(tmp, _outputPath);
     }
     finally
     {

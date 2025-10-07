@@ -44,10 +44,14 @@ public class Startup(IConfiguration configuration)
     services.AddOptions<MasterportalOptions>()
             .Bind(Configuration.GetSection("Masterportal"))
             .Validate(o => !string.IsNullOrWhiteSpace(o.ServicesPath),
-                      "Masterportal.ServicesPath is missing or empty");
+              "Masterportal.ServicesPath is missing or empty")
+            .Validate(o => !string.IsNullOrWhiteSpace(o.ConfigPath),
+              "Masterportal.ConfigPath is missing or empty");
 
     services.AddSingleton<IMasterportalServicesWriter, MasterportalServicesWriter>();
     services.AddSingleton<IMasterportalConfigWriter, MasterportalConfigWriter>();
+
+    services.AddScoped<IMasterportalSnapshotPublisher, MasterportalSnapshotPublisher>();
 
     if (MappedConfiguration is null)
       throw new NullReferenceException("Configuration is null");

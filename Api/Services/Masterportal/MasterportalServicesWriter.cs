@@ -10,6 +10,7 @@ namespace Api.Services.Masterportal;
 public sealed class MasterportalServicesWriter : IMasterportalServicesWriter
 {
     private readonly string _path;
+    private readonly string _outputPath;
     private static readonly SemaphoreSlim _lock = new(1, 1);
 
     public MasterportalServicesWriter(IOptions<MasterportalOptions> opts)
@@ -17,6 +18,9 @@ public sealed class MasterportalServicesWriter : IMasterportalServicesWriter
         _path = opts.Value.ServicesPath;
         if (string.IsNullOrWhiteSpace(_path))
             throw new InvalidOperationException("Masterportal.ServicesPath is not configured.");
+
+        var baseDir = Path.GetDirectoryName(_path)!;
+        _outputPath = Path.Combine(baseDir, "services-internet.json");
     }
 
     public async Task AppendAsync(JsonNode layer, CancellationToken ct)
@@ -73,4 +77,57 @@ public sealed class MasterportalServicesWriter : IMasterportalServicesWriter
             _lock.Release();
         }
     }
+
+    public async Task RewriteAsync(JsonArray layers, CancellationToken ct)
+    {
+        if (layers is null) throw new ArgumentNullException(nameof(layers));
+
+        var dedup = new JsonArray();
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var node in layers)
+        {
+            if (node is JsonObject jo && jo.TryGetPropertyValue("id", out var idNode))
+            {
+                var id = idNode?.GetValue<string>();
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    if (!seen.Add(id)) continue;
+                    dedup.Add(DeepClone(jo));
+                    continue;
+                }
+            }
+
+            dedup.Add(node is null ? null : DeepClone(node));
+        }
+
+        Directory.CreateDirectory(Path.GetDirectoryName(_path)!);
+
+        await _lock.WaitAsync(ct);
+        try
+        {
+            var tmp = _path + ".tmp";
+            var bak = _path + "." + DateTime.UtcNow.ToString("yyyyMMddHHmmss") + ".bak";
+            var opts = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
+            };
+
+            await File.WriteAllTextAsync(tmp, dedup.ToJsonString(opts), Encoding.UTF8, ct);
+
+            if (File.Exists(_path))
+                File.Replace(tmp, _path, bak);
+            else
+                File.Move(tmp, _path);
+        }
+        finally
+        {
+            _lock.Release();
+        }
+
+        static JsonNode DeepClone(JsonNode node)
+            => JsonNode.Parse(node.ToJsonString())!;
+    }
+
 }
