@@ -7,7 +7,12 @@ export type Ticket = {
   type: string;
   flags?: string[];
   autoCommitNote?: string;
-  price: string;
+  price?: string;
+    prices: {
+    price: string;
+    interval?: string;
+    category?: string;
+  }[];
   bookingUrl: string;
   bkid: string;
   imgUrl: string;
@@ -21,6 +26,11 @@ export type Booking = {
   imgUrl: string;
   bookingUrl: string;
   price: string;
+  prices: {
+    price: string;
+    interval?: string;
+    category?: string;
+  }[];
   category: string;
   flags?: string[];
   bkid?: string;

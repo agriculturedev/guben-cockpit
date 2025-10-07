@@ -9,4 +9,8 @@ public interface IDashboardRepository : IRepository<DashboardTab, Guid>
   Task<List<DashboardTab>> GetByDropdownIdsAsync(
     IEnumerable<Guid> dropdownIds,
     CancellationToken cancellationToken);
+
+  Task<List<DashboardTab>> GetTrackedByDropdownIdsAsync(
+    Guid dropdownId,
+    CancellationToken cancellationToken);
 }

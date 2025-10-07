@@ -6,7 +6,7 @@ import SortFilter, { SortOption, SortOrder } from '@/components/events/sortFilte
 import { CategoryFilter } from '@/components/filters/categoryFilter'
 import { DateRangeFilter } from '@/components/filters/dateRangeFilter'
 import { SearchFilter } from '@/components/filters/searchFilter'
-import { useBookingGetAllTenantIds, useEventsGetAll } from '@/endpoints/gubenComponents'
+import { useBookingGetPublicTenantIds, useEventsGetAll } from '@/endpoints/gubenComponents'
 import { defaultPaginationProps, usePagination } from '@/hooks/usePagination'
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
@@ -46,12 +46,12 @@ function RouteComponent() {
   const processedTenants = useEventStore((state) => state.processedTenants);
   const markProcessedTenants = useEventStore((state) => state.markProcessedTenants);
 
-  const { data: tenantIds } = useBookingGetAllTenantIds({});
+  const { data: tenantIds } = useBookingGetPublicTenantIds({});
   
   const [currentTenantIndex, setCurrentTenantIndex] = useState(0);
 
   const handleTenantDone = useCallback(() => {
-  const currentTenant = tenantIds?.tenants[currentTenantIndex];
+    const currentTenant = tenantIds?.tenants[currentTenantIndex];
     if (currentTenant) {
       markProcessedTenants(currentTenant.tenantId);
     }
@@ -60,7 +60,6 @@ function RouteComponent() {
 
     if (hasMoreTenants) {
       setCurrentTenantIndex(i => i + 1);
-      setLoading(true);
     } else {
       setLoading(false);
     }
@@ -68,6 +67,12 @@ function RouteComponent() {
 
   const currentTenant = tenantIds?.tenants[currentTenantIndex];
   const shouldShowIntegration = currentTenant && !processedTenants.has(currentTenant.tenantId);
+
+  useEffect(() => {
+    if (shouldShowIntegration) {
+      setLoading(true);
+    }
+  }, [shouldShowIntegration]);
 
   const {
     page,
@@ -108,11 +113,6 @@ function RouteComponent() {
     else setFilters(filtersSchema.parse(undefined));
   };
 
-  useEffect(() => {
-    setTotal(data?.totalCount ?? defaultPaginationProps.total);
-    setPageCount(data?.pageCount ?? defaultPaginationProps.pageCount);
-  }, [data]);
-
   const [loading, setLoading] = useState(true);
 
   const normalizedEvents = bookingEvents.map(e => {
@@ -120,7 +120,19 @@ function RouteComponent() {
 
     const start = startDateStr.replace(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5");
 
-    const end = endDateStr.replace(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5");
+    // End Date might only contain Time and not Date, if the event is only 1 day
+    let end: string;
+    if (endDateStr.includes('.')) {
+      end = endDateStr.replace(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5");
+    } else {
+      const startDate = startDateStr.match(/(\d{2})\.(\d{2})\.(\d{4})/)?.[0];
+      if (startDate) {
+        const fullEndDate = `${startDate} ${endDateStr}`;
+        end = fullEndDate.replace(/(\d{2})\.(\d{2})\.(\d{4}) (\d{2}):(\d{2})/, "$3-$2-$1T$4:$5");
+      } else {
+        end = start;
+      }
+    }
 
     const location: LocationResponse = {
       id: crypto.randomUUID(),
@@ -189,16 +201,16 @@ function RouteComponent() {
           return false;
         }
       }
-      if (filters.category && !event.categories.some(c => c.name === filters.category)) {
-        return false;
-      }
-      if (filters.dateRange?.from) {
+      if (filters.dateRange?.from || filters.dateRange?.to) {
         const eventStart = new Date(event.startDate);
-        if (eventStart < filters.dateRange.from) return false;
-      }
-      if (filters.dateRange?.to) {
         const eventEnd = new Date(event.endDate);
-        if (eventEnd > filters.dateRange.to) return false;
+
+        const filterStart = filters.dateRange?.from ?? new Date(-8640000000000000);
+        const filterEnd = filters.dateRange?.to ?? new Date(8640000000000000);
+
+        if (!(eventStart <= filterEnd && eventEnd >= filterStart)) {
+          return false;
+        }
       }
       return true;
     });
@@ -208,6 +220,11 @@ function RouteComponent() {
 
   const allEvents = mergeEventsWithCustom(data?.results ?? [], filteredNormalizedEvents);
   
+  useEffect(() => {
+    setTotal(allEvents.length ?? defaultPaginationProps.total);
+    setPageCount(data?.pageCount ?? defaultPaginationProps.pageCount);
+  }, [data]);
+
   const currentLang = i18next.language as Language;
   const [translationsReady, setTranslationsReady] = useState(false);
 
@@ -215,11 +232,10 @@ function RouteComponent() {
     setTranslationsReady(false);
     if (!shouldShowIntegration && currentLang !== "de") {
       const customEvents = (allEvents as (EventResponse & { isBookingEvent?: boolean })[])
-        .filter(e => e.isBookingEvent && e.cultureInfo !== currentLang);
+        .filter(e => e.isBookingEvent);
 
       const translateAll = async () => {
         const descriptions = customEvents
-          .filter(e => e.cultureInfo !== currentLang)
           .map(e => e.description)
           .filter(desc => desc && desc.trim());
         
@@ -228,7 +244,6 @@ function RouteComponent() {
         }
 
         const titles = customEvents
-          .filter(e => e.cultureInfo !== currentLang)
           .map(e => e.title)
           .filter(title => title && title.trim() !== '');
 
@@ -341,6 +356,13 @@ function mergeEventsWithCustom(
 
   const filteredCustom = bookingEvents.filter(event => {
     const start = new Date(event.startDate).getTime();
+    const end = new Date(event.endDate).getTime();
+
+    // only filtered Events should end up here
+    if (backendEvents.length < 25) {
+      return true;
+    }
+
     return start >= earliest && start <= latest;
   });
 

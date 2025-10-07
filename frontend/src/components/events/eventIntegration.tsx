@@ -1,39 +1,11 @@
 import { CoordinatesResponse } from "@/endpoints/gubenSchemas";
-import { useEventStore } from "@/stores/eventStore";
+import { BookingEvent, Ticket, useEventStore } from "@/stores/eventStore";
 import { useEffect } from "react";
 
 type EventIntegrationProps = {
   tenantId: string;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   onDone?: () => void;
-};
-
-type BookingEvent = {
-  title: string;
-  date: string;
-  organizer: string;
-  contactName: string;
-  contactPhone: string;
-  contactEmail: string;
-  teaser: string;
-  bkid: string;
-  details?: EventDetails;
-  imgUrl: string;
-  flags?: string[];
-  coordinates?: CoordinatesResponse | null;
-};
-
-type EventDetails = {
-  longDescription?: string;
-  eventLocation?: string;
-  eventLocationEmail?: string;
-  eventOrganizer?: string;
-  agenda?: string[];
-  teaserImage?: string;
-  street?: string;
-  houseNumber?: string;
-  zip?: string;
-  city?: string;
 };
 
 export default function EventIntegration({ tenantId, setLoading, onDone }: EventIntegrationProps) {
@@ -105,6 +77,41 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
                 longDescription = [descriptionElement.outerHTML, ...paragraphs].join("\n");
               }
 
+              const ticketElements = eventDiv?.querySelectorAll(".related-tickets .booking-manager-list li.bt-ticket") ?? [];
+
+              const tickets: Ticket[] = Array.from(ticketElements).map(ticketEl => {
+                let ticketDescription = "";
+                const descriptionElement = ticketEl.querySelector(".description");
+                if (descriptionElement) {
+                  let currentElement = descriptionElement.nextElementSibling;
+                  const paragraphs: string[] = [];
+                  
+                  while (currentElement && currentElement.tagName === "P" && !currentElement.classList.length && currentElement.textContent?.trim() !== "") {
+                    paragraphs.push(currentElement.outerHTML);
+                    currentElement = currentElement.nextElementSibling;
+                  }
+
+                  ticketDescription = [descriptionElement.outerHTML, ...paragraphs].join("\n");
+                }
+
+                return {
+                  title: ticketEl.querySelector("h4")?.textContent?.trim() || "",
+                  description: ticketDescription,
+                  location: ticketEl.querySelector(".location")?.textContent?.trim() || "",
+                  type: ticketEl.querySelector(".type")?.textContent?.trim() || "",
+                  flags: Array.from(ticketEl.querySelectorAll(".flag")).map(f => f.textContent?.trim() || ""),
+                  autoCommitNote: ticketEl.querySelector(".autoCommitBooking")?.textContent?.trim() || "",
+                  prices: Array.from(ticketEl.querySelectorAll(".price-category-list li")).map(li => ({
+                    price: li.querySelector(".price-category-item-price")?.textContent?.trim() || "",
+                    interval: li.querySelector(".price-category-interval")?.textContent?.trim() || "",
+                    category: li.querySelector(".price-category")?.textContent?.trim() || ""
+                  })),
+                  bookingUrl: ticketEl.querySelector("a.btn-booking")?.getAttribute("href") || "",
+                  bkid: ticketEl.querySelector("a.btn-detail")?.getAttribute("href") || "",
+                  imgUrl: ticketEl.querySelector("img")?.getAttribute("src") || "/images/guben-city-booking-card-placeholder.png",
+                };
+              });
+
               event.details = {
                 longDescription,
                 eventLocation: eventDiv?.querySelector(".event-location .name")?.textContent?.trim() || "",
@@ -116,6 +123,7 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
                 houseNumber: eventDiv?.querySelector(".event-location .houseNumber")?.textContent?.trim() || "",
                 zip: eventDiv?.querySelector(".event-location .zip")?.textContent?.trim() || "",
                 city: eventDiv?.querySelector(".event-location .city")?.textContent?.trim() || "",
+                tickets,
               };
 
               event.coordinates = await fetchCoordinates(
@@ -130,11 +138,11 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
         }));
 
         addEvent(events);
-        onDone?.();
       } catch (error) {
         console.error("Failed to fetch events.", error);
       } finally {
         setLoading(false);
+        onDone?.();
       }
     };
 

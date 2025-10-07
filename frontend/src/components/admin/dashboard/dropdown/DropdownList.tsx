@@ -7,6 +7,7 @@ import { useDashbaordDropdownGetMy } from "@/endpoints/gubenComponents";
 import { DeleteDropdownButton } from "./DeleteDropdownButton";
 import { DropdownTabsList } from "../dropdownTab/DropdownTabsList";
 import { DropdownLinkList } from "../dropdownLink/DropdownLinkList";
+import { EditDropdownButton } from "./EditDropdownButton";
 
 interface DropdownListProps {
   isAdmin?: boolean;
@@ -59,6 +60,13 @@ export default function DropdownList({ isAdmin }: DropdownListProps) {
                   >
                     {dd.isLink ? t("Link") : t("Tabs")}
                   </div>
+
+                  {isAdmin && (
+                    <EditDropdownButton
+                      dropdown={dd}
+                      refetch={refetch}
+                    />
+                  )}
 
                   {isAdmin && (
                     <DeleteDropdownButton

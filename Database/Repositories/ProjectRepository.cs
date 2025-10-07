@@ -35,14 +35,14 @@ public class ProjectRepository
       .AsEnumerable();
   }
 
-  public IEnumerable<Project> GetAllSchools()
+  public Task<List<Project>> GetAllSchools()
   {
     return ModifiedSet
       .TagWith(GetType().Name + '.' + nameof(GetAllSchools))
       .AsNoTracking()
       .IgnoreAutoIncludes()
       .Where(p => p.Type == ProjectType.Schule.Value)
-      .AsEnumerable();
+      .ToListAsync();
   }
 
   public Task<Project?> GetIncludingUnpublished(string id)
@@ -62,13 +62,13 @@ public class ProjectRepository
       .FirstOrDefaultAsync(a => a.Id.Equals(id));
   }
 
-  public IEnumerable<Project> GetAllIncludingUnpublished()
+  public Task<List<Project>> GetAllIncludingUnpublished()
   {
     return Set
       .AsNoTracking()
       .AsSplitQuery()
       .TagWith(nameof(ProjectRepository) + "." + nameof(GetAllIncludingUnpublished))
-      .AsEnumerable();
+      .ToListAsync();
   }
 
   public IEnumerable<Project> GetAllProjects()
@@ -96,13 +96,13 @@ public class ProjectRepository
       .ToListAsync();
   }
 
-  public IEnumerable<Project> GetAllOwnedByOrEditor(Guid userId)
+  public Task<List<Project>> GetAllOwnedByOrEditor(Guid userId)
   {
     return Set
       .TagWith(GetType().Name + '.' + nameof(GetAllOwnedByOrEditor))
       .IgnoreAutoIncludes()
       .Where(a => a.CreatedBy.Equals(userId) || a.EditorId.Equals(userId))
-      .AsEnumerable();
+      .ToListAsync();
   }
 
   public Task<PagedResult<Project>> GetAllOwnedByUserPaged(Guid userId, PagedCriteria pagination)

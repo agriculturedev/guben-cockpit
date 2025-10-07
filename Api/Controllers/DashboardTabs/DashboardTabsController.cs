@@ -7,6 +7,7 @@ using Api.Controllers.DashboardTabs.GetAllDashboardTabs;
 using Api.Controllers.DashboardTabs.UpdateCardOnTab;
 using Api.Controllers.DashboardTabs.UpdateCardSequence;
 using Api.Controllers.DashboardTabs.UpdateDashboardTab;
+using Api.Controllers.DashboardTabs.UpdateSequences;
 using Api.Infrastructure.Keycloak;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -118,6 +119,18 @@ public class DashboardTabsController : ControllerBase
   public async Task<IResult> ReorderCards([FromRoute] Guid id, [FromBody] UpdateCardSequenceQuery request)
   {
     request.TabId = id;
+    var result = await _mediator.Send(request);
+    return Results.Ok(result);
+  }
+
+  [HttpPut("{id:guid}/dropdown/reorder")]
+  [Authorize(KeycloakPolicies.DashboardManager)]
+  [EndpointName("DashboardDropdownReorder")]
+  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateSequencesResponse))]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IResult> ReorderDropdown([FromRoute] Guid id, [FromBody] UpdateSequencesQuery request)
+  {
+    request.DropdownId = id;
     var result = await _mediator.Send(request);
     return Results.Ok(result);
   }

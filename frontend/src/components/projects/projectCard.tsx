@@ -1,5 +1,5 @@
-import {ProjectResponse} from "@/endpoints/gubenSchemas";
-import {ExternalLinkIcon} from "lucide-react";
+import { ProjectResponse } from "@/endpoints/gubenSchemas";
+import { ExternalLinkIcon } from "lucide-react";
 import ProjectDialog from "@/components/projects/projectDialog";
 import { useNextcloudGetFiles } from "@/endpoints/gubenComponents";
 import { ProjectType } from "@/types/ProjectType";
@@ -9,20 +9,21 @@ interface IProps {
   school?: boolean;
 }
 
-export default function ProjectCard({ project, school }: IProps){
+export default function ProjectCard({ project, school }: IProps) {
   const imagesQuery = useNextcloudGetFiles({
     queryParams: {
       directory: `${ProjectType[project.type]}/${project.id}/images`,
-      },
     },
+  },
     { enabled: !!school });
 
+    console.log(imagesQuery);
   const imageFilename = (imagesQuery.data ?? [])[0];
   const filenamesAsStrings = imagesQuery.data;
 
   let previewImage;
   if (!project.imageUrl)
-    previewImage = imageFilename ? `${import.meta.env.VITE_NEXTCLOUD_URL}/index.php/core/preview.png?file=Guben/Images/${ProjectType[project.type]}/${project.id}/images/${imageFilename}&x=800&y=600&a=true` : undefined;
+    previewImage = `${import.meta.env.VITE_API_URL}/nextcloud/preview?pathToImage=${encodeURIComponent(`${ProjectType[project.type]}/${project.id}/images/${imageFilename}`)}`;
 
   const imageUrlToUse = project.imageUrl ? project.imageUrl : previewImage;
 
@@ -31,7 +32,7 @@ export default function ProjectCard({ project, school }: IProps){
       <div className={"flex flex-col h-40 rounded-md overflow-hidden bg-neutral-800 text-white group"}>
         {imageUrlToUse && (
           <div className={"h-3/4"}>
-            {}
+            { }
             <img
               className={"object-cover object-center h-full w-full"}
               src={imageUrlToUse}

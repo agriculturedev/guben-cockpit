@@ -57,6 +57,8 @@ public class Startup(IConfiguration configuration)
 
     services.AddHttpContextAccessor();
 
+    services.AddHttpClient<NextcloudManager>();
+
     services
       .AddDomain()
       .AddServices()

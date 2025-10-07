@@ -304,6 +304,61 @@ export const usePagesUpdate = (
   });
 };
 
+export type NextcloudPreviewQueryParams = {
+  /**
+   * @default
+   */
+  pathToImage?: string;
+};
+
+export type NextcloudPreviewError = Fetcher.ErrorWrapper<undefined>;
+
+export type NextcloudPreviewVariables = {
+  queryParams?: NextcloudPreviewQueryParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchNextcloudPreview = (
+  variables: NextcloudPreviewVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.FileContentResult,
+    NextcloudPreviewError,
+    undefined,
+    {},
+    NextcloudPreviewQueryParams,
+    {}
+  >({ url: "/nextcloud/preview", method: "get", ...variables, signal });
+
+export const useNextcloudPreview = <TData = Schemas.FileContentResult,>(
+  variables: NextcloudPreviewVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.FileContentResult,
+      NextcloudPreviewError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } = useGubenContext(options);
+  return reactQuery.useQuery<
+    Schemas.FileContentResult,
+    NextcloudPreviewError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/nextcloud/preview",
+      operationId: "nextcloudPreview",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchNextcloudPreview({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type NextcloudGetFilesQueryParams = {
   /**
    * @default
@@ -2175,6 +2230,63 @@ export const useDashboardCardReorder = (
   });
 };
 
+export type DashboardDropdownReorderPathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type DashboardDropdownReorderError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardDropdownReorderVariables = {
+  body?: Schemas.UpdateSequencesQuery;
+  pathParams: DashboardDropdownReorderPathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardDropdownReorder = (
+  variables: DashboardDropdownReorderVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpdateSequencesResponse,
+    DashboardDropdownReorderError,
+    Schemas.UpdateSequencesQuery,
+    {},
+    {},
+    DashboardDropdownReorderPathParams
+  >({
+    url: "/dashboard/{id}/dropdown/reorder",
+    method: "put",
+    ...variables,
+    signal,
+  });
+
+export const useDashboardDropdownReorder = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpdateSequencesResponse,
+      DashboardDropdownReorderError,
+      DashboardDropdownReorderVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpdateSequencesResponse,
+    DashboardDropdownReorderError,
+    DashboardDropdownReorderVariables
+  >({
+    mutationFn: (variables: DashboardDropdownReorderVariables) =>
+      fetchDashboardDropdownReorder({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
 export type DashboardDropdownGetAllError = Fetcher.ErrorWrapper<{
   status: 400;
   payload: Schemas.ProblemDetails;
@@ -2317,6 +2429,58 @@ export const useDashboardDropdownCreate = (
   >({
     mutationFn: (variables: DashboardDropdownCreateVariables) =>
       fetchDashboardDropdownCreate({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type DashboardDropdownUpdatePathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type DashboardDropdownUpdateError = Fetcher.ErrorWrapper<{
+  status: 400;
+  payload: Schemas.ProblemDetails;
+}>;
+
+export type DashboardDropdownUpdateVariables = {
+  body: Schemas.UpdateDashboardDropdownQuery;
+  pathParams: DashboardDropdownUpdatePathParams;
+} & GubenContext["fetcherOptions"];
+
+export const fetchDashboardDropdownUpdate = (
+  variables: DashboardDropdownUpdateVariables,
+  signal?: AbortSignal,
+) =>
+  gubenFetch<
+    Schemas.UpdateDashboardDropdownResponse,
+    DashboardDropdownUpdateError,
+    Schemas.UpdateDashboardDropdownQuery,
+    {},
+    {},
+    DashboardDropdownUpdatePathParams
+  >({ url: "/dashboarddropdown/{id}", method: "put", ...variables, signal });
+
+export const useDashboardDropdownUpdate = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.UpdateDashboardDropdownResponse,
+      DashboardDropdownUpdateError,
+      DashboardDropdownUpdateVariables
+    >,
+    "mutationFn"
+  >,
+) => {
+  const { fetcherOptions } = useGubenContext();
+  return reactQuery.useMutation<
+    Schemas.UpdateDashboardDropdownResponse,
+    DashboardDropdownUpdateError,
+    DashboardDropdownUpdateVariables
+  >({
+    mutationFn: (variables: DashboardDropdownUpdateVariables) =>
+      fetchDashboardDropdownUpdate({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -3218,6 +3382,11 @@ export type QueryOperation =
       path: "/pages/${id}";
       operationId: "pagesGet";
       variables: PagesGetVariables;
+    }
+  | {
+      path: "/nextcloud/preview";
+      operationId: "nextcloudPreview";
+      variables: NextcloudPreviewVariables;
     }
   | {
       path: "/nextcloud/files";

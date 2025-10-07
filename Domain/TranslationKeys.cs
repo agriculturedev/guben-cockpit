@@ -46,6 +46,9 @@ public class TranslationKeys
   public const string DropdownLinkNotFound = "DropdownLinkNotFound";
   public const string MissingTenantId = "MissingTenantId";
   public const string NoAdministrativeStaff = "NoAdministrativeStaff";
+  public const string MissingDashboardDropdownId = "MissingDashboardDropdownId";
+  public const string DashboardDropdownNotFound = "DashboardDropdownNotFound";
+  public const string NoDashboardManager = "NoDashboardManager";
   public const string MasterportalLinkNotFound = "MasterportalLinkNotFound";
   public const string MasterportalLinkNameRequired = "MasterportalLinkNameRequired";
   public const string MasterportalLinkUrlRequired = "MasterportalLinkUrlRequired";
@@ -54,4 +57,5 @@ public class TranslationKeys
   public const string MasterportalLinkWfsFeatureTypeRequired = "MasterportalLinkWfsFeatureTypeRequired";
   public const string MasterportalLinkTypeInvalid = "MasterportalLinkTypeInvalid";
   public const string MasterportalLinkApprovalFailed = "MasterportalLinkApprovalFailed";
+
 }

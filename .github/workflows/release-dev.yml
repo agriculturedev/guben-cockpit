@@ -25,7 +25,8 @@ jobs:
       VITE_BOOKING_URL: ${{ vars.VITE_BOOKING_URL }}
       VITE_TRANSLATE_URL: ${{ vars.VITE_TRANSLATE_URL }}
       VITE_TRANSLATE_API_KEY: ${{ vars.VITE_TRANSLATE_API_KEY }}
-      VITE_NEXTCLOUD_URL: ${{ vars.VITE_NEXTCLOUD_URL }}
+      VITE_MATOMO_JS: ${{ vars.VITE_MATOMO_JS }}
+      VITE_MASTERPORTAL_URL: ${{ vars.VITE_MASTERPORTAL_URL }}
 
     steps:
       - name: Checkout repository
@@ -60,7 +61,8 @@ jobs:
             VITE_BOOKING_URL=${{ vars.VITE_BOOKING_URL }}
             VITE_TRANSLATE_URL=${{ vars.VITE_TRANSLATE_URL }}
             VITE_TRANSLATE_API_KEY=${{ vars.VITE_TRANSLATE_API_KEY }}
-            VITE_NEXTCLOUD_URL=${{ vars.VITE_NEXTCLOUD_URL }}
+            VITE_MATOMO_JS=${{ vars.VITE_MATOMO_JS }}
+            VITE_MASTERPORTAL_URL=${{ vars.VITE_MASTERPORTAL_URL }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta-api
@@ -79,4 +81,4 @@ jobs:
 
       - name: Trigger Portainer Webhook
         run: |
-          curl -X POST "https://portainer.hagenfaber.eu/api/stacks/webhooks/3306ae6b-3937-4e75-88d3-a8d3ec5fb2e8"
+          curl -X POST "https://portainer.elie.de/api/stacks/webhooks/c58c29e8-c065-4b48-82c7-89c91f177ef6"

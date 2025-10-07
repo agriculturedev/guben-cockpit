@@ -19,7 +19,7 @@ public class GetAllSchoolsHandler : ApiRequestHandler<GetAllSchoolsQuery, GetAll
   public override async Task<GetAllSchoolsResponse> Handle(GetAllSchoolsQuery request,
   CancellationToken cancellationToken)
   {
-    var result = _projectRepository.GetAllSchools();
+    var result = await _projectRepository.GetAllSchools();
 
     return new GetAllSchoolsResponse()
     {

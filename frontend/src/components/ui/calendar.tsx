@@ -1,11 +1,22 @@
-import * as React from "react"
-import { DayPicker } from "react-day-picker"
+import * as React from "react";
+import i18next from "i18next";
 
+import { DayPicker } from "react-day-picker";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button"
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
+import { buttonVariants } from "@/components/ui/button";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { Language } from "@/utilities/i18n/Languages";
+import { Locale } from "date-fns";
+import { enGB, de, pl } from 'date-fns/locale';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
+
+// for the DayPicker
+const localeMap: Record<string, Locale> = {
+  en: enGB,
+  de: de,
+  pl: pl,
+};
 
 function Calendar({
   className,
@@ -13,8 +24,12 @@ function Calendar({
   showOutsideDays = true,
   ...props
 }: CalendarProps) {
+  const currentLang = i18next.language as Language;
+  const locale = localeMap[currentLang] || de;
+
   return (
     <DayPicker
+      locale={locale}
       showOutsideDays={showOutsideDays}
       weekStartsOn={1}
       className={cn("p-3", className)}

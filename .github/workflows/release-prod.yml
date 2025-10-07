@@ -25,7 +25,8 @@ jobs:
       VITE_BOOKING_URL: ${{ vars.VITE_BOOKING_URL }}
       VITE_TRANSLATE_URL: ${{ vars.VITE_TRANSLATE_URL }}
       VITE_TRANSLATE_API_KEY: ${{ vars.VITE_TRANSLATE_API_KEY }}
-      VITE_NEXTCLOUD_URL: ${{ vars.VITE_NEXTCLOUD_URL }}
+      VITE_MATOMO_JS: ${{ vars.VITE_MATOMO_JS }}
+      VITE_MASTERPORTAL_URL: ${{ vars.VITE_MASTERPORTAL_URL }}
 
     steps:
       - name: Checkout repository
@@ -52,6 +53,7 @@ jobs:
           tags: ${{ steps.meta-web.outputs.tags }}
           labels: ${{ steps.meta-web.outputs.labels }}
           build-args: |
+            VITE_API_URL=${{ vars.VITE_API_URL }}
             VITE_AUTHORITY=${{ vars.VITE_AUTHORITY }}
             VITE_AUDIENCE=${{ vars.VITE_AUDIENCE }}
             VITE_BOOKING_SDK=${{ vars.VITE_BOOKING_SDK }}
@@ -59,7 +61,8 @@ jobs:
             VITE_BOOKING_URL=${{ vars.VITE_BOOKING_URL }}
             VITE_TRANSLATE_URL=${{ vars.VITE_TRANSLATE_URL }}
             VITE_TRANSLATE_API_KEY=${{ vars.VITE_TRANSLATE_API_KEY }}
-            VITE_NEXTCLOUD_URL=${{ vars.VITE_NEXTCLOUD_URL }}
+            VITE_MATOMO_JS=${{ vars.VITE_MATOMO_JS }}
+            VITE_MASTERPORTAL_URL=${{ vars.VITE_MASTERPORTAL_URL }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta-api

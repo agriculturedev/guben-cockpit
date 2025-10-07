@@ -7,6 +7,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapComponent } from '@/components/home/MapComponent';
 import { TranslatedHtml, TranslatedText } from '@/utilities/translateUtils';
+import { useEventStore } from '@/stores/eventStore';
+import PriceCard from '@/components/booking/priceCard';
 
 export const Route = createFileRoute('/events/$eventId')({
   component: RouteComponent,
@@ -29,6 +31,10 @@ function RouteComponent() {
     new Date(data.startDate),
     new Date(data.endDate)
   ] : [undefined, undefined], [event]);
+
+  const tickets = (data as any)?.isBookingEvent
+    ? useEventStore.getState().getTicketsByBkid(eventId)
+    : [];
 
   if (!data) return "Event not found";
 
@@ -79,16 +85,31 @@ function RouteComponent() {
           <div className='w-full lg:w-1/2 space-y-2'>
             <h2 className='font-bold'>{t("EventDetails")}</h2>
               {(data as any)?.isBookingEvent ? (
-                <TranslatedHtml className={"text-muted-foreground line-clamp-2"}
-                  text={data.description} />
+                <TranslatedHtml text={data.description} />
               ) : (
                 <p className="text-neutral-600">{data.description}</p>
               )}
           </div>
         </div>
 
+        {tickets.length > 0 && (
+          <>
+            {tickets.map((ticket, idx) => (
+              <PriceCard
+                key={idx}
+                bookingUrl={ticket.bookingUrl}
+                prices={ticket.prices}
+                title={ticket.title}
+                flags={ticket.flags}
+                location={ticket.location}
+                autoCommitNote={ticket.autoCommitNote}
+              />
+            ))}
+          </>
+        )}
+
         <div className={"flex min-h-[70vh] h-full"}>
-          <MapComponent src="https://guben.elie.de/" lat={data?.coordinates?.latitude} lon={data?.coordinates?.longitude} />
+          <MapComponent src={import.meta.env.VITE_MASTERPORTAL_URL} lat={data?.coordinates?.latitude} lon={data?.coordinates?.longitude} />
         </div>
       </section>
     </main>
