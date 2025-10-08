@@ -49,5 +49,13 @@ public class TranslationKeys
   public const string MissingDashboardDropdownId = "MissingDashboardDropdownId";
   public const string DashboardDropdownNotFound = "DashboardDropdownNotFound";
   public const string NoDashboardManager = "NoDashboardManager";
+  public const string MasterportalLinkNotFound = "MasterportalLinkNotFound";
+  public const string MasterportalLinkNameRequired = "MasterportalLinkNameRequired";
+  public const string MasterportalLinkUrlRequired = "MasterportalLinkUrlRequired";
+  public const string MasterportalLinkFolderRequired = "MasterportalLinkFolderRequired";
+  public const string MasterportalLinkWmsLayersRequired = "MasterportalLinkWmsLayersRequired";
+  public const string MasterportalLinkWfsFeatureTypeRequired = "MasterportalLinkWfsFeatureTypeRequired";
+  public const string MasterportalLinkTypeInvalid = "MasterportalLinkTypeInvalid";
+  public const string MasterportalLinkApprovalFailed = "MasterportalLinkApprovalFailed";
 
 }

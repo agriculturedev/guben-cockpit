@@ -16,5 +16,7 @@ export enum Permissions {
   BookingManager = "booking_manager",
   BookingPlatform = "booking_platform",
   AdministrativeStaff = "administrative_staff",
-  School = "school"
+  School = "school",
+  MasterportalLinkEditor = "masterportal_link_editor",
+  MasterportalLinkManager = "masterportal_link_manager",
 }

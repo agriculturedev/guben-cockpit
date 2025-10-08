@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Api.Infrastructure.Nextcloud;
 using Api.Options;
 using Microsoft.Extensions.Options;
 
@@ -9,15 +10,21 @@ namespace Api.Services.Masterportal;
 
 public sealed class MasterportalConfigWriter : IMasterportalConfigWriter
 {
+  private readonly NextcloudManager _nextcloudManager;
   private readonly string _configPath;
   private readonly string _folderTitle;
   private readonly string _themenSection;
   private static readonly SemaphoreSlim _lock = new(1, 1);
 
-  public MasterportalConfigWriter(IOptions<MasterportalOptions> opts)
+  public MasterportalConfigWriter(
+    NextcloudManager nextcloudManager,
+    IOptions<MasterportalOptions> opts
+  )
   {
-    _configPath    = opts.Value.ConfigPath;
-    _folderTitle   = string.IsNullOrWhiteSpace(opts.Value.UploadedFolderTitle) ? "Uploaded_Geodata" : opts.Value.UploadedFolderTitle;
+    _nextcloudManager = nextcloudManager;
+
+    _configPath = opts.Value.ConfigPath;
+    _folderTitle = string.IsNullOrWhiteSpace(opts.Value.UploadedFolderTitle) ? "Uploaded_Geodata" : opts.Value.UploadedFolderTitle;
     _themenSection = string.IsNullOrWhiteSpace(opts.Value.ThemeConfigSection) ? "Fachdaten" : opts.Value.ThemeConfigSection;
 
     if (string.IsNullOrWhiteSpace(_configPath))
@@ -119,6 +126,77 @@ public sealed class MasterportalConfigWriter : IMasterportalConfigWriter
         File.Replace(tmp, _configPath, bak);
       else
         File.Move(tmp, _configPath);
+    }
+    finally
+    {
+      _lock.Release();
+    }
+  }
+
+  public async Task WriteFreshAsync(IEnumerable<string> layerIds, CancellationToken ct)
+  {
+    var ids = layerIds?.Where(s => !string.IsNullOrWhiteSpace(s))
+      .Distinct(StringComparer.OrdinalIgnoreCase)
+      .ToList() ?? new List<string>();
+
+    await _lock.WaitAsync(ct);
+    try
+    {
+      var root = new JsonObject
+      {
+        ["Portalconfig"] = new JsonObject(),
+        ["Themenconfig"] = new JsonObject()
+      };
+
+      var themen = new JsonObject();
+      root["Themenconfig"] = themen;
+
+      var section = new JsonObject
+      {
+        ["Layer"] = new JsonArray(),
+        ["Ordner"] = new JsonArray()
+      };
+      themen[_themenSection] = section;
+
+      var ordner = new JsonArray();
+      section["Ordner"] = ordner;
+
+      var folder = new JsonObject
+      {
+        ["Layer"] = new JsonArray(),
+        ["Ordner"] = new JsonArray(),
+        ["Titel"] = _folderTitle,
+        ["isFolderSelectable"] = true
+      };
+      ordner.Add(folder);
+
+      var layerArr = (JsonArray)folder["Layer"]!;
+      foreach (var id in ids)
+        layerArr.Add(new JsonObject { ["id"] = id });
+
+      var opts = new JsonSerializerOptions
+      {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        WriteIndented = true
+      };
+
+      var json = root.ToJsonString(opts);
+      var bytes = Encoding.UTF8.GetBytes(json);
+
+      // Backup
+      try
+      {
+        var existing = await _nextcloudManager.GetFileAsync(_configPath);
+        if (existing is { Length: > 0 })
+        {
+          var ts = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
+          var backupPath = $"config/backups/config.json.{ts}.bak";
+          await _nextcloudManager.CreateFileAsync(existing, backupPath);
+        }
+      }
+      catch { }
+
+      await _nextcloudManager.CreateFileAsync(bytes, _configPath);
     }
     finally
     {
