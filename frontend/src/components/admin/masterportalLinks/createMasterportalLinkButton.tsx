@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,7 @@ import {
 import UploadMasterportalLinksForm from "./uploadMasterportalLinks.form";
 
 export const CreateMasterportalLinkButton = () => {
+  const { t } = useTranslation(["masterportal"]);
   const [open, setOpen] = useState(false);
 
   return (
@@ -24,12 +26,12 @@ export const CreateMasterportalLinkButton = () => {
           className="w-fit mt-2 flex items-center gap-1"
         >
           <Plus className="h-4 w-4" />
-          Add masterportal link
+          {t("AddMasterportalLink")}
         </Button>
       </DialogTrigger>
       <DialogContent className={"min-w-fit"}>
         <DialogHeader className="mb-4">
-          <DialogTitle>Upload masterportal link</DialogTitle>
+          <DialogTitle>{t("UploadMasterportalLink")}</DialogTitle>
         </DialogHeader>
         <UploadMasterportalLinksForm onSuccess={() => setOpen(false)} />
       </DialogContent>

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Check, X } from "lucide-react";
 
+import { useErrorToast } from "@/hooks/useErrorToast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,20 +32,10 @@ import { Status } from "./status";
 import { MasterportalLinkResponse } from "@/endpoints/gubenSchemas";
 
 export const MasterportalManageTable = () => {
-  const { t } = useTranslation(["common"]);
+  const { t } = useTranslation(["common", "masterportal"]);
   const [query, setQuery] = useState("");
 
   const { data, isLoading, refetch } = useMasterportalLinksGetAll({});
-  const approveMutation = useMasterportalLinkApprove({
-    onSuccess: () => {
-      refetch();
-    },
-  });
-  const rejectMutation = useMasterportalLinkReject({
-    onSuccess: () => {
-      refetch();
-    },
-  });
 
   const filtered = useMemo(() => {
     if (!data) return [];
@@ -58,11 +49,13 @@ export const MasterportalManageTable = () => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="text-xl font-semibold">Manage Masterportal Links</h2>
+        <h2 className="text-xl font-semibold">
+          {t("masterportal:ManageMasterportalLinks")}
+        </h2>
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by name"
+          placeholder={t("masterportal:SearchByName")}
           className="w-64 bg-white rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gubenAccent"
         />
       </div>
@@ -71,10 +64,18 @@ export const MasterportalManageTable = () => {
         <Table className="w-full text-sm">
           <TableHeader className="bg-gray-50">
             <TableRow className="text-left">
-              <TableHead className="px-4 py-3">Link</TableHead>
-              <TableHead className="px-4 py-3">Folder</TableHead>
-              <TableHead className="px-4 py-3">Name</TableHead>
-              <TableHead className="px-4 py-3">Status</TableHead>
+              <TableHead className="px-4 py-3">
+                {t("masterportal:Link")}
+              </TableHead>
+              <TableHead className="px-4 py-3">
+                {t("masterportal:Folder")}
+              </TableHead>
+              <TableHead className="px-4 py-3">
+                {t("masterportal:Name")}
+              </TableHead>
+              <TableHead className="px-4 py-3">
+                {t("masterportal:Status")}
+              </TableHead>
               <TableHead className="px-4 py-3"></TableHead>
             </TableRow>
           </TableHeader>
@@ -112,12 +113,7 @@ export const MasterportalManageTable = () => {
                   <ReviewDialogButton
                     data={row}
                     disabled={row.status !== "Pending"}
-                    onApprove={() => {
-                      approveMutation.mutate({ pathParams: { id: row.id } });
-                    }}
-                    onReject={() => {
-                      rejectMutation.mutate({ pathParams: { id: row.id } });
-                    }}
+                    refetch={refetch}
                   />
                 </TableCell>
               </TableRow>
@@ -132,17 +128,28 @@ export const MasterportalManageTable = () => {
 interface ReviewDialogButtonProps {
   data: MasterportalLinkResponse;
   disabled: boolean;
-  onApprove: () => void;
-  onReject: () => void;
+  refetch: () => void;
 }
 
 const ReviewDialogButton = ({
   data,
   disabled,
-  onApprove,
-  onReject,
+  refetch,
 }: ReviewDialogButtonProps) => {
+  const { t } = useTranslation(["masterportal"]);
   const [open, setOpen] = useState(false);
+
+  const approveMutation = useMasterportalLinkApprove({
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const rejectMutation = useMasterportalLinkReject({
+    onSuccess: () => {
+      refetch();
+    },
+  });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -153,23 +160,23 @@ const ReviewDialogButton = ({
           className="w-fit mt-2 flex items-center gap-1"
           disabled={disabled}
         >
-          Review
+          {t("masterportal:Review")}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="min-w-[520px]">
         <DialogHeader className="mb-2">
-          <DialogTitle>Review link</DialogTitle>
+          <DialogTitle>{t("masterportal:ReviewLinkTitle")}</DialogTitle>
           <DialogDescription>
-            Confirm the details before approving or rejecting.
+            {t("masterportal:ReviewLinkDescription")}
           </DialogDescription>
         </DialogHeader>
 
         <dl className="grid grid-cols-12 gap-x-3 gap-y-2 text-sm mt-4">
-          <dt className="col-span-3 text-muted-foreground">Name</dt>
+          <dt className="col-span-3 text-muted-foreground">{t("masterportal:Name")}</dt>
           <dd className="col-span-9">{data.name}</dd>
 
-          <dt className="col-span-3 text-muted-foreground">Link</dt>
+          <dt className="col-span-3 text-muted-foreground">{t("masterportal:Link")}</dt>
           <dd className="col-span-9 break-all">
             <a
               href={data.url}
@@ -181,10 +188,10 @@ const ReviewDialogButton = ({
             </a>
           </dd>
 
-          <dt className="col-span-3 text-muted-foreground">Folder</dt>
+          <dt className="col-span-3 text-muted-foreground">{t("masterportal:Folder")}</dt>
           <dd className="col-span-9">{data.folder}</dd>
 
-          <dt className="col-span-3 text-muted-foreground">Status</dt>
+          <dt className="col-span-3 text-muted-foreground">{t("masterportal:Status")}</dt>
           <dd className="col-span-9">
             <Status value={data.status} />
           </dd>
@@ -192,24 +199,51 @@ const ReviewDialogButton = ({
 
         <DialogFooter className="mt-4">
           <div className="flex items-center gap-2">
-            <button
+            <Button
+              disabled={rejectMutation.isPending}
+              variant="ghost"
               onClick={() => {
-                onReject();
-                setOpen(false);
+                rejectMutation.mutate(
+                  { pathParams: { id: data.id } },
+                  {
+                    onSuccess: () => setOpen(false),
+                    onError: (error) => useErrorToast(error),
+                  },
+                );
               }}
-              className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+              className="inline-flex items-center gap-2"
             >
-              <X className="h-4 w-4" /> Reject
-            </button>
-            <button
+              {rejectMutation.isPending ? (
+                "Loading..."
+              ) : (
+                <>
+                  <X className="h-4 w-4" /> {t("masterportal:Reject")}
+                </>
+              )}
+            </Button>
+            <Button
+              disabled={approveMutation.isPending}
               onClick={() => {
-                onApprove();
-                setOpen(false);
+                approveMutation.mutate(
+                  {
+                    pathParams: { id: data.id },
+                  },
+                  {
+                    onSuccess: () => setOpen(false),
+                    onError: (error) => useErrorToast(error),
+                  },
+                );
               }}
-              className="inline-flex items-center gap-2 rounded-md bg-gubenAccent text-white px-3 py-2 text-sm hover:opacity-90"
+              className="inline-flex items-center gap-2"
             >
-              <Check className="h-4 w-4" /> Approve
-            </button>
+              {approveMutation.isPending ? (
+                "Loading..."
+              ) : (
+                <>
+                  <Check className="h-4 w-4" /> {t("masterportal:Approve")}
+                </>
+              )}
+            </Button>
           </div>
         </DialogFooter>
       </DialogContent>

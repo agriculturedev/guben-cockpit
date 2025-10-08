@@ -2,6 +2,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import {
   Form,
@@ -53,11 +54,13 @@ interface IProps {
 }
 
 export default function UploadMasterportalLinksForm({ onSuccess }: IProps) {
+  const { t } = useTranslation(["masterportal", "common"]);
+
   const { refetch } = useMasterportalLinksGetMy({});
   const form: FormReturn = useForm({
     resolver: zodResolver(
       z.object({
-        url: z.string().url("Please enter a valid URL"),
+        url: z.string().url(t("masterportal:ValidUrl")),
         folder: z.string(),
         name: z.string(),
       }),
@@ -72,12 +75,12 @@ export default function UploadMasterportalLinksForm({ onSuccess }: IProps) {
   const mutation = useMasterportalLinkCreate({
     onSuccess: () => {
       refetch();
-      toast("Masterportal link created successfully");
+      toast(t("masterportal:ToastCreateSuccess"));
       form.reset({ url: "", folder: "", name: "" });
       onSuccess?.();
     },
     onError: () => {
-      toast.error("Error creating masterportal link");
+      toast.error(t("masterportal:ToastCreateError"));
     },
   });
 
@@ -102,10 +105,10 @@ export default function UploadMasterportalLinksForm({ onSuccess }: IProps) {
           name="url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>URL</FormLabel>
+              <FormLabel>{t("masterportal:FormUrl")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="e.g. https://example.com/wms?layers=LayerA"
+                  placeholder={t("masterportal:FormUrlPlaceholder")}
                   {...field}
                   value={field.value}
                 />
@@ -120,7 +123,7 @@ export default function UploadMasterportalLinksForm({ onSuccess }: IProps) {
           name="folder"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Folder</FormLabel>
+              <FormLabel>{t("masterportal:FormFolder")}</FormLabel>
               <Select
                 onValueChange={field.onChange}
                 value={field.value}
@@ -128,7 +131,9 @@ export default function UploadMasterportalLinksForm({ onSuccess }: IProps) {
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a folder" />
+                    <SelectValue
+                      placeholder={t("masterportal:FormFolderPlaceholder")}
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -149,10 +154,10 @@ export default function UploadMasterportalLinksForm({ onSuccess }: IProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>{t("masterportal:FormName")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="e.g. Background Map Color"
+                  placeholder={t("masterportal:FormNamePlaceholder")}
                   {...field}
                   value={field.value}
                 />
@@ -167,7 +172,7 @@ export default function UploadMasterportalLinksForm({ onSuccess }: IProps) {
             className={"bg-gubenAccent text-gubenAccent-foreground"}
             disabled={mutation.isPending}
           >
-            {mutation.isPending ? "Loading..." : "Save"}
+            {mutation.isPending ? t("common:Loading") : t("masterportal:Save")}
           </Button>
         </div>
       </form>

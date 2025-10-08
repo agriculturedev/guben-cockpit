@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Api.Infrastructure.Nextcloud;
 using Api.Options;
 using Microsoft.Extensions.Options;
 
@@ -9,23 +10,25 @@ namespace Api.Services.Masterportal;
 
 public sealed class MasterportalConfigWriter : IMasterportalConfigWriter
 {
+  private readonly NextcloudManager _nextcloudManager;
   private readonly string _configPath;
-  private readonly string _outputPath;
   private readonly string _folderTitle;
   private readonly string _themenSection;
   private static readonly SemaphoreSlim _lock = new(1, 1);
 
-  public MasterportalConfigWriter(IOptions<MasterportalOptions> opts)
+  public MasterportalConfigWriter(
+    NextcloudManager nextcloudManager,
+    IOptions<MasterportalOptions> opts
+  )
   {
+    _nextcloudManager = nextcloudManager;
+
     _configPath = opts.Value.ConfigPath;
     _folderTitle = string.IsNullOrWhiteSpace(opts.Value.UploadedFolderTitle) ? "Uploaded_Geodata" : opts.Value.UploadedFolderTitle;
     _themenSection = string.IsNullOrWhiteSpace(opts.Value.ThemeConfigSection) ? "Fachdaten" : opts.Value.ThemeConfigSection;
 
     if (string.IsNullOrWhiteSpace(_configPath))
       throw new InvalidOperationException("Masterportal.ConfigPath is not configured.");
-
-    var baseDir = Path.GetDirectoryName(_configPath)!;
-    _outputPath = Path.Combine(baseDir, "config.json");
   }
 
   public async Task EnsureFolderAndAddLayerAsync(string layerId, CancellationToken ct)
@@ -136,8 +139,6 @@ public sealed class MasterportalConfigWriter : IMasterportalConfigWriter
       .Distinct(StringComparer.OrdinalIgnoreCase)
       .ToList() ?? new List<string>();
 
-    Directory.CreateDirectory(Path.GetDirectoryName(_outputPath)!);
-
     await _lock.WaitAsync(ct);
     try
     {
@@ -173,16 +174,29 @@ public sealed class MasterportalConfigWriter : IMasterportalConfigWriter
       foreach (var id in ids)
         layerArr.Add(new JsonObject { ["id"] = id });
 
-      var tmp = _outputPath + ".tmp";
-      var bak = _outputPath + "." + DateTime.UtcNow.ToString("yyyyMMddHHmmss") + ".bak";
-      var opts = new JsonSerializerOptions { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, WriteIndented = true };
+      var opts = new JsonSerializerOptions
+      {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        WriteIndented = true
+      };
 
-      await File.WriteAllTextAsync(tmp, root.ToJsonString(opts), Encoding.UTF8, ct);
+      var json = root.ToJsonString(opts);
+      var bytes = Encoding.UTF8.GetBytes(json);
 
-      if (File.Exists(_outputPath))
-        File.Replace(tmp, _outputPath, bak);
-      else
-        File.Move(tmp, _outputPath);
+      // Backup
+      try
+      {
+        var existing = await _nextcloudManager.GetFileAsync(_configPath);
+        if (existing is { Length: > 0 })
+        {
+          var ts = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
+          var backupPath = $"config/backups/config.json.{ts}.bak";
+          await _nextcloudManager.CreateFileAsync(existing, backupPath);
+        }
+      }
+      catch { }
+
+      await _nextcloudManager.CreateFileAsync(bytes, _configPath);
     }
     finally
     {

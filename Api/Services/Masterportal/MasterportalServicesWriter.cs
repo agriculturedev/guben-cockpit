@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Api.Infrastructure.Nextcloud;
 using Api.Options;
 using Microsoft.Extensions.Options;
 
@@ -9,18 +10,20 @@ namespace Api.Services.Masterportal;
 
 public sealed class MasterportalServicesWriter : IMasterportalServicesWriter
 {
+    private readonly NextcloudManager _nextcloudManager;
     private readonly string _path;
-    private readonly string _outputPath;
     private static readonly SemaphoreSlim _lock = new(1, 1);
 
-    public MasterportalServicesWriter(IOptions<MasterportalOptions> opts)
+    public MasterportalServicesWriter(
+        NextcloudManager nextcloudManager,
+        IOptions<MasterportalOptions> opts
+    )
     {
+        _nextcloudManager = nextcloudManager;
+
         _path = opts.Value.ServicesPath;
         if (string.IsNullOrWhiteSpace(_path))
             throw new InvalidOperationException("Masterportal.ServicesPath is not configured.");
-
-        var baseDir = Path.GetDirectoryName(_path)!;
-        _outputPath = Path.Combine(baseDir, "services-internet.json");
     }
 
     public async Task AppendAsync(JsonNode layer, CancellationToken ct)
@@ -101,25 +104,31 @@ public sealed class MasterportalServicesWriter : IMasterportalServicesWriter
             dedup.Add(node is null ? null : DeepClone(node));
         }
 
-        Directory.CreateDirectory(Path.GetDirectoryName(_path)!);
-
         await _lock.WaitAsync(ct);
         try
         {
-            var tmp = _path + ".tmp";
-            var bak = _path + "." + DateTime.UtcNow.ToString("yyyyMMddHHmmss") + ".bak";
             var opts = new JsonSerializerOptions
             {
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 WriteIndented = true
             };
 
-            await File.WriteAllTextAsync(tmp, dedup.ToJsonString(opts), Encoding.UTF8, ct);
+            var json = dedup.ToJsonString(opts);
+            var bytes = Encoding.UTF8.GetBytes(json);
 
-            if (File.Exists(_path))
-                File.Replace(tmp, _path, bak);
-            else
-                File.Move(tmp, _path);
+            try
+            {
+                var existing = await _nextcloudManager.GetFileAsync(_path);
+                if (existing is { Length: > 0 })
+                {
+                    var ts = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
+                    var backupPath = $"config/backups/services-internet.json.{ts}.bak";
+                    await _nextcloudManager.CreateFileAsync(existing, backupPath);
+                }
+            }
+            catch { }
+            
+            await _nextcloudManager.CreateFileAsync(bytes, _path);
         }
         finally
         {

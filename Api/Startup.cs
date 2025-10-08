@@ -48,8 +48,8 @@ public class Startup(IConfiguration configuration)
             .Validate(o => !string.IsNullOrWhiteSpace(o.ConfigPath),
               "Masterportal.ConfigPath is missing or empty");
 
-    services.AddSingleton<IMasterportalServicesWriter, MasterportalServicesWriter>();
-    services.AddSingleton<IMasterportalConfigWriter, MasterportalConfigWriter>();
+    services.AddScoped<IMasterportalServicesWriter, MasterportalServicesWriter>();
+    services.AddScoped<IMasterportalConfigWriter, MasterportalConfigWriter>();
 
     services.AddScoped<IMasterportalSnapshotPublisher, MasterportalSnapshotPublisher>();
 

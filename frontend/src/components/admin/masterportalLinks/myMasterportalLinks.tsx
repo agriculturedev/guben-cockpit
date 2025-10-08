@@ -13,7 +13,7 @@ import { useMasterportalLinksGetMy } from "@/endpoints/gubenComponents";
 import { Status } from "./status";
 
 export const MyMasterportalLinks = () => {
-  const { t } = useTranslation(["common"]);
+  const { t } = useTranslation(["common", "masterportal"]);
   const { data, isLoading } = useMasterportalLinksGetMy({});
 
   const links = data?.links || [];
@@ -23,10 +23,10 @@ export const MyMasterportalLinks = () => {
       <Table className="w-full text-sm">
         <TableHeader className="bg-gray-50">
           <TableRow className="text-left">
-            <TableHead className="px-4 py-3">Link</TableHead>
-            <TableHead className="px-4 py-3">Folder</TableHead>
-            <TableHead className="px-4 py-3">Name</TableHead>
-            <TableHead className="px-4 py-3">Status</TableHead>
+            <TableHead className="px-4 py-3">{t("masterportal:Link")}</TableHead>
+            <TableHead className="px-4 py-3">{t("masterportal:Folder")}</TableHead>
+            <TableHead className="px-4 py-3">{t("masterportal:Name")}</TableHead>
+            <TableHead className="px-4 py-3">{t("masterportal:Status")}</TableHead>
           </TableRow>
         </TableHeader>
 
