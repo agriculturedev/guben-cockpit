@@ -4,6 +4,7 @@ using Jobs.Configuration;
 using Microsoft.Extensions.Configuration;
 using HtmlAgilityPack;
 using System.Net;
+using System.Text.Json;
 
 namespace Jobs;
 
@@ -46,7 +47,7 @@ public class LibreTranslator
     Console.WriteLine($"=== URL ===");
     Console.WriteLine($"libretranslate url: {url}");
     Console.WriteLine($"=== END URL ===");
-    
+
     var response = await _httpClient.PostAsJsonAsync(_configuration.GetLibreTranslateUrl("LibreTranslate"), payload);
 
     _lastRequest = DateTime.UtcNow;
