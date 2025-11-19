@@ -4,6 +4,7 @@ using Jobs.Configuration;
 using Microsoft.Extensions.Configuration;
 using HtmlAgilityPack;
 using System.Net;
+using System.Text.Json;
 
 namespace Jobs;
 
