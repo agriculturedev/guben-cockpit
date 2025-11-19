@@ -91,7 +91,7 @@ public class Startup(IConfiguration configuration)
     //Starting the EventImporter one Hour later, so we can translate Everything using libreTranslate
     //whithout running into resource trouble (will only translate if it is a new Event or new Project)
     //Project Importer Runs at Midnight, EventImporter at 1
-    RecurringJob.AddOrUpdate<EventImporter>("EventImporter", (importer) => importer.Import(), "0 1 * * *");
+    RecurringJob.AddOrUpdate<EventImporter>("EventImporter", (importer) => importer.Import(), "10 * * * *");
     RecurringJob.AddOrUpdate<ProjectImporter>("ProjectImporter", (importer) => importer.Import(), Cron.Daily);
 
     // Run the jobs immediately on startup, TODO@JOREN: add api endpoints to trigger importer from ui
