@@ -263,4 +263,28 @@ value   : The object must be serialized into a byte array
   <data name="NoDashboardManager" xml:space="preserve">
     <value>No dashboard manager available</value>
   </data>
+  <data name="MasterportalLinkNotFound" xml:space="preserve">
+    <value>Masterportal link not found</value>
+  </data>
+  <data name="MasterportalLinkNameRequired" xml:space="preserve">
+    <value>Name is required for the masterportal link</value>
+  </data>
+  <data name="MasterportalLinkUrlRequired" xml:space="preserve">
+    <value>URL is required for the masterportal link</value>
+  </data>
+  <data name="MasterportalLinkFolderRequired" xml:space="preserve">
+    <value>Folder selection is required for the masterportal link</value>
+  </data>
+  <data name="MasterportalLinkWmsLayersRequired" xml:space="preserve">
+    <value>At least one WMS layer is required</value>
+  </data>
+  <data name="MasterportalLinkWfsFeatureTypeRequired" xml:space="preserve">
+    <value>FeatureType is required for the WFS masterportal link</value>
+  </data>
+  <data name="MasterportalLinkTypeInvalid" xml:space="preserve">
+    <value>The provided link type is not valid (must be WMS or WFS)</value>
+  </data>
+  <data name="MasterportalLinkApprovalFailed" xml:space="preserve">
+    <value>Approval of the masterportal link failed</value>
+  </data>
 </root>

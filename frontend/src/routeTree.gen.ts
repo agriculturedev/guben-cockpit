@@ -25,6 +25,8 @@ import { Route as BookingRoomTitleImport } from './routes/booking/room/$title'
 import { Route as AdminLayoutUsersImport } from './routes/admin/_layout/users'
 import { Route as AdminLayoutProjectsImport } from './routes/admin/_layout/projects'
 import { Route as AdminLayoutPagesImport } from './routes/admin/_layout/pages'
+import { Route as AdminLayoutMasterportalManageImport } from './routes/admin/_layout/masterportal-manage'
+import { Route as AdminLayoutMasterportalLinksImport } from './routes/admin/_layout/masterportal-links'
 import { Route as AdminLayoutLocationsImport } from './routes/admin/_layout/locations'
 import { Route as AdminLayoutGeodatamanageImport } from './routes/admin/_layout/geodatamanage'
 import { Route as AdminLayoutGeodataImport } from './routes/admin/_layout/geodata'
@@ -112,6 +114,18 @@ const AdminLayoutPagesRoute = AdminLayoutPagesImport.update({
   path: '/pages',
   getParentRoute: () => AdminLayoutRoute,
 } as any)
+
+const AdminLayoutMasterportalManageRoute =
+  AdminLayoutMasterportalManageImport.update({
+    path: '/masterportal-manage',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
+
+const AdminLayoutMasterportalLinksRoute =
+  AdminLayoutMasterportalLinksImport.update({
+    path: '/masterportal-links',
+    getParentRoute: () => AdminLayoutRoute,
+  } as any)
 
 const AdminLayoutLocationsRoute = AdminLayoutLocationsImport.update({
   path: '/locations',
@@ -289,6 +303,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLayoutLocationsImport
       parentRoute: typeof AdminLayoutImport
     }
+    '/admin/_layout/masterportal-links': {
+      id: '/admin/_layout/masterportal-links'
+      path: '/masterportal-links'
+      fullPath: '/admin/masterportal-links'
+      preLoaderRoute: typeof AdminLayoutMasterportalLinksImport
+      parentRoute: typeof AdminLayoutImport
+    }
+    '/admin/_layout/masterportal-manage': {
+      id: '/admin/_layout/masterportal-manage'
+      path: '/masterportal-manage'
+      fullPath: '/admin/masterportal-manage'
+      preLoaderRoute: typeof AdminLayoutMasterportalManageImport
+      parentRoute: typeof AdminLayoutImport
+    }
     '/admin/_layout/pages': {
       id: '/admin/_layout/pages'
       path: '/pages'
@@ -351,6 +379,8 @@ interface AdminLayoutRouteChildren {
   AdminLayoutGeodataRoute: typeof AdminLayoutGeodataRoute
   AdminLayoutGeodatamanageRoute: typeof AdminLayoutGeodatamanageRoute
   AdminLayoutLocationsRoute: typeof AdminLayoutLocationsRoute
+  AdminLayoutMasterportalLinksRoute: typeof AdminLayoutMasterportalLinksRoute
+  AdminLayoutMasterportalManageRoute: typeof AdminLayoutMasterportalManageRoute
   AdminLayoutPagesRoute: typeof AdminLayoutPagesRoute
   AdminLayoutProjectsRoute: typeof AdminLayoutProjectsRoute
   AdminLayoutUsersRoute: typeof AdminLayoutUsersRoute
@@ -367,6 +397,8 @@ const AdminLayoutRouteChildren: AdminLayoutRouteChildren = {
   AdminLayoutGeodataRoute: AdminLayoutGeodataRoute,
   AdminLayoutGeodatamanageRoute: AdminLayoutGeodatamanageRoute,
   AdminLayoutLocationsRoute: AdminLayoutLocationsRoute,
+  AdminLayoutMasterportalLinksRoute: AdminLayoutMasterportalLinksRoute,
+  AdminLayoutMasterportalManageRoute: AdminLayoutMasterportalManageRoute,
   AdminLayoutPagesRoute: AdminLayoutPagesRoute,
   AdminLayoutProjectsRoute: AdminLayoutProjectsRoute,
   AdminLayoutUsersRoute: AdminLayoutUsersRoute,
@@ -409,6 +441,8 @@ export interface FileRoutesByFullPath {
   '/admin/geodata': typeof AdminLayoutGeodataRoute
   '/admin/geodatamanage': typeof AdminLayoutGeodatamanageRoute
   '/admin/locations': typeof AdminLayoutLocationsRoute
+  '/admin/masterportal-links': typeof AdminLayoutMasterportalLinksRoute
+  '/admin/masterportal-manage': typeof AdminLayoutMasterportalManageRoute
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
   '/admin/users': typeof AdminLayoutUsersRoute
@@ -434,6 +468,8 @@ export interface FileRoutesByTo {
   '/admin/geodata': typeof AdminLayoutGeodataRoute
   '/admin/geodatamanage': typeof AdminLayoutGeodatamanageRoute
   '/admin/locations': typeof AdminLayoutLocationsRoute
+  '/admin/masterportal-links': typeof AdminLayoutMasterportalLinksRoute
+  '/admin/masterportal-manage': typeof AdminLayoutMasterportalManageRoute
   '/admin/pages': typeof AdminLayoutPagesRoute
   '/admin/projects': typeof AdminLayoutProjectsRoute
   '/admin/users': typeof AdminLayoutUsersRoute
@@ -462,6 +498,8 @@ export interface FileRoutesById {
   '/admin/_layout/geodata': typeof AdminLayoutGeodataRoute
   '/admin/_layout/geodatamanage': typeof AdminLayoutGeodatamanageRoute
   '/admin/_layout/locations': typeof AdminLayoutLocationsRoute
+  '/admin/_layout/masterportal-links': typeof AdminLayoutMasterportalLinksRoute
+  '/admin/_layout/masterportal-manage': typeof AdminLayoutMasterportalManageRoute
   '/admin/_layout/pages': typeof AdminLayoutPagesRoute
   '/admin/_layout/projects': typeof AdminLayoutProjectsRoute
   '/admin/_layout/users': typeof AdminLayoutUsersRoute
@@ -490,6 +528,8 @@ export interface FileRouteTypes {
     | '/admin/geodata'
     | '/admin/geodatamanage'
     | '/admin/locations'
+    | '/admin/masterportal-links'
+    | '/admin/masterportal-manage'
     | '/admin/pages'
     | '/admin/projects'
     | '/admin/users'
@@ -514,6 +554,8 @@ export interface FileRouteTypes {
     | '/admin/geodata'
     | '/admin/geodatamanage'
     | '/admin/locations'
+    | '/admin/masterportal-links'
+    | '/admin/masterportal-manage'
     | '/admin/pages'
     | '/admin/projects'
     | '/admin/users'
@@ -540,6 +582,8 @@ export interface FileRouteTypes {
     | '/admin/_layout/geodata'
     | '/admin/_layout/geodatamanage'
     | '/admin/_layout/locations'
+    | '/admin/_layout/masterportal-links'
+    | '/admin/_layout/masterportal-manage'
     | '/admin/_layout/pages'
     | '/admin/_layout/projects'
     | '/admin/_layout/users'
@@ -624,6 +668,8 @@ export const routeTree = rootRoute
         "/admin/_layout/geodata",
         "/admin/_layout/geodatamanage",
         "/admin/_layout/locations",
+        "/admin/_layout/masterportal-links",
+        "/admin/_layout/masterportal-manage",
         "/admin/_layout/pages",
         "/admin/_layout/projects",
         "/admin/_layout/users",
@@ -674,6 +720,14 @@ export const routeTree = rootRoute
     },
     "/admin/_layout/locations": {
       "filePath": "admin/_layout/locations.tsx",
+      "parent": "/admin/_layout"
+    },
+    "/admin/_layout/masterportal-links": {
+      "filePath": "admin/_layout/masterportal-links.tsx",
+      "parent": "/admin/_layout"
+    },
+    "/admin/_layout/masterportal-manage": {
+      "filePath": "admin/_layout/masterportal-manage.tsx",
       "parent": "/admin/_layout"
     },
     "/admin/_layout/pages": {

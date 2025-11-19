@@ -17,6 +17,8 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Database;
 using Api.Options;
 using Api.Services.Masterportal;
+using Domain.MasterportalLinks.repository;
+using Database.Repositories;
 
 namespace Api;
 
@@ -42,10 +44,14 @@ public class Startup(IConfiguration configuration)
     services.AddOptions<MasterportalOptions>()
             .Bind(Configuration.GetSection("Masterportal"))
             .Validate(o => !string.IsNullOrWhiteSpace(o.ServicesPath),
-                      "Masterportal.ServicesPath is missing or empty");
-    
-    services.AddSingleton<IMasterportalServicesWriter, MasterportalServicesWriter>();
-    services.AddSingleton<IMasterportalConfigWriter, MasterportalConfigWriter>();
+              "Masterportal.ServicesPath is missing or empty")
+            .Validate(o => !string.IsNullOrWhiteSpace(o.ConfigPath),
+              "Masterportal.ConfigPath is missing or empty");
+
+    services.AddScoped<IMasterportalServicesWriter, MasterportalServicesWriter>();
+    services.AddScoped<IMasterportalConfigWriter, MasterportalConfigWriter>();
+
+    services.AddScoped<IMasterportalSnapshotPublisher, MasterportalSnapshotPublisher>();
 
     if (MappedConfiguration is null)
       throw new NullReferenceException("Configuration is null");
@@ -82,6 +88,13 @@ public class Startup(IConfiguration configuration)
     services.AddExceptionHandler<ProblemExceptionHandler>();
     services.AddLocalization();
     services.AddOpenApi(options => { options.AddSchemaTransformer<DescribeEnumMemberValues>(); });
+
+    services.AddScoped<IMasterportalLinkRepository, MasterportalLinkRepository>();
+    services.AddHttpContextAccessor();
+    services.AddHttpClient<IMasterportalCapabilitiesService, MasterportalCapabilitiesService>(c =>
+    {
+      c.Timeout = TimeSpan.FromSeconds(10);
+    });
   }
 
   private void AddJobs()

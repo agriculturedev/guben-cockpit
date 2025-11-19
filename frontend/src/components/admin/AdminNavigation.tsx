@@ -6,7 +6,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 export const AdminNavigation = () => {
-  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations", "footer", "booking", "geodata"]);
+  const {t} = useTranslation(["dashboard", "projects", "users", "events", "pages", "locations", "footer", "booking", "geodata", "masterportal"]);
 
   return (
     <Nav className="col-span-2 h-fit">
@@ -54,12 +54,18 @@ export const AdminNavigation = () => {
         />
       </PermissionGuard>
 
-      <PermissionGuard permissions={[Permissions.UploadGeodata]}>
-        <Nav.Item href={"/admin/geodata"} label={t("Title", {ns: "geodata"})}/>
+      <PermissionGuard permissions={[Permissions.MasterportalLinkEditor, Permissions.MasterportalLinkManager]}>
+        <Nav.Item 
+          href={"/admin/masterportal-links"} 
+          label={t('MasterportalLinks', {ns: "masterportal"})} 
+        />
       </PermissionGuard>
 
-      <PermissionGuard permissions={[Permissions.ManageGeoData]}>
-        <Nav.Item href={"/admin/geodatamanage"} label={t("ManageGeodata", {ns: "geodata"})}/>
+      <PermissionGuard permissions={[Permissions.MasterportalLinkManager]}>
+        <Nav.Item 
+          href={"/admin/masterportal-manage"} 
+          label={t('ManageMasterportal', {ns: "masterportal"})} 
+        />
       </PermissionGuard>
     </Nav>
   )
