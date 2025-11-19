@@ -38,7 +38,15 @@ public class LibreTranslator
       target = targetCulture.TwoLetterISOLanguageName,
       api_key = _configuration.GetLibreTranslateApiKey("LibreTranslate")
     };
-
+    var jsonPayload = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
+    Console.WriteLine($"=== REQUEST PAYLOAD ===");
+    Console.WriteLine(jsonPayload);
+    Console.WriteLine($"=== END PAYLOAD ===");
+    var url = _configuration.GetLibreTranslateUrl("LibreTranslate");
+    Console.WriteLine($"=== URL ===");
+    Console.WriteLine($"libretranslate url: {url}");
+    Console.WriteLine($"=== END URL ===");
+    
     var response = await _httpClient.PostAsJsonAsync(_configuration.GetLibreTranslateUrl("LibreTranslate"), payload);
 
     _lastRequest = DateTime.UtcNow;
