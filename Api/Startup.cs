@@ -43,7 +43,7 @@ public class Startup(IConfiguration configuration)
             .Bind(Configuration.GetSection("Masterportal"))
             .Validate(o => !string.IsNullOrWhiteSpace(o.ServicesPath),
                       "Masterportal.ServicesPath is missing or empty");
-    
+
     services.AddSingleton<IMasterportalServicesWriter, MasterportalServicesWriter>();
     services.AddSingleton<IMasterportalConfigWriter, MasterportalConfigWriter>();
 
