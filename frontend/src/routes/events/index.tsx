@@ -38,7 +38,7 @@ const filtersSchema = z.object({
 
 //@TODO we chould refactor this and move eventIntegration into the backend and merge the Data in eventRepository
 //so we always have 25 results per Page. But then we need to keep the Booking Events in Cache in Case someone
-//wants to access them, which we definitly need to be careful with 
+//wants to access them, which we definitly need to be careful with
 //Then all the Custom Filtering Stuff could also be removed
 function RouteComponent() {
   const { t } = useTranslation(["common", "events"]);
@@ -47,7 +47,7 @@ function RouteComponent() {
   const markProcessedTenants = useEventStore((state) => state.markProcessedTenants);
 
   const { data: tenantIds } = useBookingGetPublicTenantIds({});
-  
+
   const [currentTenantIndex, setCurrentTenantIndex] = useState(0);
 
   const handleTenantDone = useCallback(() => {
@@ -55,7 +55,6 @@ function RouteComponent() {
     if (currentTenant) {
       markProcessedTenants(currentTenant.tenantId);
     }
-
     const hasMoreTenants = currentTenantIndex < (tenantIds?.tenants?.length ?? 0) - 1;
 
     if (hasMoreTenants) {
@@ -67,7 +66,6 @@ function RouteComponent() {
 
   const currentTenant = tenantIds?.tenants[currentTenantIndex];
   const shouldShowIntegration = currentTenant && !processedTenants.has(currentTenant.tenantId);
-
   useEffect(() => {
     if (shouldShowIntegration) {
       setLoading(true);
@@ -219,7 +217,7 @@ function RouteComponent() {
   const filteredNormalizedEvents = filterEvents(normalizedEvents, filters);
 
   const allEvents = mergeEventsWithCustom(data?.results ?? [], filteredNormalizedEvents);
-  
+
   useEffect(() => {
     setTotal(allEvents.length ?? defaultPaginationProps.total);
     setPageCount(data?.pageCount ?? defaultPaginationProps.pageCount);
@@ -238,7 +236,7 @@ function RouteComponent() {
         const descriptions = customEvents
           .map(e => e.description)
           .filter(desc => desc && desc.trim());
-        
+
         if (descriptions.length > 0) {
           await translateHtmlBatchedMultiple(descriptions, currentLang);
         }
@@ -258,17 +256,16 @@ function RouteComponent() {
       setTranslationsReady(true);
     }
   }, [shouldShowIntegration, currentLang]);
-
   return (
     <main className="relative space-y-8 mb-8">
       {loading && <Skeleton />}
-      { shouldShowIntegration && (
-        <EventIntegration
-          key={`${currentTenant.tenantId}`}
-          tenantId={currentTenant.tenantId}
+      {tenantIds && tenantIds.tenants.map((tenant) => {
+        return <EventIntegration
+          key={`${tenant.tenantId}`}
+          tenantId={tenant.tenantId}
           setLoading={setLoading}
           onDone={handleTenantDone} />
-      )}
+      })}
       <CitizenInformationSystemBanner />
 
       <section className='space-y-8 max-w-7xl mx-auto'>
