@@ -55,8 +55,6 @@ const oidcConfig = {
   automaticSilentRenew: true,
 };
 
-console.log(import.meta.env)
-
 const rootElement = document.getElementById('app')!
 
 if (!rootElement.innerHTML) {

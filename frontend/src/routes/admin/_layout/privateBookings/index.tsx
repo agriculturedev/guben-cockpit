@@ -15,7 +15,6 @@ export const Route = createFileRoute('/admin/_layout/privateBookings/')({
 function PrivateBookingPage() {
   const { t } = useTranslation("booking");
   const { data: tenantIds } = useBookingGetPrivateTenantIds({});
-  const processedTenants = useBookingStore((state) => state.processedTenants);
   const markProcessedTenants = useBookingStore((state) => state.markProcessedTenants);
 
   const bookables = useBookingStore((state) => state.bookings);
@@ -40,21 +39,19 @@ function PrivateBookingPage() {
     }
   }, [currentTenantIndex, tenantIds?.tenants, markProcessedTenants]);
 
-  const currentTenant = tenantIds?.tenants[currentTenantIndex];
-  const shouldShowIntegration = currentTenant && !processedTenants.has(currentTenant.tenantId);
-
   return (
     <main className="felx flex-col">
       <div>
-        {shouldShowIntegration && (
+        { tenantIds && tenantIds.tenants.map((tenant) => (
           <BookingIntegration
-            key={`${currentTenant.tenantId}`}
-            tenantId={currentTenant.tenantId}
+            key={`${tenant.tenantId}`}
+            tenantId={tenant.tenantId}
             privateTenant={true}
             setLoading={setLoading}
             onDone={handleTenantDone}
           />
-        )}
+        )) }
+
         <BookingDivider text={t('PrivateBookings')} />
         {loading ? (
           <Skeleton />
