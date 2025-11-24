@@ -32,7 +32,7 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
           const imgUrl = eventEl.querySelector("img")?.getAttribute("src") || "";
 
           let teaser = "";
-          const descriptionElement = eventEl.querySelector(".teaser-text");         
+          const descriptionElement = eventEl.querySelector(".teaser-text");
 
           if (descriptionElement) {
             let currentElement = descriptionElement.nextElementSibling;
@@ -63,7 +63,7 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
 
             if (infoDiv) {
               let longDescription = "";
-              const descriptionElement = infoDiv.querySelector(".description");         
+              const descriptionElement = infoDiv.querySelector(".description");
 
               if (descriptionElement) {
                 let currentElement = descriptionElement.nextElementSibling;
@@ -85,7 +85,7 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
                 if (descriptionElement) {
                   let currentElement = descriptionElement.nextElementSibling;
                   const paragraphs: string[] = [];
-                  
+
                   while (currentElement && currentElement.tagName === "P" && !currentElement.classList.length && currentElement.textContent?.trim() !== "") {
                     paragraphs.push(currentElement.outerHTML);
                     currentElement = currentElement.nextElementSibling;
@@ -111,6 +111,9 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
                   imgUrl: ticketEl.querySelector("img")?.getAttribute("src") || "/images/guben-city-booking-card-placeholder.png",
                 };
               });
+              const street = eventDiv?.querySelector(".event-location .street")?.textContent?.trim() || "";
+              const houseNumber = eventDiv?.querySelector(".event-location .houseNumber")?.textContent?.trim() || "";
+              const fullAddress = street? `${street} ${houseNumber}` : "";
 
               event.details = {
                 longDescription,
@@ -119,7 +122,7 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
                 eventOrganizer: eventDiv?.querySelector(".event-organizer .name")?.textContent?.trim() || "",
                 agenda: Array.from(eventDiv?.querySelectorAll(".schedules .schedule-list li") ?? []).map(li => li.textContent?.trim() || ""),
                 teaserImage: infoDiv?.querySelector(".teaser-image")?.getAttribute("src") || event.imgUrl,
-                street: eventDiv?.querySelector(".event-location .street")?.textContent?.trim() || "",
+                street: fullAddress,
                 houseNumber: eventDiv?.querySelector(".event-location .houseNumber")?.textContent?.trim() || "",
                 zip: eventDiv?.querySelector(".event-location .zip")?.textContent?.trim() || "",
                 city: eventDiv?.querySelector(".event-location .city")?.textContent?.trim() || "",
@@ -127,11 +130,12 @@ export default function EventIntegration({ tenantId, setLoading, onDone }: Event
               };
 
               event.coordinates = await fetchCoordinates(
-                event.details?.street,
-                event.details?.houseNumber,
+                street,
+                houseNumber,
                 event.details?.zip,
                 event.details?.city);
-            }
+              }
+
           } catch (err) {
             console.error("Failed to fetch event details for", event.bkid, err);
           }
