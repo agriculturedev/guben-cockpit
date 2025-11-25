@@ -217,6 +217,7 @@ function RouteComponent() {
   const filteredNormalizedEvents = filterEvents(normalizedEvents, filters);
 
   const allEvents = mergeEventsWithCustom(data?.results ?? [], filteredNormalizedEvents);
+  console.log('allEvents', allEvents);
 
   useEffect(() => {
     setTotal(allEvents.length ?? defaultPaginationProps.total);
