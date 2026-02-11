@@ -31,25 +31,40 @@ export async function translateBatchedMultiple(texts: string[], targetLang: stri
 
     const textsToTranslate = untranslated.map(({ text }) => text);
 
-    const response = await fetch(import.meta.env.VITE_TRANSLATE_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            q: textsToTranslate,
-            source: "auto",
-            target: targetLang,
-            api_key: import.meta.env.VITE_TRANSLATE_API_KEY
-        }),
-    });
+    try {
+        const response = await fetch(import.meta.env.VITE_TRANSLATE_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                q: textsToTranslate,
+                source: "auto",
+                target: targetLang,
+                api_key: import.meta.env.VITE_TRANSLATE_API_KEY
+            }),
+        });
 
-    const data = await response.json();
+        if (!response.ok) {
+            console.error("Translation API returned", response.status);
+            untranslated.forEach(({ index, text }) => {
+                results[index] = text;
+            });
+            return results;
+        }
 
-    untranslated.forEach(({ index, text }, i) => {
-        const translated = data.translatedText[i];
-        const cacheKey = `${text}_${targetLang}`;
-        cache[cacheKey] = translated;
-        results[index] = translated;
-    });
+        const data = await response.json();
+
+        untranslated.forEach(({ index, text }, i) => {
+            const translated = data.translatedText?.[i] ?? text;
+            const cacheKey = `${text}_${targetLang}`;
+            cache[cacheKey] = translated;
+            results[index] = translated;
+        });
+    } catch (err) {
+        console.error("Translation fetch failed", err);
+        untranslated.forEach(({ index, text }) => {
+            results[index] = text;
+        });
+    }
 
     return results;
 }
@@ -104,9 +119,21 @@ export async function translateHtmlBatchedMultiple(htmls: string[], targetLang: 
         data = await response.json();
     } catch (err) {
         console.error("Translation fetch failed", err);
-        return;
+        untranslated.forEach(({ index, text }) => {
+            htmlCache[`${text}_${targetLang}`] = text;
+            results[index] = text;
+        });
+        return results;
     }
-  
+
+    if (!data?.translatedText) {
+        untranslated.forEach(({ index, text }) => {
+            htmlCache[`${text}_${targetLang}`] = text;
+            results[index] = text;
+        });
+        return results;
+    }
+
     let counter = 0;
     untranslated.forEach(({ index, text }) => {
         const parser = new DOMParser();
